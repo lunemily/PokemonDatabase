@@ -32,12 +32,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_POKEMON = "pokemon";
     private static final String TABLE_POKEMON_TYPES = "pokemon_types";
     private static final String TABLE_TYPES = "types";
+    private static final String TABLE_MOVES = "moves";
+    private static final String TABLE_POKEMON_MOVES = "pokemon_moves";
 
     //common
     private static final String KEY_ID = "id";
     private static final String KEY_IDENTIFIER = "identifier";
+    private static final String KEY_MOVE_ID = "move_id";
     private static final String KEY_POKEMON_ID = "pokemon_id";
     private static final String KEY_TYPE_ID = "type_id";
+    private static final String KEY_VERSION_GROUP_ID = "version_group_id";
 
     //pokemon
     private static final String KEY_SPECIES_ID = "species_id";
@@ -52,6 +56,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //types
     private static final String KEY_COLOR = "color";
+    
+    //moves
+    
+    //pokemon_moves
+    private static final String KEY_POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
 
     /**
      * Constructor
@@ -183,8 +192,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
 // to you to create adapters for your views.
 
+    /**
+     * Getter
+     * Returns all pokemon
+     */
     public List<Pokemon> getAllPokemon() {
         SQLiteDatabase db = this.getWritableDatabase();
+        
         List<Pokemon> pokemonList = new ArrayList<Pokemon>();
 
         String selectQuery = "SELECT " + TABLE_POKEMON + "." + KEY_ID +
@@ -202,21 +216,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 //add pokemon to list
                 pokemonList.add(pokemon);
             } while (cursor.moveToNext());
-
         }
         db.close();
 
         return pokemonList;
     }
+    
     /**
      * Getter
      * Returns a fully loaded pokemon including name, height, and weight
      *
      * @param id
      */
-    public Pokemon getSinglePokemonByID(int id) {
-        Pokemon pokemon = new Pokemon();
+    public Pokemon getSinglePokemonByID(int pokemon_id) {
         SQLiteDatabase db = this.getReadableDatabase();
+        
+        Pokemon pokemon = new Pokemon();
 
         String selectQuery = "SELECT " + TABLE_POKEMON + "." + KEY_IDENTIFIER +
                 ", " + TABLE_POKEMON + "." + KEY_SPECIES_ID +
@@ -226,7 +241,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 ", " + TABLE_POKEMON + "." + KEY_ORDER +
                 ", " + TABLE_POKEMON + "." + KEY_IS_DEFAUT +
                 " FROM " + TABLE_POKEMON +
-                " WHERE " + TABLE_POKEMON + "." + KEY_ID + " = " + id;
+                " WHERE " + TABLE_POKEMON + "." + KEY_ID + " = " + pokemon_id;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         pokemon.setID(id);
@@ -235,8 +250,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return pokemon;
     }
 
-    public List<Type> getTypesForPokemon(int id) {
+    /**
+     * Getter
+     * Returns types for pokemon
+     *
+     * @param pokemon_id
+     */
+    public List<Type> getTypesForPokemon(int pokemon_id) {
         SQLiteDatabase db = this.getWritableDatabase();
+        
         List<Type> typesForPokemon = new ArrayList<Type>();
 
         String selectQuery = "SELECT " + TABLE_POKEMON_TYPES + "." + KEY_SLOT +
@@ -245,7 +267,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 " FROM " + TABLE_POKEMON_TYPES +
                 ", " + TABLE_TYPES +
                 " WHERE " + TABLE_POKEMON_TYPES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + KEY_ID +
-                " AND " + TABLE_POKEMON_TYPES + "." + KEY_POKEMON_ID + " = " + id;
+                " AND " + TABLE_POKEMON_TYPES + "." + KEY_POKEMON_ID + " = " + pokemon_id;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         //Loop through rows and add each to list
@@ -258,10 +280,43 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 //add type to list
                 typesForPokemon.add(type);
             } while (cursor.moveToNext());
-
         }
         db.close();
 
         return typesForPokemon;
+    }
+    
+    /**
+     * Getter
+     * Returns all moves for a pokemon in a given game
+     * 
+     * Currently returning just a list of move_ids.
+     * In the future, will return a list of move objects with more data.
+     *
+     * @param pokemon_id
+     */
+    public List<int> getAllMovesForPokemonByGame(int pokemon_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        
+        List<int> movesForPokemon = new ArrayList<int>();
+        int version_group_id = 1;
+        
+        String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID +
+                " FROM " + TABLE_POKEMON_MOVES +
+                " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = " + pokemon_id +
+                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = " + version_group_id;
+        
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                int move_id = Integer.parseInt(cursor.getString(0));
+                //add move to list
+                movesForPokemon.add(move_id);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+
+        return movesForPokemon;
     }
 }
