@@ -14,9 +14,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Evan on 30-Jul-16.
- */
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     //The Android's default system path of your application database.
@@ -56,9 +53,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //types
     private static final String KEY_COLOR = "color";
-    
+
     //moves
-    
+
     //pokemon_moves
     private static final String KEY_POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
 
@@ -81,9 +78,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         boolean dbExist = checkDataBase();
 
-        if (dbExist) {
-            //do nothing - database already exist
-        } else {
+        if (!dbExist) {
+            //do nothing if database already exists
 
             //By calling this method and empty database will be created into the default system path
             //of your application so we are gonna be able to overwrite that database with our database.
@@ -198,8 +194,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     public List<Pokemon> getAllPokemon() {
         SQLiteDatabase db = this.getWritableDatabase();
-        
-        List<Pokemon> pokemonList = new ArrayList<Pokemon>();
+
+        List<Pokemon> pokemonList = new ArrayList<>();
 
         String selectQuery = "SELECT " + TABLE_POKEMON + "." + KEY_ID +
                 ", " + TABLE_POKEMON + "." + KEY_IDENTIFIER +
@@ -217,20 +213,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 pokemonList.add(pokemon);
             } while (cursor.moveToNext());
         }
-        db.close();
+        cursor.close();
 
         return pokemonList;
     }
-    
+
     /**
      * Getter
      * Returns a fully loaded pokemon including name, height, and weight
      *
-     * @param id
+     * @param pokemon_id
      */
     public Pokemon getSinglePokemonByID(int pokemon_id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        
+
         Pokemon pokemon = new Pokemon();
 
         String selectQuery = "SELECT " + TABLE_POKEMON + "." + KEY_IDENTIFIER +
@@ -244,8 +240,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 " WHERE " + TABLE_POKEMON + "." + KEY_ID + " = " + pokemon_id;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
-        pokemon.setID(id);
+        pokemon.setID(pokemon_id);
         pokemon.setName(cursor.getString(0));
+        cursor.close();
 
         return pokemon;
     }
@@ -258,8 +255,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     public List<Type> getTypesForPokemon(int pokemon_id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        
-        List<Type> typesForPokemon = new ArrayList<Type>();
+
+        List<Type> typesForPokemon = new ArrayList<>();
 
         String selectQuery = "SELECT " + TABLE_POKEMON_TYPES + "." + KEY_SLOT +
                 ", " + TABLE_POKEMON_TYPES + "." + KEY_TYPE_ID +
@@ -281,41 +278,42 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 typesForPokemon.add(type);
             } while (cursor.moveToNext());
         }
-        db.close();
+        cursor.close();
 
         return typesForPokemon;
     }
-    
+
     /**
      * Getter
      * Returns all moves for a pokemon in a given game
-     * 
+     *
      * Currently returning just a list of move_ids.
      * In the future, will return a list of move objects with more data.
      *
      * @param pokemon_id
      */
-    public List<int> getAllMovesForPokemonByGame(int pokemon_id) {
+    public List<Move> getAllMovesForPokemonByGame(int pokemon_id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        
-        List<int> movesForPokemon = new ArrayList<int>();
+
+        List<Move> movesForPokemon = new ArrayList<>();
         int version_group_id = 1;
-        
+
         String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID +
                 " FROM " + TABLE_POKEMON_MOVES +
                 " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = " + pokemon_id +
                 " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = " + version_group_id;
-        
+
         Cursor cursor = db.rawQuery(selectQuery, null);
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
             do {
-                int move_id = Integer.parseInt(cursor.getString(0));
+                Move move = new Move();
+                move.setID(Integer.parseInt(cursor.getString(0)));
                 //add move to list
-                movesForPokemon.add(move_id);
+                movesForPokemon.add(move);
             } while (cursor.moveToNext());
         }
-        db.close();
+        cursor.close();
 
         return movesForPokemon;
     }
