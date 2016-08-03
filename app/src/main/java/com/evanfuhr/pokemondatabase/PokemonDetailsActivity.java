@@ -14,6 +14,7 @@ public class PokemonDetailsActivity extends AppCompatActivity
         implements OnPokemonSelectedListener {
 
     int _pokemon_id;
+    Pokemon _pokemon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,26 +23,31 @@ public class PokemonDetailsActivity extends AppCompatActivity
 
         //Get hero id passed to this activity
         Intent intent = getIntent();
-        _pokemon_id = intent.getIntExtra(MainActivity.POKEMON_ID, 0);
-        onPokemonSelected(_pokemon_id);
+        //_pokemon_id = intent.getIntExtra(MainActivity.POKEMON_ID, 0);
+        _pokemon.setID(intent.getIntExtra(MainActivity.POKEMON_ID, 0));
+        //onPokemonSelected(_pokemon_id);
+        onPokemonSelected(_pokemon);
     }
 
     @Override
-    public void onPokemonSelected(int pokemon_id) {
+    //public void onPokemonSelected(int pokemon_id) {
+    public void onPokemonSelected(Pokemon pokemon) {
 //        FragmentManager fm = getFragmentManager();
 //        HeroTraitsFragment heroTraitsFragment =
 //                (HeroTraitsFragment) fm.findFragmentById(R.id.heroTraitsFragment);
 //        heroTraitsFragment.setHero(_pokemon_id);
 
-        setPokemonBackgroundColor(pokemon_id);
+        //setPokemonBackgroundColor(pokemon_id);
+        setPokemonBackgroundColor(pokemon);
 
     }
 
-    private void setPokemonBackgroundColor(int pokemon_id) {
+    //private void setPokemonBackgroundColor(int pokemon_id) {
+    private void setPokemonBackgroundColor(Pokemon pokemon) {
         DataBaseHelper db = new DataBaseHelper(this);
 
         //Create base background
-        List<Type> types = db.getTypesForPokemon(pokemon_id);
+        List<Type> types = db.getTypesForPokemon(pokemon.getID());
         int[] colors = {0, 0};
         if (types.size() == 1) {
             colors[0] = Color.parseColor(types.get(0).getColor());
@@ -61,10 +67,11 @@ public class PokemonDetailsActivity extends AppCompatActivity
     }
 
     // Unfinished
-    public void generateMoveList(int pokemon_id) {
+    //public void generateMoveList(int pokemon_id) {
+    public void generateMoveList(Pokemon pokemon) {
         DataBaseHelper db = new DataBaseHelper(this);
 
-        List<Move> moves = db.getAllMovesForPokemonByGame(pokemon_id);
+        List<Move> moves = db.getAllMovesForPokemonByGame(pokemon.getID());
         List<Move> levelMoves = Move.getLevelUpMoves(moves);
         List<Move> eggMoves = Move.getEggMoves(moves);
         List<Move> tutorMoves = Move.getTutorMoves(moves);
