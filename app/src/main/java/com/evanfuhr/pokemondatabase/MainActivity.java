@@ -1,6 +1,6 @@
 package com.evanfuhr.pokemondatabase;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -15,6 +16,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String POKEMON_ID = "pokemon_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,18 @@ public class MainActivity extends AppCompatActivity {
 
         }
         generatePokemonList();
+    }
+
+    private void onClickButtonPokemonDetails(View view) {
+        //Get the ID associated to the clicked button
+        int hero_id = view.getId();
+
+        //Build the intent to load the player sheet
+        Intent intent = new Intent(this, PokemonDetailsActivity.class);
+        //Load the hero ID to send to the player sheet
+        intent.putExtra(POKEMON_ID, hero_id);
+
+        startActivity(intent);
     }
 
     void generatePokemonList() {
@@ -78,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
             }
             GradientDrawable gd = new GradientDrawable(
                     GradientDrawable.Orientation.LEFT_RIGHT, colors);
-            gd.setCornerRadius(0f);
 
             pokemon_button.setLayoutParams(params);
             pokemon_button.setText(pokemon.getName());
@@ -87,14 +101,13 @@ public class MainActivity extends AppCompatActivity {
                 pokemon_button.setBackground(gd);
             }
 
-
             //Set click listener for the button
-            /*pokemon_button.setOnClickListener(new View.OnClickListener() {
+            pokemon_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onClickButtonPlayerSheet(view);
+                    onClickButtonPokemonDetails(view);
                 }
-            });*/
+            });
 
             //Add the pokemon button to the table row
             pokemon_list.addView(pokemon_button);

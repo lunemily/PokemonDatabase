@@ -26,11 +26,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private final Context myContext;
 
     //tables
+    private static final String TABLE_MOVES = "moves";
     private static final String TABLE_POKEMON = "pokemon";
+    private static final String TABLE_POKEMON_MOVES = "pokemon_moves";
     private static final String TABLE_POKEMON_TYPES = "pokemon_types";
     private static final String TABLE_TYPES = "types";
-    private static final String TABLE_MOVES = "moves";
-    private static final String TABLE_POKEMON_MOVES = "pokemon_moves";
 
     //common
     private static final String KEY_ID = "id";
@@ -41,12 +41,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String KEY_VERSION_GROUP_ID = "version_group_id";
 
     //pokemon
-    private static final String KEY_SPECIES_ID = "species_id";
-    private static final String KEY_HEIGHT = "height";
-    private static final String KEY_WEIGHT = "weight";
     private static final String KEY_BASE_EXPERIENCE = "base_experience";
-    private static final String KEY_ORDER = "order";
+    private static final String KEY_HEIGHT = "height";
     private static final String KEY_IS_DEFAUT = "is_default";
+    private static final String KEY_ORDER = "order";
+    private static final String KEY_SPECIES_ID = "species_id";
+    private static final String KEY_WEIGHT = "weight";
 
     //pokemon_types
     private static final String KEY_SLOT = "slot";
