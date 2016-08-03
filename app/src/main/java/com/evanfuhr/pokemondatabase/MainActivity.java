@@ -82,14 +82,20 @@ public class MainActivity extends AppCompatActivity {
 
 
             //create a new gradient color
-            int[] colors = {0, 0};
+            //int[] colors = {0, 0};
+            //4 integers for a sharper color change
+            int[] colors = {0, 0, 0, 0};
             if (types.size() == 1) {
                 colors[0] = Color.parseColor(types.get(0).getColor());
                 colors[1] = Color.parseColor(types.get(0).getColor());
+                colors[2] = Color.parseColor(types.get(0).getColor());
+                colors[3] = Color.parseColor(types.get(0).getColor());
             }
             else {
                 colors[0] = Color.parseColor(types.get(0).getColor());
-                colors[1] = Color.parseColor(types.get(1).getColor());
+                colors[1] = Color.parseColor(types.get(0).getColor());
+                colors[2] = Color.parseColor(types.get(1).getColor());
+                colors[3] = Color.parseColor(types.get(1).getColor());
             }
             GradientDrawable gd = new GradientDrawable(
                     GradientDrawable.Orientation.LEFT_RIGHT, colors);
