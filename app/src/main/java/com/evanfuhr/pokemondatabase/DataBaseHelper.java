@@ -296,12 +296,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Move> movesForPokemon = new ArrayList<>();
-        int version_group_id = 1;
+        int version_group_id = 10;
 
         String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID +
+                ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID +
                 " FROM " + TABLE_POKEMON_MOVES +
-                " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = " + pokemon_id +
-                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = " + version_group_id;
+                " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = '" + pokemon_id + "'" +
+                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         //Loop through rows and add each to list
@@ -309,6 +310,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             do {
                 Move move = new Move();
                 move.setID(Integer.parseInt(cursor.getString(0)));
+                move.setMethodID(Integer.parseInt(cursor.getString(1)));
                 //add move to list
                 movesForPokemon.add(move);
             } while (cursor.moveToNext());
@@ -316,5 +318,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return movesForPokemon;
+    }
+
+    //TODO: Unfinished. Needs type_id, PP, power, and accuracy
+    public Move getMoveByID(int move_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Move move = new Move();
+
+        String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_IDENTIFIER +
+                ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
+                " FROM " + TABLE_MOVES +
+                " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + move_id;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                move.setName(cursor.getString(0));
+                //TODO: Convert to type object
+                move.setType(Integer.parseInt(cursor.getString(1)));
+            }
+            cursor.close();
+        }
+
+        return move;
     }
 }

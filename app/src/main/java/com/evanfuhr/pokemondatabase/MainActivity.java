@@ -5,12 +5,12 @@ import android.database.SQLException;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 
 import java.io.IOException;
 import java.util.List;
@@ -68,8 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         List<Pokemon> pokemons = db.getAllPokemon();
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        LayoutParams params = new LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT
+        );
         params.setMargins(0, 16, 0, 0);
 
         int counter = 1;
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             registerForContextMenu(pokemon_button);
 
 
-            if (counter > 150) {
+            if (counter >= 250) {
                 break;
             }
             counter++;

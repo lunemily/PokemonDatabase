@@ -30,10 +30,12 @@ public class Move {
         this._name = name;
     }
 
+    //TODO: Convert to type object
     public int getType() {
         return this._type;
     }
 
+    //TODO: Convert to type object
     public void setType(int type_id) {
         this._type = type_id;
     }
