@@ -1,6 +1,5 @@
 package com.evanfuhr.pokemondatabase;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -39,13 +38,17 @@ public class PokemonDetailsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_details);
 
+        DataBaseHelper db = new DataBaseHelper(this);
+
         _RelativeLayout = (RelativeLayout) findViewById(R.id.pokemon_details_activity);
         _moveListLayout = (LinearLayout) findViewById(R.id.move_list);
 
         //Get hero id passed to this activity
         Intent intent = getIntent();
         _pokemon.setID(intent.getIntExtra(MainActivity.POKEMON_ID, 0));
+        _pokemon = db.getSinglePokemonByID(_pokemon);
         onPokemonSelected(_pokemon);
+        setTitle(_pokemon.getName());
         generateMovesCards();
     }
 
@@ -56,12 +59,11 @@ public class PokemonDetailsActivity extends AppCompatActivity
 
     }
 
-    //private void setPokemonBackgroundColor(int pokemon_id) {
     private void setPokemonBackgroundColor(Pokemon pokemon) {
         DataBaseHelper db = new DataBaseHelper(this);
 
         //Create base background
-        List<Type> types = db.getTypesForPokemon(pokemon.getID());
+        List<Type> types = db.getTypesForPokemon(pokemon);
         int[] colors = {0, 0, 0, 0};
         if (types.size() == 1) {
             colors[0] = Color.parseColor(types.get(0).getColor());
@@ -87,13 +89,13 @@ public class PokemonDetailsActivity extends AppCompatActivity
     public void generateMovesCards() {
         DataBaseHelper db = new DataBaseHelper(this);
 
-        List<Move> moves = db.getAllMovesForPokemonByGame(_pokemon.getID());
+        List<Move> moves = db.getAllMovesForPokemonByGame(_pokemon);
         _levelMoves = Move.getLevelUpMoves(moves);
         _eggMoves = Move.getEggMoves(moves);
         _tutorMoves = Move.getTutorMoves(moves);
         _machineMoves = Move.getMachineMoves(moves);
 
-        CardView levelUpMovesCard = createMovesCard(_levelMoves);
+        CardView levelUpMovesCard = createLevelUpMovesCard(_levelMoves);
         CardView machineMovesCard = createMovesCard(_machineMoves);
         CardView eggMovesCard = createMovesCard(_eggMoves);
         CardView tutorMovesCard = createMovesCard(_tutorMoves);
@@ -117,6 +119,7 @@ public class PokemonDetailsActivity extends AppCompatActivity
         LayoutParams params = new LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT
         );
+        params.setMargins(0, 16, 0, 0);
 
         // Initialize a new CardView
         CardView card = new CardView(this);
@@ -137,6 +140,11 @@ public class PokemonDetailsActivity extends AppCompatActivity
 
         // Initialize a new Table to put in CardView
         final TableLayout tableLayout = new TableLayout(this);
+        TableRow.LayoutParams tableParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT
+        );
+        tableParams.setMargins(0, 16, 0, 0);
+
         tableLayout.addView(tv);
         for (Move m : moves) {
             Move move = db.getMoveByID(m.getID());
@@ -144,8 +152,76 @@ public class PokemonDetailsActivity extends AppCompatActivity
             final Button move_button = new Button(this);
             move_button.setText(move.getName());
             move_button.setId(move.getID());
+            move.setType(db.getTypeByID(move.getType()));
             //TODO: Set color for move type
+            move_button.setBackgroundColor(Color.parseColor(move.getType().getColor()));
             row.addView(move_button);
+            move_button.setLayoutParams(tableParams);
+            tableLayout.addView(row);
+        }
+
+        // Put the TextView in CardView
+        card.addView(tableLayout);
+
+        return card;
+    }
+
+    private CardView createLevelUpMovesCard(List<Move> moves) {
+        DataBaseHelper db = new DataBaseHelper(this);
+
+        // Set the CardView layoutParams
+        LayoutParams params = new LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 16, 0, 0);
+
+        // Initialize a new CardView
+        CardView card = new CardView(this);
+        card.setLayoutParams(params);
+        card.setRadius(1);
+        card.setContentPadding(15, 15, 15, 15);
+        card.setCardBackgroundColor(Color.parseColor("#fafafa"));
+        card.setMaxCardElevation(15);
+        card.setCardElevation(9);
+
+        // Initialize a new TextView to put in CardView
+        TextView moveMethod = new TextView(this);
+        moveMethod.setLayoutParams(params);
+        moveMethod.setText("Level Up Moves");
+        moveMethod.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+        moveMethod.setTextColor(Color.BLACK);
+
+        // Initialize a new Table to put in CardView
+        final TableLayout tableLayout = new TableLayout(this);
+        TableRow.LayoutParams tableParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT
+        );
+        tableParams.setMargins(0, 16, 0, 0);
+
+        tableLayout.addView(moveMethod);
+        for (Move m : moves) {
+            Move move = db.getMoveByID(m.getID());
+            final TableRow row = new TableRow(this);
+            final Button move_button = new Button(this);
+            move_button.setText(move.getName());
+            move_button.setId(move.getID());
+            move.setType(db.getTypeByID(move.getType()));
+            //TODO: Set color for move type
+            move_button.setBackgroundColor(Color.parseColor(move.getType().getColor()));
+            move_button.setLayoutParams(tableParams);
+
+            TextView power = new TextView(this);
+            power.setText(Integer.toString(move.getPower()));
+            power.setTextColor(Color.BLACK);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                power.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+            }
+            power.setGravity(View.TEXT_ALIGNMENT_CENTER);
+            power.setLayoutParams(tableParams);
+
+            row.addView(move_button);
+            row.addView(power);
+
             tableLayout.addView(row);
         }
 

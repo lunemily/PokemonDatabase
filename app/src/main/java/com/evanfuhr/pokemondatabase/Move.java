@@ -9,10 +9,11 @@ import java.util.List;
 public class Move {
 
     private int _id;
-    private int _level;
+    private int _level = 0;
     private int _method_id;
     private String _name;
-    private int _type;
+    private int _power = 0;
+    private Type _type;
 
     public int getID() {
         return this._id;
@@ -30,15 +31,16 @@ public class Move {
         this._name = name;
     }
 
-    //TODO: Convert to type object
-    public int getType() {
+    public Type getType() {
         return this._type;
     }
 
     //TODO: Convert to type object
-    public void setType(int type_id) {
-        this._type = type_id;
+    public void setType(Type type) {
+        this._type = type;
     }
+
+
 
     public int getMethodID() {
         return this._method_id;
@@ -55,6 +57,16 @@ public class Move {
     public void setLevel(int level) {
         this._level = level;
     }
+
+    public int getPower() {
+        return this._power;
+    }
+
+    public void setPower(int power) {
+        this._power = power;
+    }
+
+    //Static methods
 
     public static List<Move> getLevelUpMoves(List<Move> moves) {
         List<Move> levelMoves = new ArrayList<>();

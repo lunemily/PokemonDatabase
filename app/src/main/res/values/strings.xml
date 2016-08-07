@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">PokemonDatabase</string>
+    <string name="app_name">Pokemon Database</string>
+    <string name="action_game">Set Game</string>
 </resources>

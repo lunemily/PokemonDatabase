@@ -1,8 +1,5 @@
 package com.evanfuhr.pokemondatabase;
 
-/**
- * Created by Evan on 30-Jul-16.
- */
 public class Type {
 
     private int _id;

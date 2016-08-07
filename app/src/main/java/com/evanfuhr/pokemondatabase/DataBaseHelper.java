@@ -25,17 +25,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private final Context myContext;
 
+    private int _version_id = 16;
+
+    private int _language_id = 9;
+
     //tables
+    private static final String TABLE_MOVE_NAMES = "move_names";
     private static final String TABLE_MOVES = "moves";
     private static final String TABLE_POKEMON = "pokemon";
     private static final String TABLE_POKEMON_MOVES = "pokemon_moves";
+    private static final String TABLE_POKEMON_SPECIES = "pokemon_species";
+    private static final String TABLE_POKEMON_SPECIES_NAMES = "pokemon_species_names";
     private static final String TABLE_POKEMON_TYPES = "pokemon_types";
     private static final String TABLE_TYPES = "types";
+    private static final String TABLE_TYPE_NAMES = "type_names";
+    private static final String TABLE_VERSIONS = "versions";
+    private static final String TABLE_VERSION_GROUPS = "version_groups";
 
     //common
     private static final String KEY_ID = "id";
     private static final String KEY_IDENTIFIER = "identifier";
+    private static final String KEY_LOCAL_LANGUAGE_ID = "local_language_id";
     private static final String KEY_MOVE_ID = "move_id";
+    private static final String KEY_NAME = "name";
     private static final String KEY_POKEMON_ID = "pokemon_id";
     private static final String KEY_TYPE_ID = "type_id";
     private static final String KEY_VERSION_GROUP_ID = "version_group_id";
@@ -55,9 +67,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String KEY_COLOR = "color";
 
     //moves
+    private static final String KEY_POWER = "power";
+    private static final String KEY_PP = "pp";
 
     //pokemon_moves
     private static final String KEY_POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
+
+    //pokemon_species_names
+    private static final String KEY_POKEMON_SPECIES_ID = "pokemon_species_id";
+
+    //version_groups
+    private static final String KEY_GENERATION_ID = "generation_id";
 
     /**
      * Constructor
@@ -197,9 +217,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         List<Pokemon> pokemonList = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TABLE_POKEMON + "." + KEY_ID +
-                ", " + TABLE_POKEMON + "." + KEY_IDENTIFIER +
-                " FROM " + TABLE_POKEMON;
+        String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
+                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_NAME +
+                " FROM " + TABLE_POKEMON_SPECIES +
+                ", " + TABLE_POKEMON_SPECIES_NAMES +
+                " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
+                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -222,27 +245,34 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * Getter
      * Returns a fully loaded pokemon including name, height, and weight
      *
-     * @param pokemon_id
+     * @param pokemon
      */
-    public Pokemon getSinglePokemonByID(int pokemon_id) {
+    public Pokemon getSinglePokemonByID(Pokemon pokemon) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Pokemon pokemon = new Pokemon();
-
-        String selectQuery = "SELECT " + TABLE_POKEMON + "." + KEY_IDENTIFIER +
-                ", " + TABLE_POKEMON + "." + KEY_SPECIES_ID +
+        String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
+                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_NAME +
                 ", " + TABLE_POKEMON + "." + KEY_HEIGHT +
                 ", " + TABLE_POKEMON + "." + KEY_WEIGHT +
                 ", " + TABLE_POKEMON + "." + KEY_BASE_EXPERIENCE +
-                ", " + TABLE_POKEMON + "." + KEY_ORDER +
+                ", " + TABLE_POKEMON + ".'" + KEY_ORDER + "'" +
                 ", " + TABLE_POKEMON + "." + KEY_IS_DEFAUT +
-                " FROM " + TABLE_POKEMON +
-                " WHERE " + TABLE_POKEMON + "." + KEY_ID + " = " + pokemon_id;
+                " FROM " + TABLE_POKEMON_SPECIES +
+                ", " + TABLE_POKEMON_SPECIES_NAMES +
+                ", " + TABLE_POKEMON +
+                " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = '" + pokemon.getID() + "'" +
+                " AND " + TABLE_POKEMON + "." + KEY_SPECIES_ID + " = " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
+                " AND " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
+                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
-        pokemon.setID(pokemon_id);
-        pokemon.setName(cursor.getString(0));
-        cursor.close();
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                //pokemon.setID(pokemon.getID());
+                pokemon.setName(cursor.getString(1));
+            }
+            cursor.close();
+        }
 
         return pokemon;
     }
@@ -251,9 +281,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * Getter
      * Returns types for pokemon
      *
-     * @param pokemon_id
+     * @param pokemon
      */
-    public List<Type> getTypesForPokemon(int pokemon_id) {
+    public List<Type> getTypesForPokemon(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Type> typesForPokemon = new ArrayList<>();
@@ -264,7 +294,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 " FROM " + TABLE_POKEMON_TYPES +
                 ", " + TABLE_TYPES +
                 " WHERE " + TABLE_POKEMON_TYPES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + KEY_ID +
-                " AND " + TABLE_POKEMON_TYPES + "." + KEY_POKEMON_ID + " = " + pokemon_id;
+                " AND " + TABLE_POKEMON_TYPES + "." + KEY_POKEMON_ID + " = " + pokemon.getID();
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         //Loop through rows and add each to list
@@ -290,18 +320,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * Currently returning just a list of move_ids.
      * In the future, will return a list of move objects with more data.
      *
-     * @param pokemon_id
+     * @param pokemon
      */
-    public List<Move> getAllMovesForPokemonByGame(int pokemon_id) {
+    public List<Move> getAllMovesForPokemonByGame(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Move> movesForPokemon = new ArrayList<>();
-        int version_group_id = 10;
+        int version_group_id = getVersionGroupIDByVersionID(_version_id);
 
         String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID +
                 ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID +
                 " FROM " + TABLE_POKEMON_MOVES +
-                " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = '" + pokemon_id + "'" +
+                " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = '" + pokemon.getID() + "'" +
                 " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -320,27 +350,96 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return movesForPokemon;
     }
 
-    //TODO: Unfinished. Needs type_id, PP, power, and accuracy
+    //TODO: Unfinished. Needs PP, power, and accuracy
     public Move getMoveByID(int move_id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         Move move = new Move();
 
-        String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_IDENTIFIER +
+        String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_ID +
+                ", " + TABLE_MOVE_NAMES + "." + KEY_NAME +
                 ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
+                ", " + TABLE_MOVES + "." + KEY_POWER +
                 " FROM " + TABLE_MOVES +
-                " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + move_id;
+                ", " + TABLE_MOVE_NAMES +
+                " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
+                " AND " + TABLE_MOVES + "." + KEY_ID + " = " + move_id +
+                " AND " + TABLE_MOVE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                move.setName(cursor.getString(0));
-                //TODO: Convert to type object
-                move.setType(Integer.parseInt(cursor.getString(1)));
+                move.setID(Integer.parseInt(cursor.getString(0)));
+                move.setName(cursor.getString(1));
+                int type_id = Integer.parseInt(cursor.getString(2));
+                Type type = new Type();
+                type.setID(type_id);
+                move.setType(type);
+                if (cursor.getString(3).length() != 0) {
+                    move.setPower(Integer.parseInt(cursor.getString(3)));
+                }
             }
             cursor.close();
         }
 
         return move;
+    }
+
+    public Type getTypeByID(Type type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selectQuery = "SELECT " + TABLE_TYPES + "." + KEY_ID +
+                ", " + TABLE_TYPE_NAMES + "." + KEY_NAME +
+                ", " + TABLE_TYPES + "." + KEY_COLOR +
+                " FROM " + TABLE_TYPES +
+                ", " + TABLE_TYPE_NAMES +
+                " WHERE " + TABLE_TYPES + "." + KEY_ID + " = '" + type.getID() + "'" +
+                " AND " + TABLE_TYPE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                type.setID(Integer.parseInt(cursor.getString(0)));
+                type.setName(cursor.getString(1));
+                type.setColor(cursor.getString(2));
+            }
+            cursor.close();
+        }
+
+        return type;
+    }
+
+    public int getVersionGroupIDByVersionID(int version_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int version_group_id = 1;
+
+        String selectQuery = "SELECT " + TABLE_VERSIONS + "." + KEY_VERSION_GROUP_ID +
+                " FROM " + TABLE_VERSIONS +
+                " WHERE " + TABLE_VERSIONS + "." + KEY_ID + " = '" + version_id + "'";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                version_group_id = Integer.parseInt(cursor.getString(0));
+            }
+            cursor.close();
+        }
+
+        return version_group_id;
+    }
+
+    public int getGenerationIDByVersionID(int version_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int generation_id = 1;
+
+        int version_group_id = getVersionGroupIDByVersionID(version_id);
+
+        String selectQuery = "SELECT " + TABLE_VERSION_GROUPS + "." + KEY_GENERATION_ID +
+                " FROM " + TABLE_VERSION_GROUPS +
+                " WHERE " + TABLE_VERSION_GROUPS + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'";
+
+        return generation_id;
     }
 }

@@ -17,6 +17,13 @@ public class Pokemon {
     }
 
     public String getName() {
+        if (_name == null) {
+            //load name
+        }
+        if (_name == null) {
+            _name = "undefined";
+        }
+
         return this._name;
     }
 
