@@ -8,13 +8,13 @@ import java.util.List;
  */
 public class Move {
 
-    private int _accuracy;
-    private int _id;
+    private int _accuracy = 0;
+    private int _id = 0;
     private int _level = 0;
-    private int _method_id;
+    private int _method_id = 0;
     private String _name;
     private int _power = 0;
-    private int _pp;
+    private int _pp = 0;
     private Type _type;
 
     
