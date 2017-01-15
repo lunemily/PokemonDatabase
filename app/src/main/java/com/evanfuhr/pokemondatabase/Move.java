@@ -3,9 +3,6 @@ package com.evanfuhr.pokemondatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Evan on 01-Aug-16.
- */
 public class Move {
 
     private int _accuracy = 0;
