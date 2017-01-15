@@ -1,9 +1,11 @@
 package com.evanfuhr.pokemondatabase;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class Move {
+public class Move implements Comparable<Move> {
 
     private int _accuracy = 0;
     private int _id = 0;
@@ -92,6 +94,8 @@ public class Move {
             }
         }
 
+        Collections.sort(levelMoves);
+
         return levelMoves;
     }
 
@@ -132,5 +136,15 @@ public class Move {
         }
 
         return levelMoves;
+    }
+
+    @Override
+    public int compareTo(Move move) {
+        if (this.getLevel() == ((Move) move).getLevel())
+            return 0;
+        else if ((this.getLevel()) > ((Move) move).getLevel())
+            return 1;
+        else
+            return -1;
     }
 }

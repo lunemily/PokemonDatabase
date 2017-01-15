@@ -69,9 +69,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //moves
     private static final String KEY_POWER = "power";
     private static final String KEY_PP = "pp";
+    private static final String KEY_ACCURACY = "accuracy";
 
     //pokemon_moves
     private static final String KEY_POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
+    private static final String KEY_POKEMON_MOVE_LEVEL = "level";
 
     //pokemon_species_names
     private static final String KEY_POKEMON_SPECIES_ID = "pokemon_species_id";
@@ -330,6 +332,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID +
                 ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID +
+                ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL +
                 " FROM " + TABLE_POKEMON_MOVES +
                 " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = '" + pokemon.getID() + "'" +
                 " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'";
@@ -341,6 +344,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 Move move = new Move();
                 move.setID(Integer.parseInt(cursor.getString(0)));
                 move.setMethodID(Integer.parseInt(cursor.getString(1)));
+                move.setLevel(Integer.parseInt(cursor.getString(2)));
                 //add move to list
                 movesForPokemon.add(move);
             } while (cursor.moveToNext());
@@ -350,20 +354,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return movesForPokemon;
     }
 
-    //TODO: Unfinished. Needs PP, power, and accuracy
-    public Move getMoveByID(int move_id) {
+    public Move getMoveByID(Move move) {
         SQLiteDatabase db = this.getWritableDatabase();
-
-        Move move = new Move();
 
         String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_ID +
                 ", " + TABLE_MOVE_NAMES + "." + KEY_NAME +
                 ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
                 ", " + TABLE_MOVES + "." + KEY_POWER +
+                ", " + TABLE_MOVES + "." + KEY_PP +
+                ", " + TABLE_MOVES + "." + KEY_ACCURACY +
                 " FROM " + TABLE_MOVES +
                 ", " + TABLE_MOVE_NAMES +
                 " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
-                " AND " + TABLE_MOVES + "." + KEY_ID + " = " + move_id +
+                " AND " + TABLE_MOVES + "." + KEY_ID + " = " + move.getID() +
                 " AND " + TABLE_MOVE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -378,6 +381,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 if (cursor.getString(3).length() != 0) {
                     move.setPower(Integer.parseInt(cursor.getString(3)));
                 }
+                move.setPP(Integer.parseInt(cursor.getString(4)));
+                if (cursor.getString(5).length() != 0) {
+                    move.setAccuracy(Integer.parseInt(cursor.getString(5)));
+                }
+            }
+            cursor.close();
+        }
+
+        return move;
+    }
+
+    public Move getMoveLevelForPokemonByGame(Move move, Pokemon pokemon) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int version_group_id = getVersionGroupIDByVersionID(_version_id);
+
+        String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL +
+                " FROM " + TABLE_POKEMON_MOVES +
+                " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = '" + pokemon.getID() + "'" +
+                " AND " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID + " = '" + move.getID() + "'" +
+                " AND " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID + " = '" + "1" + "'" +
+                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'";
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                move.setLevel(Integer.parseInt(cursor.getString(0)));
             }
             cursor.close();
         }

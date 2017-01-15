@@ -98,10 +98,10 @@ public class PokemonDetailsActivity extends AppCompatActivity
         _tutorMoves = Move.getTutorMoves(moves);
         _machineMoves = Move.getMachineMoves(moves);
 
-        CardView levelUpMovesCard = createMovesCard(_levelMoves, "Level Up Moves");
-        CardView machineMovesCard = createMovesCard(_machineMoves, "TM Moves");
-        CardView eggMovesCard = createMovesCard(_eggMoves, "Egg Moves");
-        CardView tutorMovesCard = createMovesCard(_tutorMoves, "Tutor Moves");
+        CardView levelUpMovesCard = createMovesCard(_levelMoves, 1);
+        CardView machineMovesCard = createMovesCard(_machineMoves, 2);
+        CardView eggMovesCard = createMovesCard(_eggMoves, 3);
+        CardView tutorMovesCard = createMovesCard(_tutorMoves, 4);
 
         // Finally, add the CardView in root layout
         _moveListLayout.addView(createLargeSpacer());
@@ -116,7 +116,7 @@ public class PokemonDetailsActivity extends AppCompatActivity
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private CardView createMovesCard(List<Move> moves, String moveMethod) {
+    private CardView createMovesCard(List<Move> moves, int moveMethodID) {
         DataBaseHelper db = new DataBaseHelper(this);
 
         // Set the CardView layoutParams
@@ -137,12 +137,32 @@ public class PokemonDetailsActivity extends AppCompatActivity
         // Initialize a new TextView to put in CardView
         TextView moveMethodLabel = new TextView(this);
         moveMethodLabel.setLayoutParams(params);
+
+        String moveMethod;
+        switch (moveMethodID) {
+            case 1:
+                moveMethod = "Level Up Moves";
+                break;
+            case 2:
+                moveMethod = "Machine Moves";
+                break;
+            case 3:
+                moveMethod = "Egg Moves";
+                break;
+            case 4:
+                moveMethod = "Tutor Moves";
+                break;
+            default:
+                moveMethod = "Moves";
+                break;
+        }
+
         moveMethodLabel.setText(moveMethod);
         moveMethodLabel.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
         moveMethodLabel.setTextColor(Color.BLACK);
 
         // Initialize a new Table to put in CardView
-        TableLayout tableLayout = generateMoveTable(moves, db);
+        TableLayout tableLayout = generateMoveTable(moves, db, moveMethodID);
         tableLayout.addView(moveMethodLabel, 0);
 
         // Put the TextView in CardView
@@ -164,15 +184,51 @@ public class PokemonDetailsActivity extends AppCompatActivity
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private TableLayout generateMoveTable(List<Move> moves, DataBaseHelper db) {
+    private TableLayout generateMoveTable(List<Move> moves, DataBaseHelper db, int moveMethodID) {
         final TableLayout tableLayout = new TableLayout(this);
         TableRow.LayoutParams tableParams = new TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT
         );
-        tableParams.setMargins(0, 16, 0, 0);
+
+        tableParams.setMargins(12, 16, 12, 0);
+
+        final TableRow header = new TableRow(this);
+        final TextView move_header = createMoveHeader("Move", tableParams);
+        final TextView power_header = createMoveHeader("Power", tableParams);
+        final TextView pp_header = createMoveHeader("PP", tableParams);
+        final TextView accuracy_header = createMoveHeader("Accuracy", tableParams);
+
+        String moveMethod;
+        switch (moveMethodID) {
+            case 1:
+                moveMethod = "Level";
+                break;
+            case 2:
+                moveMethod = "TM";
+                break;
+            case 3:
+                moveMethod = "Parent";
+                break;
+            case 4:
+                moveMethod = "BP Cost";
+                break;
+            default:
+                moveMethod = "Error";
+                break;
+        }
+
+        final TextView method_header = createMoveHeader(moveMethod, tableParams);
+
+        header.addView(move_header);
+        header.addView(power_header);
+        header.addView(pp_header);
+        header.addView(accuracy_header);
+        header.addView(method_header);
+
+        tableLayout.addView(header);
 
         for (Move m : moves) {
-            Move move = db.getMoveByID(m.getID());
+            Move move = db.getMoveByID(m);
             final TableRow row = new TableRow(this);
             final Button move_button = new Button(this);
             move_button.setText(move.getName());
@@ -182,22 +238,57 @@ public class PokemonDetailsActivity extends AppCompatActivity
             move_button.setBackgroundColor(Color.parseColor(move.getType().getColor()));
             move_button.setLayoutParams(tableParams);
 
-            TextView power = new TextView(this);
-            power.setText(Integer.toString(move.getPower()));
-            power.setTextColor(Color.BLACK);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                power.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+            TextView power = createMoveField(Integer.toString(move.getPower()), tableParams);
+            TextView pp = createMoveField(Integer.toString(move.getPP()), tableParams);
+            TextView accuracy = createMoveField(Integer.toString(move.getAccuracy()), tableParams);
+            TextView methodDetail;
+
+            switch (moveMethodID) {
+                case 1:
+                    move = db.getMoveLevelForPokemonByGame(move, _pokemon);
+                    methodDetail = createMoveField(Integer.toString(move.getLevel()), tableParams);
+                    break;
+                default:
+                    methodDetail = createMoveField("", tableParams);
             }
-            power.setGravity(View.TEXT_ALIGNMENT_CENTER);
-            power.setLayoutParams(tableParams);
 
             row.addView(move_button);
             row.addView(power);
+            row.addView(pp);
+            row.addView(accuracy);
+            row.addView(methodDetail);
 
             tableLayout.addView(row);
         }
 
         return tableLayout;
+    }
+
+    private TextView createMoveHeader(String text, TableRow.LayoutParams tableParams) {
+        TextView field = new TextView(this);
+        field.setText(text);
+        field.setTextColor(Color.BLACK);
+        field.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            field.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+        }
+        field.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        field.setLayoutParams(tableParams);
+
+        return field;
+    }
+
+    private TextView createMoveField(String text, TableRow.LayoutParams tableParams) {
+        TextView field = new TextView(this);
+        field.setText(text);
+        field.setTextColor(Color.BLACK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            field.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+        }
+        field.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        field.setLayoutParams(tableParams);
+
+        return field;
     }
 
     private void generateLocationCard() {
