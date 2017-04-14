@@ -25,7 +25,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private final Context myContext;
 
-    private int _version_id = 16;
+    private int _version_id = 26;
 
     private int _language_id = 9;
 
@@ -55,7 +55,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //pokemon
     private static final String KEY_BASE_EXPERIENCE = "base_experience";
     private static final String KEY_HEIGHT = "height";
-    private static final String KEY_IS_DEFAUT = "is_default";
+    private static final String KEY_IS_DEFAULT = "is_default";
     private static final String KEY_ORDER = "order";
     private static final String KEY_SPECIES_ID = "species_id";
     private static final String KEY_WEIGHT = "weight";
@@ -74,6 +74,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //pokemon_moves
     private static final String KEY_POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
     private static final String KEY_POKEMON_MOVE_LEVEL = "level";
+
+    //pokemon_species
+    private static final String KEY_GENDER_RATE = "gender_rate";
 
     //pokemon_species_names
     private static final String KEY_POKEMON_SPECIES_ID = "pokemon_species_id";
@@ -258,7 +261,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 ", " + TABLE_POKEMON + "." + KEY_WEIGHT +
                 ", " + TABLE_POKEMON + "." + KEY_BASE_EXPERIENCE +
                 ", " + TABLE_POKEMON + ".'" + KEY_ORDER + "'" +
-                ", " + TABLE_POKEMON + "." + KEY_IS_DEFAUT +
+                ", " + TABLE_POKEMON + "." + KEY_IS_DEFAULT +
+                ", " + TABLE_POKEMON_SPECIES + "." + KEY_GENDER_RATE +
                 " FROM " + TABLE_POKEMON_SPECIES +
                 ", " + TABLE_POKEMON_SPECIES_NAMES +
                 ", " + TABLE_POKEMON +
@@ -270,8 +274,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                //pokemon.setID(pokemon.getID());
+                //pokemon.setID(pokemon.getID(0));
                 pokemon.setName(cursor.getString(1));
+                pokemon.setHeight(Integer.parseInt(cursor.getString(2)));
+                pokemon.setWeight(Integer.parseInt(cursor.getString(3)));
+                pokemon.setBaseExperience(Integer.parseInt(cursor.getString(4)));
+                //pokemon.setOrder(Integer.parseInt(cursor.getString(5)));
+                //pokemon.setIsDefault(Boolean.parseBoolean(cursor.getString(6)));
+                //pokemon.setGenderRatio(Integer.parseInt(cursor.getString(7)));
             }
             cursor.close();
         }
@@ -335,7 +345,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL +
                 " FROM " + TABLE_POKEMON_MOVES +
                 " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = '" + pokemon.getID() + "'" +
-                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'";
+                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'" +
+                " ORDER BY " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL + " ASC";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         //Loop through rows and add each to list

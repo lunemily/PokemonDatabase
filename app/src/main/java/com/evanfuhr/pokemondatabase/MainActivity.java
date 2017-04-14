@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         int hero_id = view.getId();
 
         //Build the intent to load the player sheet
-        Intent intent = new Intent(this, PokemonDetailsActivity.class);
+        Intent intent = new Intent(this, PokemonDisplayActivity.class);
         //Load the hero ID to send to the player sheet
         intent.putExtra(POKEMON_ID, hero_id);
 

@@ -94,7 +94,7 @@ public class Move implements Comparable<Move> {
             }
         }
 
-        Collections.sort(levelMoves);
+        //Collections.sort(levelMoves);
 
         return levelMoves;
     }

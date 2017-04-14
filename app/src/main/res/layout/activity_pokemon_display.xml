@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="0dp"
-    tools:context="com.evanfuhr.pokemondatabase.PokemonDetailsActivity"
+    tools:context="com.evanfuhr.pokemondatabase.PokemonDisplayActivity"
     android:id="@+id/pokemon_details_activity">
 
     <ScrollView

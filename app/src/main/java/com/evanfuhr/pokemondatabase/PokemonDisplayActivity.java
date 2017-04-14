@@ -1,8 +1,11 @@
 package com.evanfuhr.pokemondatabase;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -22,7 +25,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokemonDetailsActivity extends AppCompatActivity
+public class PokemonDisplayActivity extends AppCompatActivity
         implements OnPokemonSelectedListener {
 
     RelativeLayout _RelativeLayout;
@@ -38,7 +41,7 @@ public class PokemonDetailsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pokemon_details);
+        setContentView(R.layout.activity_pokemon_display);
 
         DataBaseHelper db = new DataBaseHelper(this);
 
@@ -58,6 +61,8 @@ public class PokemonDetailsActivity extends AppCompatActivity
     public void onPokemonSelected(Pokemon pokemon) {
 
         setPokemonBackgroundColor(pokemon);
+
+        FragmentManager fm = getFragmentManager();
 
     }
 
