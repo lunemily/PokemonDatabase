@@ -1,11 +1,9 @@
 package com.evanfuhr.pokemondatabase;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -45,7 +43,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         DataBaseHelper db = new DataBaseHelper(this);
 
-        _RelativeLayout = (RelativeLayout) findViewById(R.id.pokemon_details_activity);
+        _RelativeLayout = (RelativeLayout) findViewById(R.id.pokemon_display_activity);
         _moveListLayout = (LinearLayout) findViewById(R.id.move_list);
 
         //Get pokemon id passed to this activity
@@ -54,7 +52,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         _pokemon = db.getSinglePokemonByID(_pokemon);
         onPokemonSelected(_pokemon);
         setTitle(_pokemon.getName());
-        generateMovesCards();
+        //generateMovesCards();
     }
 
     @Override
@@ -63,7 +61,8 @@ public class PokemonDisplayActivity extends AppCompatActivity
         setPokemonBackgroundColor(pokemon);
 
         FragmentManager fm = getFragmentManager();
-
+        PokemonDetailsFragment pokemonDetailsFragment = (PokemonDetailsFragment) fm.findFragmentById(R.id.pokemonDetailsFragment);
+        pokemonDetailsFragment.setPokemon(pokemon);
     }
 
     private void setPokemonBackgroundColor(Pokemon pokemon) {
@@ -87,7 +86,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.LEFT_RIGHT, colors);
 
-        RelativeLayout pokemonDetailsActivity = (RelativeLayout) findViewById(R.id.pokemon_details_activity);
+        RelativeLayout pokemonDetailsActivity = (RelativeLayout) findViewById(R.id.pokemon_display_activity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             pokemonDetailsActivity.setBackground(gd);
         }
