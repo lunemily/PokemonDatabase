@@ -1,8 +1,10 @@
 package com.evanfuhr.pokemondatabase;
 
+import android.support.v7.app.AppCompatActivity;
+
 import java.util.List;
 
-public class Pokemon {
+class Pokemon {
 
     private int _base_experience;
     private int _gender_ratio;
@@ -16,7 +18,7 @@ public class Pokemon {
         return this._base_experience;
     }
 
-    public void setBaseExperience(int base_experience) {
+    void setBaseExperience(int base_experience) {
         this._base_experience = base_experience;
     }
 
@@ -32,22 +34,19 @@ public class Pokemon {
         return this._height;
     }
 
-    public void setHeight(int height) {
+    void setHeight(int height) {
         this._height = height;
     }
 
-    public int getID() {
+    int getID() {
         return this._id;
     }
 
-    public void setID(int id) {
+    void setID(int id) {
         this._id = id;
     }
 
     public String getName() {
-        if (_name == null) {
-            //load name
-        }
         if (_name == null) {
             _name = "undefined";
         }
@@ -71,7 +70,7 @@ public class Pokemon {
         return this._weight;
     }
 
-    public void setWeight(int weight) {
+    void setWeight(int weight) {
         this._weight = weight;
     }
 }
