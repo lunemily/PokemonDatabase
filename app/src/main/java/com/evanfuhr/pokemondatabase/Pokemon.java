@@ -10,6 +10,7 @@ class Pokemon {
     private int _gender_ratio;
     private int _height;
     private int _id;
+    private boolean _mega;
     private String _name;
     private List<Type> _types;
     private int _weight;
@@ -72,5 +73,25 @@ class Pokemon {
 
     void setWeight(int weight) {
         this._weight = weight;
+    }
+
+    String getSpriteName() {
+        String filename;
+        filename = "" + this._id;
+
+        if(this._id < 100) {
+            if (this._id < 10) {
+                filename = "0" + filename;
+            }
+            filename = "0" + filename;
+        }
+
+        if (_mega) {
+            filename = filename + "mega";
+        }
+
+        filename = "sprite" + filename;
+
+        return filename;
     }
 }

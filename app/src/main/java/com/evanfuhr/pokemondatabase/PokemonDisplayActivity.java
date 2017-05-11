@@ -62,7 +62,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         FragmentManager fm = getFragmentManager();
         PokemonDetailsFragment pokemonDetailsFragment = (PokemonDetailsFragment) fm.findFragmentById(R.id.pokemonDetailsFragment);
-        pokemonDetailsFragment.setPokemon(pokemon);
+        pokemonDetailsFragment.setPokemonDetails(pokemon);
     }
 
     private void setPokemonBackgroundColor(Pokemon pokemon) {
@@ -87,9 +87,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
                 GradientDrawable.Orientation.LEFT_RIGHT, colors);
 
         RelativeLayout pokemonDetailsActivity = (RelativeLayout) findViewById(R.id.pokemon_display_activity);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            pokemonDetailsActivity.setBackground(gd);
-        }
+        pokemonDetailsActivity.setBackground(gd);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -273,9 +271,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         field.setText(text);
         field.setTextColor(Color.BLACK);
         field.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            field.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-        }
+        field.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
         field.setGravity(View.TEXT_ALIGNMENT_CENTER);
         field.setLayoutParams(tableParams);
 
@@ -286,9 +282,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         TextView field = new TextView(this);
         field.setText(text);
         field.setTextColor(Color.BLACK);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            field.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-        }
+        field.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
         field.setGravity(View.TEXT_ALIGNMENT_CENTER);
         field.setLayoutParams(tableParams);
 
