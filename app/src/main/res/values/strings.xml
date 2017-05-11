@@ -5,4 +5,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="nationalDexNumber">#1</string>
     <string name="spritedescription">Bulbasaur</string>
+    <string name="pokemonHeight">Height</string>
+    <string name="pokemonHeightValue">0</string>
+    <string name="pokemonWeight">Weight</string>
+    <string name="pokemonWeightValue">0</string>
+    <string name="pokemonAbilities">Abilities</string>
+    <string name="pokemonAbilitiesList">Ability 1</string>
+    <string name="pokemonEggsGroups">Egg Group(s)</string>
+    <string name="pokemonEggGroupsList">Group 1</string>
 </resources>
