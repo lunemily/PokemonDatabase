@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Pokemon {
 
+    private List<Ability> _abilities;
     private int _base_experience;
     private int _gender_ratio;
     private int _height;
@@ -12,6 +13,14 @@ public class Pokemon {
     private String _name;
     private List<Type> _types;
     private int _weight;
+
+    public List<Ability> getAbilities() {
+        return this._abilities;
+    }
+
+    public void setAbilities(List<Ability> abilities) {
+        this._abilities = abilities;
+    }
 
     public int getBaseExperience() {
         return this._base_experience;

@@ -6,18 +6,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
+import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.views.GifImageView;
+
+import java.util.List;
 
 public class PokemonDetailsFragment extends Fragment {
 
     Pokemon _pokemon;
-    //ImageView _sprite;
     TextView _dexID;
     GifImageView _spriteGif;
+    LinearLayout _abilities;
 
 
     public PokemonDetailsFragment() {
@@ -36,8 +41,8 @@ public class PokemonDetailsFragment extends Fragment {
         View detailsFragmentView = inflater.inflate(R.layout.fragment_pokemon_details, container, false);
 
         _dexID = (TextView) detailsFragmentView.findViewById(R.id.nationalDexNumber);
-        //_sprite = (ImageView) detailsFragmentView.findViewById(R.id.pokemonSprite);
         _spriteGif = (GifImageView) detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
+        _abilities = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonAbilitiesList);
 
         return detailsFragmentView;
     }
@@ -56,6 +61,7 @@ public class PokemonDetailsFragment extends Fragment {
         _pokemon = pokemon;
         setDexID();
         setSprite();
+        setAbilities();
     }
 
     void setDexID() {
@@ -65,7 +71,18 @@ public class PokemonDetailsFragment extends Fragment {
 
     void setSprite() {
         int spriteID = getContext().getResources().getIdentifier(_pokemon.getSpriteName(), "drawable", getContext().getPackageName());
-        //_sprite.setImageResource(spriteID);
         _spriteGif.setGifImageResource(spriteID);
+    }
+
+    void setAbilities() {
+        DataBaseHelper db_details_fragment = new DataBaseHelper(getActivity());
+        _pokemon.setAbilities(db_details_fragment.getAbilitiesForPokemon(_pokemon));
+        List<Ability> abilities = _pokemon.getAbilities();
+
+        for (Ability a : abilities) {
+            TextView textViewAbility = new TextView(getActivity());
+            textViewAbility.setText(a.getName());
+            _abilities.addView(textViewAbility);
+        }
     }
 }

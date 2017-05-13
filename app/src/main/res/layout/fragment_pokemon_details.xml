@@ -102,6 +102,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/pokemonAbilities"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -109,14 +110,12 @@
                         android:inputType="none"
                         android:text="@string/pokemonAbilities" />
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/pokemonAbilitiesList"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:gravity="end"
-                        android:inputType="none"
-                        android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/pokemonAbilitiesList" />
+                        android:orientation="vertical">
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="0dp"

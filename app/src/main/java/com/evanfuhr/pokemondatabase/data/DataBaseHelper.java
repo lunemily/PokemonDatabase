@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -34,9 +35,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private int _language_id = 9;
 
     //tables
+    private static final String TABLE_ABILITIES = "abilities";
+    private static final String TABLE_ABILITY_NAMES = "ability_names";
     private static final String TABLE_MOVE_NAMES = "move_names";
     private static final String TABLE_MOVES = "moves";
     private static final String TABLE_POKEMON = "pokemon";
+    private static final String TABLE_POKEMON_ABILITIES = "pokemon_abilities";
     private static final String TABLE_POKEMON_MOVES = "pokemon_moves";
     private static final String TABLE_POKEMON_SPECIES = "pokemon_species";
     private static final String TABLE_POKEMON_SPECIES_NAMES = "pokemon_species_names";
@@ -53,8 +57,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String KEY_MOVE_ID = "move_id";
     private static final String KEY_NAME = "name";
     private static final String KEY_POKEMON_ID = "pokemon_id";
+    private static final String KEY_SLOT = "slot";
     private static final String KEY_TYPE_ID = "type_id";
     private static final String KEY_VERSION_GROUP_ID = "version_group_id";
+
+    //moves
+    private static final String KEY_POWER = "power";
+    private static final String KEY_PP = "pp";
+    private static final String KEY_ACCURACY = "accuracy";
 
     //pokemon
     private static final String KEY_BASE_EXPERIENCE = "base_experience";
@@ -64,16 +74,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String KEY_SPECIES_ID = "species_id";
     private static final String KEY_WEIGHT = "weight";
 
-    //pokemon_types
-    private static final String KEY_SLOT = "slot";
-
-    //types
-    private static final String KEY_COLOR = "color";
-
-    //moves
-    private static final String KEY_POWER = "power";
-    private static final String KEY_PP = "pp";
-    private static final String KEY_ACCURACY = "accuracy";
+    //pokemon_abilities
+    private static final String KEY_ABILITY_ID = "ability_id";
+    private static final String KEY_IS_HIDDEN = "is_hidden";
 
     //pokemon_moves
     private static final String KEY_POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
@@ -84,6 +87,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //pokemon_species_names
     private static final String KEY_POKEMON_SPECIES_ID = "pokemon_species_id";
+
+    //types
+    private static final String KEY_COLOR = "color";
 
     //version_groups
     private static final String KEY_GENERATION_ID = "generation_id";
@@ -472,6 +478,46 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
         return version_group_id;
+    }
+
+    public List<Ability> getAbilitiesForPokemon(Pokemon pokemon) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Ability> abilitiesForPokemon = new ArrayList<>();
+
+        String selectQuery = "SELECT " + TABLE_ABILITIES + "." + KEY_ID +
+                ", " + TABLE_ABILITY_NAMES + "." + KEY_NAME +
+                ", " + TABLE_POKEMON_ABILITIES + "." + KEY_SLOT +
+                ", " + TABLE_POKEMON_ABILITIES + "." + KEY_IS_HIDDEN +
+                " FROM " + TABLE_ABILITIES +
+                ", " + TABLE_ABILITY_NAMES +
+                ", " + TABLE_POKEMON_ABILITIES +
+                ", " + TABLE_POKEMON_SPECIES +
+                " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = '" + pokemon.getID() + "'" +
+                " AND " + TABLE_ABILITIES + "." + KEY_ID + " = " + TABLE_POKEMON_ABILITIES + "." + KEY_ABILITY_ID +
+                " AND " + TABLE_ABILITIES + "." + KEY_ID + " = " + TABLE_ABILITY_NAMES + "." + KEY_ABILITY_ID +
+                " AND " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_ABILITIES + "." + KEY_POKEMON_ID +
+                " AND " + TABLE_ABILITY_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'" +
+                " ORDER BY " + TABLE_POKEMON_ABILITIES + "." + KEY_SLOT + " ASC";
+
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                //Move move = new Move();
+                Ability ability = new Ability();
+                ability.setID(Integer.parseInt(cursor.getString(0)));
+                ability.setName(cursor.getString(1));
+                ability.setSlot(Integer.parseInt(cursor.getString(2)));
+                ability.setIsHidden("1".equals(cursor.getString(3)));
+                //add move to list
+                abilitiesForPokemon.add(ability);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return abilitiesForPokemon;
     }
 
     public int getGenerationIDByVersionID(int version_id) {
