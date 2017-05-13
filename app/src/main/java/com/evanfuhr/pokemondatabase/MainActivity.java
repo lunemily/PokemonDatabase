@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -141,9 +140,7 @@ public class MainActivity extends AppCompatActivity {
             pokemon_button.setLayoutParams(params);
             pokemon_button.setText(pokemon.getName());
             pokemon_button.setId(pokemon.getID());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                pokemon_button.setBackground(gd);
-            }
+            pokemon_button.setBackground(gd);
 
             //Set click listener for the button
             pokemon_button.setOnClickListener(new View.OnClickListener() {

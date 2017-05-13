@@ -195,7 +195,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         tableParams.setMargins(12, 16, 12, 0);
 
         final TableRow header = new TableRow(this);
-        final TextView move_header = createMoveHeader("Move", tableParams);
+        final TextView move_header = createMoveHeader("com.evanfuhr.pokemondatabase.Move", tableParams);
         final TextView power_header = createMoveHeader("Power", tableParams);
         final TextView pp_header = createMoveHeader("PP", tableParams);
         final TextView accuracy_header = createMoveHeader("Accuracy", tableParams);

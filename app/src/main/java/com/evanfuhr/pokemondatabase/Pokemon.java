@@ -1,7 +1,5 @@
 package com.evanfuhr.pokemondatabase;
 
-import android.support.v7.app.AppCompatActivity;
-
 import java.util.List;
 
 class Pokemon {

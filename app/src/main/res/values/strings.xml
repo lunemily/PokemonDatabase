@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pokemon Database</string>
+    <string name="app_name">com.evanfuhr.pokemondatabase.Pokemon Database</string>
     <string name="action_game">Set Game</string>
 
     <!-- TODO: Remove or change this placeholder text -->
