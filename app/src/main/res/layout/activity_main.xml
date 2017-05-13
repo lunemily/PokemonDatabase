@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="0dp"
-    tools:context="com.evanfuhr.pokemondatabase.MainActivity">
+    tools:context="com.evanfuhr.pokemondatabase.activities.MainActivity">
 
     <ScrollView
         android:layout_width="match_parent"
