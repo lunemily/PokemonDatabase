@@ -21,6 +21,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
+import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.interfaces.OnPokemonSelectedListener;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment;
@@ -49,7 +50,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_display);
 
-        DataBaseHelper db = new DataBaseHelper(this);
+        PokemonDAO db = new PokemonDAO(this);
 
         _RelativeLayout = (RelativeLayout) findViewById(R.id.pokemon_display_activity);
         _moveListLayout = (LinearLayout) findViewById(R.id.move_list);
@@ -74,7 +75,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
     }
 
     private void setPokemonBackgroundColor(Pokemon pokemon) {
-        DataBaseHelper db = new DataBaseHelper(this);
+        PokemonDAO db = new PokemonDAO(this);
 
         //Create base background
         List<Type> types = db.getTypesForPokemon(pokemon);
@@ -100,7 +101,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void generateMovesCards() {
-        DataBaseHelper db = new DataBaseHelper(this);
+        PokemonDAO db = new PokemonDAO(this);
 
         List<Move> moves = db.getAllMovesForPokemonByGame(_pokemon);
         _levelMoves = Move.getLevelUpMoves(moves);

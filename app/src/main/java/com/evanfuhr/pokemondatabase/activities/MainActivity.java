@@ -15,6 +15,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
+import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     void generatePokemonList() {
         final LinearLayout pokemon_list = (LinearLayout) findViewById(R.id.pokemonlist);
 
-        DataBaseHelper db = new DataBaseHelper(this);
+        PokemonDAO db = new PokemonDAO(this);
 
         List<Pokemon> pokemons = db.getAllPokemon();
 

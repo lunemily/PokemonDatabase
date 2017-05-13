@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
+import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.views.GifImageView;
@@ -75,7 +75,7 @@ public class PokemonDetailsFragment extends Fragment {
     }
 
     void setAbilities() {
-        DataBaseHelper db_details_fragment = new DataBaseHelper(getActivity());
+        PokemonDAO db_details_fragment = new PokemonDAO(getActivity());
         _pokemon.setAbilities(db_details_fragment.getAbilitiesForPokemon(_pokemon));
         List<Ability> abilities = _pokemon.getAbilities();
 
