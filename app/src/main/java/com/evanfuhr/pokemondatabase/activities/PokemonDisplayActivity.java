@@ -103,7 +103,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
     public void generateMovesCards() {
         PokemonDAO db = new PokemonDAO(this);
 
-        List<Move> moves = db.getAllMovesForPokemonByGame(_pokemon);
+        List<Move> moves = db.getMovesForPokemonByGame(_pokemon);
         _levelMoves = Move.getLevelUpMoves(moves);
         _eggMoves = Move.getEggMoves(moves);
         _tutorMoves = Move.getTutorMoves(moves);

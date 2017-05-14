@@ -6,6 +6,7 @@ public class Pokemon {
 
     private List<Ability> _abilities;
     private int _base_experience;
+    private List<EggGroup> _egg_groups;
     private int _gender_ratio;
     private Double _height;
     private int _id;
@@ -28,6 +29,14 @@ public class Pokemon {
 
     public void setBaseExperience(int base_experience) {
         this._base_experience = base_experience;
+    }
+
+    public List<EggGroup> getEggGroups() {
+        return this._egg_groups;
+    }
+
+    public void setEggGroups(List<EggGroup> egg_groups) {
+        this._egg_groups = egg_groups;
     }
 
     public int getGenderRatio() {

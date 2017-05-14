@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -13,16 +14,81 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonDAO extends DataBaseHelper {
-    /**
-     * Constructor
-     * Takes and keeps a reference of the passed context in order to access to the application assets and resources.
-     *
-     * @param context
-     */
+
     public PokemonDAO(Context context) {
         super(context);
     }
 
+    //Get Pokemon
+    public List<Pokemon> getAllPokemon() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Pokemon> pokemonList = new ArrayList<>();
+
+        String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
+                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_NAME +
+                " FROM " + TABLE_POKEMON_SPECIES +
+                ", " + TABLE_POKEMON_SPECIES_NAMES +
+                " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
+                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
+                ;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                Pokemon pokemon = new Pokemon();
+                pokemon.setID(Integer.parseInt(cursor.getString(0)));
+                pokemon.setName(cursor.getString(1));
+                //add pokemon to list
+                pokemonList.add(pokemon);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return pokemonList;
+    }
+
+    public Pokemon getSinglePokemonByID(Pokemon pokemon) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
+                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_NAME +
+                ", " + TABLE_POKEMON + "." + KEY_HEIGHT +
+                ", " + TABLE_POKEMON + "." + KEY_WEIGHT +
+                ", " + TABLE_POKEMON + "." + KEY_BASE_EXPERIENCE +
+                ", " + TABLE_POKEMON + ".'" + KEY_ORDER + "'" +
+                ", " + TABLE_POKEMON + "." + KEY_IS_DEFAULT +
+                ", " + TABLE_POKEMON_SPECIES + "." + KEY_GENDER_RATE +
+                " FROM " + TABLE_POKEMON_SPECIES +
+                ", " + TABLE_POKEMON_SPECIES_NAMES +
+                ", " + TABLE_POKEMON +
+                " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = '" + pokemon.getID() + "'" +
+                " AND " + TABLE_POKEMON + "." + KEY_SPECIES_ID + " = " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
+                " AND " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
+                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
+                ;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                //pokemon.setID(pokemon.getID(0));
+                pokemon.setName(cursor.getString(1));
+                pokemon.setHeight(Double.parseDouble(cursor.getString(2))/10);
+                pokemon.setWeight(Double.parseDouble(cursor.getString(3))/10);
+                pokemon.setBaseExperience(Integer.parseInt(cursor.getString(4)));
+                //pokemon.setOrder(Integer.parseInt(cursor.getString(5)));
+                //pokemon.setIsDefault(Boolean.parseBoolean(cursor.getString(6)));
+                //pokemon.setGenderRatio(Integer.parseInt(cursor.getString(7)));
+            }
+            cursor.close();
+        }
+
+        return pokemon;
+    }
+
+    //Get Pokemon attributes
     public List<Ability> getAbilitiesForPokemon(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -32,16 +98,17 @@ public class PokemonDAO extends DataBaseHelper {
                 ", " + TABLE_ABILITY_NAMES + "." + KEY_NAME +
                 ", " + TABLE_POKEMON_ABILITIES + "." + KEY_SLOT +
                 ", " + TABLE_POKEMON_ABILITIES + "." + KEY_IS_HIDDEN +
-                " FROM " + TABLE_ABILITIES +
+            " FROM " + TABLE_ABILITIES +
                 ", " + TABLE_ABILITY_NAMES +
                 ", " + TABLE_POKEMON_ABILITIES +
                 ", " + TABLE_POKEMON_SPECIES +
-                " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = '" + pokemon.getID() + "'" +
+            " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = '" + pokemon.getID() + "'" +
                 " AND " + TABLE_ABILITIES + "." + KEY_ID + " = " + TABLE_POKEMON_ABILITIES + "." + KEY_ABILITY_ID +
                 " AND " + TABLE_ABILITIES + "." + KEY_ID + " = " + TABLE_ABILITY_NAMES + "." + KEY_ABILITY_ID +
                 " AND " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_ABILITIES + "." + KEY_POKEMON_ID +
                 " AND " + TABLE_ABILITY_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'" +
-                " ORDER BY " + TABLE_POKEMON_ABILITIES + "." + KEY_SLOT + " ASC";
+            " ORDER BY " + TABLE_POKEMON_ABILITIES + "." + KEY_SLOT + " ASC"
+            ;
 
 
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -63,49 +130,33 @@ public class PokemonDAO extends DataBaseHelper {
         return abilitiesForPokemon;
     }
 
-    /**
-     * Getter
-     * Returns all pokemon
-     */
-    public List<Pokemon> getAllPokemon() {
+    public List<EggGroup> getEggGroupsForPokemon(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Pokemon> pokemonList = new ArrayList<>();
+        List<EggGroup> eggGroups = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
-                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_NAME +
-                " FROM " + TABLE_POKEMON_SPECIES +
-                ", " + TABLE_POKEMON_SPECIES_NAMES +
-                " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
-                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'";
+        String selectQuery = "SELECT " + TABLE_POKEMON_EGG_GROUPS + "." + KEY_EGG_GROUP_ID +
+            " FROM " + TABLE_POKEMON_EGG_GROUPS +
+            " WHERE " + TABLE_POKEMON_EGG_GROUPS + "." + KEY_SPECIES_ID + " = " + pokemon.getID()
+            ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
-
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
             do {
-                Pokemon pokemon = new Pokemon();
-                pokemon.setID(Integer.parseInt(cursor.getString(0)));
-                pokemon.setName(cursor.getString(1));
-                //add pokemon to list
-                pokemonList.add(pokemon);
+                //Move move = new Move();
+                EggGroup eggGroup = new EggGroup();
+                eggGroup.setID(Integer.parseInt(cursor.getString(0)));
+                //add move to list
+                eggGroups.add(eggGroup);
             } while (cursor.moveToNext());
         }
         cursor.close();
 
-        return pokemonList;
+        return eggGroups;
     }
 
-    /**
-     * Getter
-     * Returns all moves for a pokemon in a given game
-     *
-     * Currently returning just a list of move_ids.
-     * In the future, will return a list of move objects with more data.
-     *
-     * @param pokemon
-     */
-    public List<Move> getAllMovesForPokemonByGame(Pokemon pokemon) {
+    public List<Move> getMovesForPokemonByGame(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Move> movesForPokemon = new ArrayList<>();
@@ -136,55 +187,6 @@ public class PokemonDAO extends DataBaseHelper {
         return movesForPokemon;
     }
 
-    /**
-     * Getter
-     * Returns a fully loaded pokemon including name, height, and weight
-     *
-     * @param pokemon
-     */
-    public Pokemon getSinglePokemonByID(Pokemon pokemon) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
-                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_NAME +
-                ", " + TABLE_POKEMON + "." + KEY_HEIGHT +
-                ", " + TABLE_POKEMON + "." + KEY_WEIGHT +
-                ", " + TABLE_POKEMON + "." + KEY_BASE_EXPERIENCE +
-                ", " + TABLE_POKEMON + ".'" + KEY_ORDER + "'" +
-                ", " + TABLE_POKEMON + "." + KEY_IS_DEFAULT +
-                ", " + TABLE_POKEMON_SPECIES + "." + KEY_GENDER_RATE +
-                " FROM " + TABLE_POKEMON_SPECIES +
-                ", " + TABLE_POKEMON_SPECIES_NAMES +
-                ", " + TABLE_POKEMON +
-                " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = '" + pokemon.getID() + "'" +
-                " AND " + TABLE_POKEMON + "." + KEY_SPECIES_ID + " = " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
-                " AND " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
-                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'";
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                //pokemon.setID(pokemon.getID(0));
-                pokemon.setName(cursor.getString(1));
-                pokemon.setHeight(Double.parseDouble(cursor.getString(2))/10);
-                pokemon.setWeight(Double.parseDouble(cursor.getString(3))/10);
-                pokemon.setBaseExperience(Integer.parseInt(cursor.getString(4)));
-                //pokemon.setOrder(Integer.parseInt(cursor.getString(5)));
-                //pokemon.setIsDefault(Boolean.parseBoolean(cursor.getString(6)));
-                //pokemon.setGenderRatio(Integer.parseInt(cursor.getString(7)));
-            }
-            cursor.close();
-        }
-
-        return pokemon;
-    }
-
-    /**
-     * Getter
-     * Returns types for pokemon
-     *
-     * @param pokemon
-     */
     public List<Type> getTypesForPokemon(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 

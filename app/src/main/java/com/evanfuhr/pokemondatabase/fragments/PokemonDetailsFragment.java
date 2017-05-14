@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.data.EggGroupDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.views.GifImageView;
 
@@ -24,6 +26,7 @@ public class PokemonDetailsFragment extends Fragment {
 
     LinearLayout _abilities;
     TextView _dexID;
+    LinearLayout _eggGroups;
     TextView _height;
     GifImageView _spriteGif;
     TextView _weight;
@@ -46,6 +49,7 @@ public class PokemonDetailsFragment extends Fragment {
 
         _abilities = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonAbilitiesList);
         _dexID = (TextView) detailsFragmentView.findViewById(R.id.nationalDexNumber);
+        _eggGroups = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonEggGroupsList);
         _height = (TextView) detailsFragmentView.findViewById(R.id.pokemonHeightValue);
         _spriteGif = (GifImageView) detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
         _weight = (TextView) detailsFragmentView.findViewById(R.id.pokemonWeightValue);
@@ -65,15 +69,16 @@ public class PokemonDetailsFragment extends Fragment {
 
     public void setPokemonDetails(Pokemon pokemon) {
         _pokemon = pokemon;
-        setDexID();
-        setSprite();
-        setAbilities();
-        setHeightAndWeight();
+        setFragmentDexID();
+        setFragmentSprite();
+        setFragmentHeightAndWeight();
+        setFragmentAbilities();
+        setFragmentEggGroups();
     }
 
-    void setAbilities() {
-        PokemonDAO db_details_fragment = new PokemonDAO(getActivity());
-        _pokemon.setAbilities(db_details_fragment.getAbilitiesForPokemon(_pokemon));
+    void setFragmentAbilities() {
+        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+        _pokemon.setAbilities(pokemonDAO.getAbilitiesForPokemon(_pokemon));
         List<Ability> abilities = _pokemon.getAbilities();
 
         for (Ability a : abilities) {
@@ -86,12 +91,25 @@ public class PokemonDetailsFragment extends Fragment {
         }
     }
 
-    void setDexID() {
+    void setFragmentDexID() {
         String dexID = "#" + _pokemon.getID();
         _dexID.setText(dexID);
     }
 
-    void setHeightAndWeight() {
+    void setFragmentEggGroups() {
+        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+        EggGroupDAO eggGroupDAO = new EggGroupDAO(getActivity());
+        _pokemon.setEggGroups(pokemonDAO.getEggGroupsForPokemon(_pokemon));
+        List<EggGroup> eggGroups = _pokemon.getEggGroups();
+
+        for (EggGroup eg : eggGroups) {
+            TextView textViewEggGroup = new TextView(getActivity());
+            textViewEggGroup.setText(eggGroupDAO.getEggGroupByID(eg).getName());
+            _eggGroups.addView(textViewEggGroup);
+        }
+    }
+
+    void setFragmentHeightAndWeight() {
         String height = _pokemon.getHeight() + " m";
         String weight = _pokemon.getWeight() + " kg";
 
@@ -99,7 +117,7 @@ public class PokemonDetailsFragment extends Fragment {
         _weight.setText(weight);
     }
 
-    void setSprite() {
+    void setFragmentSprite() {
         int spriteID = getContext().getResources().getIdentifier(_pokemon.getSpriteName(), "drawable", getContext().getPackageName());
         _spriteGif.setGifImageResource(spriteID);
     }
