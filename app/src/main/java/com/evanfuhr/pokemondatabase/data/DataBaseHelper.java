@@ -286,31 +286,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return move;
     }
 
-    public Type getTypeByID(Type type) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String selectQuery = "SELECT " + TABLE_TYPES + "." + KEY_ID +
-                ", " + TABLE_TYPE_NAMES + "." + KEY_NAME +
-                ", " + TABLE_TYPES + "." + KEY_COLOR +
-                " FROM " + TABLE_TYPES +
-                ", " + TABLE_TYPE_NAMES +
-                " WHERE " + TABLE_TYPES + "." + KEY_ID + " = '" + type.getID() + "'" +
-                " AND " + TABLE_TYPE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
-                ;
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                type.setID(Integer.parseInt(cursor.getString(0)));
-                type.setName(cursor.getString(1));
-                type.setColor(cursor.getString(2));
-            }
-            cursor.close();
-        }
-
-        return type;
-    }
-
     public int getVersionGroupIDByVersionID(int version_id) {
         SQLiteDatabase db = this.getWritableDatabase();
 

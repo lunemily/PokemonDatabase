@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
+import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -60,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void onClickButtonPokemonDetails(View view) {
         //Get the ID associated to the clicked button
-        int hero_id = view.getId();
+        int pokemon_id = view.getId();
 
         //Build the intent to load the player sheet
         Intent intent = new Intent(this, PokemonDisplayActivity.class);
         //Load the hero ID to send to the player sheet
-        intent.putExtra(POKEMON_ID, hero_id);
+        intent.putExtra(POKEMON_ID, pokemon_id);
 
         startActivity(intent);
     }
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         final LinearLayout pokemon_list = (LinearLayout) findViewById(R.id.pokemonlist);
 
         PokemonDAO db = new PokemonDAO(this);
+        TypeDAO typeDAO = new TypeDAO(this);
 
         List<Pokemon> pokemons = db.getAllPokemon();
 
@@ -129,16 +131,16 @@ public class MainActivity extends AppCompatActivity {
             //create a new gradient color
             int[] colors = {0, 0, 0, 0};
             if (types.size() == 1) {
-                colors[0] = Color.parseColor(types.get(0).getColor());
-                colors[1] = Color.parseColor(types.get(0).getColor());
-                colors[2] = Color.parseColor(types.get(0).getColor());
-                colors[3] = Color.parseColor(types.get(0).getColor());
+                colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+                colors[1] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+                colors[2] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+                colors[3] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
             }
             else {
-                colors[0] = Color.parseColor(types.get(0).getColor());
-                colors[1] = Color.parseColor(types.get(0).getColor());
-                colors[2] = Color.parseColor(types.get(1).getColor());
-                colors[3] = Color.parseColor(types.get(1).getColor());
+                colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+                colors[1] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+                colors[2] = Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor());
+                colors[3] = Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor());
             }
             GradientDrawable gd = new GradientDrawable(
                     GradientDrawable.Orientation.LEFT_RIGHT, colors);

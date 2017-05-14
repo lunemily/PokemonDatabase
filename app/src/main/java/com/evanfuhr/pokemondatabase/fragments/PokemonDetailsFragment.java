@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.data.EggGroupDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
@@ -78,13 +79,16 @@ public class PokemonDetailsFragment extends Fragment {
 
     void setFragmentAbilities() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+        AbilityDAO abilityDAO = new AbilityDAO(getActivity());
+
         _pokemon.setAbilities(pokemonDAO.getAbilitiesForPokemon(_pokemon));
         List<Ability> abilities = _pokemon.getAbilities();
 
         for (Ability a : abilities) {
+            Ability ability = abilityDAO.getAbilityByIDForPokemon(a, _pokemon);
             TextView textViewAbility = new TextView(getActivity());
-            textViewAbility.setText(a.getName());
-            if (a.getIsHidden()) {
+            textViewAbility.setText(ability.getName());
+            if (ability.getIsHidden()) {
                 textViewAbility.setTextColor(Color.argb(90, 0, 0, 0));
             }
             _abilities.addView(textViewAbility);

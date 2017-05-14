@@ -20,11 +20,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
-import com.evanfuhr.pokemondatabase.interfaces.OnPokemonSelectedListener;
-import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment;
+import com.evanfuhr.pokemondatabase.interfaces.OnPokemonSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -75,22 +76,23 @@ public class PokemonDisplayActivity extends AppCompatActivity
     }
 
     private void setPokemonBackgroundColor(Pokemon pokemon) {
-        PokemonDAO db = new PokemonDAO(this);
+        PokemonDAO pokemonDAO = new PokemonDAO(this);
+        TypeDAO typeDAO = new TypeDAO(this);
 
         //Create base background
-        List<Type> types = db.getTypesForPokemon(pokemon);
+        List<Type> types = pokemonDAO.getTypesForPokemon(pokemon);
         int[] colors = {0, 0, 0, 0};
         if (types.size() == 1) {
-            colors[0] = Color.parseColor(types.get(0).getColor());
-            colors[1] = Color.parseColor(types.get(0).getColor());
-            colors[2] = Color.parseColor(types.get(0).getColor());
-            colors[3] = Color.parseColor(types.get(0).getColor());
+            colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+            colors[1] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+            colors[2] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+            colors[3] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
         }
         else {
-            colors[0] = Color.parseColor(types.get(0).getColor());
-            colors[1] = Color.parseColor(types.get(0).getColor());
-            colors[2] = Color.parseColor(types.get(1).getColor());
-            colors[3] = Color.parseColor(types.get(1).getColor());
+            colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+            colors[1] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+            colors[2] = Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor());
+            colors[3] = Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor());
         }
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.LEFT_RIGHT, colors);
@@ -196,6 +198,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private TableLayout generateMoveTable(List<Move> moves, DataBaseHelper db, int moveMethodID) {
+        TypeDAO typeDAO = new TypeDAO(this);
         final TableLayout tableLayout = new TableLayout(this);
         TableRow.LayoutParams tableParams = new TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT
@@ -244,7 +247,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
             final Button move_button = new Button(this);
             move_button.setText(move.getName());
             move_button.setId(move.getID());
-            move.setType(db.getTypeByID(move.getType()));
+            move.setType(typeDAO.getTypeByID(move.getType()));
             //TODO: Set color for move type
             move_button.setBackgroundColor(Color.parseColor(move.getType().getColor()));
             move_button.setLayoutParams(tableParams);
