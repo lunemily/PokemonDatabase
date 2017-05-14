@@ -7,12 +7,12 @@ public class Pokemon {
     private List<Ability> _abilities;
     private int _base_experience;
     private int _gender_ratio;
-    private int _height;
+    private Double _height;
     private int _id;
     private boolean _mega;
     private String _name;
     private List<Type> _types;
-    private int _weight;
+    private Double _weight;
 
     public List<Ability> getAbilities() {
         return this._abilities;
@@ -38,11 +38,11 @@ public class Pokemon {
         this._gender_ratio = gender_ratio;
     }
 
-    public int getHeight() {
+    public Double getHeight() {
         return this._height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(Double height) {
         this._height = height;
     }
 
@@ -74,11 +74,11 @@ public class Pokemon {
         this._types = types;
     }
 
-    public int getWeight() {
+    public Double getWeight() {
         return this._weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Double weight) {
         this._weight = weight;
     }
 

@@ -2,6 +2,7 @@ package com.evanfuhr.pokemondatabase.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +21,12 @@ import java.util.List;
 public class PokemonDetailsFragment extends Fragment {
 
     Pokemon _pokemon;
-    TextView _dexID;
-    GifImageView _spriteGif;
+
     LinearLayout _abilities;
+    TextView _dexID;
+    TextView _height;
+    GifImageView _spriteGif;
+    TextView _weight;
 
 
     public PokemonDetailsFragment() {
@@ -40,9 +44,11 @@ public class PokemonDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View detailsFragmentView = inflater.inflate(R.layout.fragment_pokemon_details, container, false);
 
-        _dexID = (TextView) detailsFragmentView.findViewById(R.id.nationalDexNumber);
-        _spriteGif = (GifImageView) detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
         _abilities = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonAbilitiesList);
+        _dexID = (TextView) detailsFragmentView.findViewById(R.id.nationalDexNumber);
+        _height = (TextView) detailsFragmentView.findViewById(R.id.pokemonHeightValue);
+        _spriteGif = (GifImageView) detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
+        _weight = (TextView) detailsFragmentView.findViewById(R.id.pokemonWeightValue);
 
         return detailsFragmentView;
     }
@@ -62,16 +68,7 @@ public class PokemonDetailsFragment extends Fragment {
         setDexID();
         setSprite();
         setAbilities();
-    }
-
-    void setDexID() {
-        String dexID = "#" + _pokemon.getID();
-        _dexID.setText(dexID);
-    }
-
-    void setSprite() {
-        int spriteID = getContext().getResources().getIdentifier(_pokemon.getSpriteName(), "drawable", getContext().getPackageName());
-        _spriteGif.setGifImageResource(spriteID);
+        setHeightAndWeight();
     }
 
     void setAbilities() {
@@ -82,7 +79,28 @@ public class PokemonDetailsFragment extends Fragment {
         for (Ability a : abilities) {
             TextView textViewAbility = new TextView(getActivity());
             textViewAbility.setText(a.getName());
+            if (a.getIsHidden()) {
+                textViewAbility.setTextColor(Color.argb(90, 0, 0, 0));
+            }
             _abilities.addView(textViewAbility);
         }
+    }
+
+    void setDexID() {
+        String dexID = "#" + _pokemon.getID();
+        _dexID.setText(dexID);
+    }
+
+    void setHeightAndWeight() {
+        String height = _pokemon.getHeight() + " m";
+        String weight = _pokemon.getWeight() + " kg";
+
+        _height.setText(height);
+        _weight.setText(weight);
+    }
+
+    void setSprite() {
+        int spriteID = getContext().getResources().getIdentifier(_pokemon.getSpriteName(), "drawable", getContext().getPackageName());
+        _spriteGif.setGifImageResource(spriteID);
     }
 }

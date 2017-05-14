@@ -166,8 +166,8 @@ public class PokemonDAO extends DataBaseHelper {
             if (cursor.moveToFirst()) {
                 //pokemon.setID(pokemon.getID(0));
                 pokemon.setName(cursor.getString(1));
-                pokemon.setHeight(Integer.parseInt(cursor.getString(2)));
-                pokemon.setWeight(Integer.parseInt(cursor.getString(3)));
+                pokemon.setHeight(Double.parseDouble(cursor.getString(2))/10);
+                pokemon.setWeight(Double.parseDouble(cursor.getString(3))/10);
                 pokemon.setBaseExperience(Integer.parseInt(cursor.getString(4)));
                 //pokemon.setOrder(Integer.parseInt(cursor.getString(5)));
                 //pokemon.setIsDefault(Boolean.parseBoolean(cursor.getString(6)));
