@@ -1,30 +1,22 @@
 package com.evanfuhr.pokemondatabase.activities;
 
-import android.content.Intent;
+import android.app.FragmentManager;
 import android.database.SQLException;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
-import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
-import com.evanfuhr.pokemondatabase.data.PokemonDAO;
-import com.evanfuhr.pokemondatabase.data.TypeDAO;
-import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
+import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
 
 import java.io.IOException;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements PokemonListFragment.OnFragmentInteractionListener{
 
     public static final String POKEMON_ID = "pokemon_id";
 
@@ -56,19 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
         setTitle("Pokémon");
-        generatePokemonList();
-    }
 
-    private void onClickButtonPokemonDetails(View view) {
-        //Get the ID associated to the clicked button
-        int pokemon_id = view.getId();
-
-        //Build the intent to load the player sheet
-        Intent intent = new Intent(this, PokemonDisplayActivity.class);
-        //Load the hero ID to send to the player sheet
-        intent.putExtra(POKEMON_ID, pokemon_id);
-
-        startActivity(intent);
+        FragmentManager fm = getFragmentManager();
+        //PokemonListFragment pokemonListFragment = (PokemonListFragment) fm.findFragmentById(R.id.pokemonDetailsFragment);
     }
 
     @Override
@@ -106,67 +88,8 @@ public class MainActivity extends AppCompatActivity {
 //        editor.commit();
     }
 
-    void generatePokemonList() {
-        final LinearLayout pokemon_list = (LinearLayout) findViewById(R.id.pokemonlist);
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
-        PokemonDAO db = new PokemonDAO(this);
-        TypeDAO typeDAO = new TypeDAO(this);
-
-        List<Pokemon> pokemons = db.getAllPokemon();
-
-        LayoutParams params = new LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(0, 16, 0, 0);
-
-        int counter = 1;
-
-        for (Pokemon pokemon : pokemons) {
-
-            //Create hero button
-            final Button pokemon_button = new Button(this);
-            List<Type> types = db.getTypesForPokemon(pokemon);
-
-
-            //create a new gradient color
-            int[] colors = {0, 0, 0, 0};
-            if (types.size() == 1) {
-                colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-                colors[1] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-                colors[2] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-                colors[3] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-            }
-            else {
-                colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-                colors[1] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-                colors[2] = Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor());
-                colors[3] = Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor());
-            }
-            GradientDrawable gd = new GradientDrawable(
-                    GradientDrawable.Orientation.LEFT_RIGHT, colors);
-
-            pokemon_button.setLayoutParams(params);
-            pokemon_button.setText(pokemon.getName());
-            pokemon_button.setId(pokemon.getID());
-            pokemon_button.setBackground(gd);
-
-            //Set click listener for the button
-            pokemon_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onClickButtonPokemonDetails(view);
-                }
-            });
-
-            //Add the pokemon button to the table row
-            pokemon_list.addView(pokemon_button);
-
-            registerForContextMenu(pokemon_button);
-
-//            if (counter >= 250) {
-//                break;
-//            }
-            counter++;
-        }
     }
 }

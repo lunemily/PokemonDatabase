@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="0dp"
-    tools:context="com.evanfuhr.pokemondatabase.activities.MainActivity">
+    tools:context="com.evanfuhr.pokemondatabase.activities.MainActivity"
+    android:id="@+id/main_activity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,7 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/pokemonlist"
-            android:longClickable="false"></LinearLayout>
-    </ScrollView>
+            android:longClickable="false">
 
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment"
+                android:id="@+id/pokemonDetailsFragment"
+                android:layout_margin="@dimen/activity_horizontal_margin"/>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

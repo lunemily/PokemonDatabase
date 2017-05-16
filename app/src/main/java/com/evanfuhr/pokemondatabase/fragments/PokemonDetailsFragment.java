@@ -32,7 +32,6 @@ public class PokemonDetailsFragment extends Fragment {
     GifImageView _spriteGif;
     TextView _weight;
 
-
     public PokemonDetailsFragment() {
         // Required empty public constructor
     }

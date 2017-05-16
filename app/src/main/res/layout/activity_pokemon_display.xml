@@ -10,22 +10,33 @@
     tools:context="com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity"
     android:id="@+id/pokemon_display_activity">
 
-    <fragment
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:name="com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment"
-        android:id="@+id/pokemonDetailsFragment"
-        android:layout_margin="@dimen/activity_horizontal_margin"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/pokemon_details_scroll_view" >
+        android:id="@+id/pokemon_details_scroll_view"
+        android:layout_centerHorizontal="true" >
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/move_list"/>
+            android:id="@+id/Details"
+            android:longClickable="false">
+
+            <fragment
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:name="com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment"
+                android:id="@+id/pokemonDetailsFragment"
+                android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/move_list">
+
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 </RelativeLayout>
