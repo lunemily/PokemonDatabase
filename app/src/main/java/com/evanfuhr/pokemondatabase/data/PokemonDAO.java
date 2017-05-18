@@ -21,6 +21,11 @@ public class PokemonDAO extends DataBaseHelper {
 
     //Get Pokemon
     public List<Pokemon> getAllPokemon() {
+        return getAllPokemon("%");
+    }
+
+    public List<Pokemon> getAllPokemon(String nameSearchParam) {
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Pokemon> pokemonList = new ArrayList<>();
@@ -30,6 +35,7 @@ public class PokemonDAO extends DataBaseHelper {
                 " FROM " + TABLE_POKEMON_SPECIES +
                 ", " + TABLE_POKEMON_SPECIES_NAMES +
                 " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
+                " AND LOWER(" + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_NAME + ") LIKE '%" + nameSearchParam + "%'" +
                 " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
                 ;
 

@@ -1,5 +1,6 @@
 package com.evanfuhr.pokemondatabase.activities;
 
+import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.database.SQLException;
 import android.net.Uri;
@@ -115,11 +116,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return false;
+        FragmentManager fm = getFragmentManager();
+        PokemonListFragment pokemonListFragment = (PokemonListFragment) fm.findFragmentById(R.id.pokemonListFragment);
+        pokemonListFragment.generatePokemonList(query);
+        return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        return false;
+        FragmentManager fm = getFragmentManager();
+        PokemonListFragment pokemonListFragment = (PokemonListFragment) fm.findFragmentById(R.id.pokemonListFragment);
+        pokemonListFragment.regeneratePokemonList(newText);
+        return true;
     }
 }

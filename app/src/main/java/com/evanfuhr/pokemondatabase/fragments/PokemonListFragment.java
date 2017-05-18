@@ -77,11 +77,15 @@ public class PokemonListFragment extends Fragment {
         mListener = null;
     }
 
-    void generatePokemonList() {
+    public void generatePokemonList() {
+        generatePokemonList("%");
+    }
+
+    public void generatePokemonList(String nameSearchParam) {
         PokemonDAO db = new PokemonDAO(getActivity());
         TypeDAO typeDAO = new TypeDAO(getActivity());
 
-        List<Pokemon> pokemons = db.getAllPokemon();
+        List<Pokemon> pokemons = db.getAllPokemon(nameSearchParam);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
@@ -132,11 +136,16 @@ public class PokemonListFragment extends Fragment {
 
             registerForContextMenu(pokemon_button);
 
-            if (counter >= 200) {
+            if (counter >= 800) {
                 break;
             }
             counter++;
         }
+    }
+
+    public void regeneratePokemonList(String nameSearchParam) {
+        _pokemonList.removeAllViews();
+        generatePokemonList(nameSearchParam);
     }
 
     private void onClickButtonPokemonDetails(View view) {
