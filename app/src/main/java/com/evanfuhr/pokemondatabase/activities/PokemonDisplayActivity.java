@@ -58,7 +58,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         //Get pokemon id passed to this activity
         Intent intent = getIntent();
-        _pokemon.setID(intent.getIntExtra(MainActivity.POKEMON_ID, 0));
+        _pokemon.setID(intent.getIntExtra(PokemonListActivity.POKEMON_ID, 0));
         _pokemon = db.getSinglePokemonByID(_pokemon);
         onPokemonSelected(_pokemon);
         setTitle(_pokemon.getName());

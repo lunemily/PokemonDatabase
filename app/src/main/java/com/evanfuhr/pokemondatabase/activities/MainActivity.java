@@ -1,14 +1,14 @@
 package com.evanfuhr.pokemondatabase.activities;
 
-import android.app.FragmentManager;
-import android.app.SearchManager;
+import android.content.Intent;
 import android.database.SQLException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SearchView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.evanfuhr.pokemondatabase.R;
@@ -20,15 +20,14 @@ import org.jetbrains.annotations.NonNls;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
-        implements PokemonListFragment.OnFragmentInteractionListener,
-                SearchView.OnQueryTextListener{
+        implements PokemonListFragment.OnFragmentInteractionListener{
 
-    @NonNls
-    public static final String POKEMON_ID = "pokemon_id";
     @NonNls
     public static final String POKEMON = "Pokémon";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
+
+    Button _pokemonButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +39,15 @@ public class MainActivity extends AppCompatActivity
 
         try {
 
+            Toast toast = Toast.makeText(getApplicationContext(), "Creating database", Toast.LENGTH_LONG);
+            toast.show();
+
             myDbHelper.createDataBase();
 
         } catch (IOException ioe) {
+
+            Toast toast = Toast.makeText(getApplicationContext(), "Failed to create database", Toast.LENGTH_LONG);
+            toast.show();
 
             throw new Error("Unable to create database");
 
@@ -50,32 +55,51 @@ public class MainActivity extends AppCompatActivity
 
         try {
 
+            Toast toast = Toast.makeText(getApplicationContext(), "Opening database", Toast.LENGTH_LONG);
+            toast.show();
+
             myDbHelper.openDataBase();
 
         }catch(SQLException sqle){
+
+            Toast toast = Toast.makeText(getApplicationContext(), "Failed to open database", Toast.LENGTH_LONG);
+            toast.show();
 
             throw sqle;
 
         }
         setTitle(POKEMON);
+        setPokemonButton();
+    }
 
-        //FragmentManager fm = getFragmentManager();
-        //PokemonListFragment pokemonListFragment = (PokemonListFragment) fm.findFragmentById(R.id.pokemonDetailsFragment);
+    private void setPokemonButton() {
+        _pokemonButton = (Button) this.findViewById(R.id.buttonPokemonList);
+        _pokemonButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickButton(view);
+            }
+        });
+    }
+
+    private void onClickButton(View view) {
+        Intent intent;
+
+        switch(view.getId()) {
+            case R.id.buttonPokemonList:
+                intent = new Intent(this, PokemonListActivity.class);
+                break;
+            default:
+                intent = new Intent(this, MainActivity.class);
+                break;
+        }
+        startActivity(intent);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        SearchManager searchManager = (SearchManager)
-                getSystemService(SEARCH_SERVICE);
-        MenuItem searchMenuItem = menu.findItem(R.id.action_search_pokemon_list);
-        SearchView searchView = (SearchView) searchMenuItem.getActionView();
-
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setSubmitButtonEnabled(true);
-        searchView.setOnQueryTextListener(this);
 
         return true;
     }
@@ -103,30 +127,10 @@ public class MainActivity extends AppCompatActivity
     void onClickMenuSetGame(MenuItem item) {
         Toast toast = Toast.makeText(getApplicationContext(), MENU_ITEM_NOT_IMPLEMENTED_YET, Toast.LENGTH_LONG);
         toast.show();
-//        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//        editor.putInt(getString(R.string.saved_high_score), newHighScore);
-//        editor.commit();
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        FragmentManager fm = getFragmentManager();
-        PokemonListFragment pokemonListFragment = (PokemonListFragment) fm.findFragmentById(R.id.pokemonListFragment);
-        pokemonListFragment.generatePokemonList(query);
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        FragmentManager fm = getFragmentManager();
-        PokemonListFragment pokemonListFragment = (PokemonListFragment) fm.findFragmentById(R.id.pokemonListFragment);
-        pokemonListFragment.regeneratePokemonList(newText);
-        return true;
     }
 }

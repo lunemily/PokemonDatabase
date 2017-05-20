@@ -15,12 +15,19 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable">
             </meta-data>
         </activity>
         <activity android:name=".activities.PokemonDisplayActivity" />
+        <activity android:name=".activities.PokemonListActivity">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable">
+            </meta-data>
+        </activity>
     </application>
 
 </manifest>

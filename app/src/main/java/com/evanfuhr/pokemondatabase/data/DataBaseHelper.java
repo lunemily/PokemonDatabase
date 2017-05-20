@@ -23,6 +23,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static String DB_NAME = "pokemon.db";
 
+    private static final int DB_VERSION = 2;
+
     private SQLiteDatabase myDataBase;
 
     private final Context myContext;
@@ -102,7 +104,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     public DataBaseHelper(Context context) {
 
-        super(context, DB_NAME, null, 1);
+        super(context, DB_NAME, null, DB_VERSION);
         this.myContext = context;
     }
 
@@ -215,7 +217,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if(newVersion>oldVersion)
+            try {
+                copyDataBase();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
 
