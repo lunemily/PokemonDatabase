@@ -7,16 +7,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.data.EggGroupDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
+import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.models.Type;
 import com.evanfuhr.pokemondatabase.views.GifImageView;
 
 import java.util.List;
@@ -30,6 +34,8 @@ public class PokemonDetailsFragment extends Fragment {
     LinearLayout _eggGroups;
     TextView _height;
     GifImageView _spriteGif;
+    Button _type1;
+    Button _type2;
     TextView _weight;
 
     public PokemonDetailsFragment() {
@@ -52,6 +58,8 @@ public class PokemonDetailsFragment extends Fragment {
         _eggGroups = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonEggGroupsList);
         _height = (TextView) detailsFragmentView.findViewById(R.id.pokemonHeightValue);
         _spriteGif = (GifImageView) detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
+        _type1 = (Button) detailsFragmentView.findViewById(R.id.buttonPokemonType1);
+        _type2 = (Button) detailsFragmentView.findViewById(R.id.buttonPokemonType2);
         _weight = (TextView) detailsFragmentView.findViewById(R.id.pokemonWeightValue);
 
         return detailsFragmentView;
@@ -74,6 +82,7 @@ public class PokemonDetailsFragment extends Fragment {
         setFragmentHeightAndWeight();
         setFragmentAbilities();
         setFragmentEggGroups();
+        setFragmentTypes();
     }
 
     void setFragmentAbilities() {
@@ -123,5 +132,33 @@ public class PokemonDetailsFragment extends Fragment {
     void setFragmentSprite() {
         int spriteID = getContext().getResources().getIdentifier(_pokemon.getSpriteName(), "drawable", getContext().getPackageName());
         _spriteGif.setGifImageResource(spriteID);
+    }
+
+    void setFragmentTypes() {
+        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+        TypeDAO typeDAO = new TypeDAO(getActivity());
+
+        _pokemon.setTypes(pokemonDAO.getTypesForPokemon(_pokemon));
+        List<Type> types = Type.loadTypes(_pokemon.getTypes(), typeDAO);
+
+        if (types.size() == 1) {
+            _type1.setVisibility(View.INVISIBLE);
+            TableRow.LayoutParams params = new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+            params.span = 6;
+            params.column = 0;
+            _type2.setLayoutParams(params);
+            _type2.setText(types.get(0).getName());
+            _type2.setId(types.get(0).getID());
+            _type2.setBackgroundColor(Color.parseColor(types.get(0).getColor()));
+        } else {
+            _type1.setText(types.get(0).getName());
+            _type1.setId(types.get(0).getID());
+            _type1.setBackgroundColor(Color.parseColor(types.get(0).getColor()));
+
+            _type2.setText(types.get(1).getName());
+            _type2.setId(types.get(1).getID());
+            _type2.setBackgroundColor(Color.parseColor(types.get(1).getColor()));
+        }
     }
 }

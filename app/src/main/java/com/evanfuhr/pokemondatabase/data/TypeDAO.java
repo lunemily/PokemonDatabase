@@ -21,6 +21,7 @@ public class TypeDAO extends DataBaseHelper {
                 " FROM " + TABLE_TYPES +
                 ", " + TABLE_TYPE_NAMES +
                 " WHERE " + TABLE_TYPES + "." + KEY_ID + " = '" + type.getID() + "'" +
+                " AND " + TABLE_TYPES + "." + KEY_ID + " = " + TABLE_TYPE_NAMES + "." + KEY_TYPE_ID +
                 " AND " + TABLE_TYPE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
                 ;
 

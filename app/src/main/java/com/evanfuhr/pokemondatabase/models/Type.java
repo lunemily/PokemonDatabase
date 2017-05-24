@@ -1,5 +1,10 @@
 package com.evanfuhr.pokemondatabase.models;
 
+import com.evanfuhr.pokemondatabase.data.TypeDAO;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Type {
 
     private int _id;
@@ -37,5 +42,16 @@ public class Type {
 
     public void setColor(String color) {
         this._color = color;
+    }
+
+    // Static methods
+
+    public static List<Type> loadTypes(List<Type> types, TypeDAO typeDAO) {
+        List<Type> newTypes = new ArrayList<>();
+        for (Type t: types) {
+            Type type = typeDAO.getTypeByID(t);
+            newTypes.add(type);
+        }
+        return newTypes;
     }
 }

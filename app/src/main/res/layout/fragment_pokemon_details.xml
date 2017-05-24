@@ -52,13 +52,15 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                     <TextView
                         android:id="@+id/pokemonHeight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:layout_span="1"
                         android:ems="10"
                         android:gravity="start"
                         android:inputType="none"
@@ -69,6 +71,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:layout_span="2"
                         android:ems="10"
                         android:gravity="end"
                         android:inputType="none"
@@ -80,6 +83,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:layout_span="1"
                         android:ems="10"
                         android:gravity="start"
                         android:inputType="none"
@@ -90,6 +94,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
+                        android:layout_span="2"
                         android:ems="10"
                         android:gravity="end"
                         android:inputType="none"
@@ -100,13 +105,14 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                     <TextView
                         android:id="@+id/pokemonAbilities"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="2"
+                        android:layout_span="3"
                         android:ems="10"
                         android:gravity="start"
                         android:inputType="none"
@@ -116,20 +122,22 @@
                         android:id="@+id/pokemonAbilitiesList"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="2"
+                        android:layout_span="3"
                         android:orientation="vertical">
+
                     </LinearLayout>
 
                 </TableRow>
 
                 <TableRow
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin" >
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="2"
+                        android:layout_span="3"
                         android:ems="10"
                         android:gravity="start"
                         android:inputType="none"
@@ -139,10 +147,46 @@
                         android:id="@+id/pokemonEggGroupsList"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="2"
+                        android:layout_span="3"
                         android:orientation="vertical">
+
                     </LinearLayout>
+
                 </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:text="@string/type" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin" >
+
+                    <Button
+                        android:id="@+id/buttonPokemonType1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:text="@string/type_1" />
+
+                    <Button
+                        android:id="@+id/buttonPokemonType2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:text="@string/type_2" />
+
+                </TableRow>
+
             </TableLayout>
 
         </LinearLayout>

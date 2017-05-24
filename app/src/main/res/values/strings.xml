@@ -106,4 +106,7 @@
     <string name="action_settings">Settings</string>
     <string name="search">Search</string>
     <string name="pokemon">Pokémon</string>
+    <string name="type_1">Type 1</string>
+    <string name="type_2">Type 2</string>
+    <string name="type">Type</string>
 </resources>

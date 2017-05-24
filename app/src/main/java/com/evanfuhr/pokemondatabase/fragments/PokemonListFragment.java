@@ -82,10 +82,10 @@ public class PokemonListFragment extends Fragment {
     }
 
     public void generatePokemonList(String nameSearchParam) {
-        PokemonDAO db = new PokemonDAO(getActivity());
+        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
         TypeDAO typeDAO = new TypeDAO(getActivity());
 
-        List<Pokemon> pokemons = db.getAllPokemon(nameSearchParam);
+        List<Pokemon> pokemons = pokemonDAO.getAllPokemon(nameSearchParam);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
@@ -98,7 +98,7 @@ public class PokemonListFragment extends Fragment {
 
             //Create hero button
             final Button pokemon_button = new Button(getActivity());
-            List<Type> types = db.getTypesForPokemon(pokemon);
+            List<Type> types = pokemonDAO.getTypesForPokemon(pokemon);
 
 
             //create a new gradient color
