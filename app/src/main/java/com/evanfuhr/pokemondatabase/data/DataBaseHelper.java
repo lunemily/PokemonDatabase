@@ -48,6 +48,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String TABLE_POKEMON_SPECIES_NAMES = "pokemon_species_names";
     static final String TABLE_POKEMON_TYPES = "pokemon_types";
     static final String TABLE_TYPES = "types";
+    static final String TABLE_TYPE_EFFICACY = "type_efficacy";
     static final String TABLE_TYPE_NAMES = "type_names";
     static final String TABLE_VERSIONS = "versions";
     static final String TABLE_VERSION_GROUPS = "version_groups";
@@ -93,6 +94,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //pokemon_species_names
     static final String KEY_POKEMON_SPECIES_ID = "pokemon_species_id";
+
+    //type_efficacy
+    static final String KEY_DAMAGE_FACTOR = "damage_factor";
+    static final String KEY_DAMAGE_TYPE_ID = "damage_type_id";
+    static final String KEY_TARGET_TYPE_ID = "target_type_id";
 
     //types
     static final String KEY_COLOR = "color";

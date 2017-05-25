@@ -139,7 +139,7 @@ public class PokemonDetailsFragment extends Fragment {
         TypeDAO typeDAO = new TypeDAO(getActivity());
 
         _pokemon.setTypes(pokemonDAO.getTypesForPokemon(_pokemon));
-        List<Type> types = Type.loadTypes(_pokemon.getTypes(), typeDAO);
+        List<Type> types = Type.loadTypesForPokemon(_pokemon.getTypes(), typeDAO);
 
         if (types.size() == 1) {
             _type1.setVisibility(View.INVISIBLE);

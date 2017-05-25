@@ -51,7 +51,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_display);
 
-        PokemonDAO db = new PokemonDAO(this);
+        PokemonDAO pokemonDAO = new PokemonDAO(this);
 
         _RelativeLayout = (RelativeLayout) findViewById(R.id.pokemon_display_activity);
         _moveListLayout = (LinearLayout) findViewById(R.id.move_list);
@@ -59,7 +59,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         //Get pokemon id passed to this activity
         Intent intent = getIntent();
         _pokemon.setID(intent.getIntExtra(PokemonListActivity.POKEMON_ID, 0));
-        _pokemon = db.getSinglePokemonByID(_pokemon);
+        _pokemon = pokemonDAO.getSinglePokemonByID(_pokemon);
         onPokemonSelected(_pokemon);
         setTitle(_pokemon.getName());
         //generateMovesCards();

@@ -7,10 +7,21 @@ import java.util.List;
 
 public class Type {
 
-    private int _id;
-    private String _name;
-    private int _slot;
     private String _color;
+    private int _id;
+    private int[] _immuneTo;
+    private String _name;
+    private int[] _resistantTo;
+    private int _slot;
+    private int[] _weakTo;
+
+    public String getColor() {
+        return this._color;
+    }
+
+    public void setColor(String color) {
+        this._color = color;
+    }
 
     public int getID() {
         return this._id;
@@ -18,6 +29,14 @@ public class Type {
 
     public void setID(int id) {
         this._id = id;
+    }
+
+    public int[] getImmuneTo() {
+        return _immuneTo;
+    }
+
+    public void setImmuneTo(int[] immuneTo) {
+        this._immuneTo = immuneTo;
     }
 
     public String getName() {
@@ -28,6 +47,14 @@ public class Type {
         this._name = name;
     }
 
+    public int[] getResistantTo() {
+        return this._resistantTo;
+    }
+
+    public void setResistantTo(int[] resistantTo) {
+        this._resistantTo = resistantTo;
+    }
+
     public int getSlot() {
         return this._slot;
     }
@@ -36,17 +63,17 @@ public class Type {
         this._slot = slot;
     }
 
-    public String getColor() {
-        return this._color;
+    public int[] getWeakTo() {
+        return _weakTo;
     }
 
-    public void setColor(String color) {
-        this._color = color;
+    public void setWeakTo(int[] weakTo) {
+        this._weakTo = weakTo;
     }
 
     // Static methods
 
-    public static List<Type> loadTypes(List<Type> types, TypeDAO typeDAO) {
+    public static List<Type> loadTypesForPokemon(List<Type> types, TypeDAO typeDAO) {
         List<Type> newTypes = new ArrayList<>();
         for (Type t: types) {
             Type type = typeDAO.getTypeByID(t);
