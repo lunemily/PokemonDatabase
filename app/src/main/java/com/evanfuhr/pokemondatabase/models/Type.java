@@ -15,6 +15,7 @@ public class Type {
     private int _slot;
     private int[] _weakTo;
 
+    //TODO: Need to enumerate type colors separately from db
     public String getColor() {
         return this._color;
     }
