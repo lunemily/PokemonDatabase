@@ -11,9 +11,13 @@ public class Pokemon {
     private Double _height;
     private int _id;
     private boolean _mega;
+    private List<Move> _moves;
     private String _name;
     private List<Type> _types;
     private Double _weight;
+
+    public Pokemon() {
+    }
 
     public List<Ability> getAbilities() {
         return this._abilities;
@@ -63,6 +67,22 @@ public class Pokemon {
         this._id = id;
     }
 
+    public boolean getMega() {
+        return this._mega;
+    }
+
+    public void setMega(boolean mega) {
+        this._mega = mega;
+    }
+
+    public List<Move> getMoves() {
+        return _moves;
+    }
+
+    public void setMoves(List<Move> moves) {
+        this._moves = moves;
+    }
+
     public String getName() {
         if (_name == null) {
             _name = "undefined";
@@ -90,6 +110,8 @@ public class Pokemon {
     public void setWeight(Double weight) {
         this._weight = weight;
     }
+
+    //Not Getters and Setters
 
     public String getSpriteName() {
         String filename;
