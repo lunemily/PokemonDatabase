@@ -43,6 +43,13 @@ public class PokemonListActivity extends AppCompatActivity
         MenuItem searchMenuItem = menu.findItem(R.id.action_search_pokemon_list);
         SearchView searchView = (SearchView) searchMenuItem.getActionView();
 
+        if (!searchMenuItem.isActionViewExpanded()) {
+            searchMenuItem.expandActionView();
+        }
+        else {
+            searchMenuItem.collapseActionView();
+        }
+
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(this);
@@ -79,6 +86,7 @@ public class PokemonListActivity extends AppCompatActivity
     public boolean onQueryTextChange(String newText) {
         FragmentManager fm = getFragmentManager();
         PokemonListFragment pokemonListFragment = (PokemonListFragment) fm.findFragmentById(R.id.pokemonListFragment);
+        //Very taxing on resources
         pokemonListFragment.regeneratePokemonList(newText);
         return true;
     }

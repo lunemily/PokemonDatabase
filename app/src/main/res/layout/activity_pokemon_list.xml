@@ -10,25 +10,10 @@
     tools:context="com.evanfuhr.pokemondatabase.activities.PokemonListActivity"
     android:id="@+id/main_activity">
 
-    <ScrollView
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
-        android:layout_centerHorizontal="true" >
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/pokemonlist"
-            android:longClickable="false">
-
-            <fragment
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment"
-                android:id="@+id/pokemonListFragment"
-                android:layout_margin="@dimen/activity_horizontal_margin"/>
-        </LinearLayout>
-    </ScrollView>
+        android:name="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment"
+        android:id="@+id/pokemonListFragment"
+        android:layout_margin="@dimen/activity_horizontal_margin"/>
 </RelativeLayout>
