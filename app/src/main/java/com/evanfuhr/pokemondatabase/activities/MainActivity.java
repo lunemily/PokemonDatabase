@@ -14,13 +14,15 @@ import android.widget.Toast;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
 import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
+import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
 
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
-        implements PokemonListFragment.OnFragmentInteractionListener{
+        implements PokemonListFragment.OnPokemonListFragmentInteractionListener,
+        TypeListFragment.OnTypeListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON = "Pokémon";
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 
     Button _pokemonButton;
+    Button _typeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +72,20 @@ public class MainActivity extends AppCompatActivity
 
         }
         setTitle(POKEMON);
-        setPokemonButton();
+        setListButtons();
     }
 
-    private void setPokemonButton() {
+    private void setListButtons() {
         _pokemonButton = (Button) this.findViewById(R.id.buttonPokemonList);
         _pokemonButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickButton(view);
+            }
+        });
+
+        _typeButton = (Button) this.findViewById(R.id.buttonTypeList);
+        _typeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickButton(view);
@@ -88,6 +99,9 @@ public class MainActivity extends AppCompatActivity
         switch(view.getId()) {
             case R.id.buttonPokemonList:
                 intent = new Intent(this, PokemonListActivity.class);
+                break;
+            case R.id.buttonTypeList:
+                intent = new Intent(this, TypeListActivity.class);
                 break;
             default:
                 intent = new Intent(this, MainActivity.class);
@@ -130,7 +144,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onPokemonListFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onTypeListFragmentInteraction(Uri uri) {
 
     }
 }

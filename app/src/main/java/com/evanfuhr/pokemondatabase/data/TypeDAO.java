@@ -15,6 +15,39 @@ public class TypeDAO extends DataBaseHelper {
         super(context);
     }
 
+    public List<Type> getAllTypes(String nameSearchParam) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Type> types = new ArrayList<>();
+
+        String selectQuery = "SELECT " + TABLE_TYPES + "." + KEY_ID +
+                ", " + TABLE_TYPE_NAMES + "." + KEY_NAME +
+                ", " + TABLE_TYPES + "." + KEY_COLOR +
+                " FROM " + TABLE_TYPES +
+                ", " + TABLE_TYPE_NAMES +
+                " WHERE " + TABLE_TYPES + "." + KEY_ID + " = " + TABLE_TYPE_NAMES + "." + KEY_TYPE_ID +
+                " AND " + TABLE_TYPE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id
+                ;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                Type type = new Type();
+                type.setID(Integer.parseInt(cursor.getString(0)));
+                type.setName(cursor.getString(1));
+                type.setColor(cursor.getString(2));
+                //add pokemon to list
+                types.add(type);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return types;
+    }
+
     public Type getTypeByID(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 

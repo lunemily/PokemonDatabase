@@ -15,7 +15,7 @@ import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
 import org.jetbrains.annotations.NonNls;
 
 public class PokemonListActivity extends AppCompatActivity
-        implements PokemonListFragment.OnFragmentInteractionListener,
+        implements PokemonListFragment.OnPokemonListFragmentInteractionListener,
         SearchView.OnQueryTextListener{
 
     @NonNls
@@ -92,7 +92,7 @@ public class PokemonListActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onPokemonListFragmentInteraction(Uri uri) {
 
     }
 }

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
@@ -20,7 +19,6 @@ import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
-import com.evanfuhr.pokemondatabase.views.GifImageView;
 
 import java.util.List;
 
@@ -28,15 +26,9 @@ public class PokemonListFragment extends Fragment {
 
     public static final String POKEMON_ID = "pokemon_id";
 
-    private OnFragmentInteractionListener mListener;
+    private OnPokemonListFragmentInteractionListener _listener;
 
     LinearLayout _pokemonList;
-    LinearLayout _abilities;
-    TextView _dexID;
-    LinearLayout _eggGroups;
-    TextView _height;
-    GifImageView _spriteGif;
-    TextView _weight;
 
     public PokemonListFragment() {
         // Required empty public constructor
@@ -63,18 +55,18 @@ public class PokemonListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnPokemonListFragmentInteractionListener) {
+            _listener = (OnPokemonListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnPokemonListFragmentInteractionListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        _listener = null;
     }
 
     public void generatePokemonList() {
@@ -96,12 +88,12 @@ public class PokemonListFragment extends Fragment {
 
         for (Pokemon pokemon : pokemons) {
 
-            //Create hero button
+            // Create pokemon button
             final Button pokemon_button = new Button(getActivity());
             List<Type> types = pokemonDAO.getTypesForPokemon(pokemon);
 
 
-            //create a new gradient color
+            // Create a new gradient color
             int[] colors = {0, 0, 0, 0};
             if (types.size() == 1) {
                 colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
@@ -131,12 +123,13 @@ public class PokemonListFragment extends Fragment {
                 }
             });
 
-            //Add the pokemon button to the table row
+            //Add the pokemon button to the list
             _pokemonList.addView(pokemon_button);
 
             registerForContextMenu(pokemon_button);
 
-            if (counter >= 800) {
+            // Used for throttling in testing
+            if (counter >= 810) {
                 break;
             }
             counter++;
@@ -170,15 +163,15 @@ public class PokemonListFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnPokemonListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onPokemonListFragmentInteraction(Uri uri);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        if (_listener != null) {
+            _listener.onPokemonListFragmentInteraction(uri);
         }
     }
 }
