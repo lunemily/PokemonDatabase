@@ -94,7 +94,6 @@ public class PokemonMovesFragment extends Fragment {
 
     public void fillMovesCards() {
         PokemonDAO db = new PokemonDAO(getActivity());
-        MoveDAO moveDAO = new MoveDAO(getActivity());
 
         List<Move> moves = db.getMovesForPokemonByGame(_pokemon);
         _levelMoves = Move.getLevelUpMoves(moves);
@@ -133,7 +132,7 @@ public class PokemonMovesFragment extends Fragment {
                 break;
         }
 
-        final TableRow header = new TableRow(getActivity());
+        final TableRow headerRow = new TableRow(getActivity());
         final TextView method_header = createMoveField(moveMethod, _fieldParams, true);
         final TextView move_header = createMoveField("Name", _buttonParams, true);
         final TextView power_header = createMoveField("Pwr", _fieldParams, true);
@@ -141,24 +140,24 @@ public class PokemonMovesFragment extends Fragment {
         final TextView accuracy_header = createMoveField("Acc", _fieldParams, true);
 
 
-        header.addView(method_header);
-        header.addView(move_header);
-        header.addView(power_header);
-        header.addView(pp_header);
-        header.addView(accuracy_header);
+        headerRow.addView(method_header);
+        headerRow.addView(move_header);
+        headerRow.addView(power_header);
+        headerRow.addView(pp_header);
+        headerRow.addView(accuracy_header);
 
-        tableLayout.addView(header);
+        tableLayout.addView(headerRow);
 
         for (Move m : moves) {
             Move move = moveDAO.getMoveByID(m);
             tableLayout.addView(generateMoveTableRow(move));
         }
 
+        moveDAO.close();
         return tableLayout;
     }
 
     private TableRow generateMoveTableRow(Move move) {
-        MoveDAO moveDAO = new MoveDAO(getActivity());
         TypeDAO typeDAO = new TypeDAO(getActivity());
 
         final TableRow row = new TableRow(getActivity());
@@ -199,6 +198,7 @@ public class PokemonMovesFragment extends Fragment {
         TextView accuracy = createMoveField(Integer.toString(move.getAccuracy()), _fieldParams, false);
         row.addView(accuracy);
 
+        typeDAO.close();
         return row;
     }
 

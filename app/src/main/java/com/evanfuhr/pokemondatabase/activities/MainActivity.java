@@ -42,15 +42,9 @@ public class MainActivity extends AppCompatActivity
 
         try {
 
-            Toast toast = Toast.makeText(getApplicationContext(), "Creating database", Toast.LENGTH_LONG);
-            toast.show();
-
             myDbHelper.createDataBase();
 
         } catch (IOException ioe) {
-
-            Toast toast = Toast.makeText(getApplicationContext(), "Failed to create database", Toast.LENGTH_LONG);
-            toast.show();
 
             throw new Error("Unable to create database");
 
@@ -58,15 +52,9 @@ public class MainActivity extends AppCompatActivity
 
         try {
 
-            Toast toast = Toast.makeText(getApplicationContext(), "Opening database", Toast.LENGTH_LONG);
-            toast.show();
-
             myDbHelper.openDataBase();
 
         }catch(SQLException sqle){
-
-            Toast toast = Toast.makeText(getApplicationContext(), "Failed to open database", Toast.LENGTH_LONG);
-            toast.show();
 
             throw sqle;
 

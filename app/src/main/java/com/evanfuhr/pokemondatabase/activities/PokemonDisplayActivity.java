@@ -85,8 +85,4 @@ public class PokemonDisplayActivity extends AppCompatActivity
         RelativeLayout pokemonDetailsActivity = (RelativeLayout) findViewById(R.id.pokemon_display_activity);
         pokemonDetailsActivity.setBackground(gd);
     }
-
-    private void generateLocationCard() {
-        //TODO
-    }
 }

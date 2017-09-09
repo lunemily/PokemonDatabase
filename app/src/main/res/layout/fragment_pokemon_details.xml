@@ -176,6 +176,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_span="3"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:text="@string/type_1" />
 
                     <Button
@@ -183,6 +184,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_span="3"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:text="@string/type_2" />
 
                 </TableRow>

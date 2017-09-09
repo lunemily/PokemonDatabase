@@ -118,4 +118,7 @@
     <string name="eggMoves">Egg Moves</string>
     <string name="tutorMoves">Tutor Moves</string>
     <string name="Types">Types</string>
+    <string name="ImmuneToTypes">Immune To:</string>
+    <string name="typeIsAttacker">THIS TYPE DEALS DAMAGE AT:</string>
+    <string name="typeIsDefender">THIS TYPE TAKES DAMAGE AT:</string>
 </resources>

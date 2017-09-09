@@ -7,10 +7,10 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.evanfuhr.pokemondatabase.R;
@@ -89,7 +89,8 @@ public class PokemonListFragment extends Fragment {
         for (Pokemon pokemon : pokemons) {
 
             // Create pokemon button
-            final Button pokemon_button = new Button(getActivity());
+            final AppCompatButton pokemon_button = new AppCompatButton(getActivity());
+            //final Button pokemon_button = new Button(getActivity());
             List<Type> types = pokemonDAO.getTypesForPokemon(pokemon);
 
 
@@ -110,6 +111,12 @@ public class PokemonListFragment extends Fragment {
             GradientDrawable gd = new GradientDrawable(
                     GradientDrawable.Orientation.LEFT_RIGHT, colors);
 
+            // Use when AppCompatButton can accept GradientDrawable for button color
+//            pokemon_button.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor())));
+//            if (types.size() > 1) {
+//                pokemon_button.setTextColor(Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor()));
+//            }
+
             pokemon_button.setLayoutParams(params);
             pokemon_button.setText(pokemon.getName());
             pokemon_button.setId(pokemon.getID());
@@ -128,8 +135,8 @@ public class PokemonListFragment extends Fragment {
 
             registerForContextMenu(pokemon_button);
 
-            // Used for throttling in testing
-            if (counter >= 810) {
+            // Used for throttling in testing and performance
+            if (counter >= 151) {
                 break;
             }
             counter++;
