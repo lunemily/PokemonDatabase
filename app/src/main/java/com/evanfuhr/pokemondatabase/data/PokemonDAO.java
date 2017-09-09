@@ -171,10 +171,18 @@ public class PokemonDAO extends DataBaseHelper {
         String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID +
                 ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID +
                 ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL +
+                ", " + TABLE_MACHINES + "." + KEY_MACHINE_NUMBER +
                 " FROM " + TABLE_POKEMON_MOVES +
-                " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = '" + pokemon.getID() + "'" +
-                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'" +
-                " ORDER BY " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL + " ASC";
+                //", " + TABLE_MACHINES +
+                " LEFT OUTER JOIN (SELECT * FROM " + TABLE_MACHINES + " WHERE " + TABLE_MACHINES + "." + KEY_VERSION_GROUP_ID + " = " + version_group_id + ") AS " + TABLE_MACHINES +
+                " ON " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID + " = " + TABLE_MACHINES + "." + KEY_MOVE_ID +
+
+                " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = " + pokemon.getID() +
+                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = " + version_group_id +
+                " ORDER BY " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID + " ASC" +
+                ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL + " ASC" +
+                ", " + TABLE_MACHINES + "." + KEY_MACHINE_NUMBER + " ASC"
+                ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         //Loop through rows and add each to list
@@ -184,6 +192,9 @@ public class PokemonDAO extends DataBaseHelper {
                 move.setID(Integer.parseInt(cursor.getString(0)));
                 move.setMethodID(Integer.parseInt(cursor.getString(1)));
                 move.setLevel(Integer.parseInt(cursor.getString(2)));
+                if (!cursor.isNull(3)) {
+                    move.setTM(Integer.parseInt(cursor.getString(3)));
+                }
                 //add move to list
                 movesForPokemon.add(move);
             } while (cursor.moveToNext());

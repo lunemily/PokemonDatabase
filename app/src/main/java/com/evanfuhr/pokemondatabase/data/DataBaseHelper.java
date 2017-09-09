@@ -7,10 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.evanfuhr.pokemondatabase.models.Move;
-import com.evanfuhr.pokemondatabase.models.Pokemon;
-import com.evanfuhr.pokemondatabase.models.Type;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +33,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String TABLE_ABILITIES = "abilities";
     static final String TABLE_ABILITY_NAMES = "ability_names";
     static final String TABLE_EGG_GROUP_PROSE = "egg_group_prose";
+    static final String TABLE_MACHINES = "machines";
     static final String TABLE_MOVE_NAMES = "move_names";
     static final String TABLE_MOVES = "moves";
     static final String TABLE_POKEMON = "pokemon";
@@ -64,6 +61,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String KEY_SLOT = "slot";
     static final String KEY_TYPE_ID = "type_id";
     static final String KEY_VERSION_GROUP_ID = "version_group_id";
+
+    //machines
+    static final String KEY_MACHINE_NUMBER = "machine_number";
 
     //moves
     static final String KEY_POWER = "power";
@@ -239,69 +239,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 // Add your public helper methods to access and get content from the database.
 // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
 // to you to create adapters for your views.
-
-    public Move getMoveByID(Move move) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_ID +
-                ", " + TABLE_MOVE_NAMES + "." + KEY_NAME +
-                ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
-                ", " + TABLE_MOVES + "." + KEY_POWER +
-                ", " + TABLE_MOVES + "." + KEY_PP +
-                ", " + TABLE_MOVES + "." + KEY_ACCURACY +
-                " FROM " + TABLE_MOVES +
-                ", " + TABLE_MOVE_NAMES +
-                " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
-                " AND " + TABLE_MOVES + "." + KEY_ID + " = " + move.getID() +
-                " AND " + TABLE_MOVE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
-                ;
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                move.setID(Integer.parseInt(cursor.getString(0)));
-                move.setName(cursor.getString(1));
-                int type_id = Integer.parseInt(cursor.getString(2));
-                Type type = new Type();
-                type.setID(type_id);
-                move.setType(type);
-                if (!cursor.isNull(3)) {
-                    move.setPower(Integer.parseInt(cursor.getString(3)));
-                }
-                move.setPP(Integer.parseInt(cursor.getString(4)));
-                if (!cursor.isNull(5)) {
-                    move.setAccuracy(Integer.parseInt(cursor.getString(5)));
-                }
-            }
-            cursor.close();
-        }
-
-        return move;
-    }
-
-    public Move getMoveLevelForPokemonByGame(Move move, Pokemon pokemon) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        int version_group_id = getVersionGroupIDByVersionID(_version_id);
-
-        String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL +
-                " FROM " + TABLE_POKEMON_MOVES +
-                " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = '" + pokemon.getID() + "'" +
-                " AND " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID + " = '" + move.getID() + "'" +
-                " AND " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID + " = '" + "1" + "'" +
-                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'"
-                ;
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                move.setLevel(Integer.parseInt(cursor.getString(0)));
-            }
-            cursor.close();
-        }
-
-        return move;
-    }
 
     public int getVersionGroupIDByVersionID(int version_id) {
         SQLiteDatabase db = this.getWritableDatabase();

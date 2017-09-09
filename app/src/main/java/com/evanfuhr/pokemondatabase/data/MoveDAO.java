@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.evanfuhr.pokemondatabase.models.Move;
-import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 /**
@@ -48,16 +47,37 @@ public class MoveDAO extends DataBaseHelper {
                 Type type = new Type();
                 type.setID(type_id);
                 move.setType(type);
-                if (cursor.getString(3).length() != 0) {
+                if (!cursor.isNull(3)) {
                     move.setPower(Integer.parseInt(cursor.getString(3)));
                 }
                 move.setPP(Integer.parseInt(cursor.getString(4)));
-                if (cursor.getString(5).length() != 0) {
+                if (!cursor.isNull(5)) {
                     move.setAccuracy(Integer.parseInt(cursor.getString(5)));
                 }
             }
             cursor.close();
         }
+        return move;
+    }
+
+    public Move getTMForMove(Move move) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int version_group_id = getVersionGroupIDByVersionID(_version_id);
+
+        String selectQuery = "SELECT " + TABLE_MACHINES + "." + KEY_MACHINE_NUMBER +
+                " FROM " + TABLE_MACHINES +
+                " WHERE " + TABLE_MACHINES + "." + KEY_MOVE_ID + " = " + move.getID() +
+                " AND " + TABLE_MACHINES + "." + KEY_VERSION_GROUP_ID + " = " + version_group_id
+                ;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                move.setTM(Integer.parseInt(cursor.getString(0)));
+            }
+            cursor.close();
+        }
+
         return move;
     }
 }

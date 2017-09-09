@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
+import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Move;
@@ -37,9 +36,12 @@ public class PokemonMovesFragment extends Fragment {
     List<Move> _machineMoves = new ArrayList<>();
 
     LinearLayout _levelMovesLayout;
-    LinearLayout _tmMovesLayout;
+    LinearLayout _machineMovesLayout;
     LinearLayout _eggMovesLayout;
     LinearLayout _tutorMovesLayout;
+
+    TableRow.LayoutParams _buttonParams;
+    TableRow.LayoutParams _fieldParams;
 
     public PokemonMovesFragment() {
         // Required empty public constructor
@@ -57,9 +59,20 @@ public class PokemonMovesFragment extends Fragment {
         View detailsFragmentView = inflater.inflate(R.layout.fragment_pokemon_moves, container, false);
 
         _levelMovesLayout = (LinearLayout) detailsFragmentView.findViewById(R.id.level_up_moves_layout);
-        _tmMovesLayout = (LinearLayout) detailsFragmentView.findViewById(R.id.tm_moves_layout);
+        _machineMovesLayout = (LinearLayout) detailsFragmentView.findViewById(R.id.tm_moves_layout);
         _eggMovesLayout = (LinearLayout) detailsFragmentView.findViewById(R.id.egg_moves_layout);
         _tutorMovesLayout = (LinearLayout) detailsFragmentView.findViewById(R.id.tutor_moves_layout);
+
+        _buttonParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        _buttonParams.span = 4;
+        _buttonParams.column = 1;
+        _buttonParams.setMargins(16, 4, 16, 4);
+
+        _fieldParams = new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+        _fieldParams.span = 1;
+        _fieldParams.setMargins(16, 4, 16, 4);
 
         return detailsFragmentView;
     }
@@ -76,23 +89,12 @@ public class PokemonMovesFragment extends Fragment {
 
     public void setPokemonMoves(Pokemon pokemon) {
         _pokemon = pokemon;
-        //generateMovesCards();
         fillMovesCards();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public void generateMovesCards() {
-        PokemonDAO db = new PokemonDAO(getActivity());
-
-        List<Move> moves = db.getMovesForPokemonByGame(_pokemon);
-        _levelMoves = Move.getLevelUpMoves(moves);
-        _eggMoves = Move.getEggMoves(moves);
-        _tutorMoves = Move.getTutorMoves(moves);
-        _machineMoves = Move.getMachineMoves(moves);
     }
 
     public void fillMovesCards() {
         PokemonDAO db = new PokemonDAO(getActivity());
+        MoveDAO moveDAO = new MoveDAO(getActivity());
 
         List<Move> moves = db.getMovesForPokemonByGame(_pokemon);
         _levelMoves = Move.getLevelUpMoves(moves);
@@ -100,170 +102,117 @@ public class PokemonMovesFragment extends Fragment {
         _tutorMoves = Move.getTutorMoves(moves);
         _machineMoves = Move.getMachineMoves(moves);
 
-        _levelMovesLayout.addView(generateMoveTable(_levelMoves, db, 1));
-        _tmMovesLayout.addView(generateMoveTable(_machineMoves, db, 2));
-        _eggMovesLayout.addView(generateMoveTable(_eggMoves, db, 3));
-        _tutorMovesLayout.addView(generateMoveTable(_tutorMoves, db, 4));
+        _levelMovesLayout.addView(generateMoveTable(_levelMoves, 1));
+        _machineMovesLayout.addView(generateMoveTable(_machineMoves, 4));
+        _eggMovesLayout.addView(generateMoveTable(_eggMoves, 2));
+        _tutorMovesLayout.addView(generateMoveTable(_tutorMoves, 3));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private CardView createMovesCard(List<Move> moves, int moveMethodID) {
-        DataBaseHelper db = new DataBaseHelper(getActivity());
-
-        // Set the CardView layoutParams
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(0, 16, 0, 0);
-
-        // Initialize a new CardView
-        CardView card = new CardView(getActivity());
-        card.setLayoutParams(params);
-        card.setRadius(1);
-        card.setContentPadding(15, 15, 15, 15);
-        card.setCardBackgroundColor(Color.parseColor("#fafafa"));
-        card.setMaxCardElevation(15);
-        card.setCardElevation(9);
-
-        // Initialize a new TextView to put in CardView
-        TextView moveMethodLabel = new TextView(getActivity());
-        moveMethodLabel.setLayoutParams(params);
-
-        String moveMethod;
-        switch (moveMethodID) {
-            case 1:
-                moveMethod = "Level Up Moves";
-                break;
-            case 2:
-                moveMethod = "Machine Moves";
-                break;
-            case 3:
-                moveMethod = "Egg Moves";
-                break;
-            case 4:
-                moveMethod = "Tutor Moves";
-                break;
-            default:
-                moveMethod = "Moves";
-                break;
-        }
-
-        moveMethodLabel.setText(moveMethod);
-        moveMethodLabel.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-        moveMethodLabel.setTextColor(Color.BLACK);
-
-        // Initialize a new Table to put in CardView
-        TableLayout tableLayout = generateMoveTable(moves, db, moveMethodID);
-        tableLayout.addView(moveMethodLabel, 0);
-
-        // Put the TextView in CardView
-        card.addView(tableLayout);
-
-        return card;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private TableLayout generateMoveTable(List<Move> moves, DataBaseHelper db, int moveMethodID) {
-        TypeDAO typeDAO = new TypeDAO(getActivity());
+    private TableLayout generateMoveTable(List<Move> moves, int moveMethodID) {
+        MoveDAO moveDAO = new MoveDAO(getActivity());
         final TableLayout tableLayout = new TableLayout(getActivity());
-        TableRow.LayoutParams tableParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT
-                , TableRow.LayoutParams.WRAP_CONTENT
-        );
-
-        tableParams.setMargins(12, 16, 12, 0);
-
-        final TableRow header = new TableRow(getActivity());
-        final TextView move_header = createMoveHeader("Name", tableParams);
-        final TextView power_header = createMoveHeader("Power", tableParams);
-        final TextView pp_header = createMoveHeader("PP", tableParams);
-        final TextView accuracy_header = createMoveHeader("Accuracy", tableParams);
+        tableLayout.setColumnStretchable(1, true);
 
         String moveMethod;
         switch (moveMethodID) {
             case 1:
-                moveMethod = "Level";
+                moveMethod = "Lvl";
                 break;
             case 2:
                 moveMethod = "TM";
                 break;
             case 3:
-                moveMethod = "Parent";
+                moveMethod = "M/F";
                 break;
             case 4:
-                moveMethod = "BP Cost";
+                moveMethod = "BP";
                 break;
             default:
                 moveMethod = "Error";
                 break;
         }
 
-        final TextView method_header = createMoveHeader(moveMethod, tableParams);
+        final TableRow header = new TableRow(getActivity());
+        final TextView method_header = createMoveField(moveMethod, _fieldParams, true);
+        final TextView move_header = createMoveField("Name", _buttonParams, true);
+        final TextView power_header = createMoveField("Pwr", _fieldParams, true);
+        final TextView pp_header = createMoveField("PP", _fieldParams, true);
+        final TextView accuracy_header = createMoveField("Acc", _fieldParams, true);
 
+
+        header.addView(method_header);
         header.addView(move_header);
         header.addView(power_header);
         header.addView(pp_header);
         header.addView(accuracy_header);
-        header.addView(method_header);
 
         tableLayout.addView(header);
 
         for (Move m : moves) {
-            Move move = db.getMoveByID(m);
-            final TableRow row = new TableRow(getActivity());
-            final Button move_button = new Button(getActivity());
-            move_button.setText(move.getName());
-            move_button.setId(move.getID());
-            move.setType(typeDAO.getTypeByID(move.getType()));
-            //TODO: Set color for move type
-            move_button.setBackgroundColor(Color.parseColor(move.getType().getColor()));
-            move_button.setLayoutParams(tableParams);
-
-            TextView power = createMoveField(Integer.toString(move.getPower()), tableParams);
-            TextView pp = createMoveField(Integer.toString(move.getPP()), tableParams);
-            TextView accuracy = createMoveField(Integer.toString(move.getAccuracy()), tableParams);
-            TextView methodDetail;
-
-            switch (moveMethodID) {
-                case 1:
-                    move = db.getMoveLevelForPokemonByGame(move, _pokemon);
-                    methodDetail = createMoveField(Integer.toString(move.getLevel()), tableParams);
-                    break;
-                default:
-                    methodDetail = createMoveField("", tableParams);
-            }
-
-            row.addView(move_button);
-            row.addView(power);
-            row.addView(pp);
-            row.addView(accuracy);
-            row.addView(methodDetail);
-
-            tableLayout.addView(row);
+            Move move = moveDAO.getMoveByID(m);
+            tableLayout.addView(generateMoveTableRow(move));
         }
 
         return tableLayout;
     }
 
-    private TextView createMoveHeader(String text, TableRow.LayoutParams tableParams) {
-        TextView field = new TextView(getActivity());
-        field.setText(text);
-        field.setTextColor(Color.BLACK);
-        field.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        field.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-        field.setGravity(View.TEXT_ALIGNMENT_CENTER);
-        field.setLayoutParams(tableParams);
+    private TableRow generateMoveTableRow(Move move) {
+        MoveDAO moveDAO = new MoveDAO(getActivity());
+        TypeDAO typeDAO = new TypeDAO(getActivity());
 
-        return field;
+        final TableRow row = new TableRow(getActivity());
+
+        // Method Detail
+        final TextView methodDetail;
+        switch (move.getMethodID()) {
+            case 1:
+                methodDetail = createMoveField(Integer.toString(move.getLevel()), _fieldParams, false);
+                break;
+            case 4:
+                //move = moveDAO.getTMForMove(move);
+                methodDetail = createMoveField(Integer.toString(move.getTM()), _fieldParams, false);
+                break;
+            default:
+                methodDetail = createMoveField("", _fieldParams, false);
+        }
+        row.addView(methodDetail);
+
+        // Move Button
+        final Button move_button = new Button(getActivity());move_button.setText(move.getName());
+        move_button.setId(move.getID());
+        move.setType(typeDAO.getTypeByID(move.getType()));
+        move_button.setBackgroundColor(Color.parseColor(move.getType().getColor()));
+        move_button.setLayoutParams(_buttonParams);
+        move_button.setPadding(16, 0, 16, 0);
+        row.addView(move_button);
+
+        // Power
+        TextView power = createMoveField(Integer.toString(move.getPower()), _fieldParams, false);
+        row.addView(power);
+
+        // PP
+        TextView pp = createMoveField(Integer.toString(move.getPP()), _fieldParams, false);
+        row.addView(pp);
+
+        // Accuracy
+        TextView accuracy = createMoveField(Integer.toString(move.getAccuracy()), _fieldParams, false);
+        row.addView(accuracy);
+
+        return row;
     }
 
-    private TextView createMoveField(String text, TableRow.LayoutParams tableParams) {
+    private TextView createMoveField(String text, TableRow.LayoutParams params, Boolean header) {
         TextView field = new TextView(getActivity());
         field.setText(text);
         field.setTextColor(Color.BLACK);
-        field.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-        field.setGravity(View.TEXT_ALIGNMENT_CENTER);
-        field.setLayoutParams(tableParams);
+        if (header) {
+            field.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        } else {
+            field.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+        }
+        field.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        field.setLayoutParams(params);
 
         return field;
     }

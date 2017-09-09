@@ -12,6 +12,7 @@ public class Move implements Comparable<Move> {
     private String _name;
     private int _power = 0;
     private int _pp = 0;
+    private int _tm = 0;
     private Type _type;
 
     
@@ -72,6 +73,14 @@ public class Move implements Comparable<Move> {
         this._pp = pp;
     }
 
+    public int getTM() {
+        return _tm;
+    }
+
+    public void setTM(int tm) {
+        this._tm = tm;
+    }
+
     public Type getType() {
         return this._type;
     }
@@ -124,16 +133,16 @@ public class Move implements Comparable<Move> {
     }
 
     public static List<Move> getMachineMoves(List<Move> moves) {
-        List<Move> levelMoves = new ArrayList<>();
+        List<Move> machineMoves = new ArrayList<>();
 
         for ( Move move : moves) {
             // Machine methods
             if (move.getMethodID() == 4) {
-                levelMoves.add(move);
+                machineMoves.add(move);
             }
         }
 
-        return levelMoves;
+        return machineMoves;
     }
 
     @Override
