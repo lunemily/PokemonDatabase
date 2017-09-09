@@ -30,12 +30,16 @@ import java.util.List;
 public class PokemonMovesFragment extends Fragment {
 
     Pokemon _pokemon;
+
     List<Move> _levelMoves = new ArrayList<>();
     List<Move> _eggMoves = new ArrayList<>();
     List<Move> _tutorMoves = new ArrayList<>();
     List<Move> _machineMoves = new ArrayList<>();
 
-    LinearLayout _moveListLayout;
+    LinearLayout _levelMovesLayout;
+    LinearLayout _tmMovesLayout;
+    LinearLayout _eggMovesLayout;
+    LinearLayout _tutorMovesLayout;
 
     public PokemonMovesFragment() {
         // Required empty public constructor
@@ -52,7 +56,10 @@ public class PokemonMovesFragment extends Fragment {
         // Inflate the layout for this fragment
         View detailsFragmentView = inflater.inflate(R.layout.fragment_pokemon_moves, container, false);
 
-        _moveListLayout = (LinearLayout) detailsFragmentView.findViewById(R.id.level_up_moves_layout);
+        _levelMovesLayout = (LinearLayout) detailsFragmentView.findViewById(R.id.level_up_moves_layout);
+        _tmMovesLayout = (LinearLayout) detailsFragmentView.findViewById(R.id.tm_moves_layout);
+        _eggMovesLayout = (LinearLayout) detailsFragmentView.findViewById(R.id.egg_moves_layout);
+        _tutorMovesLayout = (LinearLayout) detailsFragmentView.findViewById(R.id.tutor_moves_layout);
 
         return detailsFragmentView;
     }
@@ -70,6 +77,7 @@ public class PokemonMovesFragment extends Fragment {
     public void setPokemonMoves(Pokemon pokemon) {
         _pokemon = pokemon;
         //generateMovesCards();
+        fillMovesCards();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -81,22 +89,21 @@ public class PokemonMovesFragment extends Fragment {
         _eggMoves = Move.getEggMoves(moves);
         _tutorMoves = Move.getTutorMoves(moves);
         _machineMoves = Move.getMachineMoves(moves);
+    }
 
-        CardView levelUpMovesCard = createMovesCard(_levelMoves, 1);
-        CardView machineMovesCard = createMovesCard(_machineMoves, 2);
-        CardView eggMovesCard = createMovesCard(_eggMoves, 3);
-        CardView tutorMovesCard = createMovesCard(_tutorMoves, 4);
+    public void fillMovesCards() {
+        PokemonDAO db = new PokemonDAO(getActivity());
 
-        // Finally, add the CardView in root layout
-        _moveListLayout.addView(createLargeSpacer());
-        _moveListLayout.addView(levelUpMovesCard);
-        _moveListLayout.addView(createSmallSpacer());
-        _moveListLayout.addView(machineMovesCard);
-        _moveListLayout.addView(createSmallSpacer());
-        _moveListLayout.addView(eggMovesCard);
-        _moveListLayout.addView(createSmallSpacer());
-        _moveListLayout.addView(tutorMovesCard);
-        _moveListLayout.addView(createLargeSpacer());
+        List<Move> moves = db.getMovesForPokemonByGame(_pokemon);
+        _levelMoves = Move.getLevelUpMoves(moves);
+        _eggMoves = Move.getEggMoves(moves);
+        _tutorMoves = Move.getTutorMoves(moves);
+        _machineMoves = Move.getMachineMoves(moves);
+
+        _levelMovesLayout.addView(generateMoveTable(_levelMoves, db, 1));
+        _tmMovesLayout.addView(generateMoveTable(_machineMoves, db, 2));
+        _eggMovesLayout.addView(generateMoveTable(_eggMoves, db, 3));
+        _tutorMovesLayout.addView(generateMoveTable(_tutorMoves, db, 4));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -155,30 +162,19 @@ public class PokemonMovesFragment extends Fragment {
         return card;
     }
 
-    private View createLargeSpacer() {
-        View view = new View(getActivity());
-        view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 48));
-        return view;
-    }
-
-    private View createSmallSpacer() {
-        View view = new View(getActivity());
-        view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 16));
-        return view;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private TableLayout generateMoveTable(List<Move> moves, DataBaseHelper db, int moveMethodID) {
         TypeDAO typeDAO = new TypeDAO(getActivity());
         final TableLayout tableLayout = new TableLayout(getActivity());
         TableRow.LayoutParams tableParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT
+                TableRow.LayoutParams.MATCH_PARENT
+                , TableRow.LayoutParams.WRAP_CONTENT
         );
 
         tableParams.setMargins(12, 16, 12, 0);
 
         final TableRow header = new TableRow(getActivity());
-        final TextView move_header = createMoveHeader("com.evanfuhr.pokemondatabase.models.Move", tableParams);
+        final TextView move_header = createMoveHeader("Name", tableParams);
         final TextView power_header = createMoveHeader("Power", tableParams);
         final TextView pp_header = createMoveHeader("PP", tableParams);
         final TextView accuracy_header = createMoveHeader("Accuracy", tableParams);

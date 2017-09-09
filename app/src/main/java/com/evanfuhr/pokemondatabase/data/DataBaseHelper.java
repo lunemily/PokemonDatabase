@@ -265,11 +265,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 Type type = new Type();
                 type.setID(type_id);
                 move.setType(type);
-                if (cursor.getString(3).length() != 0) {
+                if (!cursor.isNull(3)) {
                     move.setPower(Integer.parseInt(cursor.getString(3)));
                 }
                 move.setPP(Integer.parseInt(cursor.getString(4)));
-                if (cursor.getString(5).length() != 0) {
+                if (!cursor.isNull(5)) {
                     move.setAccuracy(Integer.parseInt(cursor.getString(5)));
                 }
             }

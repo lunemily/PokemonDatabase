@@ -14,6 +14,7 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment;
+import com.evanfuhr.pokemondatabase.fragments.PokemonMovesFragment;
 import com.evanfuhr.pokemondatabase.interfaces.OnPokemonSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -51,8 +52,12 @@ public class PokemonDisplayActivity extends AppCompatActivity
         setPokemonBackgroundColor(pokemon);
 
         FragmentManager fm = getFragmentManager();
+
         PokemonDetailsFragment pokemonDetailsFragment = (PokemonDetailsFragment) fm.findFragmentById(R.id.pokemonDetailsFragment);
         pokemonDetailsFragment.setPokemonDetails(pokemon);
+
+        PokemonMovesFragment pokemonMovesFragment = (PokemonMovesFragment) fm.findFragmentById(R.id.pokemonMoveFragment);
+        pokemonMovesFragment.setPokemonMoves(pokemon);
     }
 
     private void setPokemonBackgroundColor(Pokemon pokemon) {

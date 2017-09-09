@@ -145,8 +145,8 @@ public class PokemonDetailsFragment extends Fragment {
             _type1.setVisibility(View.INVISIBLE);
             TableRow.LayoutParams params = new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-            params.span = 6;
-            params.column = 0;
+            params.column = 3;
+            params.span = 3;
             _type2.setLayoutParams(params);
             _type2.setText(types.get(0).getName());
             _type2.setId(types.get(0).getID());
