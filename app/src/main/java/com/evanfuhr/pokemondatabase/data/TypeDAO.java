@@ -74,12 +74,15 @@ public class TypeDAO extends DataBaseHelper {
         return type;
     }
 
-    public Type getEfficacy(Type type) {
+    public Type getSingleTypeEfficacy(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Integer> immuneTo = new ArrayList<>();
-        List<Integer> resistantTo = new ArrayList<>();
-        List<Integer> weakTo = new ArrayList<>();
+        List<Type> immuneTo = new ArrayList<>();
+        List<Type> ineffectiveAgainst = new ArrayList<>();
+        List<Type> notVeryEffectiveAgainst = new ArrayList<>();
+        List<Type> resistantTo = new ArrayList<>();
+        List<Type> superEffectiveAgainst = new ArrayList<>();
+        List<Type> weakTo = new ArrayList<>();
 
         String selectQuery = "SELECT " + KEY_DAMAGE_TYPE_ID +
                 ", " + KEY_TARGET_TYPE_ID +
@@ -94,18 +97,39 @@ public class TypeDAO extends DataBaseHelper {
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
             do {
-                if (type.getID() == Integer.parseInt(cursor.getString(0))) {
-                    //TODO do stuff
-                } else {
-                    switch (Integer.parseInt(cursor.getString(3))) {
+                Type attackingType = new Type();
+                Type defendingType = new Type();
+
+                attackingType.setID(Integer.parseInt(cursor.getString(0)));
+                defendingType.setID(Integer.parseInt(cursor.getString(1)));
+                int damageFactor = Integer.parseInt(cursor.getString(2));
+
+                if (type.getID() == attackingType.getID()) {
+                    // type is attacker
+                    switch (damageFactor) {
                         case 0:
-                            immuneTo.add(Integer.valueOf(cursor.getString(0)));
+                            ineffectiveAgainst.add(defendingType);
                             break;
                         case 50:
-                            resistantTo.add(Integer.valueOf(cursor.getString(0)));
+                            notVeryEffectiveAgainst.add(defendingType);
                             break;
                         case 200:
-                            weakTo.add(Integer.valueOf(cursor.getString(0)));
+                            superEffectiveAgainst.add(defendingType);
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    // type is defender
+                    switch (damageFactor) {
+                        case 0:
+                            immuneTo.add(attackingType);
+                            break;
+                        case 50:
+                            resistantTo.add(attackingType);
+                            break;
+                        case 200:
+                            weakTo.add(attackingType);
                             break;
                         default:
                             break;
@@ -114,6 +138,13 @@ public class TypeDAO extends DataBaseHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
+
+        type.setImmuneTo(immuneTo);
+        type.setIneffectiveAgainst(ineffectiveAgainst);
+        type.setNotVeryEffectiveAgainst(notVeryEffectiveAgainst);
+        type.setResistantTo(resistantTo);
+        type.setSuperEffectiveAgainst(superEffectiveAgainst);
+        type.setWeakTo(weakTo);
 
         return type;
     }

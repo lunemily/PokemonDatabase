@@ -2,6 +2,7 @@ package com.evanfuhr.pokemondatabase.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.data.EggGroupDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
@@ -27,6 +29,8 @@ import java.util.List;
 
 public class PokemonDetailsFragment extends Fragment {
 
+    public static final String TYPE_ID = "type_id";
+
     Pokemon _pokemon;
 
     LinearLayout _abilities;
@@ -34,8 +38,8 @@ public class PokemonDetailsFragment extends Fragment {
     LinearLayout _eggGroups;
     TextView _height;
     GifImageView _spriteGif;
-    Button _type1;
-    Button _type2;
+    Button _type1Button;
+    Button _type2Button;
     TextView _weight;
 
     public PokemonDetailsFragment() {
@@ -58,8 +62,8 @@ public class PokemonDetailsFragment extends Fragment {
         _eggGroups = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonEggGroupsList);
         _height = (TextView) detailsFragmentView.findViewById(R.id.pokemonHeightValue);
         _spriteGif = (GifImageView) detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
-        _type1 = (Button) detailsFragmentView.findViewById(R.id.buttonPokemonType1);
-        _type2 = (Button) detailsFragmentView.findViewById(R.id.buttonPokemonType2);
+        _type1Button = (Button) detailsFragmentView.findViewById(R.id.buttonPokemonType1);
+        _type2Button = (Button) detailsFragmentView.findViewById(R.id.buttonPokemonType2);
         _weight = (TextView) detailsFragmentView.findViewById(R.id.pokemonWeightValue);
 
         return detailsFragmentView;
@@ -142,23 +146,58 @@ public class PokemonDetailsFragment extends Fragment {
         List<Type> types = Type.loadTypesForPokemon(_pokemon.getTypes(), typeDAO);
 
         if (types.size() == 1) {
-            _type1.setVisibility(View.INVISIBLE);
+            _type1Button.setVisibility(View.INVISIBLE);
             TableRow.LayoutParams params = new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
             params.column = 3;
             params.span = 3;
-            _type2.setLayoutParams(params);
-            _type2.setText(types.get(0).getName());
-            _type2.setId(types.get(0).getID());
-            _type2.setBackgroundColor(Color.parseColor(types.get(0).getColor()));
-        } else {
-            _type1.setText(types.get(0).getName());
-            _type1.setId(types.get(0).getID());
-            _type1.setBackgroundColor(Color.parseColor(types.get(0).getColor()));
+            _type2Button.setLayoutParams(params);
+            _type2Button.setText(types.get(0).getName());
+            _type2Button.setId(types.get(0).getID());
+            _type2Button.setBackgroundColor(Color.parseColor(types.get(0).getColor()));
 
-            _type2.setText(types.get(1).getName());
-            _type2.setId(types.get(1).getID());
-            _type2.setBackgroundColor(Color.parseColor(types.get(1).getColor()));
+            //Set click listener for the button
+            _type2Button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClickButtonTypeDetails(view);
+                }
+            });
+        } else {
+            _type1Button.setText(types.get(0).getName());
+            _type1Button.setId(types.get(0).getID());
+            _type1Button.setBackgroundColor(Color.parseColor(types.get(0).getColor()));
+
+            _type2Button.setText(types.get(1).getName());
+            _type2Button.setId(types.get(1).getID());
+            _type2Button.setBackgroundColor(Color.parseColor(types.get(1).getColor()));
+
+            //Set click listener for the button
+            _type1Button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClickButtonTypeDetails(view);
+                }
+            });
+
+            //Set click listener for the button
+            _type2Button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClickButtonTypeDetails(view);
+                }
+            });
         }
+    }
+
+    private void onClickButtonTypeDetails(View view) {
+        int type_id = view.getId();
+
+        //Build the intent to load the player sheet
+        Intent intent = new Intent(getActivity(), TypeDisplayActivity.class);
+        //Load the hero ID to send to the player sheet
+        intent.putExtra(TYPE_ID, type_id);
+
+        startActivity(intent);
     }
 }

@@ -9,11 +9,14 @@ public class Type {
 
     private String _color;
     private int _id;
-    private int[] _immuneTo;
+    private List<Type> _immuneTo;
+    private List<Type> _ineffectiveAgainst;
     private String _name;
-    private int[] _resistantTo;
+    private List<Type> _notVeryEffectiveAgainst;
+    private List<Type> _resistantTo;
     private int _slot;
-    private int[] _weakTo;
+    private List<Type> _superEffectiveAgainst;
+    private List<Type> _weakTo;
 
     public String getColor() {
         return this._color;
@@ -31,12 +34,20 @@ public class Type {
         this._id = id;
     }
 
-    public int[] getImmuneTo() {
+    public List<Type> getImmuneTo() {
         return _immuneTo;
     }
 
-    public void setImmuneTo(int[] immuneTo) {
+    public void setImmuneTo(List<Type> immuneTo) {
         this._immuneTo = immuneTo;
+    }
+
+    public List<Type> getIneffectiveAgainst() {
+        return _ineffectiveAgainst;
+    }
+
+    public void setIneffectiveAgainst(List<Type> ineffectiveAgainst) {
+        this._ineffectiveAgainst = ineffectiveAgainst;
     }
 
     public String getName() {
@@ -47,11 +58,19 @@ public class Type {
         this._name = name;
     }
 
-    public int[] getResistantTo() {
+    public List<Type> getNotVeryEffectiveAgainst() {
+        return _notVeryEffectiveAgainst;
+    }
+
+    public void setNotVeryEffectiveAgainst(List<Type> notVeryEffectiveAgainst) {
+        this._notVeryEffectiveAgainst = notVeryEffectiveAgainst;
+    }
+
+    public List<Type> getResistantTo() {
         return this._resistantTo;
     }
 
-    public void setResistantTo(int[] resistantTo) {
+    public void setResistantTo(List<Type> resistantTo) {
         this._resistantTo = resistantTo;
     }
 
@@ -63,11 +82,19 @@ public class Type {
         this._slot = slot;
     }
 
-    public int[] getWeakTo() {
+    public List<Type> getSuperEffectiveAgainst() {
+        return _superEffectiveAgainst;
+    }
+
+    public void setSuperEffectiveAgainst(List<Type> superEffectiveAgainst) {
+        this._superEffectiveAgainst = superEffectiveAgainst;
+    }
+
+    public List<Type> getWeakTo() {
         return _weakTo;
     }
 
-    public void setWeakTo(int[] weakTo) {
+    public void setWeakTo(List<Type> weakTo) {
         this._weakTo = weakTo;
     }
 
