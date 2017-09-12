@@ -7,10 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Type;
 
-/**
- * Created by evanf on 02-Sep-17.
- */
-
 public class MoveDAO extends DataBaseHelper {
     /**
      * Constructor
@@ -60,6 +56,7 @@ public class MoveDAO extends DataBaseHelper {
         return move;
     }
 
+    @Deprecated
     public Move getTMForMove(Move move) {
         SQLiteDatabase db = this.getWritableDatabase();
         int version_group_id = getVersionGroupIDByVersionID(_version_id);

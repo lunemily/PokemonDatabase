@@ -8,7 +8,7 @@ public class Move implements Comparable<Move> {
     private int _accuracy = 0;
     private int _id = 0;
     private int _level = 0;
-    private int _method_id = 0;
+    private MoveMethod _method_id = MoveMethod.LEVEL_UP;
     private String _name;
     private int _power = 0;
     private int _pp = 0;
@@ -41,11 +41,11 @@ public class Move implements Comparable<Move> {
         this._level = level;
     }
 
-    public int getMethodID() {
+    public MoveMethod getMethodID() {
         return this._method_id;
     }
 
-    public void setMethodID(int method_id) {
+    public void setMethodID(MoveMethod method_id) {
         this._method_id = method_id;
     }
 
@@ -96,7 +96,7 @@ public class Move implements Comparable<Move> {
 
         for ( Move move : moves) {
             // Level-up methods
-            if (move.getMethodID() == 1) {
+            if (move.getMethodID() == MoveMethod.LEVEL_UP) {
                 levelMoves.add(move);
             }
         }
@@ -111,7 +111,7 @@ public class Move implements Comparable<Move> {
 
         for ( Move move : moves) {
             // Egg methods
-            if (move.getMethodID() == 2) {
+            if (move.getMethodID() == MoveMethod.EGG || move.getMethodID() == MoveMethod.LIGHT_BALL_EGG) {
                 levelMoves.add(move);
             }
         }
@@ -124,7 +124,7 @@ public class Move implements Comparable<Move> {
 
         for ( Move move : moves) {
             // Tutor methods
-            if (move.getMethodID() == 3) {
+            if (move.getMethodID() == MoveMethod.TUTOR) {
                 levelMoves.add(move);
             }
         }
@@ -137,7 +137,7 @@ public class Move implements Comparable<Move> {
 
         for ( Move move : moves) {
             // Machine methods
-            if (move.getMethodID() == 4) {
+            if (move.getMethodID() == MoveMethod.MACHINE) {
                 machineMoves.add(move);
             }
         }

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Move;
+import com.evanfuhr.pokemondatabase.models.MoveMethod;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
@@ -190,7 +191,8 @@ public class PokemonDAO extends DataBaseHelper {
             do {
                 Move move = new Move();
                 move.setID(Integer.parseInt(cursor.getString(0)));
-                move.setMethodID(Integer.parseInt(cursor.getString(1)));
+                // Set method enum
+                move.setMethodID(MoveMethod.get(Integer.parseInt(cursor.getString(1))));
                 move.setLevel(Integer.parseInt(cursor.getString(2)));
                 if (!cursor.isNull(3)) {
                     move.setTM(Integer.parseInt(cursor.getString(3)));
@@ -204,6 +206,7 @@ public class PokemonDAO extends DataBaseHelper {
         return movesForPokemon;
     }
 
+    @Deprecated
     public Move getMoveLevelForPokemonByGame(Move move, Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 

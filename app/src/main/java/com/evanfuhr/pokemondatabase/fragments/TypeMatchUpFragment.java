@@ -2,6 +2,7 @@ package com.evanfuhr.pokemondatabase.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,12 +16,15 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.List;
 
 public class TypeMatchUpFragment extends Fragment {
+
+    public static final String TYPE_ID = "type_id";
 
     Type _type;
 
@@ -166,6 +170,12 @@ public class TypeMatchUpFragment extends Fragment {
         typeButton.setBackgroundColor(Color.parseColor(type.getColor()));
         typeButton.setLayoutParams(_buttonParams);
         typeButton.setPadding(16, 0, 16, 0);
+        typeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickButtonTypeDetails(view);
+            }
+        });
         row.addView(typeButton);
 
         TextView field = new TextView(getActivity());
@@ -182,5 +192,16 @@ public class TypeMatchUpFragment extends Fragment {
     public interface OnTypeMatchUpFragmentInteractionListener {
         // TODO: Update argument type and name
         void onTypeMatchUpFragmentInteraction(Uri uri);
+    }
+
+    private void onClickButtonTypeDetails(View view) {
+        int type_id = view.getId();
+
+        //Build the intent to load the player sheet
+        Intent intent = new Intent(getActivity(), TypeDisplayActivity.class);
+        //Load the hero ID to send to the player sheet
+        intent.putExtra(TYPE_ID, type_id);
+
+        startActivity(intent);
     }
 }

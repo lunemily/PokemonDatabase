@@ -21,10 +21,16 @@ import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Move;
+import com.evanfuhr.pokemondatabase.models.MoveMethod;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.evanfuhr.pokemondatabase.models.MoveMethod.EGG;
+import static com.evanfuhr.pokemondatabase.models.MoveMethod.LEVEL_UP;
+import static com.evanfuhr.pokemondatabase.models.MoveMethod.MACHINE;
+import static com.evanfuhr.pokemondatabase.models.MoveMethod.TUTOR;
 
 public class PokemonMovesFragment extends Fragment {
 
@@ -101,39 +107,39 @@ public class PokemonMovesFragment extends Fragment {
         _tutorMoves = Move.getTutorMoves(moves);
         _machineMoves = Move.getMachineMoves(moves);
 
-        _levelMovesLayout.addView(generateMoveTable(_levelMoves, 1));
-        _machineMovesLayout.addView(generateMoveTable(_machineMoves, 4));
-        _eggMovesLayout.addView(generateMoveTable(_eggMoves, 2));
-        _tutorMovesLayout.addView(generateMoveTable(_tutorMoves, 3));
+        _levelMovesLayout.addView(generateMoveTable(_levelMoves, LEVEL_UP));
+        _machineMovesLayout.addView(generateMoveTable(_machineMoves, MACHINE));
+        _eggMovesLayout.addView(generateMoveTable(_eggMoves, EGG));
+        _tutorMovesLayout.addView(generateMoveTable(_tutorMoves, TUTOR));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private TableLayout generateMoveTable(List<Move> moves, int moveMethodID) {
+    private TableLayout generateMoveTable(List<Move> moves, MoveMethod moveMethod) {
         MoveDAO moveDAO = new MoveDAO(getActivity());
         final TableLayout tableLayout = new TableLayout(getActivity());
         tableLayout.setColumnStretchable(1, true);
 
-        String moveMethod;
-        switch (moveMethodID) {
-            case 1:
-                moveMethod = "Lvl";
+        String moveMethodLabel;
+        switch (moveMethod) {
+            case LEVEL_UP:
+                moveMethodLabel = "Lvl";
                 break;
-            case 2:
-                moveMethod = "TM";
+            case EGG:
+                moveMethodLabel = "M/F";
                 break;
-            case 3:
-                moveMethod = "M/F";
+            case TUTOR:
+                moveMethodLabel = "BP";
                 break;
-            case 4:
-                moveMethod = "BP";
+            case MACHINE:
+                moveMethodLabel = "TM";
                 break;
             default:
-                moveMethod = "Error";
+                moveMethodLabel = "Undefined";
                 break;
         }
 
         final TableRow headerRow = new TableRow(getActivity());
-        final TextView method_header = createMoveField(moveMethod, _fieldParams, true);
+        final TextView method_header = createMoveField(moveMethodLabel, _fieldParams, true);
         final TextView move_header = createMoveField("Name", _buttonParams, true);
         final TextView power_header = createMoveField("Pwr", _fieldParams, true);
         final TextView pp_header = createMoveField("PP", _fieldParams, true);
@@ -165,10 +171,10 @@ public class PokemonMovesFragment extends Fragment {
         // Method Detail
         final TextView methodDetail;
         switch (move.getMethodID()) {
-            case 1:
+            case LEVEL_UP:
                 methodDetail = createMoveField(Integer.toString(move.getLevel()), _fieldParams, false);
                 break;
-            case 4:
+            case MACHINE:
                 //move = moveDAO.getTMForMove(move);
                 methodDetail = createMoveField(Integer.toString(move.getTM()), _fieldParams, false);
                 break;
