@@ -27,7 +27,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".activities.TypeDisplayActivity" />
-        <activity android:name=".activities.TypeListActivity"></activity>
+        <activity android:name=".activities.TypeListActivity" />
     </application>
 
 </manifest>
