@@ -1,5 +1,9 @@
 package com.evanfuhr.pokemondatabase.models;
 
+import android.support.annotation.Nullable;
+
+import org.jetbrains.annotations.Contract;
+
 public enum MoveMethod {
     LEVEL_UP,                   //1
     EGG,                        //2
@@ -13,6 +17,8 @@ public enum MoveMethod {
     FORM_CHANGE                 //10
     ;
 
+    @Nullable
+    @Contract(pure = true)
     public static MoveMethod get(int i) {
         switch(i) {
             case 1:

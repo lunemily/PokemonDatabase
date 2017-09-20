@@ -105,6 +105,9 @@ public class PokemonDetailsFragment extends Fragment {
             }
             _abilities.addView(textViewAbility);
         }
+
+        pokemonDAO.close();
+        abilityDAO.close();
     }
 
     void setFragmentDexID() {

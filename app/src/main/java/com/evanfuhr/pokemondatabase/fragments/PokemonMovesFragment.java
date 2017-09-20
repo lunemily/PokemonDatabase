@@ -2,6 +2,7 @@ package com.evanfuhr.pokemondatabase.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
@@ -33,6 +35,8 @@ import static com.evanfuhr.pokemondatabase.models.MoveMethod.MACHINE;
 import static com.evanfuhr.pokemondatabase.models.MoveMethod.TUTOR;
 
 public class PokemonMovesFragment extends Fragment {
+
+    public static final String MOVE_ID = "move_id";
 
     Pokemon _pokemon;
 
@@ -190,6 +194,12 @@ public class PokemonMovesFragment extends Fragment {
         move_button.setBackgroundColor(Color.parseColor(move.getType().getColor()));
         move_button.setLayoutParams(_buttonParams);
         move_button.setPadding(16, 0, 16, 0);
+        move_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickButtonMoveDetails(view);
+            }
+        });
         row.addView(move_button);
 
         // Power
@@ -221,5 +231,16 @@ public class PokemonMovesFragment extends Fragment {
         field.setLayoutParams(params);
 
         return field;
+    }
+
+    private void onClickButtonMoveDetails(View view) {
+        int move_id = view.getId();
+
+        //Build the intent to load the player sheet
+        Intent intent = new Intent(getActivity(), MoveDisplayActivity.class);
+        //Load the hero ID to send to the player sheet
+        intent.putExtra(MOVE_ID, move_id);
+
+        startActivity(intent);
     }
 }

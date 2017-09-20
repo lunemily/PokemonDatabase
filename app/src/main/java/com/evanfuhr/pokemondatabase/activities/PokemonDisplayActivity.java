@@ -19,10 +19,15 @@ import com.evanfuhr.pokemondatabase.interfaces.OnPokemonSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
+import org.jetbrains.annotations.NonNls;
+
 import java.util.List;
 
 public class PokemonDisplayActivity extends AppCompatActivity
         implements OnPokemonSelectedListener {
+
+    @NonNls
+    public static final String POKEMON_ID = "pokemon_id";
 
     RelativeLayout _RelativeLayout;
 
@@ -40,10 +45,12 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         //Get pokemon id passed to this activity
         Intent intent = getIntent();
-        _pokemon.setID(intent.getIntExtra(PokemonListActivity.POKEMON_ID, 0));
+        _pokemon.setID(intent.getIntExtra(POKEMON_ID, 0));
         _pokemon = pokemonDAO.getSinglePokemonByID(_pokemon);
         onPokemonSelected(_pokemon);
         setTitle(_pokemon.getName());
+
+        pokemonDAO.close();
     }
 
     @Override
@@ -84,5 +91,8 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         RelativeLayout pokemonDetailsActivity = (RelativeLayout) findViewById(R.id.pokemon_display_activity);
         pokemonDetailsActivity.setBackground(gd);
+
+        pokemonDAO.close();
+        typeDAO.close();
     }
 }

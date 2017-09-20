@@ -45,7 +45,6 @@
             <TableLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/pokemonSprite"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:layout_marginStart="@dimen/activity_vertical_margin"
                 android:stretchColumns="*">

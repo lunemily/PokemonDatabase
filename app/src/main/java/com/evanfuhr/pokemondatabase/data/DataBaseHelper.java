@@ -34,6 +34,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String TABLE_ABILITY_NAMES = "ability_names";
     static final String TABLE_EGG_GROUP_PROSE = "egg_group_prose";
     static final String TABLE_MACHINES = "machines";
+    static final String TABLE_MOVE_EFFECT_PROSE = "move_effect_prose";
     static final String TABLE_MOVE_NAMES = "move_names";
     static final String TABLE_MOVES = "moves";
     static final String TABLE_POKEMON = "pokemon";
@@ -66,9 +67,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String KEY_MACHINE_NUMBER = "machine_number";
 
     //moves
+    static final String KEY_ACCURACY = "accuracy";
+    static final String KEY_CATEGORY = "damage_class_id";
+    static final String KEY_EFFECT_ID = "effect_id";
     static final String KEY_POWER = "power";
     static final String KEY_PP = "pp";
-    static final String KEY_ACCURACY = "accuracy";
+
+    //move_effect_prose
+    static final String KEY_MOVE_EFFECT_ID = "move_effect_id";
+    static final String KEY_SHORT_EFFECT = "short_effect";
 
     //pokemon
     static final String KEY_BASE_EXPERIENCE = "base_experience";

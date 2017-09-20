@@ -1,0 +1,184 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.evanfuhr.pokemondatabase.fragments.MoveDetailsFragment">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:cardBackgroundColor="?attr/colorButtonNormal">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_vertical_margin"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/movePower"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:gravity="start"
+                    android:inputType="none"
+                    android:text="Power" />
+
+                <TextView
+                    android:id="@+id/movePowerValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:gravity="end"
+                    android:inputType="none"
+                    android:paddingEnd="@dimen/activity_vertical_margin"
+                    android:text="40" />
+
+                <TextView
+                    android:id="@+id/moveAccuracy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:gravity="start"
+                    android:inputType="none"
+                    android:text="Accuracy" />
+
+                <TextView
+                    android:id="@+id/moveAccuracyValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:gravity="end"
+                    android:inputType="none"
+                    android:text="100%" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:id="@+id/movePP"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:gravity="start"
+                    android:inputType="none"
+                    android:text="PP" />
+
+                <TextView
+                    android:id="@+id/movePPValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:gravity="end"
+                    android:inputType="none"
+                    android:paddingEnd="@dimen/activity_vertical_margin"
+                    android:text="30" />
+
+                <TextView
+                    android:id="@+id/moveCategory"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:gravity="start"
+                    android:inputType="none"
+                    android:text="Category" />
+
+                <TextView
+                    android:id="@+id/moveCategoryValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:gravity="end"
+                    android:inputType="none"
+                    android:text="Physical" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/activity_vertical_margin" >
+
+                <TextView
+                    android:id="@+id/moveEffect"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_span="4"
+                    android:ems="10"
+                    android:gravity="start"
+                    android:inputType="none"
+                    android:text="Effect" />
+
+                <TextView
+                    android:id="@+id/moveEffectValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="4"
+                    android:ems="10"
+                    android:gravity="fill_horizontal"
+                    android:inputType="none"
+                    android:text="It deals the damage" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_span="4"
+                    android:text="@string/type" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/activity_vertical_margin" >
+
+                <Button
+                    android:id="@+id/buttonMoveType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_span="8"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:text="Move Type" />
+
+            </TableRow>
+
+        </TableLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>
