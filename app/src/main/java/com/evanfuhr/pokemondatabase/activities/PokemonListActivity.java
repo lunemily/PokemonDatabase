@@ -2,9 +2,8 @@ package com.evanfuhr.pokemondatabase.activities;
 
 import android.app.FragmentManager;
 import android.app.SearchManager;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -15,8 +14,7 @@ import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
 import org.jetbrains.annotations.NonNls;
 
 public class PokemonListActivity extends AppCompatActivity
-        implements PokemonListFragment.OnPokemonListFragmentInteractionListener,
-        SearchView.OnQueryTextListener{
+        implements SearchView.OnQueryTextListener{
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
@@ -89,10 +87,5 @@ public class PokemonListActivity extends AppCompatActivity
         //Very taxing on resources
         pokemonListFragment.regeneratePokemonList(newText);
         return true;
-    }
-
-    @Override
-    public void onPokemonListFragmentInteraction(Uri uri) {
-
     }
 }

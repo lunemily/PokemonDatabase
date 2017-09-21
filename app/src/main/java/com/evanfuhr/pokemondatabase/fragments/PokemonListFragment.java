@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
@@ -25,8 +24,6 @@ import java.util.List;
 public class PokemonListFragment extends Fragment {
 
     public static final String POKEMON_ID = "pokemon_id";
-
-    private OnPokemonListFragmentInteractionListener _listener;
 
     LinearLayout _pokemonList;
 
@@ -55,18 +52,11 @@ public class PokemonListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnPokemonListFragmentInteractionListener) {
-            _listener = (OnPokemonListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnPokemonListFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        _listener = null;
     }
 
     public void generatePokemonList() {
@@ -158,27 +148,5 @@ public class PokemonListFragment extends Fragment {
         intent.putExtra(POKEMON_ID, pokemon_id);
 
         startActivity(intent);
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnPokemonListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onPokemonListFragmentInteraction(Uri uri);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (_listener != null) {
-            _listener.onPokemonListFragmentInteraction(uri);
-        }
     }
 }

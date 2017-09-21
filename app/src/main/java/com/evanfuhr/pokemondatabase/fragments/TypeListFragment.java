@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +21,6 @@ import java.util.List;
 public class TypeListFragment extends Fragment {
 
     public static final String TYPE_ID = "type_id";
-
-    private OnTypeListFragmentInteractionListener _listener;
 
     LinearLayout _typeList;
 
@@ -52,18 +49,11 @@ public class TypeListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnTypeListFragmentInteractionListener) {
-            _listener = (OnTypeListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnPokemonListFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        _listener = null;
     }
 
     public void generateTypeList() {
@@ -116,17 +106,5 @@ public class TypeListFragment extends Fragment {
         intent.putExtra(TYPE_ID, type_id);
 
         startActivity(intent);
-    }
-
-    public interface OnTypeListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onTypeListFragmentInteraction(Uri uri);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (_listener != null) {
-            _listener.onTypeListFragmentInteraction(uri);
-        }
     }
 }

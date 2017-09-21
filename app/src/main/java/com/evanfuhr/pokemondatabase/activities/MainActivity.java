@@ -2,7 +2,6 @@ package com.evanfuhr.pokemondatabase.activities;
 
 import android.content.Intent;
 import android.database.SQLException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -13,16 +12,12 @@ import android.widget.Toast;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
-import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
-import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
 
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity
-        implements PokemonListFragment.OnPokemonListFragmentInteractionListener,
-        TypeListFragment.OnTypeListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
 
     @NonNls
     public static final String POKEMON = "Pokémon";
@@ -129,15 +124,5 @@ public class MainActivity extends AppCompatActivity
     void onClickMenuSetGame(MenuItem item) {
         Toast toast = Toast.makeText(getApplicationContext(), MENU_ITEM_NOT_IMPLEMENTED_YET, Toast.LENGTH_LONG);
         toast.show();
-    }
-
-    @Override
-    public void onPokemonListFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void onTypeListFragmentInteraction(Uri uri) {
-
     }
 }

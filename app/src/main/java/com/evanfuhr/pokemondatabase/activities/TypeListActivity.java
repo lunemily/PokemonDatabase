@@ -1,16 +1,13 @@
 package com.evanfuhr.pokemondatabase.activities;
 
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
 
 import org.jetbrains.annotations.NonNls;
 
-public class TypeListActivity extends AppCompatActivity
-        implements TypeListFragment.OnTypeListFragmentInteractionListener {
+public class TypeListActivity extends AppCompatActivity {
 
     @NonNls
     public static final String TYPE_ID = "type_id";
@@ -25,10 +22,5 @@ public class TypeListActivity extends AppCompatActivity
         setContentView(R.layout.activity_type_list);
 
         setTitle(TYPE);
-    }
-
-    @Override
-    public void onTypeListFragmentInteraction(Uri uri) {
-
     }
 }

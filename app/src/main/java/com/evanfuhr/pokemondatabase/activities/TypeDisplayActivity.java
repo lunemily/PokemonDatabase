@@ -3,10 +3,9 @@ package com.evanfuhr.pokemondatabase.activities;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
@@ -15,8 +14,7 @@ import com.evanfuhr.pokemondatabase.interfaces.OnTypeSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 public class TypeDisplayActivity extends AppCompatActivity
-        implements OnTypeSelectedListener,
-        TypeMatchUpFragment.OnTypeMatchUpFragmentInteractionListener {
+        implements OnTypeSelectedListener {
 
     Type _type = new Type();
 
@@ -44,11 +42,6 @@ public class TypeDisplayActivity extends AppCompatActivity
 
         TypeMatchUpFragment typeMatchUpFragment = (TypeMatchUpFragment) fm.findFragmentById(R.id.typeMatchUpFragment);
         typeMatchUpFragment.setTypeMatchUps(type);
-    }
-
-    @Override
-    public void onTypeMatchUpFragmentInteraction(Uri uri) {
-
     }
 
     private void setTypeBackgroundColor(Type type) {

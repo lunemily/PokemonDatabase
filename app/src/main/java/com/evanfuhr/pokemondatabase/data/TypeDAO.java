@@ -77,20 +77,17 @@ public class TypeDAO extends DataBaseHelper {
     public Type getSingleTypeEfficacy(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Type> immuneTo = new ArrayList<>();
-        List<Type> ineffectiveAgainst = new ArrayList<>();
-        List<Type> notVeryEffectiveAgainst = new ArrayList<>();
-        List<Type> resistantTo = new ArrayList<>();
-        List<Type> superEffectiveAgainst = new ArrayList<>();
-        List<Type> weakTo = new ArrayList<>();
+        List<Type> attackingTypes = new ArrayList<>();
+        List<Type> defendingTypes = new ArrayList<>();
 
         String selectQuery = "SELECT " + KEY_DAMAGE_TYPE_ID +
                 ", " + KEY_TARGET_TYPE_ID +
                 ", " + KEY_DAMAGE_FACTOR +
                 " FROM " + TABLE_TYPE_EFFICACY +
-                " WHERE " + TABLE_TYPE_EFFICACY + "." + KEY_DAMAGE_FACTOR + " != '100'" +
-                " AND (" + TABLE_TYPE_EFFICACY + "." + KEY_DAMAGE_TYPE_ID + " = '" + type.getID() + "'" +
-                " OR " + TABLE_TYPE_EFFICACY + "." + KEY_TARGET_TYPE_ID + " = '" + type.getID() + "')"
+                " WHERE " + TABLE_TYPE_EFFICACY + "." + KEY_DAMAGE_FACTOR + " != 100" +
+                " AND (" + TABLE_TYPE_EFFICACY + "." + KEY_DAMAGE_TYPE_ID + " = " + type.getID() +
+                " OR " + TABLE_TYPE_EFFICACY + "." + KEY_TARGET_TYPE_ID + " = " + type.getID() + ")" +
+                " ORDER BY " + TABLE_TYPE_EFFICACY + "." + KEY_DAMAGE_FACTOR + " DESC"
                 ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -105,46 +102,20 @@ public class TypeDAO extends DataBaseHelper {
                 int damageFactor = Integer.parseInt(cursor.getString(2));
 
                 if (type.getID() == attackingType.getID()) {
-                    // type is attacker
-                    switch (damageFactor) {
-                        case 0:
-                            ineffectiveAgainst.add(defendingType);
-                            break;
-                        case 50:
-                            notVeryEffectiveAgainst.add(defendingType);
-                            break;
-                        case 200:
-                            superEffectiveAgainst.add(defendingType);
-                            break;
-                        default:
-                            break;
-                    }
+                    // Type is attacker. Add defender
+                    defendingType.setEfficacy(damageFactor/(float)100);
+                    defendingTypes.add(defendingType);
                 } else {
-                    // type is defender
-                    switch (damageFactor) {
-                        case 0:
-                            immuneTo.add(attackingType);
-                            break;
-                        case 50:
-                            resistantTo.add(attackingType);
-                            break;
-                        case 200:
-                            weakTo.add(attackingType);
-                            break;
-                        default:
-                            break;
-                    }
+                    // Type is defender. Add attacker
+                    attackingType.setEfficacy(damageFactor/(float)100);
+                    attackingTypes.add(attackingType);
                 }
             } while (cursor.moveToNext());
         }
         cursor.close();
 
-        type.setImmuneTo(immuneTo);
-        type.setIneffectiveAgainst(ineffectiveAgainst);
-        type.setNotVeryEffectiveAgainst(notVeryEffectiveAgainst);
-        type.setResistantTo(resistantTo);
-        type.setSuperEffectiveAgainst(superEffectiveAgainst);
-        type.setWeakTo(weakTo);
+        type.set_attackingTypes(attackingTypes);
+        type.set_defendingTypes(defendingTypes);
 
         return type;
     }
