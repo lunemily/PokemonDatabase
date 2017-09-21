@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +20,24 @@ import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Type;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TypeMatchUpFragment extends Fragment {
 
     public static final String TYPE_ID = "type_id";
 
+    public static boolean _forPokemon = false;
+
     Type _type;
+    Type _secondaryType;
+    List<Type> _types = new ArrayList<>();
 
     LinearLayout _attackerLayout;
     LinearLayout _defenderLayout;
     TextView _attackerLabel;
     TextView _defenderLabel;
+    CardView _attackerCard;
 
     TableRow.LayoutParams _buttonParams;
     TableRow.LayoutParams _fieldParams;
@@ -52,6 +61,7 @@ public class TypeMatchUpFragment extends Fragment {
         _defenderLayout = (LinearLayout) matchUpFragmentView.findViewById(R.id.defender_layout);
         _attackerLabel = (TextView) matchUpFragmentView.findViewById(R.id.attacker_text);
         _defenderLabel = (TextView) matchUpFragmentView.findViewById(R.id.defender_text);
+        _attackerCard = (CardView) matchUpFragmentView.findViewById(R.id.attacker_card);
 
         _buttonParams = new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -74,23 +84,43 @@ public class TypeMatchUpFragment extends Fragment {
         super.onDetach();
     }
 
-    public void setTypeMatchUps(Type type) {
+    public void setTypeMatchUps(Type type, boolean forPokemon) {
+        List<Type> types = new ArrayList<>();
+        types.add(type);
+        setTypeMatchUps(types, forPokemon);
+    }
+
+    public void setTypeMatchUps(List<Type> types, boolean forPokemon) {
         TypeDAO typeDAO = new TypeDAO(getActivity());
 
-        _type = type;
+        _types = types;
+        _type = _types.get(0);
         _type.set_attackingTypes(typeDAO.getSingleTypeEfficacy(_type).get_attackingTypes());
         _type.set_defendingTypes(typeDAO.getSingleTypeEfficacy(_type).get_defendingTypes());
 
+        // If _secondaryType != null, it's for a pokemon
+        if (_types.size() > 1) {
+            _secondaryType = _types.get(1);
+            _secondaryType.set_attackingTypes(typeDAO.getSingleTypeEfficacy(_secondaryType).get_attackingTypes());
+            _secondaryType.set_defendingTypes(typeDAO.getSingleTypeEfficacy(_secondaryType).get_defendingTypes());
+        }
+
+        _forPokemon = forPokemon;
+
+        typeDAO.close();
         fillMatchUpCards();
     }
 
     // ORCHESTRATOR
     public void fillMatchUpCards() {
+        if (_forPokemon) {
+            ((LinearLayout) _attackerCard.getParent()).removeView(_attackerCard);
+        } else {
+            _attackerLabel.setText(_type.getName().toUpperCase() + " " + getActivity().getString(R.string.typeIsAttacker));
+            _attackerLayout.addView(generateAttackTable(_type));
+        }
 
-        _attackerLabel.setText(_type.getName().toUpperCase() + " " + getActivity().getString(R.string.typeIsAttacker));
         _defenderLabel.setText(_type.getName().toUpperCase() + " " + getActivity().getString(R.string.typeIsDefender));
-
-        _attackerLayout.addView(generateAttackTable(_type));
         _defenderLayout.addView(generateDefenseTable(_type));
 
     }
@@ -153,6 +183,9 @@ public class TypeMatchUpFragment extends Fragment {
                 break;
             case 200:
                 multiplier = "x2";
+                break;
+            case 400:
+                multiplier = "x4";
                 break;
             default:
                 multiplier = "xERROR";

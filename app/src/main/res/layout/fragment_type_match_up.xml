@@ -40,8 +40,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:id="@+id/defender_card"
-            app:cardBackgroundColor="?attr/colorButtonNormal"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            app:cardBackgroundColor="?attr/colorButtonNormal">
 
             <LinearLayout
                 android:orientation="vertical"

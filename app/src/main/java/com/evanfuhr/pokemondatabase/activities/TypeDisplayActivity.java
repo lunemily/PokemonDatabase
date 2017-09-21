@@ -41,7 +41,7 @@ public class TypeDisplayActivity extends AppCompatActivity
         FragmentManager fm = getFragmentManager();
 
         TypeMatchUpFragment typeMatchUpFragment = (TypeMatchUpFragment) fm.findFragmentById(R.id.typeMatchUpFragment);
-        typeMatchUpFragment.setTypeMatchUps(type);
+        typeMatchUpFragment.setTypeMatchUps(type, false);
     }
 
     private void setTypeBackgroundColor(Type type) {

@@ -81,4 +81,12 @@ public class Type {
         }
         return newTypes;
     }
+
+    public static Type combineDualTypeEfficacies(List<Type> types) {
+        Type combinedEfficaciesType = new Type();
+
+
+
+        return combinedEfficaciesType;
+    }
 }
