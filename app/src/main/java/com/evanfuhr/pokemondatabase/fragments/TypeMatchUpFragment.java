@@ -29,6 +29,8 @@ public class TypeMatchUpFragment extends Fragment {
 
     public static boolean _forPokemon = false;
 
+    public static boolean _isDualType = false;
+
     Type _type;
     Type _secondaryType;
     List<Type> _types = new ArrayList<>();
@@ -95,17 +97,22 @@ public class TypeMatchUpFragment extends Fragment {
 
         _types = types;
         _type = _types.get(0);
-        _type.set_attackingTypes(typeDAO.getSingleTypeEfficacy(_type).get_attackingTypes());
-        _type.set_defendingTypes(typeDAO.getSingleTypeEfficacy(_type).get_defendingTypes());
+        _forPokemon = forPokemon;
+        _isDualType = (_types.size() == 2);
 
         // If _secondaryType != null, it's for a pokemon
-        if (_types.size() > 1) {
-            _secondaryType = _types.get(1);
-            _secondaryType.set_attackingTypes(typeDAO.getSingleTypeEfficacy(_secondaryType).get_attackingTypes());
-            _secondaryType.set_defendingTypes(typeDAO.getSingleTypeEfficacy(_secondaryType).get_defendingTypes());
+        if (!forPokemon) {
+            _type.set_attackingTypes(typeDAO.getSingleTypeEfficacy(_type).get_attackingTypes());
+            _type.set_defendingTypes(typeDAO.getSingleTypeEfficacy(_type).get_defendingTypes());
+        } else {
+            // Check for single or dual type pokemon
+            if (!_isDualType) {
+                _type.set_attackingTypes(typeDAO.getSingleTypeEfficacy(_type).get_attackingTypes());
+            } else {
+                _secondaryType = _types.get(1);
+                _type.set_attackingTypes(typeDAO.getDualTypeEfficacy(_type, _secondaryType).get_attackingTypes());
+            }
         }
-
-        _forPokemon = forPokemon;
 
         typeDAO.close();
         fillMatchUpCards();
@@ -120,7 +127,11 @@ public class TypeMatchUpFragment extends Fragment {
             _attackerLayout.addView(generateAttackTable(_type));
         }
 
-        _defenderLabel.setText(_type.getName().toUpperCase() + " " + getActivity().getString(R.string.typeIsDefender));
+        if (!_isDualType) {
+            _defenderLabel.setText(_type.getName().toUpperCase() + " " + getString(R.string.typeIsDefender));
+        } else {
+            _defenderLabel.setText(_type.getName().toUpperCase() + "/" + _secondaryType.getName().toUpperCase() + " " + getString(R.string.typesAreDefenders));
+        }
         _defenderLayout.addView(generateDefenseTable(_type));
 
     }
@@ -177,6 +188,9 @@ public class TypeMatchUpFragment extends Fragment {
         switch (Math.round(type.getEfficacy() * 100)) {
             case 0:
                 multiplier = "x0";
+                break;
+            case 25:
+                multiplier = "x1/4";
                 break;
             case 50:
                 multiplier = "x1/2";

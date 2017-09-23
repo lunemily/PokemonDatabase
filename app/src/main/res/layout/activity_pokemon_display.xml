@@ -37,14 +37,6 @@
                 android:id="@+id/typeMatchUpFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
-            <!--Temporary until I can combine efficacies into one table-->
-            <fragment
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment"
-                android:id="@+id/typeMatchUpFragment2"
-                android:layout_margin="@dimen/activity_horizontal_margin"/>
-
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,7 +1,6 @@
 package com.evanfuhr.pokemondatabase.activities;
 
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -66,17 +65,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         pokemonDetailsFragment.setPokemonDetails(pokemon);
 
         TypeMatchUpFragment typeMatchUpFragment = (TypeMatchUpFragment) fm.findFragmentById(R.id.typeMatchUpFragment);
-        typeMatchUpFragment.setTypeMatchUps(pokemon.getTypes().get(0), true);
-
-        // Temporary until I can combine efficacies into one table
-        TypeMatchUpFragment typeMatchUpFragment2 = (TypeMatchUpFragment) fm.findFragmentById(R.id.typeMatchUpFragment2);
-        if (pokemon.getTypes().size() > 1) {
-            typeMatchUpFragment2.setTypeMatchUps(pokemon.getTypes().get(1), true);
-        } else {
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.remove(typeMatchUpFragment2);
-            ft.commit();
-        }
+        typeMatchUpFragment.setTypeMatchUps(pokemon.getTypes(), true);
 
         PokemonMovesFragment pokemonMovesFragment = (PokemonMovesFragment) fm.findFragmentById(R.id.pokemonMoveFragment);
         pokemonMovesFragment.setPokemonMoves(pokemon);

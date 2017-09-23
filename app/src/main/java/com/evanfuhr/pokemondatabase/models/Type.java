@@ -1,5 +1,7 @@
 package com.evanfuhr.pokemondatabase.models;
 
+import android.support.annotation.Nullable;
+
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 
 import java.util.ArrayList;
@@ -82,11 +84,57 @@ public class Type {
         return newTypes;
     }
 
-    public static Type combineDualTypeEfficacies(List<Type> types) {
-        Type combinedEfficaciesType = new Type();
+    /*
+    Takes in both types for a given pokemon
+     */
+    public static List<Type> combineDualTypeEfficacies(List<Type> types) {
+        List<Type> combinedEfficaciesTypes = new ArrayList<>();
 
+        for (Type pokemonType : types) {
+            for (Type pokemonTypeWithEfficacy : pokemonType.get_defendingTypes()) {
+                if (!alreadyContainsType(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getID())) {
+                    combinedEfficaciesTypes.add(pokemonTypeWithEfficacy);
+                } else {
+                    // Store first occurrence
+                    Type firstOccurrence = new Type();
+                    firstOccurrence.setID(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getID()).getID());
+                    firstOccurrence.setEfficacy(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getID()).getEfficacy());
 
+                    // Remove from dual type list
+                    combinedEfficaciesTypes.remove(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getID()));
 
-        return combinedEfficaciesType;
+                    // Multiply efficacies
+                    Type newEfficacyType = new Type();
+                    newEfficacyType.setID(pokemonTypeWithEfficacy.getID());
+                    newEfficacyType.setEfficacy(firstOccurrence.getEfficacy() * pokemonTypeWithEfficacy.getEfficacy());
+
+                    // TODO: Re-add type to list if percentEfficacy != 100
+                    if (Math.round(newEfficacyType.getEfficacy() * 100) != 100) {
+                        combinedEfficaciesTypes.add(newEfficacyType);
+                    }
+                }
+            }
+        }
+
+        return combinedEfficaciesTypes;
+    }
+
+    static boolean alreadyContainsType(List<Type> list, int id) {
+        for (Type object : list) {
+            if (object.getID() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Nullable
+    static Type getTypeInListByID(List<Type> list, int id) {
+        for (Type object : list) {
+            if (object.getID() == id) {
+                return object;
+            }
+        }
+        return new Type();
     }
 }
