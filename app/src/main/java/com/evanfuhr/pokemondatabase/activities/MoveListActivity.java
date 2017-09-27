@@ -5,38 +5,39 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
-import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
+import com.evanfuhr.pokemondatabase.models.Move;
 
 import org.jetbrains.annotations.NonNls;
 
-public class TypeListActivity extends AppCompatActivity
-        implements TypeListFragment.OnListFragmentInteractionListener {
+public class MoveListActivity extends AppCompatActivity
+        implements MoveListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String TYPE_ID = "type_id";
+    public static final String MOVE_ID = "move_id";
     @NonNls
-    public static final String TYPE = "Type";
+    public static final String MOVE = "Type";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_type_list);
+        setContentView(R.layout.activity_move_list);
 
-        setTitle(TYPE);
+        setTitle(MOVE);
     }
 
     @Override
-    public void onListFragmentInteraction(Type type) {
-        int type_id = type.getID();
+    public void onListFragmentInteraction(Move move) {
+        int type_id = move.getID();
 
         //Build the intent to load the player sheet
-        Intent intent = new Intent(this, TypeDisplayActivity.class);
+        Intent intent = new Intent(this, MoveDisplayActivity.class);
         //Load the hero ID to send to the player sheet
-        intent.putExtra(TYPE_ID, type_id);
+        intent.putExtra(MOVE_ID, type_id);
 
         startActivity(intent);
+
     }
 }

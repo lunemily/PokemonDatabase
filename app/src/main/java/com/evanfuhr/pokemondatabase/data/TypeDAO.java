@@ -16,6 +16,10 @@ public class TypeDAO extends DataBaseHelper {
         super(context);
     }
 
+    public List<Type> getAllTypes() {
+        return getAllTypes("%");
+    }
+
     public List<Type> getAllTypes(String nameSearchParam) {
         SQLiteDatabase db = this.getWritableDatabase();
 

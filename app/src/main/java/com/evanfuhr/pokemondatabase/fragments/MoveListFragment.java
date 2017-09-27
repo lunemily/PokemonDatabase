@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.adapters.MyTypeRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.data.TypeDAO;
-import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.adapters.MyMoveRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.data.MoveDAO;
+import com.evanfuhr.pokemondatabase.models.Move;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class TypeListFragment extends Fragment {
+public class MoveListFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -35,13 +35,13 @@ public class TypeListFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TypeListFragment() {
+    public MoveListFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static TypeListFragment newInstance(int columnCount) {
-        TypeListFragment fragment = new TypeListFragment();
+    public static MoveListFragment newInstance(int columnCount) {
+        MoveListFragment fragment = new MoveListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -60,9 +60,9 @@ public class TypeListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_type_list, container, false);
-        TypeDAO typeDAO = new TypeDAO(getActivity());
-        List<Type> types = typeDAO.getAllTypes();
+        View view = inflater.inflate(R.layout.fragment_move_list, container, false);
+        MoveDAO moveDAO = new MoveDAO(getActivity());
+        List<Move> moves = moveDAO.getAllMoves();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -73,9 +73,8 @@ public class TypeListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyTypeRecyclerViewAdapter(types, mListener));
+            recyclerView.setAdapter(new MyMoveRecyclerViewAdapter(moves, mListener));
         }
-        typeDAO.close();
         return view;
     }
 
@@ -109,6 +108,6 @@ public class TypeListFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Type item);
+        void onListFragmentInteraction(Move item);
     }
 }

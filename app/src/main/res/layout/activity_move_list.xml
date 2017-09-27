@@ -7,14 +7,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="0dp"
-    tools:context="com.evanfuhr.pokemondatabase.activities.TypeListActivity"
-    android:id="@+id/type_list_activity" >
+    tools:context="com.evanfuhr.pokemondatabase.activities.MoveListActivity"
+    android:id="@+id/move_list_activity" >
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="com.evanfuhr.pokemondatabase.fragments.TypeListFragment"
-        android:id="@+id/typeListFragment"
+        android:name="com.evanfuhr.pokemondatabase.fragments.MoveListFragment"
+        android:id="@+id/moveListFragment"
         android:layout_margin="@dimen/activity_horizontal_margin"/>
 
 </android.support.constraint.ConstraintLayout>

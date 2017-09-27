@@ -8,15 +8,56 @@ import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.MoveCategory;
 import com.evanfuhr.pokemondatabase.models.Type;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MoveDAO extends DataBaseHelper {
-    /**
-     * Constructor
-     * Takes and keeps a reference of the passed context in order to access to the application assets and resources.
-     *
-     * @param context
-     */
+
     public MoveDAO(Context context) {
         super(context);
+    }
+
+    public List<Move> getAllMoves() {
+        return getAllMoves("%");
+    }
+
+    public List<Move> getAllMoves(String nameSearchParam) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Move> moves = new ArrayList<>();
+
+        String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_ID +
+                ", " + TABLE_MOVE_NAMES + "." + KEY_NAME +
+                ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
+                ", " + TABLE_TYPES + "." + KEY_COLOR +
+                " FROM " + TABLE_MOVES +
+                ", " + TABLE_MOVE_NAMES +
+                ", " + TABLE_TYPES +
+                " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
+                " AND " + TABLE_MOVES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + KEY_ID +
+                " AND " + TABLE_MOVE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id
+                ;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                Move move = new Move();
+                Type type = new Type();
+                move.setID(Integer.parseInt(cursor.getString(0)));
+                move.setName(cursor.getString(1));
+                type.setID(Integer.parseInt(cursor.getString(2)));
+                type.setColor(cursor.getString(3));
+                move.setType(type);
+                //add pokemon to list
+                moves.add(move);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return moves;
     }
 
     public Move getMoveByID(Move move) {
