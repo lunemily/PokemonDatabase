@@ -56,7 +56,7 @@ public class MyMoveRecyclerViewAdapter extends RecyclerView.Adapter<MyMoveRecycl
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return _filteredList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

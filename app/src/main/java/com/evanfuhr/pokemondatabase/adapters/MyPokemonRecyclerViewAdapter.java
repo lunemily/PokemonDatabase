@@ -58,7 +58,7 @@ public class MyPokemonRecyclerViewAdapter extends RecyclerView.Adapter<MyPokemon
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return _filteredList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
