@@ -1,7 +1,7 @@
 package com.evanfuhr.pokemondatabase.activities;
 
-import android.app.FragmentManager;
 import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -10,11 +10,13 @@ import android.widget.SearchView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 
 import org.jetbrains.annotations.NonNls;
 
 public class PokemonListActivity extends AppCompatActivity
-        implements SearchView.OnQueryTextListener{
+        implements SearchView.OnQueryTextListener,
+        PokemonListFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
@@ -74,18 +76,23 @@ public class PokemonListActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        FragmentManager fm = getFragmentManager();
-        PokemonListFragment pokemonListFragment = (PokemonListFragment) fm.findFragmentById(R.id.pokemonListFragment);
-        pokemonListFragment.generatePokemonList(query);
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        FragmentManager fm = getFragmentManager();
-        PokemonListFragment pokemonListFragment = (PokemonListFragment) fm.findFragmentById(R.id.pokemonListFragment);
-        //Very taxing on resources
-        pokemonListFragment.regeneratePokemonList(newText);
         return true;
+    }
+
+    @Override
+    public void onListFragmentInteraction(Pokemon pokemon) {
+        int pokemon_id = pokemon.getID();
+
+        //Build the intent to load the player sheet
+        Intent intent = new Intent(this, PokemonDisplayActivity.class);
+        //Load the hero ID to send to the player sheet
+        intent.putExtra(POKEMON_ID, pokemon_id);
+
+        startActivity(intent);
     }
 }

@@ -38,6 +38,5 @@ public class MoveListActivity extends AppCompatActivity
         intent.putExtra(MOVE_ID, type_id);
 
         startActivity(intent);
-
     }
 }

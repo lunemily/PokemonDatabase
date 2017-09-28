@@ -2,151 +2,128 @@ package com.evanfuhr.pokemondatabase.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
+import com.evanfuhr.pokemondatabase.adapters.MyPokemonRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
-import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
-import com.evanfuhr.pokemondatabase.models.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A fragment representing a list of Items.
+ * <p/>
+ * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * interface.
+ */
 public class PokemonListFragment extends Fragment {
 
-    public static final String POKEMON_ID = "pokemon_id";
+    // TODO: Customize parameter argument names
+    private static final String ARG_COLUMN_COUNT = "column-count";
+    // TODO: Customize parameters
+    private int mColumnCount = 1;
+    private OnListFragmentInteractionListener mListener;
 
-    LinearLayout _pokemonList;
-
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
     public PokemonListFragment() {
-        // Required empty public constructor
+    }
+
+    // TODO: Customize parameter initialization
+    @SuppressWarnings("unused")
+    public static PokemonListFragment newInstance(int columnCount) {
+        PokemonListFragment fragment = new PokemonListFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View pokemonListFragment = inflater.inflate(R.layout.fragment_pokemon_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_pokemon_list, container, false);
 
-        _pokemonList = (LinearLayout) pokemonListFragment.findViewById(R.id.pokemonListLayout);
+        List<Pokemon> pokemons = getTypedPokemon();
 
-        generatePokemonList();
-
-        return pokemonListFragment;
+        // Set the adapter
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+            if (mColumnCount <= 1) {
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            }
+            recyclerView.setAdapter(new MyPokemonRecyclerViewAdapter(pokemons, mListener));
+        }
+        return view;
     }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener = null;
     }
 
-    public void generatePokemonList() {
-        generatePokemonList("%");
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnListFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onListFragmentInteraction(Pokemon item);
     }
 
-    public void generatePokemonList(String nameSearchParam) {
+    List<Pokemon> getTypedPokemon() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        TypeDAO typeDAO = new TypeDAO(getActivity());
+        List<Pokemon> unTypedPokemons = pokemonDAO.getAllPokemon();
+        List<Pokemon> typedPokemons = new ArrayList<>();
 
-        List<Pokemon> pokemons = pokemonDAO.getAllPokemon(nameSearchParam);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(0, 16, 0, 0);
-
-        int counter = 1;
-
-        for (Pokemon pokemon : pokemons) {
-
-            // Create pokemon button
-            final AppCompatButton pokemon_button = new AppCompatButton(getActivity());
-            //final Button pokemon_button = new Button(getActivity());
-            List<Type> types = pokemonDAO.getTypesForPokemon(pokemon);
-
-
-            // Create a new gradient color
-            int[] colors = {0, 0, 0, 0};
-            if (types.size() == 1) {
-                colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-                colors[1] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-                colors[2] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-                colors[3] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-            }
-            else {
-                colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-                colors[1] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-                colors[2] = Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor());
-                colors[3] = Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor());
-            }
-            GradientDrawable gd = new GradientDrawable(
-                    GradientDrawable.Orientation.LEFT_RIGHT, colors);
-
-            // Use when AppCompatButton can accept GradientDrawable for button color
-//            pokemon_button.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor())));
-//            if (types.size() > 1) {
-//                pokemon_button.setTextColor(Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor()));
-//            }
-
-            pokemon_button.setLayoutParams(params);
-            pokemon_button.setText(pokemon.getName());
-            pokemon_button.setId(pokemon.getID());
-            pokemon_button.setBackground(gd);
-
-            //Set click listener for the button
-            pokemon_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onClickButtonPokemonDetails(view);
-                }
-            });
-
-            //Add the pokemon button to the list
-            _pokemonList.addView(pokemon_button);
-
-            registerForContextMenu(pokemon_button);
-
-            // Used for throttling in testing and performance
-            if (counter >= 151) {
-                break;
-            }
-            counter++;
+        for (Pokemon pokemon : unTypedPokemons) {
+            pokemon.setTypes(pokemonDAO.getTypesForPokemon(pokemon));
+            typedPokemons.add(pokemon);
         }
-    }
 
-    public void regeneratePokemonList(String nameSearchParam) {
-        _pokemonList.removeAllViews();
-        generatePokemonList(nameSearchParam);
-    }
+        pokemonDAO.close();
 
-    private void onClickButtonPokemonDetails(View view) {
-        //Get the ID associated to the clicked button
-        int pokemon_id = view.getId();
-
-        //Build the intent to load the player sheet
-        Intent intent = new Intent(getActivity(), PokemonDisplayActivity.class);
-        //Load the hero ID to send to the player sheet
-        intent.putExtra(POKEMON_ID, pokemon_id);
-
-        startActivity(intent);
+        return typedPokemons;
     }
 }

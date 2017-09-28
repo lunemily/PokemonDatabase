@@ -35,7 +35,8 @@ public class MoveDAO extends DataBaseHelper {
                 ", " + TABLE_TYPES +
                 " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
                 " AND " + TABLE_MOVES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + KEY_ID +
-                " AND " + TABLE_MOVE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id
+                " AND " + TABLE_MOVE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id +
+                " ORDER BY " + TABLE_MOVE_NAMES + "." + KEY_NAME + " ASC"
                 ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);

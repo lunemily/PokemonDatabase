@@ -1,26 +1,13 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list"
+    android:name="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment">
-
-        <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/pokemon_details_scroll_view" >
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary" >
-
-            <LinearLayout
-                android:id="@+id/pokemonListLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </ScrollView>
-</FrameLayout>
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    app:layoutManager="LinearLayoutManager"
+    tools:context="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment"
+    tools:listitem="@layout/fragment_pokemon" />
