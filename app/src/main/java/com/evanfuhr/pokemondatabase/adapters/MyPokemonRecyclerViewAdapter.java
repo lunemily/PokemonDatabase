@@ -3,6 +3,7 @@ package com.evanfuhr.pokemondatabase.adapters;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +14,20 @@ import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment.OnListFragment
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyPokemonRecyclerViewAdapter extends RecyclerView.Adapter<MyPokemonRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Pokemon> mValues;
+    private final List<Pokemon> mValues, _filteredList;
     private final OnListFragmentInteractionListener mListener;
 
     public MyPokemonRecyclerViewAdapter(List<Pokemon> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+
+        _filteredList = new ArrayList<>();
+        _filteredList.addAll(mValues);
     }
 
     @Override
@@ -34,10 +39,10 @@ public class MyPokemonRecyclerViewAdapter extends RecyclerView.Adapter<MyPokemon
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder._button.setId(mValues.get(position).getID());
-        holder._button.setText(mValues.get(position).getName());
-        holder._button.setBackground(getPokemonButtonBackgroundColor(mValues.get(position)));
+        holder.mItem = _filteredList.get(position);
+        holder._button.setId(_filteredList.get(position).getID());
+        holder._button.setText(_filteredList.get(position).getName());
+        holder._button.setBackground(getPokemonButtonBackgroundColor(_filteredList.get(position)));
 
         holder._button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +71,26 @@ public class MyPokemonRecyclerViewAdapter extends RecyclerView.Adapter<MyPokemon
             mView = view;
             _button = (Button) view.findViewById(R.id.pokemonButton);
         }
+    }
+
+    public void filter(final String filterText) {
+        _filteredList.clear();
+
+        // If there is no search value, then add all original list items to filter list
+        if (TextUtils.isEmpty(filterText)) {
+
+            _filteredList.addAll(mValues);
+
+        } else {
+            // Iterate in the original List and add it to filter list...
+            for (Pokemon pokemon : mValues) {
+                if (pokemon.getName().toLowerCase().contains(filterText.toLowerCase())) {
+                    // Adding Matched items
+                    _filteredList.add(pokemon);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     GradientDrawable getPokemonButtonBackgroundColor(Pokemon pokemon) {

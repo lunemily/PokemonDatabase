@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_set_game:
                 onClickMenuSetGame(item);
                 break;
-            case R.id.action_search_pokemon_list:
+            case R.id.action_search_list:
                 break;
             default:
                 return super.onOptionsItemSelected(item);
