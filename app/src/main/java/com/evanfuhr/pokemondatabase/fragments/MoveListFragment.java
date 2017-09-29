@@ -52,7 +52,7 @@ public class MoveListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.fragment_move_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
 
         MoveDAO moveDAO = new MoveDAO(getActivity());
         List<Move> moves = moveDAO.getAllMoves();

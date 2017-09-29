@@ -53,7 +53,7 @@ public class PokemonListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.fragment_pokemon_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
 
         List<Pokemon> pokemons = getTypedPokemon();
 

@@ -5,9 +5,10 @@
     android:orientation="horizontal">
 
     <Button
-        android:id="@+id/moveButton"
+        android:id="@+id/singleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+        android:layout_marginBottom="@dimen/row_vertical_margin"
+        android:text="@string/simple_button"/>
 
 </LinearLayout>

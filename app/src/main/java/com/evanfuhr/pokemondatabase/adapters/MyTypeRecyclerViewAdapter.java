@@ -26,7 +26,7 @@ public class MyTypeRecyclerViewAdapter extends RecyclerView.Adapter<MyTypeRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_type, parent, false);
+                .inflate(R.layout.fragment_single_button, parent, false);
         return new ViewHolder(view);
     }
 
@@ -62,7 +62,7 @@ public class MyTypeRecyclerViewAdapter extends RecyclerView.Adapter<MyTypeRecycl
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            _button = (Button) view.findViewById(R.id.typeButton);
+            _button = (Button) view.findViewById(R.id.singleButton);
         }
     }
 }

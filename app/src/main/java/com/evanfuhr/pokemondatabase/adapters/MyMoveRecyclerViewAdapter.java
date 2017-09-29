@@ -31,7 +31,7 @@ public class MyMoveRecyclerViewAdapter extends RecyclerView.Adapter<MyMoveRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_move, parent, false);
+                .inflate(R.layout.fragment_single_button, parent, false);
         return new ViewHolder(view);
     }
 
@@ -67,7 +67,7 @@ public class MyMoveRecyclerViewAdapter extends RecyclerView.Adapter<MyMoveRecycl
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            _button = (Button) view.findViewById(R.id.moveButton);
+            _button = (Button) view.findViewById(R.id.singleButton);
         }
     }
 

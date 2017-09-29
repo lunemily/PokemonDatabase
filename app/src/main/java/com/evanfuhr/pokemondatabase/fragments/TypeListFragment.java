@@ -60,7 +60,7 @@ public class TypeListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_type_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
         TypeDAO typeDAO = new TypeDAO(getActivity());
         List<Type> types = typeDAO.getAllTypes();
 
