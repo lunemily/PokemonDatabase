@@ -8,17 +8,38 @@
     tools:context="com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity">
 
     <ScrollView
-        android:layout_width="match_parent"
+        android:layout_width="368dp"
         android:layout_height="wrap_content"
         android:id="@+id/type_display_scroll_view"
-        android:layout_centerHorizontal="true" >
+        android:layout_centerHorizontal="true"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
 
-        <fragment
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment"
-            android:id="@+id/typeMatchUpFragment"
-            android:layout_margin="@dimen/activity_horizontal_margin"/>
+            android:orientation="vertical">
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment"
+                android:id="@+id/typeMatchUpFragment"
+                android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+            <fragment
+                android:layout_width="336dp"
+                android:layout_height="wrap_content"
+                android:name="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment"
+                android:id="@+id/pokemonListFragment"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                tools:layout_editor_absoluteY="16dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+        </LinearLayout>
 
     </ScrollView>
 
