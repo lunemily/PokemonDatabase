@@ -8,6 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
 import com.evanfuhr.pokemondatabase.R;
@@ -32,7 +35,9 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     RelativeLayout _RelativeLayout;
 
-    Pokemon _pokemon = new Pokemon();
+    public Pokemon _pokemon = new Pokemon();
+
+    private GestureDetector mDetector;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -51,7 +56,25 @@ public class PokemonDisplayActivity extends AppCompatActivity
         onPokemonSelected(_pokemon);
         setTitle(_pokemon.getName());
 
+        mDetector = new GestureDetector(this, new MyGestureListener(_pokemon.getID()));
+
         pokemonDAO.close();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        boolean handled = mDetector.onTouchEvent(ev);
+        if (!handled) {
+            return super.dispatchTouchEvent(ev);
+        }
+
+        return handled;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        this.mDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -98,5 +121,42 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         pokemonDAO.close();
         typeDAO.close();
+    }
+
+    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final String DEBUG_TAG = "Gestures";
+        private int mCurrentPokemonID = 0;
+        private float deltaX, deltaY;
+
+        public MyGestureListener(int currentPokemonID) {
+            this.mCurrentPokemonID = currentPokemonID;
+        }
+
+        @Override
+        public boolean onDown(MotionEvent event) {
+            Log.d(DEBUG_TAG, "onDown: " + event.toString());
+            return false;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent event1, MotionEvent event2,
+                               float velocityX, float velocityY) {
+
+            deltaX = event2.getX() - event1.getX();
+            deltaY = event2.getY() - event1.getY();
+
+            Log.d(DEBUG_TAG, "onFling: " + event1.toString() + event2.toString());
+
+            if (Math.abs(deltaY) > Math.abs(deltaX)) { // If vertical fling, just scroll
+                return false;
+            } else { // Go to adjacent pokemon
+                int newPokemonID = (deltaX < 0) ? mCurrentPokemonID + 1 : (mCurrentPokemonID - 1 > 0) ? mCurrentPokemonID - 1 : 1 ;
+                Intent intent = new Intent(getApplicationContext(), PokemonDisplayActivity.class);
+                intent.putExtra(POKEMON_ID, newPokemonID);
+
+                startActivity(intent);
+                return false;
+            }
+        }
     }
 }

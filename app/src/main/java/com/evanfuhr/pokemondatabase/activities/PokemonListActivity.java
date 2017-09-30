@@ -32,9 +32,9 @@ public class PokemonListActivity extends AppCompatActivity
     public void onListFragmentInteraction(Pokemon pokemon) {
         int pokemon_id = pokemon.getID();
 
-        //Build the intent to load the player sheet
+        //Build the intent to load the pokemon display
         Intent intent = new Intent(this, PokemonDisplayActivity.class);
-        //Load the hero ID to send to the player sheet
+        //Load the pokemon ID to send to the player sheet
         intent.putExtra(POKEMON_ID, pokemon_id);
 
         startActivity(intent);
