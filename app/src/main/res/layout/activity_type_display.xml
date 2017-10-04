@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/type_display_activity"
     tools:context="com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity">
 
@@ -11,15 +11,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/type_display_scroll_view"
-        android:layout_centerHorizontal="true" >
+        android:layout_centerHorizontal="true"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
 
-        <fragment
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment"
-            android:id="@+id/typeMatchUpFragment"
-            android:layout_margin="@dimen/activity_horizontal_margin"/>
+            android:orientation="vertical">
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment"
+                android:id="@+id/typeMatchUpFragment"
+                android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:id="@+id/attacker_card"
+                app:cardBackgroundColor="?attr/colorButtonNormal"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_margin="@dimen/activity_horizontal_margin">
+
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:name="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment"
+                    android:id="@+id/typedPokemonListFragment"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
 
     </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

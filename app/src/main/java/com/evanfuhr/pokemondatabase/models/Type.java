@@ -13,7 +13,7 @@ public class Type {
     private String _color;
     private List<Type> _defendingTypes;
     private float _efficacy;
-    private int _id;
+    private int _id = 0;
     private String _name;
     private int _slot;
 

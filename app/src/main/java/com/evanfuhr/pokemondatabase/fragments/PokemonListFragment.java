@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.adapters.MyPokemonRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,10 @@ public class PokemonListFragment extends Fragment
     implements SearchView.OnQueryTextListener {
 
     private OnListFragmentInteractionListener mListener;
+
+    public static final String TYPE_ID = "type_id";
+
+    Type type = new Type();
 
     RecyclerView _recyclerView;
 
@@ -54,6 +60,17 @@ public class PokemonListFragment extends Fragment
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
+
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle!=null) {
+            if(bundle.containsKey(TYPE_ID)) {
+                type.setID(bundle.getInt(TYPE_ID));
+            }
+        } else {
+            Log.i("PokemonListFragment Log", "No bundle");
+
+        }
+
 
         List<Pokemon> pokemons = getTypedPokemon();
 
@@ -118,7 +135,17 @@ public class PokemonListFragment extends Fragment
 
         for (Pokemon pokemon : unTypedPokemons) {
             pokemon.setTypes(pokemonDAO.getTypesForPokemon(pokemon));
-            typedPokemons.add(pokemon);
+            if (type.getID() > 0) {
+                if (pokemon.getTypes().get(0).getID() == type.getID()) {
+                    typedPokemons.add(pokemon);
+                } else if (pokemon.getTypes().size() == 2) {
+                    if (pokemon.getTypes().get(1).getID() == type.getID()) {
+                        typedPokemons.add(pokemon);
+                    }
+                }
+            } else {
+                typedPokemons.add(pokemon);
+            }
         }
 
         pokemonDAO.close();
