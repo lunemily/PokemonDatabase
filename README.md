@@ -50,5 +50,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * Satoshi Tajiri, creator of Pokemon
+* [Veekun](http://veekun.com) for the database
 * [Anagnorisis](https://en.wikipedia.org/wiki/Anagnorisis) and [Peripeteia](https://en.wikipedia.org/wiki/Peripeteia)
 * Our childhood experiences!

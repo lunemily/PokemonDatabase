@@ -32,6 +32,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
+    public static final String ANIMATION = "animation";
 
     RelativeLayout _RelativeLayout;
 
@@ -59,6 +60,20 @@ public class PokemonDisplayActivity extends AppCompatActivity
         mDetector = new GestureDetector(this, new MyGestureListener(_pokemon.getID()));
 
         pokemonDAO.close();
+
+        if (intent.getExtras().containsKey(ANIMATION)) {
+            switch (intent.getIntExtra(ANIMATION, 0)) {
+                case R.anim.trans_left_in:
+                    overridePendingTransition(R.anim.trans_left_in, R.anim.trans_right_out);
+                    break;
+                case R.anim.trans_right_in:
+                    overridePendingTransition(R.anim.trans_right_in, R.anim.trans_left_out);
+                    break;
+                default:
+                    overridePendingTransition(R.anim.trans_right_in, R.anim.trans_left_out);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -150,9 +165,23 @@ public class PokemonDisplayActivity extends AppCompatActivity
             if (Math.abs(deltaY) > Math.abs(deltaX)) { // If vertical fling, just scroll
                 return false;
             } else { // Go to adjacent pokemon
-                int newPokemonID = (deltaX < 0) ? mCurrentPokemonID + 1 : (mCurrentPokemonID - 1 > 0) ? mCurrentPokemonID - 1 : 1 ;
                 Intent intent = new Intent(getApplicationContext(), PokemonDisplayActivity.class);
+                boolean swipeRight = (deltaX < 0);
+                int newPokemonID;
+                int animation;
+
+                if (swipeRight) {
+                    //TODO: Don't hardcode this
+                    newPokemonID = (mCurrentPokemonID + 1 <= 802) ? mCurrentPokemonID + 1 : 1; // Wrap around
+                    animation = R.anim.trans_left_in;
+                } else { //swipeLeft
+                    //TODO: Don't hardcode this
+                    newPokemonID = (mCurrentPokemonID - 1 > 0) ? mCurrentPokemonID - 1 : 802; // Wrap around
+                    animation = R.anim.trans_right_in;
+                }
+
                 intent.putExtra(POKEMON_ID, newPokemonID);
+                intent.putExtra(ANIMATION, animation);
 
                 startActivity(intent);
                 return false;
