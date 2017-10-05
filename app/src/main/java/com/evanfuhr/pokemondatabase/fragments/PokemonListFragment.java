@@ -41,6 +41,9 @@ public class PokemonListFragment extends Fragment
 
     Type type = new Type();
 
+    boolean listByMove = false;
+    boolean listByType = false;
+
     RecyclerView _recyclerView;
 
     /**
@@ -62,13 +65,13 @@ public class PokemonListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
 
         Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle!=null) {
+        if (bundle != null) {
             if(bundle.containsKey(TYPE_ID)) {
                 type.setID(bundle.getInt(TYPE_ID));
+                listByType = true;
             }
         } else {
             Log.i("PokemonListFragment Log", "No bundle");
-
         }
 
 
@@ -135,11 +138,9 @@ public class PokemonListFragment extends Fragment
 
         for (Pokemon pokemon : unTypedPokemons) {
             pokemon.setTypes(pokemonDAO.getTypesForPokemon(pokemon));
-            if (type.getID() > 0) {
-                if (pokemon.getTypes().get(0).getID() == type.getID()) {
-                    typedPokemons.add(pokemon);
-                } else if (pokemon.getTypes().size() == 2) {
-                    if (pokemon.getTypes().get(1).getID() == type.getID()) {
+            if (listByType) {
+                for (Type pokemonType : pokemon.getTypes()) {
+                    if (pokemonType.getID() == type.getID()) {
                         typedPokemons.add(pokemon);
                     }
                 }
