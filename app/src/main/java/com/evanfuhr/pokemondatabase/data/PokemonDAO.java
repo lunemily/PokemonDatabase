@@ -238,7 +238,6 @@ public class PokemonDAO extends DataBaseHelper {
 
         String selectQuery = "SELECT " + TABLE_POKEMON_TYPES + "." + KEY_SLOT +
                 ", " + TABLE_POKEMON_TYPES + "." + KEY_TYPE_ID +
-                ", " + TABLE_TYPES + "." + KEY_COLOR +
                 " FROM " + TABLE_POKEMON_TYPES +
                 ", " + TABLE_TYPES +
                 " WHERE " + TABLE_POKEMON_TYPES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + KEY_ID +
@@ -251,7 +250,7 @@ public class PokemonDAO extends DataBaseHelper {
                 Type type = new Type();
                 type.setSlot(Integer.parseInt(cursor.getString(0)));
                 type.setID(Integer.parseInt(cursor.getString(1)));
-                type.setColor(cursor.getString(2));
+                type.setColor(Type.getTypeColor(type.getID()));
                 //add type to list
                 typesForPokemon.add(type);
             } while (cursor.moveToNext());

@@ -27,7 +27,6 @@ public class TypeDAO extends DataBaseHelper {
 
         String selectQuery = "SELECT " + TABLE_TYPES + "." + KEY_ID +
                 ", " + TABLE_TYPE_NAMES + "." + KEY_NAME +
-                ", " + TABLE_TYPES + "." + KEY_COLOR +
                 " FROM " + TABLE_TYPES +
                 ", " + TABLE_TYPE_NAMES +
                 " WHERE " + TABLE_TYPES + "." + KEY_ID + " = " + TABLE_TYPE_NAMES + "." + KEY_TYPE_ID +
@@ -43,7 +42,8 @@ public class TypeDAO extends DataBaseHelper {
                 Type type = new Type();
                 type.setID(Integer.parseInt(cursor.getString(0)));
                 type.setName(cursor.getString(1));
-                type.setColor(cursor.getString(2));
+                type.setColor(Type.getTypeColor(type.getID()));
+
                 //add pokemon to list
                 types.add(type);
             } while (cursor.moveToNext());
@@ -58,7 +58,6 @@ public class TypeDAO extends DataBaseHelper {
 
         String selectQuery = "SELECT " + TABLE_TYPES + "." + KEY_ID +
                 ", " + TABLE_TYPE_NAMES + "." + KEY_NAME +
-                ", " + TABLE_TYPES + "." + KEY_COLOR +
                 " FROM " + TABLE_TYPES +
                 ", " + TABLE_TYPE_NAMES +
                 " WHERE " + TABLE_TYPES + "." + KEY_ID + " = '" + type.getID() + "'" +
@@ -71,7 +70,7 @@ public class TypeDAO extends DataBaseHelper {
             if (cursor.moveToFirst()) {
                 type.setID(Integer.parseInt(cursor.getString(0)));
                 type.setName(cursor.getString(1));
-                type.setColor(cursor.getString(2));
+                type.setColor(Type.getTypeColor(type.getID()));
             }
             cursor.close();
         }

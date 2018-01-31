@@ -29,7 +29,6 @@ public class MoveDAO extends DataBaseHelper {
         String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_ID +
                 ", " + TABLE_MOVE_NAMES + "." + KEY_NAME +
                 ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
-                ", " + TABLE_TYPES + "." + KEY_COLOR +
                 " FROM " + TABLE_MOVES +
                 ", " + TABLE_MOVE_NAMES +
                 ", " + TABLE_TYPES +
@@ -50,7 +49,7 @@ public class MoveDAO extends DataBaseHelper {
                 move.setID(Integer.parseInt(cursor.getString(0)));
                 move.setName(cursor.getString(1));
                 type.setID(Integer.parseInt(cursor.getString(2)));
-                type.setColor(cursor.getString(3));
+                type.setColor(Type.getTypeColor(type.getID()));
                 move.setType(type);
                 //add pokemon to list
                 moves.add(move);

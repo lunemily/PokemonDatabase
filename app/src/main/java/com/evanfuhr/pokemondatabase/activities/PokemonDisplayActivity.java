@@ -182,6 +182,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
                 intent.putExtra(POKEMON_ID, newPokemonID);
                 intent.putExtra(ANIMATION, animation);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 startActivity(intent);
                 return false;

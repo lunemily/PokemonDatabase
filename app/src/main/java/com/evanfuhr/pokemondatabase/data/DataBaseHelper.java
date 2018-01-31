@@ -107,9 +107,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String KEY_DAMAGE_TYPE_ID = "damage_type_id";
     static final String KEY_TARGET_TYPE_ID = "target_type_id";
 
-    //types
-    static final String KEY_COLOR = "color";
-
     //version_groups
     static final String KEY_GENERATION_ID = "generation_id";
 
