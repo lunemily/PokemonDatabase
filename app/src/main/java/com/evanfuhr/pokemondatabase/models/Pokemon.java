@@ -57,7 +57,7 @@ public class Pokemon {
     }
 
     public void setGenus(String genus) {
-        this._genus = genus;
+        this._genus = "The " + genus;
     }
 
     public Double getHeight() {

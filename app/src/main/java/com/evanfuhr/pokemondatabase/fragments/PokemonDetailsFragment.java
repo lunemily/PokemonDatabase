@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +36,11 @@ public class PokemonDetailsFragment extends Fragment {
     Pokemon _pokemon;
 
     LinearLayout _abilities;
+    TextView _bulbapedia;
     LinearLayout _eggGroups;
+    TextView _genus;
     TextView _height;
+    TextView _smogon;
     GifImageView _spriteGif;
     Button _type1Button;
     Button _type2Button;
@@ -57,8 +62,11 @@ public class PokemonDetailsFragment extends Fragment {
         View detailsFragmentView = inflater.inflate(R.layout.fragment_pokemon_details, container, false);
 
         _abilities = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonAbilitiesList);
+        _bulbapedia = (TextView) detailsFragmentView.findViewById(R.id.bulbapediaLink);
         _eggGroups = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonEggGroupsList);
+        _genus = (TextView) detailsFragmentView.findViewById(R.id.pokemonGenusText);
         _height = (TextView) detailsFragmentView.findViewById(R.id.pokemonHeightValue);
+        _smogon = (TextView) detailsFragmentView.findViewById(R.id.smogonLink);
         _spriteGif = (GifImageView) detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
         _type1Button = (Button) detailsFragmentView.findViewById(R.id.buttonPokemonType1);
         _type2Button = (Button) detailsFragmentView.findViewById(R.id.buttonPokemonType2);
@@ -79,11 +87,13 @@ public class PokemonDetailsFragment extends Fragment {
 
     public void setPokemonDetails(Pokemon pokemon) {
         _pokemon = pokemon;
+        setFragmentGenus();
         setFragmentSprite();
         setFragmentHeightAndWeight();
         setFragmentAbilities();
         setFragmentEggGroups();
         setFragmentTypes();
+        setExternalLinks();
     }
 
     void setFragmentAbilities() {
@@ -118,6 +128,11 @@ public class PokemonDetailsFragment extends Fragment {
             textViewEggGroup.setText(eggGroupDAO.getEggGroupByID(eg).getName());
             _eggGroups.addView(textViewEggGroup);
         }
+    }
+
+    void setFragmentGenus() {
+        String genus = _pokemon.getGenus();
+        _genus.setText(genus);
     }
 
     void setFragmentHeightAndWeight() {
@@ -183,6 +198,16 @@ public class PokemonDetailsFragment extends Fragment {
                 }
             });
         }
+    }
+
+    void setExternalLinks() {
+        _bulbapedia.setClickable(true);
+        _bulbapedia.setMovementMethod(LinkMovementMethod.getInstance());
+        _bulbapedia.setText(Html.fromHtml("<a href='https://bulbapedia.bulbagarden.net/wiki/" + _pokemon.getName() + "_(Pok%C3%A9mon)'>Bulbapedia</a>"));
+
+        _smogon.setClickable(true);
+        _smogon.setMovementMethod(LinkMovementMethod.getInstance());
+        _smogon.setText(Html.fromHtml("<a href='http://www.smogon.com/dex/sm/pokemon/" + _pokemon.getName() + "'>Smogon</a>"));
     }
 
     private void onClickButtonTypeDetails(View view) {

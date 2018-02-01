@@ -125,4 +125,6 @@
     <string name="Moves">Moves</string>
     <string name="simple_button">Simple Button</string>
     <string name="pokemonGenus">The ____ Pokémon</string>
+    <string name="bulbapediaLink">Bulba</string>
+    <string name="smogonLink">Smog</string>
 </resources>
