@@ -101,6 +101,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //pokemon_species_names
     static final String KEY_POKEMON_SPECIES_ID = "pokemon_species_id";
+    static final String KEY_GENUS = "genus";
 
     //type_efficacy
     static final String KEY_DAMAGE_FACTOR = "damage_factor";

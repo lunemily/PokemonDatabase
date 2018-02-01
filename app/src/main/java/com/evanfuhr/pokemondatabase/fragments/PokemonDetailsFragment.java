@@ -34,7 +34,6 @@ public class PokemonDetailsFragment extends Fragment {
     Pokemon _pokemon;
 
     LinearLayout _abilities;
-    TextView _dexID;
     LinearLayout _eggGroups;
     TextView _height;
     GifImageView _spriteGif;
@@ -58,7 +57,6 @@ public class PokemonDetailsFragment extends Fragment {
         View detailsFragmentView = inflater.inflate(R.layout.fragment_pokemon_details, container, false);
 
         _abilities = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonAbilitiesList);
-        _dexID = (TextView) detailsFragmentView.findViewById(R.id.nationalDexNumber);
         _eggGroups = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonEggGroupsList);
         _height = (TextView) detailsFragmentView.findViewById(R.id.pokemonHeightValue);
         _spriteGif = (GifImageView) detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
@@ -81,7 +79,6 @@ public class PokemonDetailsFragment extends Fragment {
 
     public void setPokemonDetails(Pokemon pokemon) {
         _pokemon = pokemon;
-        setFragmentDexID();
         setFragmentSprite();
         setFragmentHeightAndWeight();
         setFragmentAbilities();
@@ -108,11 +105,6 @@ public class PokemonDetailsFragment extends Fragment {
 
         pokemonDAO.close();
         abilityDAO.close();
-    }
-
-    void setFragmentDexID() {
-        String dexID = "#" + _pokemon.getID();
-        _dexID.setText(dexID);
     }
 
     void setFragmentEggGroups() {
