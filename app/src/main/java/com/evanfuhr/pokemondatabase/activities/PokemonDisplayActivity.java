@@ -55,7 +55,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         _pokemon.setID(intent.getIntExtra(POKEMON_ID, 0));
         _pokemon = pokemonDAO.getSinglePokemonByID(_pokemon);
         onPokemonSelected(_pokemon);
-        setTitle(_pokemon.getName());
+        setTitle("#" + _pokemon.getID() + " " + _pokemon.getName());
 
         mDetector = new GestureDetector(this, new MyGestureListener(_pokemon.getID()));
 

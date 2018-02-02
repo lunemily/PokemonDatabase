@@ -16,31 +16,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/pokemonGenusText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/activity_vertical_margin">
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/pokemonGenus"
+                android:textAlignment="center"
+                android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/nationalDexNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/nationalDexNumber"
-                    android:textSize="24sp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
-
-                <com.evanfuhr.pokemondatabase.views.GifImageView
-                    android:id="@+id/gifImageViewPokemonSprite"
-                    android:layout_width="match_parent"
-                    android:layout_height="128dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:contentDescription="@string/spritedescription"
-                    app:srcCompat="@drawable/sprite001" />
-
-            </RelativeLayout>
+            <com.evanfuhr.pokemondatabase.views.GifImageView
+                android:id="@+id/gifImageViewPokemonSprite"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_height="128dp"
+                android:contentDescription="@string/spritedescription"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/sprite001" />
 
             <TableLayout
                 android:layout_width="wrap_content"
@@ -185,6 +178,37 @@
                         android:layout_span="3"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:text="@string/type_2" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin" >
+
+                    <TextView
+                        android:id="@+id/bulbapediaLink"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_span="3"
+                        android:text="@string/bulbapediaLink"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textColorLink="@color/cardview_dark_background" />
+
+                    <TextView
+                        android:id="@+id/smogonLink"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_span="3"
+                        android:text="@string/smogonLink"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textColorLink="@color/cardview_dark_background" />
 
                 </TableRow>
 

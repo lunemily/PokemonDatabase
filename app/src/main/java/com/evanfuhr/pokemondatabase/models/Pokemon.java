@@ -8,6 +8,7 @@ public class Pokemon {
     private int _base_experience;
     private List<EggGroup> _egg_groups;
     private int _gender_ratio;
+    private String _genus;
     private Double _height;
     private int _id;
     private boolean _mega;
@@ -49,6 +50,14 @@ public class Pokemon {
 
     public void setGenderRatio(int gender_ratio) {
         this._gender_ratio = gender_ratio;
+    }
+
+    public String getGenus() {
+        return this._genus;
+    }
+
+    public void setGenus(String genus) {
+        this._genus = "The " + genus;
     }
 
     public Double getHeight() {

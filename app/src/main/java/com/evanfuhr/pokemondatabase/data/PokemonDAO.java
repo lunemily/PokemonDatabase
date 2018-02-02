@@ -68,6 +68,7 @@ public class PokemonDAO extends DataBaseHelper {
                 ", " + TABLE_POKEMON + ".'" + KEY_ORDER + "'" +
                 ", " + TABLE_POKEMON + "." + KEY_IS_DEFAULT +
                 ", " + TABLE_POKEMON_SPECIES + "." + KEY_GENDER_RATE +
+                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_GENUS +
                 " FROM " + TABLE_POKEMON_SPECIES +
                 ", " + TABLE_POKEMON_SPECIES_NAMES +
                 ", " + TABLE_POKEMON +
@@ -88,6 +89,7 @@ public class PokemonDAO extends DataBaseHelper {
                 //pokemon.setOrder(Integer.parseInt(cursor.getString(5)));
                 //pokemon.setIsDefault(Boolean.parseBoolean(cursor.getString(6)));
                 //pokemon.setGenderRatio(Integer.parseInt(cursor.getString(7)));
+                pokemon.setGenus(cursor.getString(8));
             }
             cursor.close();
         }
