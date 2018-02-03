@@ -1,16 +1,21 @@
 package com.evanfuhr.pokemondatabase.data;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.evanfuhr.pokemondatabase.R;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -25,7 +30,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private final Context myContext;
 
-    int _version_id = 26;
+    int _version_id = 28;
 
     int _language_id = 9;
 
@@ -245,8 +250,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
 // to you to create adapters for your views.
 
-    public int getVersionGroupIDByVersionID(int version_id) {
+    public int getVersionGroupIDByVersionID() {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        SharedPreferences settings = myContext.getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
+        int version_id = settings.getInt(String.valueOf(R.string.gameVersionID), 0);
 
         int version_group_id = 1;
 
@@ -271,7 +279,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         int generation_id = 1;
 
-        int version_group_id = getVersionGroupIDByVersionID(version_id);
+        int version_group_id = getVersionGroupIDByVersionID();
 
         String selectQuery = "SELECT " + TABLE_VERSION_GROUPS + "." + KEY_GENERATION_ID +
                 " FROM " + TABLE_VERSION_GROUPS +

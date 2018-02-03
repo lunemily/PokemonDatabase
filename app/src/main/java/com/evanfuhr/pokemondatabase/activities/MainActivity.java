@@ -1,6 +1,7 @@
 package com.evanfuhr.pokemondatabase.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     @NonNls
     public static final String POKEMON = "Pokémon";
+    public static final String GAME_VERSION_ID = "version_id";
+    public static int _version_id = 0;
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 
@@ -55,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
             throw sqle;
 
         }
+
+        // Restore Preferences
+        restorePreferences();
+
         setTitle(POKEMON);
         setListButtons();
     }
@@ -136,5 +143,24 @@ public class MainActivity extends AppCompatActivity {
     void onClickMenuSetGame(MenuItem item) {
         Toast toast = Toast.makeText(getApplicationContext(), MENU_ITEM_NOT_IMPLEMENTED_YET, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    private void restorePreferences() {
+        SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
+        _version_id = settings.getInt(String.valueOf(R.string.gameVersionID), 28); // Default game is Moon
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(String.valueOf(R.string.gameVersionID), _version_id);
+
+        // Commit the edits!
+        editor.commit();
     }
 }
