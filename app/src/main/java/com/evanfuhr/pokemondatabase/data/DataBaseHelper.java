@@ -273,19 +273,4 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return version_group_id;
     }
-
-    public int getGenerationIDByVersionID(int version_id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        int generation_id = 1;
-
-        int version_group_id = getVersionGroupIDByVersionID();
-
-        String selectQuery = "SELECT " + TABLE_VERSION_GROUPS + "." + KEY_GENERATION_ID +
-                " FROM " + TABLE_VERSION_GROUPS +
-                " WHERE " + TABLE_VERSION_GROUPS + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'"
-                ;
-
-        return generation_id;
-    }
 }
