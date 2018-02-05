@@ -1,14 +1,18 @@
 package com.evanfuhr.pokemondatabase.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.evanfuhr.pokemondatabase.R;
@@ -22,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     @NonNls
     public static final String POKEMON = "Pokémon";
-    public static final String GAME_VERSION_ID = "version_id";
     public static int _version_id = 0;
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
@@ -143,6 +146,34 @@ public class MainActivity extends AppCompatActivity {
     void onClickMenuSetGame(MenuItem item) {
         Toast toast = Toast.makeText(getApplicationContext(), MENU_ITEM_NOT_IMPLEMENTED_YET, Toast.LENGTH_LONG);
         toast.show();
+
+        //Setup hero object for update
+        final DataBaseHelper db = new DataBaseHelper(this);
+
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+        View setGameVersion = layoutInflater.inflate(R.layout.dialog_set_game_version, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setView(setGameVersion);
+
+        final EditText editText = (EditText) setGameVersion.findViewById(R.id.username);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Save game version
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
     private void restorePreferences() {
