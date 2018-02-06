@@ -11,16 +11,20 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.adapters.VersionAdapter;
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
+import com.evanfuhr.pokemondatabase.data.VersionDAO;
+import com.evanfuhr.pokemondatabase.models.Version;
 
 import org.jetbrains.annotations.NonNls;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -132,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch(id) {
             case R.id.action_set_game:
-                onClickMenuSetGame(item);
+                onClickMenuSetGame();
                 break;
             case R.id.action_search_list:
                 break;
@@ -143,35 +147,55 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    void onClickMenuSetGame(MenuItem item) {
-        Toast toast = Toast.makeText(getApplicationContext(), MENU_ITEM_NOT_IMPLEMENTED_YET, Toast.LENGTH_LONG);
-        toast.show();
+    void onClickMenuSetGame() {
 
-        //Setup hero object for update
-        final DataBaseHelper db = new DataBaseHelper(this);
+        // Get list of versions
+        VersionDAO versionDAO = new VersionDAO(this);
+        List<Version> versionList = versionDAO.getAllVersions();
 
-        // get prompts.xml view
+        // Get view
         LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-        View setGameVersion = layoutInflater.inflate(R.layout.dialog_set_game_version, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setView(setGameVersion);
+        View setGameVersionView = layoutInflater.inflate(R.layout.dialog_set_game_version, null);
 
-        final EditText editText = (EditText) setGameVersion.findViewById(R.id.username);
+        // Setup spinner
+        final VersionAdapter versionAdapter = new VersionAdapter(this, R.layout.dialog_set_game_version, versionList);
+        //versionAdapter.
+        Spinner versionSpinner = (Spinner) setGameVersionView.findViewById(R.id.spinner_game_version);
+        versionSpinner.setAdapter(versionAdapter);
+        // TODO: Set position
+        //versionSpinner.setSelection(versionAdapter.getPosition());
+        versionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Version version = versionAdapter.getItem(position);
+                _version_id = version.getID();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         // setup a dialog window
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setView(setGameVersionView);
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Save game version
+                        dialog.dismiss();
                     }
                 })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        restorePreferences();
+                        dialog.dismiss();
+                    }
+                });
 
-        // create an alert dialog
+
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }

@@ -34,6 +34,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     int _language_id = 9;
 
+    static final String select = "SELECT ";
+    static final String from = " FROM ";
+    static final String where = " WHERE ";
+    static final String and = " AND ";
+    static final String comma = ", ";
+    static final String equals = " = ";
+
     //tables
     static final String TABLE_ABILITIES = "abilities";
     static final String TABLE_ABILITY_NAMES = "ability_names";
@@ -55,6 +62,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String TABLE_TYPE_NAMES = "type_names";
     static final String TABLE_VERSIONS = "versions";
     static final String TABLE_VERSION_GROUPS = "version_groups";
+    static final String TABLE_VERSION_NAMES = "version_names";
 
     //common
     static final String KEY_EGG_GROUP_ID = "egg_group_id";
@@ -115,6 +123,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //version_groups
     static final String KEY_GENERATION_ID = "generation_id";
+
+    //version_names
+    static final String KEY_VERSION_ID = "version_id";
 
     /**
      * Constructor
@@ -272,5 +283,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
         return version_group_id;
+    }
+
+    static String tableField(String table, String field) {
+        return table + "." + field;
     }
 }

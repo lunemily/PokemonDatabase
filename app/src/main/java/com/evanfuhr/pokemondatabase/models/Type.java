@@ -89,6 +89,7 @@ public class Type {
 
     @NonNull
     @Contract(pure = true)
+    // TODO: Use an enum for this
     public static String getTypeColor(int id) {
         switch (id) {
             case 1:
