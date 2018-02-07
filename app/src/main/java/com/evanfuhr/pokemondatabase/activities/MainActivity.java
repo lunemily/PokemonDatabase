@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.adapters.VersionAdapter;
+import com.evanfuhr.pokemondatabase.adapters.VersionSpinnerAdapter;
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
 import com.evanfuhr.pokemondatabase.data.VersionDAO;
 import com.evanfuhr.pokemondatabase.models.Version;
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    void onClickMenuSetGame() {
+    public void onClickMenuSetGame() {
 
         // Get list of versions
         VersionDAO versionDAO = new VersionDAO(this);
@@ -158,16 +158,16 @@ public class MainActivity extends AppCompatActivity {
         View setGameVersionView = layoutInflater.inflate(R.layout.dialog_set_game_version, null);
 
         // Setup spinner
-        final VersionAdapter versionAdapter = new VersionAdapter(this, R.layout.dialog_set_game_version, versionList);
-        //versionAdapter.
         Spinner versionSpinner = (Spinner) setGameVersionView.findViewById(R.id.spinner_game_version);
-        versionSpinner.setAdapter(versionAdapter);
+        final VersionSpinnerAdapter versionSpinnerAdapter = new VersionSpinnerAdapter(this, R.layout.dialog_set_game_version, versionList);
+        versionSpinner.setAdapter(versionSpinnerAdapter);
         // TODO: Set position
-        //versionSpinner.setSelection(versionAdapter.getPosition());
+        versionSpinner.setSelection(versionSpinnerAdapter.getPositionByVersion(_version_id));
+
         versionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Version version = versionAdapter.getItem(position);
+                Version version = versionSpinnerAdapter.getItem(position);
                 _version_id = version.getID();
 
             }
@@ -178,10 +178,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // setup a dialog window
+        // Setup a dialog window
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setTitle("Set Game Version");
         alertDialogBuilder.setView(setGameVersionView);
-        alertDialogBuilder.setCancelable(false)
+        alertDialogBuilder.setCancelable(true)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Save game version

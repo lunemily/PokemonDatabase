@@ -8,6 +8,7 @@
         android:id="@+id/spinner_game_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:spinnerMode="dialog" />
+        android:padding="@dimen/activity_horizontal_margin"
+        android:spinnerMode="dropdown" />
 
 </LinearLayout>
