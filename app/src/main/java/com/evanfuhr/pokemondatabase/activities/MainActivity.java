@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     @NonNls
     public static final String POKEMON = "Pokémon";
     public static int _version_id = 0;
-    @NonNls
-    public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 
     Button _pokemonButton;
     Button _typeButton;
@@ -180,16 +178,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup a dialog window
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setTitle("Set Game Version");
+        alertDialogBuilder.setTitle(R.string.set_game_version);
         alertDialogBuilder.setView(setGameVersionView);
         alertDialogBuilder.setCancelable(true)
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Save game version
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         restorePreferences();
                         dialog.dismiss();
@@ -203,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void restorePreferences() {
         SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
-        _version_id = settings.getInt(String.valueOf(R.string.gameVersionID), 28); // Default game is Moon
+        _version_id = settings.getInt(String.valueOf(R.string.gameVersionID), R.integer.game_version_id); // Default game is Moon
     }
 
     @Override

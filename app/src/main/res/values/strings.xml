@@ -126,4 +126,8 @@
     <string name="bulbapediaLink">Bulba</string>
     <string name="smogonLink">Smog</string>
     <string name="gameVersionID">gameVersionID</string>
+    <string name="set_game_version">Set Game Version</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="cancel">Cancel</string>
 </resources>
