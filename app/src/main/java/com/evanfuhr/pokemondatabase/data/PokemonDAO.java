@@ -169,7 +169,7 @@ public class PokemonDAO extends DataBaseHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Move> movesForPokemon = new ArrayList<>();
-        int version_group_id = getVersionGroupIDByVersionID(_version_id);
+        int version_group_id = getVersionGroupIDByVersionID();
 
         String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID +
                 ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID +
@@ -212,7 +212,7 @@ public class PokemonDAO extends DataBaseHelper {
     public Move getMoveLevelForPokemonByGame(Move move, Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        int version_group_id = getVersionGroupIDByVersionID(_version_id);
+        int version_group_id = getVersionGroupIDByVersionID();
 
         String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL +
                 " FROM " + TABLE_POKEMON_MOVES +

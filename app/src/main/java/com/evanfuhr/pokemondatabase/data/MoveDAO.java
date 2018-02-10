@@ -109,7 +109,7 @@ public class MoveDAO extends DataBaseHelper {
     @Deprecated
     public Move getTMForMove(Move move) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int version_group_id = getVersionGroupIDByVersionID(_version_id);
+        int version_group_id = getVersionGroupIDByVersionID();
 
         String selectQuery = "SELECT " + TABLE_MACHINES + "." + KEY_MACHINE_NUMBER +
                 " FROM " + TABLE_MACHINES +
