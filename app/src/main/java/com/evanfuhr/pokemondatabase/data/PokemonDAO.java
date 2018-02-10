@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.evanfuhr.pokemondatabase.interfaces.PokemonDataInterface;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Move;
@@ -14,17 +15,29 @@ import com.evanfuhr.pokemondatabase.models.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokemonDAO extends DataBaseHelper {
+public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
     public PokemonDAO(Context context) {
         super(context);
     }
 
-    //Get Pokemon
+    /**
+     * Returns a list of all pokemon
+     *
+     * @return      A n unfiltered list of Pokemon objects
+     * @see         Pokemon
+     */
     public List<Pokemon> getAllPokemon() {
         return getAllPokemon("%");
     }
 
+    /**
+     * Returns a list of all pokemon that contain nameSearchParam
+     *
+     * @param   nameSearchParam A substring to filter Pokemon names with
+     * @return                  A filtered list of Pokemon objects
+     * @see                     Pokemon
+     */
     public List<Pokemon> getAllPokemon(String nameSearchParam) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -57,6 +70,13 @@ public class PokemonDAO extends DataBaseHelper {
         return pokemonList;
     }
 
+    /**
+     * Returns a Pokemon object with most of its non-list data
+     *
+     * @param   pokemon A pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     */
     public Pokemon getSinglePokemonByID(Pokemon pokemon) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -97,7 +117,14 @@ public class PokemonDAO extends DataBaseHelper {
         return pokemon;
     }
 
-    //Get Pokemon attributes
+    /**
+     * Adds abilities to the input pokemon and returns it
+     *
+     * @param   pokemon A pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     * @see             Ability
+     */
     public List<Ability> getAbilitiesForPokemon(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -139,6 +166,14 @@ public class PokemonDAO extends DataBaseHelper {
         return abilitiesForPokemon;
     }
 
+    /**
+     * Adds egg groups to the input pokemon and returns it
+     *
+     * @param   pokemon A pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     * @see             EggGroup
+     */
     public List<EggGroup> getEggGroupsForPokemon(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -165,6 +200,15 @@ public class PokemonDAO extends DataBaseHelper {
         return eggGroups;
     }
 
+    /**
+     * Adds moves to the input pokemon and returns it. The moves and relevant data for the given
+     * pokemon are determined by a deeper reference to the version_group_id maintained elsewhere
+     *
+     * @param   pokemon A pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     * @see             Move
+     */
     public List<Move> getMovesForPokemonByGame(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -208,31 +252,14 @@ public class PokemonDAO extends DataBaseHelper {
         return movesForPokemon;
     }
 
-    @Deprecated
-    public Move getMoveLevelForPokemonByGame(Move move, Pokemon pokemon) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        int version_group_id = getVersionGroupIDByVersionID();
-
-        String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL +
-                " FROM " + TABLE_POKEMON_MOVES +
-                " WHERE " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_ID + " = '" + pokemon.getID() + "'" +
-                " AND " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID + " = '" + move.getID() + "'" +
-                " AND " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID + " = '" + "1" + "'" +
-                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = '" + version_group_id + "'"
-                ;
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                move.setLevel(Integer.parseInt(cursor.getString(0)));
-            }
-            cursor.close();
-        }
-
-        return move;
-    }
-
+    /**
+     * Adds types to the input pokemon and returns it
+     *
+     * @param   pokemon A pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     * @see             Type
+     */
     public List<Type> getTypesForPokemon(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
