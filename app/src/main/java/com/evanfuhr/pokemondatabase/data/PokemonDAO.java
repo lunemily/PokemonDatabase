@@ -77,7 +77,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
      * @return          The modified input is returned
      * @see             Pokemon
      */
-    public Pokemon getSinglePokemonByID(Pokemon pokemon) {
+    public Pokemon getPokemonByID(Pokemon pokemon) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
@@ -131,18 +131,15 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         List<Ability> abilitiesForPokemon = new ArrayList<>();
 
         String selectQuery = "SELECT " + TABLE_ABILITIES + "." + KEY_ID +
-                ", " + TABLE_ABILITY_NAMES + "." + KEY_NAME +
                 ", " + TABLE_POKEMON_ABILITIES + "." + KEY_SLOT +
                 ", " + TABLE_POKEMON_ABILITIES + "." + KEY_IS_HIDDEN +
             " FROM " + TABLE_ABILITIES +
-                ", " + TABLE_ABILITY_NAMES +
                 ", " + TABLE_POKEMON_ABILITIES +
                 ", " + TABLE_POKEMON_SPECIES +
             " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = '" + pokemon.getID() + "'" +
                 " AND " + TABLE_ABILITIES + "." + KEY_ID + " = " + TABLE_POKEMON_ABILITIES + "." + KEY_ABILITY_ID +
                 " AND " + TABLE_ABILITIES + "." + KEY_ID + " = " + TABLE_ABILITY_NAMES + "." + KEY_ABILITY_ID +
                 " AND " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_ABILITIES + "." + KEY_POKEMON_ID +
-                " AND " + TABLE_ABILITY_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'" +
             " ORDER BY " + TABLE_POKEMON_ABILITIES + "." + KEY_SLOT + " ASC"
             ;
 
@@ -154,9 +151,8 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 //Move move = new Move();
                 Ability ability = new Ability();
                 ability.setID(Integer.parseInt(cursor.getString(0)));
-                ability.setName(cursor.getString(1));
-                ability.setSlot(Integer.parseInt(cursor.getString(2)));
-                ability.setIsHidden("1".equals(cursor.getString(3)));
+                ability.setSlot(Integer.parseInt(cursor.getString(1)));
+                ability.setIsHidden("1".equals(cursor.getString(2)));
                 //add move to list
                 abilitiesForPokemon.add(ability);
             } while (cursor.moveToNext());

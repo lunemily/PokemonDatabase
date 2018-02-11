@@ -14,7 +14,7 @@ public interface PokemonDataInterface {
 
     List<Pokemon> getAllPokemon(String nameSearchParam);
 
-    Pokemon getSinglePokemonByID(Pokemon pokemon);
+    Pokemon getPokemonByID(Pokemon pokemon);
 
     List<Ability> getAbilitiesForPokemon(Pokemon pokemon);
 
