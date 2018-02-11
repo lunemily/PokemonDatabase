@@ -30,8 +30,7 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
                 ", " + TABLE_ABILITY_NAMES +
             " WHERE " + TABLE_ABILITIES + "." + KEY_ID + " = '" + ability.getID() + "'" +
                 " AND " + TABLE_ABILITIES + "." + KEY_ID + " = " + TABLE_ABILITY_NAMES + "." + KEY_ABILITY_ID +
-                " AND " + TABLE_ABILITY_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'" +
-            " ORDER BY " + TABLE_POKEMON_ABILITIES + "." + KEY_SLOT + " ASC"
+                " AND " + TABLE_ABILITY_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
             ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
