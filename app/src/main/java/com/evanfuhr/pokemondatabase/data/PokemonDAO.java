@@ -24,7 +24,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
     /**
      * Returns a list of all pokemon
      *
-     * @return      A n unfiltered list of Pokemon objects
+     * @return      An unfiltered list of Pokemon objects
      * @see         Pokemon
      */
     public List<Pokemon> getAllPokemon() {

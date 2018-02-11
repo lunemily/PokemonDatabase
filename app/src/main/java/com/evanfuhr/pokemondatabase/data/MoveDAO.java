@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.evanfuhr.pokemondatabase.interfaces.MoveDataInterface;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.MoveCategory;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -11,16 +12,29 @@ import com.evanfuhr.pokemondatabase.models.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoveDAO extends DataBaseHelper {
+public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
 
     public MoveDAO(Context context) {
         super(context);
     }
 
+    /**
+     * Returns a list of all moves
+     *
+     * @return      An unfiltered list of Move objects
+     * @see         Move
+     */
     public List<Move> getAllMoves() {
         return getAllMoves("%");
     }
 
+    /**
+     * Returns a list of all moves that contain nameSearchParam
+     *
+     * @param   nameSearchParam A substring to filter Move names with
+     * @return                  A filtered list of Pokemon objects
+     * @see                     Move
+     */
     public List<Move> getAllMoves(String nameSearchParam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -60,6 +74,13 @@ public class MoveDAO extends DataBaseHelper {
         return moves;
     }
 
+    /**
+     * Returns a Move object with most of its non-list data
+     *
+     * @param   move    A move object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Move
+     */
     public Move getMoveByID(Move move) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -103,28 +124,6 @@ public class MoveDAO extends DataBaseHelper {
             }
             cursor.close();
         }
-        return move;
-    }
-
-    @Deprecated
-    public Move getTMForMove(Move move) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int version_group_id = getVersionGroupIDByVersionID();
-
-        String selectQuery = "SELECT " + TABLE_MACHINES + "." + KEY_MACHINE_NUMBER +
-                " FROM " + TABLE_MACHINES +
-                " WHERE " + TABLE_MACHINES + "." + KEY_MOVE_ID + " = " + move.getID() +
-                " AND " + TABLE_MACHINES + "." + KEY_VERSION_GROUP_ID + " = " + version_group_id
-                ;
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                move.setTM(Integer.parseInt(cursor.getString(0)));
-            }
-            cursor.close();
-        }
-
         return move;
     }
 }
