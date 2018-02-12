@@ -73,7 +73,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
     /**
      * Returns a Pokemon object with most of its non-list data
      *
-     * @param   pokemon A pokemon object to be modified with additional data
+     * @param   pokemon A Pokemon object to be modified with additional data
      * @return          The modified input is returned
      * @see             Pokemon
      */

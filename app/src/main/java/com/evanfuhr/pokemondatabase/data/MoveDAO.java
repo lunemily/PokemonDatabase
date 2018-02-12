@@ -77,7 +77,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
     /**
      * Returns a Move object with most of its non-list data
      *
-     * @param   move    A move object to be modified with additional data
+     * @param   move    A Move object to be modified with additional data
      * @return          The modified input is returned
      * @see             Move
      */
