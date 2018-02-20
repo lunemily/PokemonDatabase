@@ -36,18 +36,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     int _language_id = 9;
 
     //tables
-    static final String TABLE_ABILITIES = "abilities";
-    static final String TABLE_ABILITY_NAMES = "ability_names";
+    static final String ABILITIES = "abilities";
+    static final String ABILITY_NAMES = "ability_names";
     static final String TABLE_EGG_GROUP_PROSE = "egg_group_prose";
     static final String TABLE_MACHINES = "machines";
     static final String TABLE_MOVE_EFFECT_PROSE = "move_effect_prose";
     static final String TABLE_MOVE_NAMES = "move_names";
     static final String TABLE_MOVES = "moves";
     static final String TABLE_POKEMON = "pokemon";
-    static final String TABLE_POKEMON_ABILITIES = "pokemon_abilities";
+    static final String POKEMON_ABILITIES = "pokemon_abilities";
     static final String TABLE_POKEMON_EGG_GROUPS = "pokemon_egg_groups";
     static final String TABLE_POKEMON_MOVES = "pokemon_moves";
-    static final String TABLE_POKEMON_SPECIES = "pokemon_species";
+    static final String POKEMON_SPECIES = "pokemon_species";
     static final String TABLE_POKEMON_SPECIES_FLAVOR_TEXT = "pokemon_species_flavor_text";
     static final String TABLE_POKEMON_SPECIES_NAMES = "pokemon_species_names";
     static final String TABLE_POKEMON_TYPES = "pokemon_types";
@@ -65,7 +65,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String LOCAL_LANGUAGE_ID = "local_language_id";
     static final String KEY_MOVE_ID = "move_id";
     static final String NAME = "name";
-    static final String KEY_POKEMON_ID = "pokemon_id";
+    static final String POKEMON_ID = "pokemon_id";
     static final String KEY_SLOT = "slot";
     static final String KEY_TYPE_ID = "type_id";
     static final String KEY_VERSION_GROUP_ID = "version_group_id";
@@ -93,7 +93,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String KEY_WEIGHT = "weight";
 
     //pokemon_abilities
-    static final String KEY_ABILITY_ID = "ability_id";
+    static final String ABILITY_ID = "ability_id";
     static final String KEY_IS_HIDDEN = "is_hidden";
 
     //pokemon_moves
