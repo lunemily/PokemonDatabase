@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.evanfuhr.pokemondatabase.interfaces.VersionDataInterface;
+import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.models.Version;
 
 import java.util.ArrayList;
@@ -28,19 +29,21 @@ public class VersionDAO extends DataBaseHelper implements VersionDataInterface {
 
         List<Version> versionList = new ArrayList<>();
 
-        String selectQuery = select + tableField(TABLE_VERSIONS, KEY_ID) +
-                comma + tableField(TABLE_VERSION_NAMES, KEY_NAME) +
-                comma + tableField(TABLE_VERSIONS, KEY_VERSION_GROUP_ID) +
-                comma + tableField(TABLE_VERSION_GROUPS, KEY_GENERATION_ID) +
-                from + TABLE_VERSIONS +
-                comma + TABLE_VERSION_NAMES +
-                comma + TABLE_VERSION_GROUPS +
-                where + tableField(TABLE_VERSIONS, KEY_ID) + equals + tableField(TABLE_VERSION_NAMES, KEY_VERSION_ID) +
-                and + tableField(TABLE_VERSIONS, KEY_VERSION_GROUP_ID) + equals + tableField(TABLE_VERSION_GROUPS, KEY_ID) +
-                and + tableField(TABLE_VERSION_NAMES, KEY_LOCAL_LANGUAGE_ID) + equals + _language_id;
+        String sql = SQLiteQueryBuilder
+                .select(field(VERSIONS, ID)
+                        , field(VERSION_NAMES, NAME)
+                        , field(VERSIONS, KEY_VERSION_GROUP_ID)
+                        , field(VERSION_GROUPS, GENERATION_ID))
+                .from(VERSIONS)
+                .join(VERSION_NAMES)
+                .on(field(VERSIONS, ID) + "=" + field(VERSION_NAMES, VERSION_ID))
+                .join(VERSION_GROUPS)
+                .on(field(VERSIONS, KEY_VERSION_GROUP_ID) + "=" + field(VERSION_GROUPS, ID))
+                .where(field(VERSION_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .build();
 
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
 
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {

@@ -24,13 +24,13 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
     public Ability getAbilityByID(Ability ability) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selectQuery = "SELECT " + TABLE_ABILITIES + "." + KEY_ID +
-                ", " + TABLE_ABILITY_NAMES + "." + KEY_NAME +
+        String selectQuery = "SELECT " + TABLE_ABILITIES + "." + ID +
+                ", " + TABLE_ABILITY_NAMES + "." + NAME +
             " FROM " + TABLE_ABILITIES +
                 ", " + TABLE_ABILITY_NAMES +
-            " WHERE " + TABLE_ABILITIES + "." + KEY_ID + " = '" + ability.getID() + "'" +
-                " AND " + TABLE_ABILITIES + "." + KEY_ID + " = " + TABLE_ABILITY_NAMES + "." + KEY_ABILITY_ID +
-                " AND " + TABLE_ABILITY_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
+            " WHERE " + TABLE_ABILITIES + "." + ID + " = '" + ability.getID() + "'" +
+                " AND " + TABLE_ABILITIES + "." + ID + " = " + TABLE_ABILITY_NAMES + "." + KEY_ABILITY_ID +
+                " AND " + TABLE_ABILITY_NAMES + "." + LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
             ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);

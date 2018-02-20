@@ -39,12 +39,12 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
 
         List<Type> types = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TABLE_TYPES + "." + KEY_ID +
-                ", " + TABLE_TYPE_NAMES + "." + KEY_NAME +
+        String selectQuery = "SELECT " + TABLE_TYPES + "." + ID +
+                ", " + TABLE_TYPE_NAMES + "." + NAME +
                 " FROM " + TABLE_TYPES +
                 ", " + TABLE_TYPE_NAMES +
-                " WHERE " + TABLE_TYPES + "." + KEY_ID + " = " + TABLE_TYPE_NAMES + "." + KEY_TYPE_ID +
-                " AND " + TABLE_TYPE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id
+                " WHERE " + TABLE_TYPES + "." + ID + " = " + TABLE_TYPE_NAMES + "." + KEY_TYPE_ID +
+                " AND " + TABLE_TYPE_NAMES + "." + LOCAL_LANGUAGE_ID + " = " + _language_id
                 ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -77,13 +77,13 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
     public Type getTypeByID(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selectQuery = "SELECT " + TABLE_TYPES + "." + KEY_ID +
-                ", " + TABLE_TYPE_NAMES + "." + KEY_NAME +
+        String selectQuery = "SELECT " + TABLE_TYPES + "." + ID +
+                ", " + TABLE_TYPE_NAMES + "." + NAME +
                 " FROM " + TABLE_TYPES +
                 ", " + TABLE_TYPE_NAMES +
-                " WHERE " + TABLE_TYPES + "." + KEY_ID + " = '" + type.getID() + "'" +
-                " AND " + TABLE_TYPES + "." + KEY_ID + " = " + TABLE_TYPE_NAMES + "." + KEY_TYPE_ID +
-                " AND " + TABLE_TYPE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
+                " WHERE " + TABLE_TYPES + "." + ID + " = '" + type.getID() + "'" +
+                " AND " + TABLE_TYPES + "." + ID + " = " + TABLE_TYPE_NAMES + "." + KEY_TYPE_ID +
+                " AND " + TABLE_TYPE_NAMES + "." + LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
                 ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);

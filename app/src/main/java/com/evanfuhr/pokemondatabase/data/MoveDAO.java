@@ -40,16 +40,16 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
 
         List<Move> moves = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_ID +
-                ", " + TABLE_MOVE_NAMES + "." + KEY_NAME +
+        String selectQuery = "SELECT " + TABLE_MOVES + "." + ID +
+                ", " + TABLE_MOVE_NAMES + "." + NAME +
                 ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
                 " FROM " + TABLE_MOVES +
                 ", " + TABLE_MOVE_NAMES +
                 ", " + TABLE_TYPES +
-                " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
-                " AND " + TABLE_MOVES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + KEY_ID +
-                " AND " + TABLE_MOVE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id +
-                " ORDER BY " + TABLE_MOVE_NAMES + "." + KEY_NAME + " ASC"
+                " WHERE " + TABLE_MOVES + "." + ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
+                " AND " + TABLE_MOVES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + ID +
+                " AND " + TABLE_MOVE_NAMES + "." + LOCAL_LANGUAGE_ID + " = " + _language_id +
+                " ORDER BY " + TABLE_MOVE_NAMES + "." + NAME + " ASC"
                 ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -84,8 +84,8 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
     public Move getMoveByID(Move move) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_ID +
-                ", " + TABLE_MOVE_NAMES + "." + KEY_NAME +
+        String selectQuery = "SELECT " + TABLE_MOVES + "." + ID +
+                ", " + TABLE_MOVE_NAMES + "." + NAME +
                 ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
                 ", " + TABLE_MOVES + "." + KEY_POWER +
                 ", " + TABLE_MOVES + "." + KEY_PP +
@@ -96,11 +96,11 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 " FROM " + TABLE_MOVES +
                 ", " + TABLE_MOVE_NAMES +
                 ", " + TABLE_MOVE_EFFECT_PROSE +
-                " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
+                " WHERE " + TABLE_MOVES + "." + ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
                 " AND " + TABLE_MOVES + "." + KEY_EFFECT_ID + " = " + TABLE_MOVE_EFFECT_PROSE + "." + KEY_MOVE_EFFECT_ID +
-                " AND " + TABLE_MOVES + "." + KEY_ID + " = " + move.getID() +
-                " AND " + TABLE_MOVE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id +
-                " AND " + TABLE_MOVE_EFFECT_PROSE + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id
+                " AND " + TABLE_MOVES + "." + ID + " = " + move.getID() +
+                " AND " + TABLE_MOVE_NAMES + "." + LOCAL_LANGUAGE_ID + " = " + _language_id +
+                " AND " + TABLE_MOVE_EFFECT_PROSE + "." + LOCAL_LANGUAGE_ID + " = " + _language_id
                 ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);

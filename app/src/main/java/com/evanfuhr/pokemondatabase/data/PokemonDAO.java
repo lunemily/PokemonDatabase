@@ -44,13 +44,13 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
         List<Pokemon> pokemonList = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
-                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_NAME +
+        String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + ID +
+                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + NAME +
                 " FROM " + TABLE_POKEMON_SPECIES +
                 ", " + TABLE_POKEMON_SPECIES_NAMES +
-                " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
-                " AND LOWER(" + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_NAME + ") LIKE LOWER('%" + nameSearchParam + "%')" +
-                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
+                " WHERE " + TABLE_POKEMON_SPECIES + "." + ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
+                " AND LOWER(" + TABLE_POKEMON_SPECIES_NAMES + "." + NAME + ") LIKE LOWER('%" + nameSearchParam + "%')" +
+                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
                 ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -80,8 +80,8 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
     public Pokemon getPokemonByID(Pokemon pokemon) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
-                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_NAME +
+        String selectQuery = "SELECT " + TABLE_POKEMON_SPECIES + "." + ID +
+                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + NAME +
                 ", " + TABLE_POKEMON + "." + KEY_HEIGHT +
                 ", " + TABLE_POKEMON + "." + KEY_WEIGHT +
                 ", " + TABLE_POKEMON + "." + KEY_BASE_EXPERIENCE +
@@ -92,10 +92,10 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 " FROM " + TABLE_POKEMON_SPECIES +
                 ", " + TABLE_POKEMON_SPECIES_NAMES +
                 ", " + TABLE_POKEMON +
-                " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = '" + pokemon.getID() + "'" +
-                " AND " + TABLE_POKEMON + "." + KEY_SPECIES_ID + " = " + TABLE_POKEMON_SPECIES + "." + KEY_ID +
-                " AND " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
-                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
+                " WHERE " + TABLE_POKEMON_SPECIES + "." + ID + " = '" + pokemon.getID() + "'" +
+                " AND " + TABLE_POKEMON + "." + KEY_SPECIES_ID + " = " + TABLE_POKEMON_SPECIES + "." + ID +
+                " AND " + TABLE_POKEMON_SPECIES + "." + ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
+                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
                 ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -130,15 +130,15 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
         List<Ability> abilitiesForPokemon = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TABLE_ABILITIES + "." + KEY_ID +
+        String selectQuery = "SELECT " + TABLE_ABILITIES + "." + ID +
                 ", " + TABLE_POKEMON_ABILITIES + "." + KEY_SLOT +
                 ", " + TABLE_POKEMON_ABILITIES + "." + KEY_IS_HIDDEN +
             " FROM " + TABLE_ABILITIES +
                 ", " + TABLE_POKEMON_ABILITIES +
                 ", " + TABLE_POKEMON_SPECIES +
-            " WHERE " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = '" + pokemon.getID() + "'" +
-                " AND " + TABLE_ABILITIES + "." + KEY_ID + " = " + TABLE_POKEMON_ABILITIES + "." + KEY_ABILITY_ID +
-                " AND " + TABLE_POKEMON_SPECIES + "." + KEY_ID + " = " + TABLE_POKEMON_ABILITIES + "." + KEY_POKEMON_ID +
+            " WHERE " + TABLE_POKEMON_SPECIES + "." + ID + " = '" + pokemon.getID() + "'" +
+                " AND " + TABLE_ABILITIES + "." + ID + " = " + TABLE_POKEMON_ABILITIES + "." + KEY_ABILITY_ID +
+                " AND " + TABLE_POKEMON_SPECIES + "." + ID + " = " + TABLE_POKEMON_ABILITIES + "." + KEY_POKEMON_ID +
             " ORDER BY " + TABLE_POKEMON_ABILITIES + "." + KEY_SLOT + " ASC"
             ;
 
@@ -264,7 +264,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 ", " + TABLE_POKEMON_TYPES + "." + KEY_TYPE_ID +
                 " FROM " + TABLE_POKEMON_TYPES +
                 ", " + TABLE_TYPES +
-                " WHERE " + TABLE_POKEMON_TYPES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + KEY_ID +
+                " WHERE " + TABLE_POKEMON_TYPES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + ID +
                 " AND " + TABLE_POKEMON_TYPES + "." + KEY_POKEMON_ID + " = " + pokemon.getID();
 
         Cursor cursor = db.rawQuery(selectQuery, null);

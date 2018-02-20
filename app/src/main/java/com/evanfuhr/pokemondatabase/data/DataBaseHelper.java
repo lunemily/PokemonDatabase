@@ -7,8 +7,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import com.evanfuhr.pokemondatabase.R;
+
+import org.jetbrains.annotations.Contract;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,16 +33,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private final Context myContext;
 
-    int _version_id = 28;
-
     int _language_id = 9;
-
-    static final String select = "SELECT ";
-    static final String from = " FROM ";
-    static final String where = " WHERE ";
-    static final String and = " AND ";
-    static final String comma = ", ";
-    static final String equals = " = ";
 
     //tables
     static final String TABLE_ABILITIES = "abilities";
@@ -60,17 +54,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String TABLE_TYPES = "types";
     static final String TABLE_TYPE_EFFICACY = "type_efficacy";
     static final String TABLE_TYPE_NAMES = "type_names";
-    static final String TABLE_VERSIONS = "versions";
-    static final String TABLE_VERSION_GROUPS = "version_groups";
-    static final String TABLE_VERSION_NAMES = "version_names";
+    static final String VERSIONS = "versions";
+    static final String VERSION_GROUPS = "version_groups";
+    static final String VERSION_NAMES = "version_names";
 
     //common
     static final String KEY_EGG_GROUP_ID = "egg_group_id";
-    static final String KEY_ID = "id";
+    static final String ID = "id";
     static final String KEY_IDENTIFIER = "identifier";
-    static final String KEY_LOCAL_LANGUAGE_ID = "local_language_id";
+    static final String LOCAL_LANGUAGE_ID = "local_language_id";
     static final String KEY_MOVE_ID = "move_id";
-    static final String KEY_NAME = "name";
+    static final String NAME = "name";
     static final String KEY_POKEMON_ID = "pokemon_id";
     static final String KEY_SLOT = "slot";
     static final String KEY_TYPE_ID = "type_id";
@@ -122,10 +116,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String KEY_TARGET_TYPE_ID = "target_type_id";
 
     //version_groups
-    static final String KEY_GENERATION_ID = "generation_id";
+    static final String GENERATION_ID = "generation_id";
 
     //version_names
-    static final String KEY_VERSION_ID = "version_id";
+    static final String VERSION_ID = "version_id";
 
     /**
      * Constructor
@@ -269,9 +263,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         int version_group_id = 1;
 
-        String selectQuery = "SELECT " + TABLE_VERSIONS + "." + KEY_VERSION_GROUP_ID +
-                " FROM " + TABLE_VERSIONS +
-                " WHERE " + TABLE_VERSIONS + "." + KEY_ID + " = '" + version_id + "'"
+        String selectQuery = "SELECT " + VERSIONS + "." + KEY_VERSION_GROUP_ID +
+                " FROM " + VERSIONS +
+                " WHERE " + VERSIONS + "." + ID + " = '" + version_id + "'"
                 ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -285,7 +279,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return version_group_id;
     }
 
-    static String tableField(String table, String field) {
+    @NonNull
+    @Contract(pure = true)
+    static String field(String table, String field) {
         return table + "." + field;
     }
 }
