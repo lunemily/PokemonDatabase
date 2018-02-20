@@ -13,6 +13,13 @@ public class EggGroupDAO extends DataBaseHelper implements EggGroupDataInterface
         super(context);
     }
 
+    /**
+     * Returns an Ability object with its name
+     *
+     * @param   eggGroup    An EggGroup object to be modified with additional data
+     * @return              The modified input is returned
+     * @see                 EggGroup
+     */
     public EggGroup getEggGroupByID(EggGroup eggGroup) {
         SQLiteDatabase db = this.getReadableDatabase();
 

@@ -16,6 +16,12 @@ public class VersionDAO extends DataBaseHelper implements VersionDataInterface {
         super(context);
     }
 
+    /**
+     * Returns a list of all versions
+     *
+     * @return      An unfiltered list of Version objects
+     * @see         Version
+     */
     public List<Version> getAllVersions() {
 
         SQLiteDatabase db = this.getWritableDatabase();
