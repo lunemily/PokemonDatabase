@@ -4,12 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.evanfuhr.pokemondatabase.interfaces.VersionDataInterface;
 import com.evanfuhr.pokemondatabase.models.Version;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VersionDAO extends DataBaseHelper {
+public class VersionDAO extends DataBaseHelper implements VersionDataInterface {
 
     public VersionDAO(Context context) {
         super(context);
