@@ -4,9 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.evanfuhr.pokemondatabase.interfaces.EggGroupDataInterface;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 
-public class EggGroupDAO extends DataBaseHelper {
+public class EggGroupDAO extends DataBaseHelper implements EggGroupDataInterface {
 
     public EggGroupDAO(Context context) {
         super(context);
