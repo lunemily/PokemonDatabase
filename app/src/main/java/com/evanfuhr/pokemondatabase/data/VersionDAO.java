@@ -32,13 +32,13 @@ public class VersionDAO extends DataBaseHelper implements VersionDataInterface {
         String sql = SQLiteQueryBuilder
                 .select(field(VERSIONS, ID)
                         , field(VERSION_NAMES, NAME)
-                        , field(VERSIONS, KEY_VERSION_GROUP_ID)
+                        , field(VERSIONS, VERSION_GROUP_ID)
                         , field(VERSION_GROUPS, GENERATION_ID))
                 .from(VERSIONS)
                 .join(VERSION_NAMES)
                 .on(field(VERSIONS, ID) + "=" + field(VERSION_NAMES, VERSION_ID))
                 .join(VERSION_GROUPS)
-                .on(field(VERSIONS, KEY_VERSION_GROUP_ID) + "=" + field(VERSION_GROUPS, ID))
+                .on(field(VERSIONS, VERSION_GROUP_ID) + "=" + field(VERSION_GROUPS, ID))
                 .where(field(VERSION_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 

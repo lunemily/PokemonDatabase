@@ -46,7 +46,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 " FROM " + TABLE_MOVES +
                 ", " + TABLE_MOVE_NAMES +
                 ", " + TYPES +
-                " WHERE " + TABLE_MOVES + "." + ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
+                " WHERE " + TABLE_MOVES + "." + ID + " = " + TABLE_MOVE_NAMES + "." + MOVE_ID +
                 " AND " + TABLE_MOVES + "." + TYPE_ID + " = " + TYPES + "." + ID +
                 " AND " + TABLE_MOVE_NAMES + "." + LOCAL_LANGUAGE_ID + " = " + _language_id +
                 " ORDER BY " + TABLE_MOVE_NAMES + "." + NAME + " ASC"
@@ -96,7 +96,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 " FROM " + TABLE_MOVES +
                 ", " + TABLE_MOVE_NAMES +
                 ", " + TABLE_MOVE_EFFECT_PROSE +
-                " WHERE " + TABLE_MOVES + "." + ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
+                " WHERE " + TABLE_MOVES + "." + ID + " = " + TABLE_MOVE_NAMES + "." + MOVE_ID +
                 " AND " + TABLE_MOVES + "." + KEY_EFFECT_ID + " = " + TABLE_MOVE_EFFECT_PROSE + "." + KEY_MOVE_EFFECT_ID +
                 " AND " + TABLE_MOVES + "." + ID + " = " + move.getID() +
                 " AND " + TABLE_MOVE_NAMES + "." + LOCAL_LANGUAGE_ID + " = " + _language_id +

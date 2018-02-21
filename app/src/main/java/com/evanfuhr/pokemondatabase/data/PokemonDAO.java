@@ -212,20 +212,20 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         List<Move> movesForPokemon = new ArrayList<>();
         int version_group_id = getVersionGroupIDByVersionID();
 
-        String selectQuery = "SELECT " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID +
-                ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID +
-                ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL +
-                ", " + TABLE_MACHINES + "." + KEY_MACHINE_NUMBER +
-                " FROM " + TABLE_POKEMON_MOVES +
-                //", " + TABLE_MACHINES +
-                " LEFT OUTER JOIN (SELECT * FROM " + TABLE_MACHINES + " WHERE " + TABLE_MACHINES + "." + KEY_VERSION_GROUP_ID + " = " + version_group_id + ") AS " + TABLE_MACHINES +
-                " ON " + TABLE_POKEMON_MOVES + "." + KEY_MOVE_ID + " = " + TABLE_MACHINES + "." + KEY_MOVE_ID +
+        String selectQuery = "SELECT " + POKEMON_MOVES + "." + MOVE_ID +
+                ", " + POKEMON_MOVES + "." + POKEMON_MOVE_METHOD_ID +
+                ", " + POKEMON_MOVES + "." + POKEMON_MOVE_LEVEL +
+                ", " + MACHINES + "." + MACHINE_NUMBER +
+                " FROM " + POKEMON_MOVES +
+                //", " + MACHINES +
+                " LEFT OUTER JOIN (SELECT * FROM " + MACHINES + " WHERE " + MACHINES + "." + VERSION_GROUP_ID + " = " + version_group_id + ") AS " + MACHINES +
+                " ON " + POKEMON_MOVES + "." + MOVE_ID + " = " + MACHINES + "." + MOVE_ID +
 
-                " WHERE " + TABLE_POKEMON_MOVES + "." + POKEMON_ID + " = " + pokemon.getID() +
-                " AND " + TABLE_POKEMON_MOVES + "." + KEY_VERSION_GROUP_ID + " = " + version_group_id +
-                " ORDER BY " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_METHOD_ID + " ASC" +
-                ", " + TABLE_POKEMON_MOVES + "." + KEY_POKEMON_MOVE_LEVEL + " ASC" +
-                ", " + TABLE_MACHINES + "." + KEY_MACHINE_NUMBER + " ASC"
+                " WHERE " + POKEMON_MOVES + "." + POKEMON_ID + " = " + pokemon.getID() +
+                " AND " + POKEMON_MOVES + "." + VERSION_GROUP_ID + " = " + version_group_id +
+                " ORDER BY " + POKEMON_MOVES + "." + POKEMON_MOVE_METHOD_ID + " ASC" +
+                ", " + POKEMON_MOVES + "." + POKEMON_MOVE_LEVEL + " ASC" +
+                ", " + MACHINES + "." + MACHINE_NUMBER + " ASC"
                 ;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
