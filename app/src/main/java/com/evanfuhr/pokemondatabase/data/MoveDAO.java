@@ -42,12 +42,12 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
 
         String selectQuery = "SELECT " + TABLE_MOVES + "." + ID +
                 ", " + TABLE_MOVE_NAMES + "." + NAME +
-                ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
+                ", " + TABLE_MOVES + "." + TYPE_ID +
                 " FROM " + TABLE_MOVES +
                 ", " + TABLE_MOVE_NAMES +
-                ", " + TABLE_TYPES +
+                ", " + TYPES +
                 " WHERE " + TABLE_MOVES + "." + ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
-                " AND " + TABLE_MOVES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + ID +
+                " AND " + TABLE_MOVES + "." + TYPE_ID + " = " + TYPES + "." + ID +
                 " AND " + TABLE_MOVE_NAMES + "." + LOCAL_LANGUAGE_ID + " = " + _language_id +
                 " ORDER BY " + TABLE_MOVE_NAMES + "." + NAME + " ASC"
                 ;
@@ -86,7 +86,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
 
         String selectQuery = "SELECT " + TABLE_MOVES + "." + ID +
                 ", " + TABLE_MOVE_NAMES + "." + NAME +
-                ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
+                ", " + TABLE_MOVES + "." + TYPE_ID +
                 ", " + TABLE_MOVES + "." + KEY_POWER +
                 ", " + TABLE_MOVES + "." + KEY_PP +
                 ", " + TABLE_MOVES + "." + KEY_ACCURACY +

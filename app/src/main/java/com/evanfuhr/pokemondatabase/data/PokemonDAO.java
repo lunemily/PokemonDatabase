@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.evanfuhr.pokemondatabase.interfaces.PokemonDataInterface;
+import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Move;
@@ -44,16 +45,17 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
         List<Pokemon> pokemonList = new ArrayList<>();
 
-        String selectQuery = "SELECT " + POKEMON_SPECIES + "." + ID +
-                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + NAME +
-                " FROM " + POKEMON_SPECIES +
-                ", " + TABLE_POKEMON_SPECIES_NAMES +
-                " WHERE " + POKEMON_SPECIES + "." + ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
-                " AND LOWER(" + TABLE_POKEMON_SPECIES_NAMES + "." + NAME + ") LIKE LOWER('%" + nameSearchParam + "%')" +
-                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
-                ;
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_SPECIES, ID)
+                        , field(POKEMON_SPECIES_NAMES, NAME))
+                .from(POKEMON_SPECIES)
+                .join(POKEMON_SPECIES_NAMES)
+                .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
+                .where(field(POKEMON_SPECIES_NAMES, NAME) + " LIKE LOWER('%" + nameSearchParam + "%')")
+                .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
 
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
@@ -80,25 +82,26 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
     public Pokemon getPokemonByID(Pokemon pokemon) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selectQuery = "SELECT " + POKEMON_SPECIES + "." + ID +
-                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + NAME +
-                ", " + TABLE_POKEMON + "." + KEY_HEIGHT +
-                ", " + TABLE_POKEMON + "." + KEY_WEIGHT +
-                ", " + TABLE_POKEMON + "." + KEY_BASE_EXPERIENCE +
-                ", " + TABLE_POKEMON + ".'" + KEY_ORDER + "'" +
-                ", " + TABLE_POKEMON + "." + KEY_IS_DEFAULT +
-                ", " + POKEMON_SPECIES + "." + KEY_GENDER_RATE +
-                ", " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_GENUS +
-                " FROM " + POKEMON_SPECIES +
-                ", " + TABLE_POKEMON_SPECIES_NAMES +
-                ", " + TABLE_POKEMON +
-                " WHERE " + POKEMON_SPECIES + "." + ID + " = '" + pokemon.getID() + "'" +
-                " AND " + TABLE_POKEMON + "." + KEY_SPECIES_ID + " = " + POKEMON_SPECIES + "." + ID +
-                " AND " + POKEMON_SPECIES + "." + ID + " = " + TABLE_POKEMON_SPECIES_NAMES + "." + KEY_POKEMON_SPECIES_ID +
-                " AND " + TABLE_POKEMON_SPECIES_NAMES + "." + LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
-                ;
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_SPECIES, ID)
+                        , field(POKEMON_SPECIES_NAMES, NAME)
+                        , field(POKEMON, HEIGHT)
+                        , field(POKEMON, WEIGHT)
+                        , field(POKEMON, BASE_EXPERIENCE)
+                        , field(POKEMON, "'" + ORDER + "'")
+                        , field(POKEMON, IS_DEFAULT)
+                        , field(POKEMON_SPECIES, GENDER_RATE)
+                        , field(POKEMON_SPECIES_NAMES, GENUS))
+                .from(POKEMON_SPECIES)
+                .join(POKEMON_SPECIES_NAMES)
+                .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
+                .join(POKEMON)
+                .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON, SPECIES_ID))
+                .where(field(POKEMON_SPECIES, ID) + "=" + pokemon.getID())
+                .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 //pokemon.setID(pokemon.getID(0));
@@ -130,20 +133,18 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
         List<Ability> abilitiesForPokemon = new ArrayList<>();
 
-        String selectQuery = "SELECT " + ABILITIES + "." + ID +
-                ", " + POKEMON_ABILITIES + "." + KEY_SLOT +
-                ", " + POKEMON_ABILITIES + "." + KEY_IS_HIDDEN +
-            " FROM " + ABILITIES +
-                ", " + POKEMON_ABILITIES +
-                ", " + POKEMON_SPECIES +
-            " WHERE " + POKEMON_SPECIES + "." + ID + " = '" + pokemon.getID() + "'" +
-                " AND " + ABILITIES + "." + ID + " = " + POKEMON_ABILITIES + "." + ABILITY_ID +
-                " AND " + POKEMON_SPECIES + "." + ID + " = " + POKEMON_ABILITIES + "." + POKEMON_ID +
-            " ORDER BY " + POKEMON_ABILITIES + "." + KEY_SLOT + " ASC"
-            ;
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_ABILITIES, ABILITY_ID)
+                        , field(POKEMON_ABILITIES, SLOT)
+                        , field(POKEMON_ABILITIES, IS_HIDDEN))
+                .from(POKEMON_ABILITIES)
+                .where(field(POKEMON_ABILITIES, POKEMON_ID) + "=" + pokemon.getID())
+                .orderBy(field(POKEMON_ABILITIES, SLOT))
+                .asc()
+                .build();
 
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
             do {
@@ -174,12 +175,13 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
         List<EggGroup> eggGroups = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TABLE_POKEMON_EGG_GROUPS + "." + KEY_EGG_GROUP_ID +
-            " FROM " + TABLE_POKEMON_EGG_GROUPS +
-            " WHERE " + TABLE_POKEMON_EGG_GROUPS + "." + KEY_SPECIES_ID + " = " + pokemon.getID()
-            ;
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_EGG_GROUPS, EGG_GROUP_ID))
+                .from(POKEMON_EGG_GROUPS)
+                .where(field(POKEMON_EGG_GROUPS, SPECIES_ID) + "=" + pokemon.getID())
+                .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
             do {
@@ -260,14 +262,14 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
         List<Type> typesForPokemon = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TABLE_POKEMON_TYPES + "." + KEY_SLOT +
-                ", " + TABLE_POKEMON_TYPES + "." + KEY_TYPE_ID +
-                " FROM " + TABLE_POKEMON_TYPES +
-                ", " + TABLE_TYPES +
-                " WHERE " + TABLE_POKEMON_TYPES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + ID +
-                " AND " + TABLE_POKEMON_TYPES + "." + POKEMON_ID + " = " + pokemon.getID();
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_TYPES, SLOT)
+                        , field(POKEMON_TYPES, TYPE_ID))
+                .from(POKEMON_TYPES)
+                .where(field(POKEMON_TYPES, POKEMON_ID) + "=" + pokemon.getID())
+                .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
             do {

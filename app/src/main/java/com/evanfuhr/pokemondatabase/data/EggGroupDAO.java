@@ -23,10 +23,10 @@ public class EggGroupDAO extends DataBaseHelper implements EggGroupDataInterface
     public EggGroup getEggGroupByID(EggGroup eggGroup) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selectQuery = "SELECT " + TABLE_EGG_GROUP_PROSE + "." + KEY_EGG_GROUP_ID +
+        String selectQuery = "SELECT " + TABLE_EGG_GROUP_PROSE + "." + EGG_GROUP_ID +
                 ", " + TABLE_EGG_GROUP_PROSE + "." + NAME +
             " FROM " + TABLE_EGG_GROUP_PROSE +
-            " WHERE " + TABLE_EGG_GROUP_PROSE + "." + KEY_EGG_GROUP_ID + " =  " + eggGroup.getID() +
+            " WHERE " + TABLE_EGG_GROUP_PROSE + "." + EGG_GROUP_ID + " =  " + eggGroup.getID() +
                 " AND " + TABLE_EGG_GROUP_PROSE + "." + LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
             ;
 

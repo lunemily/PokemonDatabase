@@ -43,15 +43,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String TABLE_MOVE_EFFECT_PROSE = "move_effect_prose";
     static final String TABLE_MOVE_NAMES = "move_names";
     static final String TABLE_MOVES = "moves";
-    static final String TABLE_POKEMON = "pokemon";
+    static final String POKEMON = "pokemon";
     static final String POKEMON_ABILITIES = "pokemon_abilities";
-    static final String TABLE_POKEMON_EGG_GROUPS = "pokemon_egg_groups";
+    static final String POKEMON_EGG_GROUPS = "pokemon_egg_groups";
     static final String TABLE_POKEMON_MOVES = "pokemon_moves";
     static final String POKEMON_SPECIES = "pokemon_species";
     static final String TABLE_POKEMON_SPECIES_FLAVOR_TEXT = "pokemon_species_flavor_text";
-    static final String TABLE_POKEMON_SPECIES_NAMES = "pokemon_species_names";
-    static final String TABLE_POKEMON_TYPES = "pokemon_types";
-    static final String TABLE_TYPES = "types";
+    static final String POKEMON_SPECIES_NAMES = "pokemon_species_names";
+    static final String POKEMON_TYPES = "pokemon_types";
+    static final String TYPES = "types";
     static final String TABLE_TYPE_EFFICACY = "type_efficacy";
     static final String TABLE_TYPE_NAMES = "type_names";
     static final String VERSIONS = "versions";
@@ -59,15 +59,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String VERSION_NAMES = "version_names";
 
     //common
-    static final String KEY_EGG_GROUP_ID = "egg_group_id";
+    static final String EGG_GROUP_ID = "egg_group_id";
     static final String ID = "id";
     static final String KEY_IDENTIFIER = "identifier";
     static final String LOCAL_LANGUAGE_ID = "local_language_id";
     static final String KEY_MOVE_ID = "move_id";
     static final String NAME = "name";
     static final String POKEMON_ID = "pokemon_id";
-    static final String KEY_SLOT = "slot";
-    static final String KEY_TYPE_ID = "type_id";
+    static final String SLOT = "slot";
+    static final String TYPE_ID = "type_id";
     static final String KEY_VERSION_GROUP_ID = "version_group_id";
 
     //machines
@@ -85,30 +85,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String KEY_SHORT_EFFECT = "short_effect";
 
     //pokemon
-    static final String KEY_BASE_EXPERIENCE = "base_experience";
-    static final String KEY_HEIGHT = "height";
-    static final String KEY_IS_DEFAULT = "is_default";
-    static final String KEY_ORDER = "order";
-    static final String KEY_SPECIES_ID = "species_id";
-    static final String KEY_WEIGHT = "weight";
+    static final String BASE_EXPERIENCE = "base_experience";
+    static final String HEIGHT = "height";
+    static final String IS_DEFAULT = "is_default";
+    static final String ORDER = "order";
+    static final String SPECIES_ID = "species_id";
+    static final String WEIGHT = "weight";
 
     //pokemon_abilities
     static final String ABILITY_ID = "ability_id";
-    static final String KEY_IS_HIDDEN = "is_hidden";
+    static final String IS_HIDDEN = "is_hidden";
 
     //pokemon_moves
     static final String KEY_POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
     static final String KEY_POKEMON_MOVE_LEVEL = "level";
 
     //pokemon_species
-    static final String KEY_GENDER_RATE = "gender_rate";
+    static final String GENDER_RATE = "gender_rate";
 
     //pokemon_species_flavor_text
     static final String KEY_FLAVOR_TEXT = "flavor_text";
 
     //pokemon_species_names
-    static final String KEY_POKEMON_SPECIES_ID = "pokemon_species_id";
-    static final String KEY_GENUS = "genus";
+    static final String POKEMON_SPECIES_ID = "pokemon_species_id";
+    static final String GENUS = "genus";
 
     //type_efficacy
     static final String KEY_DAMAGE_FACTOR = "damage_factor";

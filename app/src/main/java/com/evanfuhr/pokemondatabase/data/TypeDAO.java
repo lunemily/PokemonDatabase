@@ -39,11 +39,11 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
 
         List<Type> types = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TABLE_TYPES + "." + ID +
+        String selectQuery = "SELECT " + TYPES + "." + ID +
                 ", " + TABLE_TYPE_NAMES + "." + NAME +
-                " FROM " + TABLE_TYPES +
+                " FROM " + TYPES +
                 ", " + TABLE_TYPE_NAMES +
-                " WHERE " + TABLE_TYPES + "." + ID + " = " + TABLE_TYPE_NAMES + "." + KEY_TYPE_ID +
+                " WHERE " + TYPES + "." + ID + " = " + TABLE_TYPE_NAMES + "." + TYPE_ID +
                 " AND " + TABLE_TYPE_NAMES + "." + LOCAL_LANGUAGE_ID + " = " + _language_id
                 ;
 
@@ -77,12 +77,12 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
     public Type getTypeByID(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selectQuery = "SELECT " + TABLE_TYPES + "." + ID +
+        String selectQuery = "SELECT " + TYPES + "." + ID +
                 ", " + TABLE_TYPE_NAMES + "." + NAME +
-                " FROM " + TABLE_TYPES +
+                " FROM " + TYPES +
                 ", " + TABLE_TYPE_NAMES +
-                " WHERE " + TABLE_TYPES + "." + ID + " = '" + type.getID() + "'" +
-                " AND " + TABLE_TYPES + "." + ID + " = " + TABLE_TYPE_NAMES + "." + KEY_TYPE_ID +
+                " WHERE " + TYPES + "." + ID + " = '" + type.getID() + "'" +
+                " AND " + TYPES + "." + ID + " = " + TABLE_TYPE_NAMES + "." + TYPE_ID +
                 " AND " + TABLE_TYPE_NAMES + "." + LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
                 ;
 
