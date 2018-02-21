@@ -24,15 +24,6 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
     public Ability getAbilityByID(Ability ability) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selectQuery = "SELECT " + ABILITIES + "." + ID +
-                ", " + ABILITY_NAMES + "." + NAME +
-            " FROM " + ABILITIES +
-                ", " + ABILITY_NAMES +
-            " WHERE " + ABILITIES + "." + ID + " = '" + ability.getID() + "'" +
-                " AND " + ABILITIES + "." + ID + " = " + ABILITY_NAMES + "." + ABILITY_ID +
-                " AND " + ABILITY_NAMES + "." + LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
-            ;
-
         String sql = SQLiteQueryBuilder
                 .select(field(ABILITIES, ID)
                         , field(ABILITY_NAMES, NAME))
@@ -41,10 +32,9 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
                 .on(field(ABILITIES, ID) + "=" + field(ABILITY_NAMES, ABILITY_ID))
                 .where(field(ABILITIES, ID) + "=" + ability.getID())
                 .and(field(ABILITY_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
-                //. TODO: ORDER BY
                 .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 ability.setID(Integer.parseInt(cursor.getString(0)));
