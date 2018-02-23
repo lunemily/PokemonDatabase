@@ -104,7 +104,7 @@ public class PokemonDetailsFragment extends Fragment {
         List<Ability> abilities = _pokemon.getAbilities();
 
         for (Ability a : abilities) {
-            Ability ability = abilityDAO.getAbilityByIDForPokemon(a, _pokemon);
+            Ability ability = abilityDAO.getAbilityByID(a);
             TextView textViewAbility = new TextView(getActivity());
             textViewAbility.setText(ability.getName());
             if (ability.getIsHidden()) {
@@ -114,7 +114,6 @@ public class PokemonDetailsFragment extends Fragment {
         }
 
         pokemonDAO.close();
-        abilityDAO.close();
     }
 
     void setFragmentEggGroups() {

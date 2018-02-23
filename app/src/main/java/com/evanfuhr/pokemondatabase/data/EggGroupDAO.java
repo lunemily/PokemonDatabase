@@ -4,14 +4,22 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.evanfuhr.pokemondatabase.interfaces.EggGroupDataInterface;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 
-public class EggGroupDAO extends DataBaseHelper {
+public class EggGroupDAO extends DataBaseHelper implements EggGroupDataInterface {
 
     public EggGroupDAO(Context context) {
         super(context);
     }
 
+    /**
+     * Returns an Ability object with its name
+     *
+     * @param   eggGroup    An EggGroup object to be modified with additional data
+     * @return              The modified input is returned
+     * @see                 EggGroup
+     */
     public EggGroup getEggGroupByID(EggGroup eggGroup) {
         SQLiteDatabase db = this.getReadableDatabase();
 

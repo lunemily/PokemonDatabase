@@ -5,21 +5,35 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.evanfuhr.pokemondatabase.interfaces.TypeDataInterface;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TypeDAO extends DataBaseHelper {
+public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
 
     public TypeDAO(Context context) {
         super(context);
     }
 
+    /**
+     * Returns a list of all types
+     *
+     * @return      An unfiltered list of Type objects
+     * @see         Type
+     */
     public List<Type> getAllTypes() {
         return getAllTypes("%");
     }
 
+    /**
+     * Returns a list of all types that contain nameSearchParam
+     *
+     * @param   nameSearchParam A substring to filter Type names with
+     * @return                  A filtered list of Type objects
+     * @see                     Type
+     */
     public List<Type> getAllTypes(String nameSearchParam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -53,6 +67,13 @@ public class TypeDAO extends DataBaseHelper {
         return types;
     }
 
+    /**
+     * Returns a Type object with most of its non-list data
+     *
+     * @param   type     A Type object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Type
+     */
     public Type getTypeByID(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -78,6 +99,14 @@ public class TypeDAO extends DataBaseHelper {
         return type;
     }
 
+    /**
+     * Returns the type input with lists of Type objects and their relative
+     * effectiveness against or resistance to the input type
+     *
+     * @param   type    The type (of the given Pokemon)
+     * @return          The modified input is returned
+     * @see             Type
+     */
     public Type getSingleTypeEfficacy(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -131,6 +160,15 @@ public class TypeDAO extends DataBaseHelper {
         return type;
     }
 
+    /**
+     * Consolidates both type inputs with lists of Type objects and their relative
+     * effectiveness against or resistance to the input types
+     *
+     * @param   type1   The first type (of the given Pokemon)
+     * @param   type2   The second type (of the given Pokemon)
+     * @return          The consolidated input is returned
+     * @see             Type
+     */
     public Type getDualTypeEfficacy(Type type1, Type type2) {
         // Only need to return single type since this function returns combined effectiveness
         Type dualType = new Type();
