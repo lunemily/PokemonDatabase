@@ -53,7 +53,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String POKEMON_TYPES = "pokemon_types";
     static final String TYPES = "types";
     static final String TABLE_TYPE_EFFICACY = "type_efficacy";
-    static final String TABLE_TYPE_NAMES = "type_names";
+    static final String TYPE_NAMES = "type_names";
     static final String VERSIONS = "versions";
     static final String VERSION_GROUPS = "version_groups";
     static final String VERSION_NAMES = "version_names";

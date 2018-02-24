@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.interfaces.TypeDataInterface;
 import com.evanfuhr.pokemondatabase.models.Type;
 
@@ -39,16 +40,16 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
 
         List<Type> types = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TYPES + "." + ID +
-                ", " + TABLE_TYPE_NAMES + "." + NAME +
-                " FROM " + TYPES +
-                ", " + TABLE_TYPE_NAMES +
-                " WHERE " + TYPES + "." + ID + " = " + TABLE_TYPE_NAMES + "." + TYPE_ID +
-                " AND " + TABLE_TYPE_NAMES + "." + LOCAL_LANGUAGE_ID + " = " + _language_id
-                ;
+        String sql = SQLiteQueryBuilder
+                .select(field(TYPES, ID)
+                        ,field(TYPE_NAMES, NAME))
+                .from(TYPES)
+                .join(TYPE_NAMES)
+                .on(field(TYPES, ID) + "=" + field(TYPE_NAMES, TYPE_ID))
+                .where(field(TYPE_NAMES, LOCAL_LANGUAGE_ID)+ "=" + _language_id)
+                .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
+        Cursor cursor = db.rawQuery(sql, null);
 
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
@@ -58,7 +59,7 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 type.setName(cursor.getString(1));
                 type.setColor(Type.getTypeColor(type.getID()));
 
-                //add pokemon to list
+                //add type to list
                 types.add(type);
             } while (cursor.moveToNext());
         }
@@ -77,16 +78,17 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
     public Type getTypeByID(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selectQuery = "SELECT " + TYPES + "." + ID +
-                ", " + TABLE_TYPE_NAMES + "." + NAME +
-                " FROM " + TYPES +
-                ", " + TABLE_TYPE_NAMES +
-                " WHERE " + TYPES + "." + ID + " = '" + type.getID() + "'" +
-                " AND " + TYPES + "." + ID + " = " + TABLE_TYPE_NAMES + "." + TYPE_ID +
-                " AND " + TABLE_TYPE_NAMES + "." + LOCAL_LANGUAGE_ID + " = '" + _language_id + "'"
-                ;
+        String sql = SQLiteQueryBuilder
+                .select(field(TYPES, ID)
+                        ,field(TYPE_NAMES, NAME))
+                .from(TYPES)
+                .join(TYPE_NAMES)
+                .on(field(TYPES, ID) + "=" + field(TYPE_NAMES, TYPE_ID))
+                .where(field(TYPES, ID)+ "=" + type.getID())
+                .and(field(TYPE_NAMES, LOCAL_LANGUAGE_ID)+ "=" + _language_id)
+                .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 type.setID(Integer.parseInt(cursor.getString(0)));
