@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.R;
 
 import org.jetbrains.annotations.Contract;
@@ -263,12 +264,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         int version_group_id = 1;
 
-        String selectQuery = "SELECT " + VERSIONS + "." + VERSION_GROUP_ID +
-                " FROM " + VERSIONS +
-                " WHERE " + VERSIONS + "." + ID + " = '" + version_id + "'"
-                ;
+        String sql = SQLiteQueryBuilder
+                .select(field(VERSIONS, VERSION_GROUP_ID))
+                .from(VERSIONS)
+                .where(field(VERSIONS, ID) + "=" + version_id)
+                .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 version_group_id = Integer.parseInt(cursor.getString(0));
