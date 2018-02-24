@@ -38,7 +38,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //tables
     static final String ABILITIES = "abilities";
     static final String ABILITY_NAMES = "ability_names";
-    static final String TABLE_EGG_GROUP_PROSE = "egg_group_prose";
+    static final String EGG_GROUP_PROSE = "egg_group_prose";
     static final String MACHINES = "machines";
     static final String TABLE_MOVE_EFFECT_PROSE = "move_effect_prose";
     static final String TABLE_MOVE_NAMES = "move_names";
