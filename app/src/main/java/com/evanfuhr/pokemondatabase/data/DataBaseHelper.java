@@ -90,6 +90,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //nature_names
     static final String NATURE_ID = "nature_id";
 
+    //natures
+    static final String DECREASED_STAT_ID = "decreased_stat_id";
+    static final String INCREASED_STAT_ID = "increased_stat_id";
+    static final String HATES_FLAVOR_ID = "hates_flavor_id";
+    static final String LIKES_FLAVOR_ID = "likes_flavor_id";
+
     //pokemon
     static final String BASE_EXPERIENCE = "base_experience";
     static final String HEIGHT = "height";

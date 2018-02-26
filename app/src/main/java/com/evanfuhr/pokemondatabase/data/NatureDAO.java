@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.interfaces.NatureDataInterface;
+import com.evanfuhr.pokemondatabase.models.Flavor;
 import com.evanfuhr.pokemondatabase.models.Nature;
 
 import java.util.ArrayList;
@@ -81,6 +82,41 @@ public class NatureDAO extends DataBaseHelper implements NatureDataInterface {
      * @see             Nature
      */
     public Nature getNatureById(Nature nature) {
-        return null;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(NATURES, ID)
+                        , field(NATURE_NAMES, NAME)
+                        , field(NATURES, DECREASED_STAT_ID)
+                        , field(NATURES, INCREASED_STAT_ID)
+                        , field(NATURES, HATES_FLAVOR_ID)
+                        , field(NATURES, LIKES_FLAVOR_ID))
+                .from(ABILITIES)
+                .join(ABILITY_NAMES)
+                .on(field(ABILITIES, ID) + "=" + field(ABILITY_NAMES, ABILITY_ID))
+                .where(field(ABILITIES, ID) + "=" + nature.getId())
+                .and(field(ABILITY_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                nature.setId(Integer.parseInt(cursor.getString(0)));
+                nature.setName(cursor.getString(1));
+                nature.setDecreasedStatID(Integer.parseInt(cursor.getString(2)));
+                nature.setIncreasedStatID(Integer.parseInt(cursor.getString(3)));
+
+                Flavor hates = new Flavor();
+                hates.setId(Integer.parseInt(cursor.getString(4)));
+                nature.setHatesFlavor(hates);
+
+                Flavor likes = new Flavor();
+                likes.setId(Integer.parseInt(cursor.getString(5)));
+                nature.setLikesFlavor(likes);
+            }
+            cursor.close();
+        }
+
+        return nature;
     }
 }
