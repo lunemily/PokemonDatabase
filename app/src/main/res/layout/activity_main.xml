@@ -36,5 +36,12 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:text="@string/Moves" />
 
+        <Button
+            android:id="@+id/buttonNatureList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/Natures" />
+
     </LinearLayout>
 </RelativeLayout>

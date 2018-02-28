@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     Button _pokemonButton;
     Button _typeButton;
     Button _moveButton;
+    Button _natureButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,14 @@ public class MainActivity extends AppCompatActivity {
                 onClickButton(view);
             }
         });
+
+        _natureButton = (Button) this.findViewById(R.id.buttonNatureList);
+        _natureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickButton(view);
+            }
+        });
     }
 
     private void onClickButton(View view) {
@@ -109,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.buttonMoveList:
                 intent = new Intent(this, MoveListActivity.class);
+                break;
+            case R.id.buttonNatureList:
+                intent = new Intent(this, NatureListActivity.class);
                 break;
             default:
                 intent = new Intent(this, MainActivity.class);
