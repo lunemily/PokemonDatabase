@@ -7,12 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.data.FlavorDAO;
+import com.evanfuhr.pokemondatabase.data.NatureDAO;
+import com.evanfuhr.pokemondatabase.data.StatDAO;
 import com.evanfuhr.pokemondatabase.models.Nature;
 
 public class NatureDetailsFragment extends Fragment {
+
+    Nature mNature;
+
+    Button increasedStatButton;
+    Button decreasedStatButton;
+    Button likesFlavorButton;
+    Button hatesFlavorButton;
 
     public NatureDetailsFragment() {
     }
@@ -23,12 +32,10 @@ public class NatureDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View detailsFragmentView = inflater.inflate(R.layout.fragment_nature_details, container, false);
 
-//        _accuracy = (TextView) detailsFragmentView.findViewById(R.id.moveAccuracyValue);
-//        _category = (TextView) detailsFragmentView.findViewById(R.id.moveCategoryValue);
-//        _effect = (TextView) detailsFragmentView.findViewById(R.id.moveEffectValue);
-//        _power = (TextView) detailsFragmentView.findViewById(R.id.movePowerValue);
-//        _pp = (TextView) detailsFragmentView.findViewById(R.id.movePPValue);
-//        _type = (Button) detailsFragmentView.findViewById(R.id.buttonMoveType);
+        increasedStatButton = detailsFragmentView.findViewById(R.id.increasedStatButton);
+        decreasedStatButton = detailsFragmentView.findViewById(R.id.decreasedStatButton);
+        likesFlavorButton = detailsFragmentView.findViewById(R.id.likesFlavorButton);
+        hatesFlavorButton = detailsFragmentView.findViewById(R.id.hatesFlavorButton);
 
         return detailsFragmentView;
     }
@@ -44,6 +51,52 @@ public class NatureDetailsFragment extends Fragment {
     }
 
     public void setNatureDetails(Nature nature) {
+        loadNature(nature);
+        loadNatureStats();
+        loadNatureFlavors();
+        setStats();
+        setFlavors();
+    }
 
+    private void loadNature(Nature nature) {
+        NatureDAO natureDAO = new NatureDAO(getActivity());
+
+        mNature = natureDAO.getNatureById(nature);
+
+        natureDAO.close();
+    }
+
+    private void loadNatureStats() {
+        StatDAO statDAO = new StatDAO(getActivity());
+
+        mNature.setIncreasedStat(statDAO.getStatById(mNature.getIncreasedStat()));
+        mNature.setDecreasedStat(statDAO.getStatById(mNature.getDecreasedStat()));
+
+        statDAO.close();
+    }
+
+    private void loadNatureFlavors() {
+        FlavorDAO flavorDAO = new FlavorDAO(getActivity());
+
+        mNature.setLikesFlavor(flavorDAO.getFlavorById(mNature.getLikesFlavor()));
+        mNature.setHatesFlavor(flavorDAO.getFlavorById(mNature.getHatesFlavor()));
+
+        flavorDAO.close();
+    }
+
+    private void setStats() {
+        increasedStatButton.setId(mNature.getIncreasedStat().getId());
+        increasedStatButton.setText(mNature.getIncreasedStat().getName());
+
+        decreasedStatButton.setId(mNature.getDecreasedStat().getId());
+        decreasedStatButton.setText(mNature.getDecreasedStat().getName());
+    }
+
+    private void setFlavors() {
+        likesFlavorButton.setId(mNature.getLikesFlavor().getId());
+        likesFlavorButton.setText(mNature.getLikesFlavor().getName());
+
+        hatesFlavorButton.setId(mNature.getHatesFlavor().getId());
+        hatesFlavorButton.setText(mNature.getHatesFlavor().getName());
     }
 }

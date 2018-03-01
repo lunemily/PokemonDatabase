@@ -5,12 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
+import com.evanfuhr.pokemondatabase.interfaces.StatDataInterface;
 import com.evanfuhr.pokemondatabase.models.Stat;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatsDAO extends DataBaseHelper {
+public class StatDAO extends DataBaseHelper
+        implements StatDataInterface {
 
     /**
      * Constructor
@@ -18,7 +20,7 @@ public class StatsDAO extends DataBaseHelper {
      *
      * @param context
      */
-    public StatsDAO(Context context) {
+    public StatDAO(Context context) {
         super(context);
     }
 
@@ -63,7 +65,7 @@ public class StatsDAO extends DataBaseHelper {
                 Stat stat = new Stat();
                 stat.setId(Integer.parseInt(cursor.getString(0)));
                 stat.setName(cursor.getString(1));
-                //add pokemon to list
+                //add stat to list
                 statList.add(stat);
             } while (cursor.moveToNext());
         }
@@ -90,7 +92,7 @@ public class StatsDAO extends DataBaseHelper {
                         , field(STATS, GAME_INDEX))
                 .from(STATS)
                 .join(STAT_NAMES)
-                .on(field(STATS, ID) + "=" + field(STAT_NAMES, NATURE_ID))
+                .on(field(STATS, ID) + "=" + field(STAT_NAMES, STAT_ID))
                 .where(field(STATS, ID) + "=" + stat.getId())
                 .and(field(STAT_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();

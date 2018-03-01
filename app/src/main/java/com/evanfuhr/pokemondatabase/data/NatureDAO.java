@@ -111,7 +111,7 @@ public class NatureDAO extends DataBaseHelper implements NatureDataInterface {
 
                 Stat increasedStat = new Stat();
                 increasedStat.setId(Integer.parseInt(cursor.getString(3)));
-                nature.setDecreasedStat(increasedStat);
+                nature.setIncreasedStat(increasedStat);
 
                 Flavor hates = new Flavor();
                 hates.setId(Integer.parseInt(cursor.getString(4)));
