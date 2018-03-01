@@ -16,7 +16,7 @@ import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Move;
-import com.evanfuhr.pokemondatabase.models.MoveCategory;
+import com.evanfuhr.pokemondatabase.models.DamageClass;
 
 public class MoveDetailsFragment extends Fragment {
 
@@ -89,7 +89,7 @@ public class MoveDetailsFragment extends Fragment {
     }
 
     void setFragmentCategory() {
-        _category.setText(MoveCategory.getName(_move.getCategory()));
+        _category.setText(DamageClass.getName(_move.getCategory()));
     }
 
     void setFragmentEffect() {

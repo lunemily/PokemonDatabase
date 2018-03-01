@@ -54,6 +54,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String TABLE_POKEMON_SPECIES_FLAVOR_TEXT = "pokemon_species_flavor_text";
     static final String POKEMON_SPECIES_NAMES = "pokemon_species_names";
     static final String POKEMON_TYPES = "pokemon_types";
+    static final String STAT_NAMES = "state_names";
+    static final String STATS = "stats";
     static final String TYPES = "types";
     static final String TABLE_TYPE_EFFICACY = "type_efficacy";
     static final String TYPE_NAMES = "type_names";
@@ -64,6 +66,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //common
     static final String EGG_GROUP_ID = "egg_group_id";
     static final String ID = "id";
+    static final String DAMAGE_CLASS_ID = "damage_class_id";
     static final String KEY_IDENTIFIER = "identifier";
     static final String LOCAL_LANGUAGE_ID = "local_language_id";
     static final String MOVE_ID = "move_id";
@@ -78,7 +81,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //moves
     static final String ACCURACY = "accuracy";
-    static final String CATEGORY = "damage_class_id";
     static final String EFFECT_ID = "effect_id";
     static final String POWER = "power";
     static final String PP = "pp";
@@ -121,6 +123,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //pokemon_species_names
     static final String POKEMON_SPECIES_ID = "pokemon_species_id";
     static final String GENUS = "genus";
+
+    //stat_names
+    static final String STAT_ID = "stat_id";
+
+    //stats
+    static final String IS_BATTLE_ONLY = "is_battle_only";
+    static final String GAME_INDEX = "game_index";
 
     //type_efficacy
     static final String KEY_DAMAGE_FACTOR = "damage_factor";

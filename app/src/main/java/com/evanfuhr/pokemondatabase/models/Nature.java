@@ -4,8 +4,8 @@ public class Nature {
 
     private int id;
     private String name;
-    private int decreasedStatID;
-    private int increasedStatID;
+    private Stat decreasedStat;
+    private Stat increasedStat;
     private Flavor likesFlavor;
     private Flavor hatesFlavor;
     private int gameIndex;
@@ -29,20 +29,20 @@ public class Nature {
         this.name = name;
     }
 
-    public int getDecreasedStatID() {
-        return decreasedStatID;
+    public Stat getDecreasedStat() {
+        return decreasedStat;
     }
 
-    public void setDecreasedStatID(int decreasedStatID) {
-        this.decreasedStatID = decreasedStatID;
+    public void setDecreasedStat(Stat decreasedStat) {
+        this.decreasedStat = decreasedStat;
     }
 
-    public int getIncreasedStatID() {
-        return increasedStatID;
+    public Stat getIncreasedStat() {
+        return increasedStat;
     }
 
-    public void setIncreasedStatID(int increasedStatID) {
-        this.increasedStatID = increasedStatID;
+    public void setIncreasedStat(Stat increasedStat) {
+        this.increasedStat = increasedStat;
     }
 
     public Flavor getHatesFlavor() {

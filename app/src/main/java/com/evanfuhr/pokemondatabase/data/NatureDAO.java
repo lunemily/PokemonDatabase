@@ -8,6 +8,7 @@ import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.interfaces.NatureDataInterface;
 import com.evanfuhr.pokemondatabase.models.Flavor;
 import com.evanfuhr.pokemondatabase.models.Nature;
+import com.evanfuhr.pokemondatabase.models.Stat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,8 +104,14 @@ public class NatureDAO extends DataBaseHelper implements NatureDataInterface {
             if (cursor.moveToFirst()) {
                 nature.setId(Integer.parseInt(cursor.getString(0)));
                 nature.setName(cursor.getString(1));
-                nature.setDecreasedStatID(Integer.parseInt(cursor.getString(2)));
-                nature.setIncreasedStatID(Integer.parseInt(cursor.getString(3)));
+
+                Stat decreasedStat = new Stat();
+                decreasedStat.setId(Integer.parseInt(cursor.getString(2)));
+                nature.setDecreasedStat(decreasedStat);
+
+                Stat increasedStat = new Stat();
+                increasedStat.setId(Integer.parseInt(cursor.getString(3)));
+                nature.setDecreasedStat(increasedStat);
 
                 Flavor hates = new Flavor();
                 hates.setId(Integer.parseInt(cursor.getString(4)));

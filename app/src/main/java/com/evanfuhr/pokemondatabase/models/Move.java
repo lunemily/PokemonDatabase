@@ -6,7 +6,7 @@ import java.util.List;
 public class Move implements Comparable<Move> {
 
     private int _accuracy = 0;
-    private MoveCategory _category = MoveCategory.STATUS;
+    private DamageClass _category = DamageClass.STATUS;
     private String _effect;
     private int _id = 0;
     private int _level = 0;
@@ -27,11 +27,11 @@ public class Move implements Comparable<Move> {
         this._accuracy = accuracy;
     }
     
-    public MoveCategory getCategory() {
+    public DamageClass getCategory() {
         return this._category;
     }
 
-    public void setCategory(MoveCategory category) {
+    public void setCategory(DamageClass category) {
         this._category = category;
     }
 

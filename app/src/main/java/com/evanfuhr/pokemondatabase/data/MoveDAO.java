@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.interfaces.MoveDataInterface;
 import com.evanfuhr.pokemondatabase.models.Move;
-import com.evanfuhr.pokemondatabase.models.MoveCategory;
+import com.evanfuhr.pokemondatabase.models.DamageClass;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;
@@ -94,7 +94,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                         ,field(MOVES, POWER)
                         ,field(MOVES, PP)
                         ,field(MOVES, ACCURACY)
-                        ,field(MOVES, CATEGORY)
+                        ,field(MOVES, DAMAGE_CLASS_ID)
                         ,field(MOVE_EFFECT_PROSE, SHORT_EFFECT))
                 .from(MOVES)
                 .join(MOVE_NAMES)
@@ -122,7 +122,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 if (!cursor.isNull(5)) {
                     move.setAccuracy(Integer.parseInt(cursor.getString(5)));
                 }
-                move.setCategory(MoveCategory.get(Integer.parseInt(cursor.getString(6))));
+                move.setCategory(DamageClass.get(Integer.parseInt(cursor.getString(6))));
                 move.setEffect(cursor.getString(7));
             }
             cursor.close();
