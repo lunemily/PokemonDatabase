@@ -14,9 +14,7 @@ public class NatureListActivity extends AppCompatActivity
         implements NatureListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String NATURE_ID = "move_id";
-    @NonNls
-    public static final String NATURE = "Type";
+    public static final String NATURE = "Nature";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 
@@ -30,13 +28,13 @@ public class NatureListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Nature nature) {
-        int type_id = nature.getId();
+        int nature_id = nature.getId();
 
         //Build the intent to load the player sheet
-        Intent intent = new Intent(this, MoveDisplayActivity.class);
+        Intent intent = new Intent(this, NatureDisplayActivity.class);
         //Load the hero ID to send to the player sheet
-        intent.putExtra(NATURE_ID, type_id);
+        intent.putExtra(NatureDisplayActivity.NATURE_ID, nature_id);
 
-        //startActivity(intent);
+        startActivity(intent);
     }
 }

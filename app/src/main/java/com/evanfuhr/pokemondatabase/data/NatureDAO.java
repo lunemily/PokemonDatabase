@@ -91,11 +91,11 @@ public class NatureDAO extends DataBaseHelper implements NatureDataInterface {
                         , field(NATURES, INCREASED_STAT_ID)
                         , field(NATURES, HATES_FLAVOR_ID)
                         , field(NATURES, LIKES_FLAVOR_ID))
-                .from(ABILITIES)
-                .join(ABILITY_NAMES)
-                .on(field(ABILITIES, ID) + "=" + field(ABILITY_NAMES, ABILITY_ID))
-                .where(field(ABILITIES, ID) + "=" + nature.getId())
-                .and(field(ABILITY_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .from(NATURES)
+                .join(NATURE_NAMES)
+                .on(field(NATURES, ID) + "=" + field(NATURE_NAMES, NATURE_ID))
+                .where(field(NATURES, ID) + "=" + nature.getId())
+                .and(field(NATURE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);

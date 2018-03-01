@@ -30,7 +30,8 @@
         <activity android:name=".activities.TypeListActivity" />
         <activity android:name=".activities.MoveDisplayActivity" />
         <activity android:name=".activities.MoveListActivity" />
-        <activity android:name=".activities.NatureListActivity"></activity>
+        <activity android:name=".activities.NatureListActivity" />
+        <activity android:name=".activities.NatureDisplayActivity" />
     </application>
 
 </manifest>

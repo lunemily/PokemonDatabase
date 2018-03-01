@@ -7,13 +7,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="0dp"
-    tools:context="com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity"
-    android:id="@+id/move_display_activity">
+    tools:context="com.evanfuhr.pokemondatabase.activities.NatureDisplayActivity"
+    android:id="@+id/nature_display_activity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/move_details_scroll_view"
+        android:id="@+id/nature_details_scroll_view"
         android:layout_centerHorizontal="true" >
 
         <LinearLayout
@@ -26,8 +26,8 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.MoveDetailsFragment"
-                android:id="@+id/moveDetailsFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.NatureDetailsFragment"
+                android:id="@+id/natureDetailsFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
         </LinearLayout>
