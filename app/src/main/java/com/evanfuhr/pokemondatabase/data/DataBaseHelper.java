@@ -7,8 +7,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
+import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.R;
+
+import org.jetbrains.annotations.Contract;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,91 +34,82 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private final Context myContext;
 
-    int _version_id = 28;
-
     int _language_id = 9;
 
-    static final String select = "SELECT ";
-    static final String from = " FROM ";
-    static final String where = " WHERE ";
-    static final String and = " AND ";
-    static final String comma = ", ";
-    static final String equals = " = ";
-
     //tables
-    static final String TABLE_ABILITIES = "abilities";
-    static final String TABLE_ABILITY_NAMES = "ability_names";
-    static final String TABLE_EGG_GROUP_PROSE = "egg_group_prose";
-    static final String TABLE_MACHINES = "machines";
-    static final String TABLE_MOVE_EFFECT_PROSE = "move_effect_prose";
-    static final String TABLE_MOVE_NAMES = "move_names";
-    static final String TABLE_MOVES = "moves";
-    static final String TABLE_POKEMON = "pokemon";
-    static final String TABLE_POKEMON_ABILITIES = "pokemon_abilities";
-    static final String TABLE_POKEMON_EGG_GROUPS = "pokemon_egg_groups";
-    static final String TABLE_POKEMON_MOVES = "pokemon_moves";
-    static final String TABLE_POKEMON_SPECIES = "pokemon_species";
+    static final String ABILITIES = "abilities";
+    static final String ABILITY_NAMES = "ability_names";
+    static final String EGG_GROUP_PROSE = "egg_group_prose";
+    static final String MACHINES = "machines";
+    static final String MOVE_EFFECT_PROSE = "move_effect_prose";
+    static final String MOVE_NAMES = "move_names";
+    static final String MOVES = "moves";
+    static final String POKEMON = "pokemon";
+    static final String POKEMON_ABILITIES = "pokemon_abilities";
+    static final String POKEMON_EGG_GROUPS = "pokemon_egg_groups";
+    static final String POKEMON_MOVES = "pokemon_moves";
+    static final String POKEMON_SPECIES = "pokemon_species";
     static final String TABLE_POKEMON_SPECIES_FLAVOR_TEXT = "pokemon_species_flavor_text";
-    static final String TABLE_POKEMON_SPECIES_NAMES = "pokemon_species_names";
-    static final String TABLE_POKEMON_TYPES = "pokemon_types";
-    static final String TABLE_TYPES = "types";
+    static final String POKEMON_SPECIES_NAMES = "pokemon_species_names";
+    static final String POKEMON_TYPES = "pokemon_types";
+    static final String TYPES = "types";
     static final String TABLE_TYPE_EFFICACY = "type_efficacy";
-    static final String TABLE_TYPE_NAMES = "type_names";
-    static final String TABLE_VERSIONS = "versions";
-    static final String TABLE_VERSION_GROUPS = "version_groups";
-    static final String TABLE_VERSION_NAMES = "version_names";
+    static final String TYPE_NAMES = "type_names";
+    static final String VERSIONS = "versions";
+    static final String VERSION_GROUPS = "version_groups";
+    static final String VERSION_NAMES = "version_names";
 
     //common
-    static final String KEY_EGG_GROUP_ID = "egg_group_id";
-    static final String KEY_ID = "id";
+    static final String EGG_GROUP_ID = "egg_group_id";
+    static final String ID = "id";
     static final String KEY_IDENTIFIER = "identifier";
-    static final String KEY_LOCAL_LANGUAGE_ID = "local_language_id";
-    static final String KEY_MOVE_ID = "move_id";
-    static final String KEY_NAME = "name";
-    static final String KEY_POKEMON_ID = "pokemon_id";
-    static final String KEY_SLOT = "slot";
-    static final String KEY_TYPE_ID = "type_id";
-    static final String KEY_VERSION_GROUP_ID = "version_group_id";
+    static final String LOCAL_LANGUAGE_ID = "local_language_id";
+    static final String MOVE_ID = "move_id";
+    static final String NAME = "name";
+    static final String POKEMON_ID = "pokemon_id";
+    static final String SLOT = "slot";
+    static final String TYPE_ID = "type_id";
+    static final String VERSION_GROUP_ID = "version_group_id";
 
     //machines
-    static final String KEY_MACHINE_NUMBER = "machine_number";
+    static final String MACHINE_NUMBER = "machine_number";
 
     //moves
-    static final String KEY_ACCURACY = "accuracy";
-    static final String KEY_CATEGORY = "damage_class_id";
-    static final String KEY_EFFECT_ID = "effect_id";
-    static final String KEY_POWER = "power";
-    static final String KEY_PP = "pp";
+    static final String ACCURACY = "accuracy";
+    static final String CATEGORY = "damage_class_id";
+    static final String EFFECT_ID = "effect_id";
+    static final String POWER = "power";
+    static final String PP = "pp";
 
     //move_effect_prose
-    static final String KEY_MOVE_EFFECT_ID = "move_effect_id";
-    static final String KEY_SHORT_EFFECT = "short_effect";
+    static final String MOVE_EFFECT_ID = "move_effect_id";
+    static final String SHORT_EFFECT = "short_effect";
 
     //pokemon
-    static final String KEY_BASE_EXPERIENCE = "base_experience";
-    static final String KEY_HEIGHT = "height";
-    static final String KEY_IS_DEFAULT = "is_default";
-    static final String KEY_ORDER = "order";
-    static final String KEY_SPECIES_ID = "species_id";
-    static final String KEY_WEIGHT = "weight";
+    static final String BASE_EXPERIENCE = "base_experience";
+    static final String HEIGHT = "height";
+    static final String IS_DEFAULT = "is_default";
+    static final String ORDER = "order";
+    static final String SPECIES_ID = "species_id";
+    static final String WEIGHT = "weight";
 
     //pokemon_abilities
-    static final String KEY_ABILITY_ID = "ability_id";
-    static final String KEY_IS_HIDDEN = "is_hidden";
+    static final String ABILITY_ID = "ability_id";
+    static final String IS_HIDDEN = "is_hidden";
 
     //pokemon_moves
-    static final String KEY_POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
-    static final String KEY_POKEMON_MOVE_LEVEL = "level";
+    static final String POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
+    static final String POKEMON_MOVE_LEVEL = "level";
 
     //pokemon_species
-    static final String KEY_GENDER_RATE = "gender_rate";
+    static final String GENDER_RATE = "gender_rate";
 
     //pokemon_species_flavor_text
     static final String KEY_FLAVOR_TEXT = "flavor_text";
 
     //pokemon_species_names
-    static final String KEY_POKEMON_SPECIES_ID = "pokemon_species_id";
-    static final String KEY_GENUS = "genus";
+    static final String POKEMON_SPECIES_ID = "pokemon_species_id";
+    static final String GENUS = "genus";
 
     //type_efficacy
     static final String KEY_DAMAGE_FACTOR = "damage_factor";
@@ -122,10 +117,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String KEY_TARGET_TYPE_ID = "target_type_id";
 
     //version_groups
-    static final String KEY_GENERATION_ID = "generation_id";
+    static final String GENERATION_ID = "generation_id";
 
     //version_names
-    static final String KEY_VERSION_ID = "version_id";
+    static final String VERSION_ID = "version_id";
 
     /**
      * Constructor
@@ -269,12 +264,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         int version_group_id = 1;
 
-        String selectQuery = "SELECT " + TABLE_VERSIONS + "." + KEY_VERSION_GROUP_ID +
-                " FROM " + TABLE_VERSIONS +
-                " WHERE " + TABLE_VERSIONS + "." + KEY_ID + " = '" + version_id + "'"
-                ;
+        String sql = SQLiteQueryBuilder
+                .select(field(VERSIONS, VERSION_GROUP_ID))
+                .from(VERSIONS)
+                .where(field(VERSIONS, ID) + "=" + version_id)
+                .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 version_group_id = Integer.parseInt(cursor.getString(0));
@@ -285,7 +281,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return version_group_id;
     }
 
-    static String tableField(String table, String field) {
+    @NonNull
+    @Contract(pure = true)
+    static String field(String table, String field) {
         return table + "." + field;
     }
 }

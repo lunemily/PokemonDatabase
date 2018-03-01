@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.interfaces.MoveDataInterface;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.MoveCategory;
@@ -40,19 +41,21 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
 
         List<Move> moves = new ArrayList<>();
 
-        String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_ID +
-                ", " + TABLE_MOVE_NAMES + "." + KEY_NAME +
-                ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
-                " FROM " + TABLE_MOVES +
-                ", " + TABLE_MOVE_NAMES +
-                ", " + TABLE_TYPES +
-                " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
-                " AND " + TABLE_MOVES + "." + KEY_TYPE_ID + " = " + TABLE_TYPES + "." + KEY_ID +
-                " AND " + TABLE_MOVE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id +
-                " ORDER BY " + TABLE_MOVE_NAMES + "." + KEY_NAME + " ASC"
-                ;
+        String sql = SQLiteQueryBuilder
+                .select(field(MOVES, ID)
+                        ,field(MOVE_NAMES, NAME)
+                        ,field(MOVES, TYPE_ID))
+                .from(MOVES)
+                .join(MOVE_NAMES)
+                .on(field(MOVES, ID) + "=" + field(MOVE_NAMES, MOVE_ID))
+                .join(TYPES)
+                .on(field(MOVES, TYPE_ID) + "=" + field(TYPES, ID))
+                .where(field(MOVE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .orderBy(field(MOVE_NAMES, NAME))
+                .asc()
+                .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
 
 
         //Loop through rows and add each to list
@@ -84,26 +87,26 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
     public Move getMoveByID(Move move) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selectQuery = "SELECT " + TABLE_MOVES + "." + KEY_ID +
-                ", " + TABLE_MOVE_NAMES + "." + KEY_NAME +
-                ", " + TABLE_MOVES + "." + KEY_TYPE_ID +
-                ", " + TABLE_MOVES + "." + KEY_POWER +
-                ", " + TABLE_MOVES + "." + KEY_PP +
-                ", " + TABLE_MOVES + "." + KEY_ACCURACY +
-                ", " + TABLE_MOVES + "." + KEY_CATEGORY +
-                // TODO: Will need refactoring to handle substitution values
-                ", " + TABLE_MOVE_EFFECT_PROSE + "." + KEY_SHORT_EFFECT +
-                " FROM " + TABLE_MOVES +
-                ", " + TABLE_MOVE_NAMES +
-                ", " + TABLE_MOVE_EFFECT_PROSE +
-                " WHERE " + TABLE_MOVES + "." + KEY_ID + " = " + TABLE_MOVE_NAMES + "." + KEY_MOVE_ID +
-                " AND " + TABLE_MOVES + "." + KEY_EFFECT_ID + " = " + TABLE_MOVE_EFFECT_PROSE + "." + KEY_MOVE_EFFECT_ID +
-                " AND " + TABLE_MOVES + "." + KEY_ID + " = " + move.getID() +
-                " AND " + TABLE_MOVE_NAMES + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id +
-                " AND " + TABLE_MOVE_EFFECT_PROSE + "." + KEY_LOCAL_LANGUAGE_ID + " = " + _language_id
-                ;
+        String sql = SQLiteQueryBuilder
+                .select(field(MOVES, ID)
+                        ,field(MOVE_NAMES, NAME)
+                        ,field(MOVES, TYPE_ID)
+                        ,field(MOVES, POWER)
+                        ,field(MOVES, PP)
+                        ,field(MOVES, ACCURACY)
+                        ,field(MOVES, CATEGORY)
+                        ,field(MOVE_EFFECT_PROSE, SHORT_EFFECT))
+                .from(MOVES)
+                .join(MOVE_NAMES)
+                .on(field(MOVES, ID) + "=" + field(MOVE_NAMES, MOVE_ID))
+                .join(MOVE_EFFECT_PROSE)
+                .on(field(MOVES, EFFECT_ID) + "=" + field(MOVE_EFFECT_PROSE, MOVE_EFFECT_ID))
+                .where(field(MOVES, ID) + "=" + move.getID())
+                .and(field(MOVE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .and(field(MOVE_EFFECT_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .build();
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 move.setID(Integer.parseInt(cursor.getString(0)));
