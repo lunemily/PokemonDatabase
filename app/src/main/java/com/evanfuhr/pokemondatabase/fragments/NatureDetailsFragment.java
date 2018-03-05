@@ -2,6 +2,7 @@ package com.evanfuhr.pokemondatabase.fragments;
 
 import android.content.Context;
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.FlavorDAO;
 import com.evanfuhr.pokemondatabase.data.NatureDAO;
 import com.evanfuhr.pokemondatabase.data.StatDAO;
+import com.evanfuhr.pokemondatabase.models.Flavor;
 import com.evanfuhr.pokemondatabase.models.Nature;
 
 public class NatureDetailsFragment extends Fragment {
@@ -87,16 +89,20 @@ public class NatureDetailsFragment extends Fragment {
     private void setStats() {
         increasedStatButton.setId(mNature.getIncreasedStat().getId());
         increasedStatButton.setText(mNature.getIncreasedStat().getName());
+        increasedStatButton.setBackgroundColor(Color.parseColor(Flavor.getFlavorColor(mNature.getLikesFlavor().getId())));
 
         decreasedStatButton.setId(mNature.getDecreasedStat().getId());
         decreasedStatButton.setText(mNature.getDecreasedStat().getName());
+        decreasedStatButton.setBackgroundColor(Color.parseColor(Flavor.getFlavorColor(mNature.getHatesFlavor().getId())));
     }
 
     private void setFlavors() {
         likesFlavorButton.setId(mNature.getLikesFlavor().getId());
         likesFlavorButton.setText(mNature.getLikesFlavor().getName());
+        likesFlavorButton.setBackgroundColor(Color.parseColor(Flavor.getFlavorColor(mNature.getLikesFlavor().getId())));
 
         hatesFlavorButton.setId(mNature.getHatesFlavor().getId());
         hatesFlavorButton.setText(mNature.getHatesFlavor().getName());
+        hatesFlavorButton.setBackgroundColor(Color.parseColor(Flavor.getFlavorColor(mNature.getHatesFlavor().getId())));
     }
 }

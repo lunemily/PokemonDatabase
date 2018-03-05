@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.adapters.MyPokemonRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.adapters.PokemonRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -82,7 +82,7 @@ public class PokemonListFragment extends Fragment
             Context context = view.getContext();
             _recyclerView = (RecyclerView) view;
             _recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            _recyclerView.setAdapter(new MyPokemonRecyclerViewAdapter(pokemons, mListener));
+            _recyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
         }
         return view;
     }
@@ -111,7 +111,7 @@ public class PokemonListFragment extends Fragment
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        MyPokemonRecyclerViewAdapter adapter = (MyPokemonRecyclerViewAdapter) _recyclerView.getAdapter();
+        PokemonRecyclerViewAdapter adapter = (PokemonRecyclerViewAdapter) _recyclerView.getAdapter();
         adapter.filter(newText);
         return true;
     }

@@ -33,11 +33,31 @@
                     android:layout_column="0"
                     android:layout_span="2"
                     android:ems="10"
-                    android:gravity="start"
+                    android:gravity="center"
                     android:inputType="none"
                     android:paddingStart="@dimen/activity_horizontal_margin"
                     android:paddingEnd="@dimen/activity_horizontal_margin"
                     android:text="@string/increases" />
+
+                <TextView
+                    android:id="@+id/decreasedStat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="none"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:text="@string/decreases" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                 <Button
                     android:id="@+id/increasedStatButton"
@@ -48,27 +68,9 @@
                     android:ems="10"
                     android:gravity="center"
                     android:inputType="none"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:text="@string/attack" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/activity_vertical_margin">
-
-                <TextView
-                    android:id="@+id/decreasedStat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_span="2"
-                    android:ems="10"
-                    android:gravity="start"
-                    android:inputType="none"
-                    android:paddingStart="@dimen/activity_horizontal_margin"
-                    android:paddingEnd="@dimen/activity_horizontal_margin"
-                    android:text="@string/decreases" />
 
                 <Button
                     android:id="@+id/decreasedStatButton"
@@ -79,6 +81,8 @@
                     android:ems="10"
                     android:gravity="center"
                     android:inputType="none"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:text="@string/special_attack" />
 
             </TableRow>
@@ -95,11 +99,31 @@
                     android:layout_column="0"
                     android:layout_span="2"
                     android:ems="10"
-                    android:gravity="start"
+                    android:gravity="center"
                     android:inputType="none"
                     android:paddingStart="@dimen/activity_horizontal_margin"
                     android:paddingEnd="@dimen/activity_horizontal_margin"
                     android:text="@string/likes" />
+
+                <TextView
+                    android:id="@+id/hatesFlavor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="none"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:text="@string/hates" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/activity_vertical_margin">
 
                 <Button
                     android:id="@+id/likesFlavorButton"
@@ -110,27 +134,9 @@
                     android:ems="10"
                     android:gravity="center"
                     android:inputType="none"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:text="@string/spicy" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/activity_vertical_margin">
-
-                <TextView
-                    android:id="@+id/hatesFlavor"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_span="2"
-                    android:ems="10"
-                    android:gravity="start"
-                    android:inputType="none"
-                    android:paddingStart="@dimen/activity_horizontal_margin"
-                    android:paddingEnd="@dimen/activity_horizontal_margin"
-                    android:text="@string/hates" />
 
                 <Button
                     android:id="@+id/hatesFlavorButton"
@@ -141,6 +147,8 @@
                     android:ems="10"
                     android:gravity="center"
                     android:inputType="none"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:text="@string/dry" />
 
             </TableRow>

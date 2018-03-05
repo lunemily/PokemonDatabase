@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.NatureListFragment.OnListFragmentInteractionListener;
 import com.evanfuhr.pokemondatabase.models.Nature;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class NatureRecyclerViewAdapter extends RecyclerView.Adapter<NatureRecycl
         holder.mItem = mValues.get(position);
         holder._button.setId(mValues.get(position).getId());
         holder._button.setText(mValues.get(position).getName());
+        holder._button.setBackground(PokemonUtils.getColorGradientByFlavors(mValues.get(position).getFlavors()));
 
         holder._button.setOnClickListener(new View.OnClickListener() {
             @Override

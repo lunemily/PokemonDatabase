@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.adapters.MyTypeRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.adapters.NatureRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.data.FlavorDAO;
 import com.evanfuhr.pokemondatabase.data.NatureDAO;
 import com.evanfuhr.pokemondatabase.models.Nature;
 import com.evanfuhr.pokemondatabase.models.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,8 +65,7 @@ public class NatureListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
-        NatureDAO natureDAO = new NatureDAO(getActivity());
-        List<Nature> natures = natureDAO.getAllNatures();
+        List<Nature> natures = getFlavoredNatures();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -77,7 +78,6 @@ public class NatureListFragment extends Fragment {
             }
             recyclerView.setAdapter(new NatureRecyclerViewAdapter(natures, mListener));
         }
-        natureDAO.close();
         return view;
     }
 
@@ -112,5 +112,21 @@ public class NatureListFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Nature item);
+    }
+
+    List<Nature> getFlavoredNatures() {
+        NatureDAO natureDAO = new NatureDAO(getActivity());
+        List<Nature> unflavoredNatures = natureDAO.getAllNatures();
+        List<Nature> flavoredNatures = new ArrayList<>();
+
+        for (Nature nature : unflavoredNatures) {
+            nature.setLikesFlavor(natureDAO.getNatureById(nature).getLikesFlavor());
+            nature.setHatesFlavor(natureDAO.getNatureById(nature).getHatesFlavor());
+
+            flavoredNatures.add(nature);
+        }
+
+        natureDAO.close();
+        return flavoredNatures;
     }
 }

@@ -18,10 +18,10 @@ public class PokemonUtils {
         List<String> colors = new ArrayList<>();
 
         for (Type t : types) {
-            colors.add(t.getColor());
+            colors.add(Type.getTypeColor(t.getID()));
         }
 
-        return buildColorGradient(colors);
+        return getColorGradient(colors);
     }
 
     @NonNull
@@ -30,14 +30,14 @@ public class PokemonUtils {
         List<String> colors = new ArrayList<>();
 
         for (Flavor f : flavors) {
-            colors.add(f.getColor());
+            colors.add(Flavor.getFlavorColor(f.getId()));
         }
 
-        return buildColorGradient(colors);
+        return getColorGradient(colors);
     }
 
     @NonNull
-    private static GradientDrawable buildColorGradient(List<String> colors) {
+    private static GradientDrawable getColorGradient(List<String> colors) {
 
         int[] color = {0, 0, 0, 0};
         if (colors.size() == 1) {

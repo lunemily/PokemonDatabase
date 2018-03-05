@@ -1,7 +1,5 @@
 package com.evanfuhr.pokemondatabase.adapters;
 
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,18 +10,17 @@ import android.widget.Button;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment.OnListFragmentInteractionListener;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
-import com.evanfuhr.pokemondatabase.models.Type;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPokemonRecyclerViewAdapter extends RecyclerView.Adapter<MyPokemonRecyclerViewAdapter.ViewHolder> {
+public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecyclerViewAdapter.ViewHolder> {
 
     private final List<Pokemon> mValues, _filteredList;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyPokemonRecyclerViewAdapter(List<Pokemon> items, OnListFragmentInteractionListener listener) {
+    public PokemonRecyclerViewAdapter(List<Pokemon> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
 
