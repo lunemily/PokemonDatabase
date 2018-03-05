@@ -13,7 +13,7 @@ import java.util.List;
 public class Type {
 
     private List<Type> _attackingTypes;
-    private String _color;
+    private String color;
     private List<Type> _defendingTypes;
     private float _efficacy;
     private int _id = 0;
@@ -29,11 +29,11 @@ public class Type {
     }
 
     public String getColor() {
-        return this._color;
+        return this.color;
     }
 
     public void setColor(String color) {
-        this._color = color;
+        this.color = color;
     }
 
     public List<Type> get_defendingTypes() {

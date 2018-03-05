@@ -1,5 +1,8 @@
 package com.evanfuhr.pokemondatabase.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Nature {
 
     private int id;
@@ -8,6 +11,7 @@ public class Nature {
     private Stat increasedStat;
     private Flavor likesFlavor;
     private Flavor hatesFlavor;
+    private List<Flavor> flavors;
     private int gameIndex;
 
     public Nature() {
@@ -67,5 +71,12 @@ public class Nature {
 
     public void setLikesFlavor(Flavor likesFlavor) {
         this.likesFlavor = likesFlavor;
+    }
+
+    public List<Flavor> getFlavors() {
+        List<Flavor> flavors = new ArrayList<>();
+        flavors.add(this.likesFlavor);
+        flavors.add(this.hatesFlavor);
+        return flavors;
     }
 }

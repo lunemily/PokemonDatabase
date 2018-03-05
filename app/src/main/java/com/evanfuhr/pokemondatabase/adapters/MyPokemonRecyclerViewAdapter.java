@@ -13,6 +13,7 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment.OnListFragmentInteractionListener;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class MyPokemonRecyclerViewAdapter extends RecyclerView.Adapter<MyPokemon
         holder.mItem = _filteredList.get(position);
         holder._button.setId(_filteredList.get(position).getID());
         holder._button.setText(_filteredList.get(position).getName());
-        holder._button.setBackground(getPokemonButtonBackgroundColor(_filteredList.get(position)));
+        holder._button.setBackground(PokemonUtils.getColorGradientByTypes(_filteredList.get(position).getTypes()));
 
         holder._button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,27 +92,5 @@ public class MyPokemonRecyclerViewAdapter extends RecyclerView.Adapter<MyPokemon
             }
         }
         notifyDataSetChanged();
-    }
-
-    GradientDrawable getPokemonButtonBackgroundColor(Pokemon pokemon) {
-        List<Type> types = pokemon.getTypes();
-
-        int[] colors = {0, 0, 0, 0};
-        if (types.size() == 1) {
-            colors[0] = Color.parseColor(types.get(0).getColor());
-            colors[1] = Color.parseColor(types.get(0).getColor());
-            colors[2] = Color.parseColor(types.get(0).getColor());
-            colors[3] = Color.parseColor(types.get(0).getColor());
-        }
-        else {
-            colors[0] = Color.parseColor(types.get(0).getColor());
-            colors[1] = Color.parseColor(types.get(0).getColor());
-            colors[2] = Color.parseColor(types.get(1).getColor());
-            colors[3] = Color.parseColor(types.get(1).getColor());
-        }
-        GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT, colors);
-
-        return gd;
     }
 }
