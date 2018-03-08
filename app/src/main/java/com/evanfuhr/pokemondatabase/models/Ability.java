@@ -2,17 +2,17 @@ package com.evanfuhr.pokemondatabase.models;
 
 public class Ability {
 
-    private int _id;
+    private int id;
     private boolean _is_hidden;
     private String _name;
     private int _slot;
 
-    public int getID() {
-        return this._id;
+    public int getId() {
+        return this.id;
     }
 
-    public void setID(int id) {
-        this._id = id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean getIsHidden() {

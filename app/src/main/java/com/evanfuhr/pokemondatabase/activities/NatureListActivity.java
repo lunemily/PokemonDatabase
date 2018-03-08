@@ -30,9 +30,9 @@ public class NatureListActivity extends AppCompatActivity
     public void onListFragmentInteraction(Nature nature) {
         int nature_id = nature.getId();
 
-        //Build the intent to load the player sheet
+        // Build the intent to load the player sheet
         Intent intent = new Intent(this, NatureDisplayActivity.class);
-        //Load the hero ID to send to the player sheet
+        // Add the id to send to the display activity
         intent.putExtra(NatureDisplayActivity.NATURE_ID, nature_id);
 
         startActivity(intent);
