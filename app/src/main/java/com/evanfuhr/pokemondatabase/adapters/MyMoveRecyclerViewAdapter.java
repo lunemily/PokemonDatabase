@@ -59,15 +59,15 @@ public class MyMoveRecyclerViewAdapter extends RecyclerView.Adapter<MyMoveRecycl
         return _filteredList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final Button _button;
-        public Move mItem;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        final View mView;
+        final Button _button;
+        Move mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
-            _button = (Button) view.findViewById(R.id.singleButton);
+            _button = view.findViewById(R.id.singleButton);
         }
     }
 

@@ -62,7 +62,7 @@ public class NatureRecyclerViewAdapter extends RecyclerView.Adapter<NatureRecycl
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            _button = (Button) view.findViewById(R.id.singleButton);
+            _button = view.findViewById(R.id.singleButton);
         }
     }
 }

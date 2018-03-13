@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListButtons() {
-        _pokemonButton = (Button) this.findViewById(R.id.buttonPokemonList);
+        _pokemonButton = this.findViewById(R.id.buttonPokemonList);
         _pokemonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        _typeButton = (Button) this.findViewById(R.id.buttonTypeList);
+        _typeButton = this.findViewById(R.id.buttonTypeList);
         _typeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        _moveButton = (Button) this.findViewById(R.id.buttonMoveList);
+        _moveButton = this.findViewById(R.id.buttonMoveList);
         _moveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        _natureButton = (Button) this.findViewById(R.id.buttonNatureList);
+        _natureButton = this.findViewById(R.id.buttonNatureList);
         _natureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         View setGameVersionView = layoutInflater.inflate(R.layout.dialog_set_game_version, null);
 
         // Setup spinner
-        Spinner versionSpinner = (Spinner) setGameVersionView.findViewById(R.id.spinner_game_version);
+        Spinner versionSpinner = setGameVersionView.findViewById(R.id.spinner_game_version);
         final VersionSpinnerAdapter versionSpinnerAdapter = new VersionSpinnerAdapter(this, R.layout.dialog_set_game_version, versionList);
         versionSpinner.setAdapter(versionSpinnerAdapter);
         // TODO: Set position

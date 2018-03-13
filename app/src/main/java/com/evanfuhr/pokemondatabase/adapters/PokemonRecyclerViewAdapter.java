@@ -59,15 +59,15 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
         return _filteredList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final Button _button;
-        public Pokemon mItem;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        final View mView;
+        final Button _button;
+        Pokemon mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
-            _button = (Button) view.findViewById(R.id.singleButton);
+            _button = view.findViewById(R.id.singleButton);
         }
     }
 
