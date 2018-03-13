@@ -31,7 +31,8 @@
         <activity android:name=".activities.MoveListActivity" />
         <activity android:name=".activities.NatureListActivity" />
         <activity android:name=".activities.NatureDisplayActivity" />
-        <activity android:name=".activities.AbilityListActivity"></activity>
+        <activity android:name=".activities.AbilityListActivity" />
+        <activity android:name=".activities.AbilityDisplayActivity"></activity>
     </application>
 
 </manifest>
