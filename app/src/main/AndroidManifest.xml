@@ -9,7 +9,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.MainActivity">
-            android:hardwareAccelerated="false"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +28,9 @@
         <activity android:name=".activities.TypeDisplayActivity" />
         <activity android:name=".activities.TypeListActivity" />
         <activity android:name=".activities.MoveDisplayActivity" />
-        <activity android:name=".activities.MoveListActivity"></activity>
+        <activity android:name=".activities.MoveListActivity" />
+        <activity android:name=".activities.NatureListActivity" />
+        <activity android:name=".activities.NatureDisplayActivity" />
     </application>
 
 </manifest>

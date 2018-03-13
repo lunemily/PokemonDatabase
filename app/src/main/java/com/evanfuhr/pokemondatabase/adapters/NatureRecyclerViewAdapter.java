@@ -1,6 +1,5 @@
 package com.evanfuhr.pokemondatabase.adapters;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,17 +7,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.TypeListFragment.OnListFragmentInteractionListener;
-import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.fragments.NatureListFragment.OnListFragmentInteractionListener;
+import com.evanfuhr.pokemondatabase.models.Nature;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.List;
 
-public class MyTypeRecyclerViewAdapter extends RecyclerView.Adapter<MyTypeRecyclerViewAdapter.ViewHolder> {
+public class NatureRecyclerViewAdapter extends RecyclerView.Adapter<NatureRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Type> mValues;
+    private final List<Nature> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyTypeRecyclerViewAdapter(List<Type> items, OnListFragmentInteractionListener listener) {
+    public NatureRecyclerViewAdapter(List<Nature> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -33,9 +33,9 @@ public class MyTypeRecyclerViewAdapter extends RecyclerView.Adapter<MyTypeRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder._button.setId(mValues.get(position).getID());
+        holder._button.setId(mValues.get(position).getId());
         holder._button.setText(mValues.get(position).getName());
-        holder._button.setBackgroundColor(Color.parseColor(mValues.get(position).getColor()));
+        holder._button.setBackground(PokemonUtils.getColorGradientByFlavors(mValues.get(position).getFlavors()));
 
         holder._button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,12 +54,12 @@ public class MyTypeRecyclerViewAdapter extends RecyclerView.Adapter<MyTypeRecycl
         return mValues.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        final View mView;
-        final Button _button;
-        Type mItem;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public final View mView;
+        public final Button _button;
+        public Nature mItem;
 
-        ViewHolder(View view) {
+        public ViewHolder(View view) {
             super(view);
             mView = view;
             _button = view.findViewById(R.id.singleButton);

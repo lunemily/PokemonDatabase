@@ -30,12 +30,12 @@ public class MoveListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Move move) {
-        int type_id = move.getID();
+        int move_id = move.getID();
 
         //Build the intent to load the player sheet
         Intent intent = new Intent(this, MoveDisplayActivity.class);
         //Load the hero ID to send to the player sheet
-        intent.putExtra(MOVE_ID, type_id);
+        intent.putExtra(MOVE_ID, move_id);
 
         startActivity(intent);
     }

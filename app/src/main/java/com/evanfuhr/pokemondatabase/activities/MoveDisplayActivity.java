@@ -22,8 +22,6 @@ public class MoveDisplayActivity extends AppCompatActivity
     @NonNls
     public static final String MOVE_ID = "move_id";
 
-    RelativeLayout _RelativeLayout;
-
     Move _move = new Move();
 
     @Override
@@ -58,7 +56,7 @@ public class MoveDisplayActivity extends AppCompatActivity
     private void setMoveBackgroundColor(Move move) {
         TypeDAO typeDAO = new TypeDAO(this);
 
-        RelativeLayout moveDisplayActivity = (RelativeLayout) findViewById(R.id.move_display_activity);
+        RelativeLayout moveDisplayActivity = findViewById(R.id.move_display_activity);
 
         moveDisplayActivity.setBackgroundColor(Color.parseColor(typeDAO.getTypeByID(move.getType()).getColor()));
     }

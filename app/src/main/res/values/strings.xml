@@ -129,4 +129,14 @@
     <string name="set_game_version">Set Game Version</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="Natures">Natures</string>
+    <string name="title_activity_nature_display">NatureDisplayActivity</string>
+    <string name="increases">INCREASES</string>
+    <string name="attack">ATTACK</string>
+    <string name="decreases">DECREASES</string>
+    <string name="special_attack">SPECIAL ATTACK</string>
+    <string name="likes">LIKES</string>
+    <string name="spicy">SPICY</string>
+    <string name="hates">HATES</string>
+    <string name="dry">DRY</string>
 </resources>

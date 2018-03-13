@@ -22,9 +22,11 @@ import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
 import com.evanfuhr.pokemondatabase.interfaces.OnPokemonSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonDisplayActivity extends AppCompatActivity
@@ -114,22 +116,12 @@ public class PokemonDisplayActivity extends AppCompatActivity
         TypeDAO typeDAO = new TypeDAO(this);
 
         //Create base background
-        List<Type> types = pokemonDAO.getTypesForPokemon(pokemon);
-        int[] colors = {0, 0, 0, 0};
-        if (types.size() == 1) {
-            colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-            colors[1] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-            colors[2] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-            colors[3] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
+        List<Type> rawTypes = pokemonDAO.getTypesForPokemon(pokemon);
+        List<Type> types = new ArrayList<>();
+        for (Type t : rawTypes) {
+            types.add(typeDAO.getTypeByID(t));
         }
-        else {
-            colors[0] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-            colors[1] = Color.parseColor(typeDAO.getTypeByID(types.get(0)).getColor());
-            colors[2] = Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor());
-            colors[3] = Color.parseColor(typeDAO.getTypeByID(types.get(1)).getColor());
-        }
-        GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT, colors);
+        GradientDrawable gd = PokemonUtils.getColorGradientByTypes(types);
 
         RelativeLayout pokemonDetailsActivity = (RelativeLayout) findViewById(R.id.pokemon_display_activity);
         pokemonDetailsActivity.setBackground(gd);
