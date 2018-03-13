@@ -28,13 +28,11 @@ public class AbilityListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Ability ability) {
-        int nature_id = ability.getId();
 
         // Build the intent to load the player sheet
-        Intent intent = new Intent(this, MainActivity.class);
-//        Intent intent = new Intent(this, AbilityDisplayActivity.class);
+        Intent intent = new Intent(this, AbilityDisplayActivity.class);
         // Add the id to send to the display activity
-//        intent.putExtra(AbilityDisplayActivity.ABILITY_ID, nature_id);
+        intent.putExtra(AbilityDisplayActivity.ABILITY_ID, ability.getId());
 
         startActivity(intent);
     }

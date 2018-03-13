@@ -8,6 +8,7 @@ import com.evanfuhr.pokemondatabase.interfaces.AbilityDataInterface;
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,12 +83,16 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
 
         String sql = SQLiteQueryBuilder
                 .select(field(ABILITIES, ID)
-                        , field(ABILITY_NAMES, NAME))
+                        , field(ABILITY_NAMES, NAME)
+                        , field(ABILITY_PROSE, EFFECT))
                 .from(ABILITIES)
                 .join(ABILITY_NAMES)
                 .on(field(ABILITIES, ID) + "=" + field(ABILITY_NAMES, ABILITY_ID))
+                .join(ABILITY_PROSE)
+                .on(field(ABILITIES, ID) + "=" + field(ABILITY_PROSE, ABILITY_ID))
                 .where(field(ABILITIES, ID) + "=" + ability.getId())
                 .and(field(ABILITY_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .and(field(ABILITY_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);
@@ -95,10 +100,53 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
             if (cursor.moveToFirst()) {
                 ability.setId(Integer.parseInt(cursor.getString(0)));
                 ability.setName(cursor.getString(1));
+                ability.setProse(cursor.getString(2));
             }
             cursor.close();
         }
 
         return ability;
     }
+
+    public List<Pokemon> getPokemonByAbility(Ability ability) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Pokemon> pokemonList = new ArrayList<>();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_ABILITIES, POKEMON_ID)
+                        , field(POKEMON_SPECIES_NAMES, NAME)
+                        , field(POKEMON_ABILITIES, ABILITY_ID)
+                        , field(POKEMON_ABILITIES, IS_HIDDEN))
+                .from(POKEMON_ABILITIES)
+                .join(POKEMON_SPECIES_NAMES)
+                .on(field(POKEMON_ABILITIES, POKEMON_ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
+                .where(field(POKEMON_ABILITIES, ABILITY_ID) + "=" + ability.getId())
+                .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                Pokemon pokemon = new Pokemon();
+                pokemon.setID(Integer.parseInt(cursor.getString(0)));
+                pokemon.setName(cursor.getString(1));
+
+                List<Ability> pokemonAbilities = new ArrayList<>();
+                Ability pokemonAbility = new Ability();
+                pokemonAbility.setId(Integer.parseInt(cursor.getString(2)));
+                pokemonAbility.setIsHidden("1".equals(cursor.getString(3)));
+
+                pokemonAbilities.add(pokemonAbility);
+                pokemon.setAbilities(pokemonAbilities);
+                pokemonList.add(pokemon);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return pokemonList;
+    }
+
 }

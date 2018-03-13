@@ -5,6 +5,7 @@ public class Ability {
     private int id;
     private boolean _is_hidden;
     private String _name;
+    private String prose;
     private int _slot;
 
     public int getId() {
@@ -33,6 +34,14 @@ public class Ability {
 
     public void setName(String name) {
         this._name = name;
+    }
+
+    public String getProse() {
+        return prose;
+    }
+
+    public void setProse(String prose) {
+        this.prose = prose;
     }
 
     public int getSlot() {

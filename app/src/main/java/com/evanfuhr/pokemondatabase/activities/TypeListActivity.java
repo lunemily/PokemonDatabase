@@ -14,8 +14,6 @@ public class TypeListActivity extends AppCompatActivity
         implements TypeListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String TYPE_ID = "type_id";
-    @NonNls
     public static final String TYPE = "Type";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
@@ -35,7 +33,7 @@ public class TypeListActivity extends AppCompatActivity
         //Build the intent to load the player sheet
         Intent intent = new Intent(this, TypeDisplayActivity.class);
         //Load the hero ID to send to the player sheet
-        intent.putExtra(TYPE_ID, type_id);
+        intent.putExtra(TypeDisplayActivity.TYPE_ID, type_id);
 
         startActivity(intent);
     }

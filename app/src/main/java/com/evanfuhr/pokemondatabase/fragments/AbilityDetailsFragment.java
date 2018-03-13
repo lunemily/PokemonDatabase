@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
 
 public class AbilityDetailsFragment extends Fragment {
+
+    Ability mAbility;
+
+    TextView mAbilityProseText;
 
     public AbilityDetailsFragment() {
         // Required empty public constructor
@@ -29,6 +33,8 @@ public class AbilityDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View detailsFragmentView = inflater.inflate(R.layout.fragment_ability_details, container, false);
 
+        mAbilityProseText = detailsFragmentView.findViewById(R.id.abilityProseText);
+
         return detailsFragmentView;
     }
 
@@ -43,6 +49,19 @@ public class AbilityDetailsFragment extends Fragment {
     }
 
     public void setAbilityDetails(Ability ability) {
+        loadAbility(ability);
+        setProse();
+    }
 
+    private void loadAbility(Ability ability) {
+        AbilityDAO abilityDAO = new AbilityDAO(getActivity());
+
+        mAbility = abilityDAO.getAbilityByID(ability);
+
+        abilityDAO.close();
+    }
+
+    private void setProse() {
+        mAbilityProseText.setText(mAbility.getProse());
     }
 }

@@ -140,4 +140,5 @@
     <string name="hates">HATES</string>
     <string name="dry">DRY</string>
     <string name="Ability">Abilities</string>
+    <string name="abilityProseSample">\"This Pokémon\'s damaging moves have a 10% chance to make the target [flinch]{mechanic:flinch} with each hit if they do not already cause flinching as a secondary effect.  This ability does not stack with a held item.  Overworld: The wild encounter rate is halved while this Pokémon is first in the party.\"</string>
 </resources>
