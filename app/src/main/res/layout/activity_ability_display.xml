@@ -7,7 +7,7 @@
     tools:context="com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity"
     android:id="@+id/ability_display_activity">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ability_details_scroll_view"
@@ -18,6 +18,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:longClickable="false">
+
+            <View
+                android:layout_width="fill_parent"
+                android:id="@+id/focus_view"
+                android:layout_height="0dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <requestFocus/>
+
+            </View>
 
             <!--<android.support.v7.widget.CardView-->
                 <!--android:layout_width="match_parent"-->
@@ -58,6 +69,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.constraint.ConstraintLayout>

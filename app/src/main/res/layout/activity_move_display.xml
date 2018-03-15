@@ -10,7 +10,7 @@
     tools:context="com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity"
     android:id="@+id/move_display_activity">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/move_details_scroll_view"
@@ -23,6 +23,17 @@
             android:id="@+id/Details"
             android:longClickable="false">
 
+            <View
+                android:layout_width="fill_parent"
+                android:id="@+id/focus_view"
+                android:layout_height="0dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <requestFocus/>
+
+            </View>
+
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -32,6 +43,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </RelativeLayout>

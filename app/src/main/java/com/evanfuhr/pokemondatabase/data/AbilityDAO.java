@@ -107,46 +107,4 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
 
         return ability;
     }
-
-    public List<Pokemon> getPokemonByAbility(Ability ability) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        List<Pokemon> pokemonList = new ArrayList<>();
-
-        String sql = SQLiteQueryBuilder
-                .select(field(POKEMON_ABILITIES, POKEMON_ID)
-                        , field(POKEMON_SPECIES_NAMES, NAME)
-                        , field(POKEMON_ABILITIES, ABILITY_ID)
-                        , field(POKEMON_ABILITIES, IS_HIDDEN))
-                .from(POKEMON_ABILITIES)
-                .join(POKEMON_SPECIES_NAMES)
-                .on(field(POKEMON_ABILITIES, POKEMON_ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
-                .where(field(POKEMON_ABILITIES, ABILITY_ID) + "=" + ability.getId())
-                .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
-                .build();
-
-        Cursor cursor = db.rawQuery(sql, null);
-
-        //Loop through rows and add each to list
-        if (cursor.moveToFirst()) {
-            do {
-                Pokemon pokemon = new Pokemon();
-                pokemon.setID(Integer.parseInt(cursor.getString(0)));
-                pokemon.setName(cursor.getString(1));
-
-                List<Ability> pokemonAbilities = new ArrayList<>();
-                Ability pokemonAbility = new Ability();
-                pokemonAbility.setId(Integer.parseInt(cursor.getString(2)));
-                pokemonAbility.setIsHidden("1".equals(cursor.getString(3)));
-
-                pokemonAbilities.add(pokemonAbility);
-                pokemon.setAbilities(pokemonAbilities);
-                pokemonList.add(pokemon);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        return pokemonList;
-    }
-
 }
