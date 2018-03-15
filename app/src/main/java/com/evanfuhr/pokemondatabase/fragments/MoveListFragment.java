@@ -61,6 +61,7 @@ public class MoveListFragment extends Fragment
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             _recyclerView = (RecyclerView) view;
+            _recyclerView.setNestedScrollingEnabled(false);
             _recyclerView.setLayoutManager(new LinearLayoutManager(context));
             _recyclerView.setAdapter(new MyMoveRecyclerViewAdapter(moves, mListener));
         }
