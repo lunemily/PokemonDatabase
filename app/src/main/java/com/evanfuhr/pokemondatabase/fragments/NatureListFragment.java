@@ -11,12 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.adapters.MyTypeRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.adapters.NatureRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.data.FlavorDAO;
 import com.evanfuhr.pokemondatabase.data.NatureDAO;
 import com.evanfuhr.pokemondatabase.models.Nature;
-import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +68,7 @@ public class NatureListFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.setNestedScrollingEnabled(false);
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -80,7 +78,6 @@ public class NatureListFragment extends Fragment {
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {

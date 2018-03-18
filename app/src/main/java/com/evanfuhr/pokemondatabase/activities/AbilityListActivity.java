@@ -5,35 +5,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.NatureListFragment;
-import com.evanfuhr.pokemondatabase.models.Nature;
+import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
+import com.evanfuhr.pokemondatabase.models.Ability;
 
 import org.jetbrains.annotations.NonNls;
 
-public class NatureListActivity extends AppCompatActivity
-        implements NatureListFragment.OnListFragmentInteractionListener {
+public class AbilityListActivity extends AppCompatActivity
+        implements AbilityListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String NATURE = "Nature";
+    public static final String ABILITY = "Ability";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nature_list);
+        setContentView(R.layout.activity_ability_list);
 
-        setTitle(NATURE);
+        setTitle(ABILITY);
     }
 
     @Override
-    public void onListFragmentInteraction(Nature nature) {
-        int nature_id = nature.getId();
+    public void onListFragmentInteraction(Ability ability) {
 
         // Build the intent to load the player sheet
-        Intent intent = new Intent(this, NatureDisplayActivity.class);
+        Intent intent = new Intent(this, AbilityDisplayActivity.class);
         // Add the id to send to the display activity
-        intent.putExtra(NatureDisplayActivity.NATURE_ID, nature_id);
+        intent.putExtra(AbilityDisplayActivity.ABILITY_ID, ability.getId());
 
         startActivity(intent);
     }

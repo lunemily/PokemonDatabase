@@ -14,8 +14,6 @@ public class PokemonListActivity extends AppCompatActivity
         implements PokemonListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String POKEMON_ID = "pokemon_id";
-    @NonNls
     public static final String POKEMON = "Pokémon";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
@@ -30,12 +28,11 @@ public class PokemonListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Pokemon pokemon) {
-        int pokemon_id = pokemon.getID();
 
-        //Build the intent to load the pokemon display
+        // Build the intent to load the pokemon display
         Intent intent = new Intent(this, PokemonDisplayActivity.class);
-        //Load the pokemon ID to send to the player sheet
-        intent.putExtra(POKEMON_ID, pokemon_id);
+        // Load the pokemon ID to send to the player sheet
+        intent.putExtra(PokemonDisplayActivity.POKEMON_ID, pokemon.getID());
 
         startActivity(intent);
     }

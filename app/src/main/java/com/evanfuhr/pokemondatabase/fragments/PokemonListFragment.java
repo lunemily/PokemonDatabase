@@ -16,8 +16,11 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.PokemonRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
+import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
@@ -39,10 +42,12 @@ public class PokemonListFragment extends Fragment
 
     public static final String TYPE_ID = "type_id";
 
+    Ability ability = new Ability();
     Type type = new Type();
 
-    boolean listByMove = false;
-    boolean listByType = false;
+    boolean isListByAbility = false;
+    boolean isListByMove = false;
+    boolean isListByType = false;
 
     RecyclerView _recyclerView;
 
@@ -66,21 +71,25 @@ public class PokemonListFragment extends Fragment
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
-            if(bundle.containsKey(TYPE_ID)) {
-                type.setID(bundle.getInt(TYPE_ID));
-                listByType = true;
+            if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
+                type.setID(bundle.getInt(TypeDisplayActivity.TYPE_ID));
+                isListByType = true;
+            } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
+                ability.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
+                isListByAbility = true;
             }
         } else {
             Log.i("PokemonListFragment Log", "No bundle");
         }
 
 
-        List<Pokemon> pokemons = getTypedPokemon();
+        List<Pokemon> pokemons = getFilteredPokemon();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             _recyclerView = (RecyclerView) view;
+            _recyclerView.setNestedScrollingEnabled(false);
             _recyclerView.setLayoutManager(new LinearLayoutManager(context));
             _recyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
         }
@@ -131,27 +140,35 @@ public class PokemonListFragment extends Fragment
         void onListFragmentInteraction(Pokemon item);
     }
 
-    List<Pokemon> getTypedPokemon() {
+    List<Pokemon> getFilteredPokemon() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        List<Pokemon> unTypedPokemons = pokemonDAO.getAllPokemon();
-        List<Pokemon> typedPokemons = new ArrayList<>();
+        List<Pokemon> unFilteredPokemons = pokemonDAO.getAllPokemon();
+        List<Pokemon> filteredPokemons = new ArrayList<>();
 
-        for (Pokemon pokemon : unTypedPokemons) {
+        for (Pokemon pokemon : unFilteredPokemons) {
+            // Always want to set pokemon's types for display colors
             pokemon.setTypes(pokemonDAO.getTypesForPokemon(pokemon));
-            if (listByType) {
+            if (isListByType) {
                 for (Type pokemonType : pokemon.getTypes()) {
                     if (pokemonType.getID() == type.getID()) {
-                        typedPokemons.add(pokemon);
+                        filteredPokemons.add(pokemon);
+                    }
+                }
+            } else if (isListByAbility) {
+                pokemon.setAbilities(pokemonDAO.getAbilitiesForPokemon(pokemon));
+                for (Ability pokemonAbility : pokemon.getAbilities()) {
+                    if (pokemonAbility.getId() == ability.getId()) {
+                        filteredPokemons.add(pokemon);
                     }
                 }
             } else {
-                typedPokemons.add(pokemon);
+                filteredPokemons.add(pokemon);
             }
         }
 
         pokemonDAO.close();
 
-        return typedPokemons;
+        return filteredPokemons;
     }
 
     @Override

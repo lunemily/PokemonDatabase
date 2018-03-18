@@ -39,6 +39,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //tables
     static final String ABILITIES = "abilities";
     static final String ABILITY_NAMES = "ability_names";
+    static final String ABILITY_PROSE = "ability_prose";
     static final String CONTEST_TYPE_NAMES = "contest_type_names";
     static final String CONTEST_TYPES = "contest_types";
     static final String EGG_GROUP_PROSE = "egg_group_prose";
@@ -66,9 +67,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String VERSION_NAMES = "version_names";
 
     //common
+    static final String ABILITY_ID = "ability_id";
+    static final String DAMAGE_CLASS_ID = "damage_class_id";
+    static final String EFFECT = "effect";
     static final String EGG_GROUP_ID = "egg_group_id";
     static final String ID = "id";
-    static final String DAMAGE_CLASS_ID = "damage_class_id";
     static final String KEY_IDENTIFIER = "identifier";
     static final String LOCAL_LANGUAGE_ID = "local_language_id";
     static final String MOVE_ID = "move_id";
@@ -114,7 +117,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String WEIGHT = "weight";
 
     //pokemon_abilities
-    static final String ABILITY_ID = "ability_id";
     static final String IS_HIDDEN = "is_hidden";
 
     //pokemon_moves

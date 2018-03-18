@@ -1,8 +1,8 @@
 package com.evanfuhr.pokemondatabase.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,37 +11,46 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.adapters.MyTypeRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.data.TypeDAO;
-import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.adapters.AbilityRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.data.AbilityDAO;
+import com.evanfuhr.pokemondatabase.models.Ability;
 
 import java.util.List;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link AbilityListFragment.OnListFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link AbilityListFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class TypeListFragment extends Fragment {
+public class AbilityListFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private AbilityListFragment.OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TypeListFragment() {
+    public AbilityListFragment() {
+        // Required empty public constructor
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static TypeListFragment newInstance(int columnCount) {
-        TypeListFragment fragment = new TypeListFragment();
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param columnCount
+     * @return A new instance of fragment AbilityListFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static AbilityListFragment newInstance(int columnCount) {
+        AbilityListFragment fragment = new AbilityListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -61,8 +70,7 @@ public class TypeListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
-        TypeDAO typeDAO = new TypeDAO(getActivity());
-        List<Type> types = typeDAO.getAllTypes();
+        List<Ability> abilities = getAbilities();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -74,21 +82,19 @@ public class TypeListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyTypeRecyclerViewAdapter(types, mListener));
+            recyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
         }
-        typeDAO.close();
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof AbilityListFragment.OnListFragmentInteractionListener) {
+            mListener = (AbilityListFragment.OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -103,13 +109,21 @@ public class TypeListFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(Type item);
+
+        void onListFragmentInteraction(Ability item);
+    }
+
+    private List<Ability> getAbilities() {
+        AbilityDAO abilityDAO = new AbilityDAO(getActivity());
+        List<Ability> allAbilities = abilityDAO.getAllAbilities();
+        abilityDAO.close();
+
+        return allAbilities;
     }
 }

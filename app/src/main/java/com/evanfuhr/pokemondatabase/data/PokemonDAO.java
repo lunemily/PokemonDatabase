@@ -150,7 +150,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
             do {
                 //Move move = new Move();
                 Ability ability = new Ability();
-                ability.setID(Integer.parseInt(cursor.getString(0)));
+                ability.setId(Integer.parseInt(cursor.getString(0)));
                 ability.setSlot(Integer.parseInt(cursor.getString(1)));
                 ability.setIsHidden("1".equals(cursor.getString(2)));
                 //add move to list

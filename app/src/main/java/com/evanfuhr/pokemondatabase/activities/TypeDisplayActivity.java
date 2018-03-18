@@ -15,17 +15,22 @@ import com.evanfuhr.pokemondatabase.interfaces.OnTypeSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
+import org.jetbrains.annotations.NonNls;
+
 public class TypeDisplayActivity extends AppCompatActivity
         implements OnTypeSelectedListener, PokemonListFragment.OnListFragmentInteractionListener {
+
+    @NonNls
+    public static final String TYPE_ID = "type_id";
 
     Type _type = new Type();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //Get pokemon id passed to this activity
+        // Get pokemon id passed to this activity
         Intent intent = getIntent();
-        _type.setID(intent.getIntExtra(TypeListActivity.TYPE_ID, 0));
+        _type.setID(intent.getIntExtra(TYPE_ID, 0));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_display);

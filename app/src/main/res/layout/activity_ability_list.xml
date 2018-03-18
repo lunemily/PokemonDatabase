@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:paddingBottom="0dp"
+android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+tools:context="com.evanfuhr.pokemondatabase.activities.AbilityListActivity"
+android:id="@+id/nature_list_activity">
+
+<fragment
+    android:layout_width="336dp"
+    android:layout_height="wrap_content"
+    android:name="com.evanfuhr.pokemondatabase.fragments.AbilityListFragment"
+    android:id="@+id/natureListFragment"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    tools:layout_editor_absoluteY="16dp"
+    android:layout_marginRight="8dp"
+    app:layout_constraintRight_toRightOf="parent"
+    android:layout_marginLeft="8dp"
+    app:layout_constraintLeft_toLeftOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
