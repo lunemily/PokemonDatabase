@@ -40,8 +40,6 @@ public class PokemonListFragment extends Fragment
 
     private OnListFragmentInteractionListener mListener;
 
-    public static final String TYPE_ID = "type_id";
-
     Ability ability = new Ability();
     Type type = new Type();
 
@@ -49,7 +47,7 @@ public class PokemonListFragment extends Fragment
     boolean isListByMove = false;
     boolean isListByType = false;
 
-    RecyclerView _recyclerView;
+    RecyclerView mRecyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -88,10 +86,10 @@ public class PokemonListFragment extends Fragment
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            _recyclerView = (RecyclerView) view;
-            _recyclerView.setNestedScrollingEnabled(false);
-            _recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            _recyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
+            mRecyclerView = (RecyclerView) view;
+            mRecyclerView.setNestedScrollingEnabled(false);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mRecyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
         }
         return view;
     }
@@ -120,7 +118,7 @@ public class PokemonListFragment extends Fragment
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        PokemonRecyclerViewAdapter adapter = (PokemonRecyclerViewAdapter) _recyclerView.getAdapter();
+        PokemonRecyclerViewAdapter adapter = (PokemonRecyclerViewAdapter) mRecyclerView.getAdapter();
         adapter.filter(newText);
         return true;
     }
@@ -142,10 +140,10 @@ public class PokemonListFragment extends Fragment
 
     List<Pokemon> getFilteredPokemon() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        List<Pokemon> unFilteredPokemons = pokemonDAO.getAllPokemon();
+        List<Pokemon> unfilteredPokemons = pokemonDAO.getAllPokemon();
         List<Pokemon> filteredPokemons = new ArrayList<>();
 
-        for (Pokemon pokemon : unFilteredPokemons) {
+        for (Pokemon pokemon : unfilteredPokemons) {
             // Always want to set pokemon's types for display colors
             pokemon.setTypes(pokemonDAO.getTypesForPokemon(pokemon));
             if (isListByType) {

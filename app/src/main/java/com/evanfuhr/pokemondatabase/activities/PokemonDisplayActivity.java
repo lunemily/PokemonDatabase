@@ -16,10 +16,12 @@ import android.widget.RelativeLayout;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
+import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
 import com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment;
 import com.evanfuhr.pokemondatabase.fragments.PokemonMovesFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
 import com.evanfuhr.pokemondatabase.interfaces.OnPokemonSelectedListener;
+import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonDisplayActivity extends AppCompatActivity
-        implements OnPokemonSelectedListener {
+        implements OnPokemonSelectedListener, AbilityListFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
@@ -128,6 +130,16 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         pokemonDAO.close();
         typeDAO.close();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Ability ability) {
+        // Build the intent to load the player sheet
+        Intent intent = new Intent(this, AbilityDisplayActivity.class);
+        // Add the id to send to the display activity
+        intent.putExtra(AbilityDisplayActivity.ABILITY_ID, ability.getId());
+
+        startActivity(intent);
     }
 
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {

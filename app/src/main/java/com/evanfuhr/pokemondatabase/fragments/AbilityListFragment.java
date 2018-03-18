@@ -3,18 +3,23 @@ package com.evanfuhr.pokemondatabase.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.AbilityRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.AbilityDAO;
+import com.evanfuhr.pokemondatabase.data.PokemonDAO;
+import com.evanfuhr.pokemondatabase.interfaces.PokemonDataInterface;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,11 +32,13 @@ import java.util.List;
  */
 public class AbilityListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private AbilityListFragment.OnListFragmentInteractionListener mListener;
+
+    Pokemon pokemon = new Pokemon();
+
+    boolean isListByPokemon = false;
+
+    RecyclerView mRecyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -41,48 +48,34 @@ public class AbilityListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param columnCount
-     * @return A new instance of fragment AbilityListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AbilityListFragment newInstance(int columnCount) {
-        AbilityListFragment fragment = new AbilityListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
-        List<Ability> abilities = getAbilities();
+
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
+                pokemon.setID(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                isListByPokemon = true;
+            }
+        } else {
+            Log.i("AbilityListFragment Log", "No bundle");
+        }
+        List<Ability> abilities = getFilteredAbilities();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setNestedScrollingEnabled(false);
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
+            mRecyclerView = (RecyclerView) view;
+            mRecyclerView.setNestedScrollingEnabled(false);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mRecyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
         }
         return view;
     }
@@ -119,11 +112,25 @@ public class AbilityListFragment extends Fragment {
         void onListFragmentInteraction(Ability item);
     }
 
-    private List<Ability> getAbilities() {
+    private List<Ability> getFilteredAbilities() {
         AbilityDAO abilityDAO = new AbilityDAO(getActivity());
-        List<Ability> allAbilities = abilityDAO.getAllAbilities();
+        List<Ability> unfilteredAbilities = abilityDAO.getAllAbilities();
+        List<Ability> filteredAbilities = new ArrayList<>();
+
+        if (isListByPokemon) {
+            // Rather than iterating over ALL abilities, just get the pokemon's abilities and load
+            PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+            List<Ability> pokemonAbilities = pokemonDAO.getAbilitiesForPokemon(pokemon);
+            for (Ability ability : pokemonAbilities) {
+                filteredAbilities.add(abilityDAO.getAbilityByID(ability));
+            }
+            pokemonDAO.close();
+        } else {
+            filteredAbilities = unfilteredAbilities;
+        }
+
         abilityDAO.close();
 
-        return allAbilities;
+        return filteredAbilities;
     }
 }
