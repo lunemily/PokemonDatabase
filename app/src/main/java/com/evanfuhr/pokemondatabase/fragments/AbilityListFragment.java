@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
@@ -39,6 +40,7 @@ public class AbilityListFragment extends Fragment {
     boolean isListByPokemon = false;
 
     RecyclerView mRecyclerView;
+    TextView mTitle;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -56,7 +58,9 @@ public class AbilityListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
+
+        mTitle = view.findViewById(R.id.card_list_title);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
@@ -70,13 +74,12 @@ public class AbilityListFragment extends Fragment {
         List<Ability> abilities = getFilteredAbilities();
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            mRecyclerView = (RecyclerView) view;
-            mRecyclerView.setNestedScrollingEnabled(false);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mRecyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
-        }
+        Context context = view.getContext();
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
+
         return view;
     }
 
@@ -127,6 +130,9 @@ public class AbilityListFragment extends Fragment {
             pokemonDAO.close();
         } else {
             filteredAbilities = unfilteredAbilities;
+
+            // Title is activity title
+            mTitle.setVisibility(View.INVISIBLE);
         }
 
         abilityDAO.close();

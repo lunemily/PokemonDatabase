@@ -15,7 +15,6 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:id="@+id/attacker_card"
-            app:cardBackgroundColor="?attr/colorButtonNormal"
             android:layout_marginBottom="@dimen/activity_vertical_margin">
 
             <LinearLayout
@@ -39,8 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:id="@+id/defender_card"
-            app:cardBackgroundColor="?attr/colorButtonNormal">
+            android:id="@+id/defender_card">
 
             <LinearLayout
                 android:orientation="vertical"

@@ -35,7 +35,6 @@ public class PokemonDetailsFragment extends Fragment {
 
     Pokemon _pokemon;
 
-    LinearLayout _abilities;
     TextView _bulbapedia;
     LinearLayout _eggGroups;
     TextView _genus;
@@ -61,16 +60,15 @@ public class PokemonDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View detailsFragmentView = inflater.inflate(R.layout.fragment_pokemon_details, container, false);
 
-        _abilities = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonAbilitiesList);
-        _bulbapedia = (TextView) detailsFragmentView.findViewById(R.id.bulbapediaLink);
-        _eggGroups = (LinearLayout) detailsFragmentView.findViewById(R.id.pokemonEggGroupsList);
-        _genus = (TextView) detailsFragmentView.findViewById(R.id.pokemonGenusText);
-        _height = (TextView) detailsFragmentView.findViewById(R.id.pokemonHeightValue);
-        _smogon = (TextView) detailsFragmentView.findViewById(R.id.smogonLink);
-        _spriteGif = (GifImageView) detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
-        _type1Button = (Button) detailsFragmentView.findViewById(R.id.buttonPokemonType1);
-        _type2Button = (Button) detailsFragmentView.findViewById(R.id.buttonPokemonType2);
-        _weight = (TextView) detailsFragmentView.findViewById(R.id.pokemonWeightValue);
+        _bulbapedia = detailsFragmentView.findViewById(R.id.bulbapediaLink);
+        _eggGroups = detailsFragmentView.findViewById(R.id.pokemonEggGroupsList);
+        _genus = detailsFragmentView.findViewById(R.id.pokemonGenusText);
+        _height = detailsFragmentView.findViewById(R.id.pokemonHeightValue);
+        _smogon = detailsFragmentView.findViewById(R.id.smogonLink);
+        _spriteGif = detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
+        _type1Button = detailsFragmentView.findViewById(R.id.buttonPokemonType1);
+        _type2Button = detailsFragmentView.findViewById(R.id.buttonPokemonType2);
+        _weight = detailsFragmentView.findViewById(R.id.pokemonWeightValue);
 
         return detailsFragmentView;
     }
@@ -90,30 +88,9 @@ public class PokemonDetailsFragment extends Fragment {
         setFragmentGenus();
         setFragmentSprite();
         setFragmentHeightAndWeight();
-        setFragmentAbilities();
         setFragmentEggGroups();
         setFragmentTypes();
         setExternalLinks();
-    }
-
-    void setFragmentAbilities() {
-        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        AbilityDAO abilityDAO = new AbilityDAO(getActivity());
-
-        _pokemon.setAbilities(pokemonDAO.getAbilitiesForPokemon(_pokemon));
-        List<Ability> abilities = _pokemon.getAbilities();
-
-        for (Ability a : abilities) {
-            Ability ability = abilityDAO.getAbilityByID(a);
-            TextView textViewAbility = new TextView(getActivity());
-            textViewAbility.setText(ability.getName());
-            if (ability.getIsHidden()) {
-                textViewAbility.setTextColor(Color.argb(90, 0, 0, 0));
-            }
-            _abilities.addView(textViewAbility);
-        }
-
-        pokemonDAO.close();
     }
 
     void setFragmentEggGroups() {

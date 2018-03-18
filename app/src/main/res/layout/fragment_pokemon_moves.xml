@@ -15,7 +15,6 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:id="@+id/level_up_moves_card"
-            app:cardBackgroundColor="?attr/colorButtonNormal"
             android:layout_marginBottom="@dimen/activity_vertical_margin">
 
             <LinearLayout
@@ -40,7 +39,6 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:id="@+id/tm_moves_card"
-            app:cardBackgroundColor="?attr/colorButtonNormal"
             android:layout_marginBottom="@dimen/activity_vertical_margin">
 
             <LinearLayout
@@ -65,7 +63,6 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:id="@+id/egg_moves_card"
-            app:cardBackgroundColor="?attr/colorButtonNormal"
             android:layout_marginBottom="@dimen/activity_vertical_margin">
 
             <LinearLayout
@@ -90,7 +87,6 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:id="@+id/tutor_moves_card"
-            app:cardBackgroundColor="?attr/colorButtonNormal"
             android:layout_marginBottom="@dimen/activity_vertical_margin">
 
             <LinearLayout
