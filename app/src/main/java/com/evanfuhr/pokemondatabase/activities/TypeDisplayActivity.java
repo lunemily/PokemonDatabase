@@ -30,7 +30,7 @@ public class TypeDisplayActivity extends AppCompatActivity
 
         // Get pokemon id passed to this activity
         Intent intent = getIntent();
-        _type.setID(intent.getIntExtra(TYPE_ID, 0));
+        _type.setId(intent.getIntExtra(TYPE_ID, 0));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_display);

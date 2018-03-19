@@ -106,7 +106,7 @@ public class MoveDetailsFragment extends Fragment {
 
     void setFragmentType() {
         _type.setText(_move.getType().getName());
-        _type.setId(_move.getType().getID());
+        _type.setId(_move.getType().getId());
         _type.setBackgroundColor(Color.parseColor(_move.getType().getColor()));
         _type.setOnClickListener(new View.OnClickListener() {
             @Override

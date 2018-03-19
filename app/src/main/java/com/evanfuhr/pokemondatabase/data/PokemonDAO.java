@@ -104,7 +104,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                //pokemon.setID(pokemon.getID(0));
+                //pokemon.setId(pokemon.getId(0));
                 pokemon.setName(cursor.getString(1));
                 pokemon.setHeight(Double.parseDouble(cursor.getString(2))/10);
                 pokemon.setWeight(Double.parseDouble(cursor.getString(3))/10);
@@ -275,8 +275,8 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
             do {
                 Type type = new Type();
                 type.setSlot(Integer.parseInt(cursor.getString(0)));
-                type.setID(Integer.parseInt(cursor.getString(1)));
-                type.setColor(Type.getTypeColor(type.getID()));
+                type.setId(Integer.parseInt(cursor.getString(1)));
+                type.setColor(Type.getTypeColor(type.getId()));
                 //add type to list
                 typesForPokemon.add(type);
             } while (cursor.moveToNext());

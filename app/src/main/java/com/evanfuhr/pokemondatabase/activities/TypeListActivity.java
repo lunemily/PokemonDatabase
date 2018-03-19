@@ -28,7 +28,7 @@ public class TypeListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Type type) {
-        int type_id = type.getID();
+        int type_id = type.getId();
 
         //Build the intent to load the player sheet
         Intent intent = new Intent(this, TypeDisplayActivity.class);

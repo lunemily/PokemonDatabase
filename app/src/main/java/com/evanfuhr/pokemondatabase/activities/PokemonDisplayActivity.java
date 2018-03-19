@@ -19,6 +19,7 @@ import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
 import com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment;
 import com.evanfuhr.pokemondatabase.fragments.PokemonMovesFragment;
+import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
 import com.evanfuhr.pokemondatabase.interfaces.OnPokemonSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Ability;
@@ -32,7 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonDisplayActivity extends AppCompatActivity
-        implements OnPokemonSelectedListener, AbilityListFragment.OnListFragmentInteractionListener {
+        implements OnPokemonSelectedListener, AbilityListFragment.OnListFragmentInteractionListener,
+        TypeListFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
@@ -106,9 +108,6 @@ public class PokemonDisplayActivity extends AppCompatActivity
         PokemonDetailsFragment pokemonDetailsFragment = (PokemonDetailsFragment) fm.findFragmentById(R.id.pokemonDetailsFragment);
         pokemonDetailsFragment.setPokemonDetails(pokemon);
 
-        TypeMatchUpFragment typeMatchUpFragment = (TypeMatchUpFragment) fm.findFragmentById(R.id.typeMatchUpFragment);
-        typeMatchUpFragment.setTypeMatchUps(pokemon.getTypes(), true);
-
         PokemonMovesFragment pokemonMovesFragment = (PokemonMovesFragment) fm.findFragmentById(R.id.pokemonMoveFragment);
         pokemonMovesFragment.setPokemonMoves(pokemon);
     }
@@ -138,6 +137,16 @@ public class PokemonDisplayActivity extends AppCompatActivity
         Intent intent = new Intent(this, AbilityDisplayActivity.class);
         // Add the id to send to the display activity
         intent.putExtra(AbilityDisplayActivity.ABILITY_ID, ability.getId());
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Type type) {
+        // Build the intent to load the player sheet
+        Intent intent = new Intent(this, TypeDisplayActivity.class);
+        // Add the id to send to the display activity
+        intent.putExtra(TypeDisplayActivity.TYPE_ID, type.getId());
 
         startActivity(intent);
     }

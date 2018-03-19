@@ -35,6 +35,8 @@ public class AbilityRecyclerViewAdapter extends RecyclerView.Adapter<AbilityRecy
         holder.mItem = mValues.get(position);
         holder.mButton.setId(mValues.get(position).getId());
         holder.mButton.setText(mValues.get(position).getName());
+        holder.mButton.setBackgroundColor(Color.GRAY);
+
         if (holder.mItem.getIsHidden()) {
             holder.mButton.setTextColor(Color.argb(90, 0, 0, 0));
         }

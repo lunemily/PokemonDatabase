@@ -70,7 +70,7 @@ public class PokemonListFragment extends Fragment
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
-                type.setID(bundle.getInt(TypeDisplayActivity.TYPE_ID));
+                type.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
                 isListByType = true;
             } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
                 ability.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
@@ -148,7 +148,7 @@ public class PokemonListFragment extends Fragment
             pokemon.setTypes(pokemonDAO.getTypesForPokemon(pokemon));
             if (isListByType) {
                 for (Type pokemonType : pokemon.getTypes()) {
-                    if (pokemonType.getID() == type.getID()) {
+                    if (pokemonType.getId() == type.getId()) {
                         filteredPokemons.add(pokemon);
                     }
                 }

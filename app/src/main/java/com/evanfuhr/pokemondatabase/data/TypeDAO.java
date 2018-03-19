@@ -55,9 +55,9 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
         if (cursor.moveToFirst()) {
             do {
                 Type type = new Type();
-                type.setID(Integer.parseInt(cursor.getString(0)));
+                type.setId(Integer.parseInt(cursor.getString(0)));
                 type.setName(cursor.getString(1));
-                type.setColor(Type.getTypeColor(type.getID()));
+                type.setColor(Type.getTypeColor(type.getId()));
 
                 //add type to list
                 types.add(type);
@@ -84,16 +84,16 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 .from(TYPES)
                 .join(TYPE_NAMES)
                 .on(field(TYPES, ID) + "=" + field(TYPE_NAMES, TYPE_ID))
-                .where(field(TYPES, ID)+ "=" + type.getID())
+                .where(field(TYPES, ID)+ "=" + type.getId())
                 .and(field(TYPE_NAMES, LOCAL_LANGUAGE_ID)+ "=" + _language_id)
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                type.setID(Integer.parseInt(cursor.getString(0)));
+                type.setId(Integer.parseInt(cursor.getString(0)));
                 type.setName(cursor.getString(1));
-                type.setColor(Type.getTypeColor(type.getID()));
+                type.setColor(Type.getTypeColor(type.getId()));
             }
             cursor.close();
         }
@@ -120,8 +120,8 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 ", " + KEY_DAMAGE_FACTOR +
                 " FROM " + TABLE_TYPE_EFFICACY +
                 " WHERE " + TABLE_TYPE_EFFICACY + "." + KEY_DAMAGE_FACTOR + " != 100" +
-                " AND (" + TABLE_TYPE_EFFICACY + "." + KEY_DAMAGE_TYPE_ID + " = " + type.getID() +
-                " OR " + TABLE_TYPE_EFFICACY + "." + KEY_TARGET_TYPE_ID + " = " + type.getID() + ")" +
+                " AND (" + TABLE_TYPE_EFFICACY + "." + KEY_DAMAGE_TYPE_ID + " = " + type.getId() +
+                " OR " + TABLE_TYPE_EFFICACY + "." + KEY_TARGET_TYPE_ID + " = " + type.getId() + ")" +
                 " ORDER BY " + TABLE_TYPE_EFFICACY + "." + KEY_DAMAGE_FACTOR + " DESC"
                 ;
 
@@ -132,18 +132,18 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 Type attackingType = new Type();
                 Type defendingType = new Type();
 
-                attackingType.setID(Integer.parseInt(cursor.getString(0)));
-                defendingType.setID(Integer.parseInt(cursor.getString(1)));
+                attackingType.setId(Integer.parseInt(cursor.getString(0)));
+                defendingType.setId(Integer.parseInt(cursor.getString(1)));
                 int damageFactor = Integer.parseInt(cursor.getString(2));
 
-                if (type.getID() == attackingType.getID() && type.getID() == defendingType.getID()) {
+                if (type.getId() == attackingType.getId() && type.getId() == defendingType.getId()) {
                     // Type is defender. Add attacker
                     attackingType.setEfficacy(damageFactor/100f);
                     attackingTypes.add(attackingType);
                     // Type is attacker. Add defender
                     defendingType.setEfficacy(damageFactor/100f);
                     defendingTypes.add(defendingType);
-                } else if (type.getID() == attackingType.getID()) {
+                } else if (type.getId() == attackingType.getId()) {
                     // Type is attacker. Add defender
                     defendingType.setEfficacy(damageFactor/100f);
                     defendingTypes.add(defendingType);
@@ -183,7 +183,7 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 ", SUM(" + KEY_DAMAGE_FACTOR + ") as combined_damage_factor" +
                 " FROM " + TABLE_TYPE_EFFICACY +
                 " WHERE " + KEY_DAMAGE_FACTOR + " != 100" +
-                " AND " + KEY_TARGET_TYPE_ID + " in (" + type1.getID() + ", " + type2.getID() + ")" +
+                " AND " + KEY_TARGET_TYPE_ID + " in (" + type1.getId() + ", " + type2.getId() + ")" +
                 " GROUP BY " + KEY_DAMAGE_TYPE_ID +
                 " ORDER BY combined_damage_factor DESC"
                 ;
@@ -194,7 +194,7 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
             do {
                 Type attackingType = new Type();
 
-                attackingType.setID(Integer.parseInt(cursor.getString(0)));
+                attackingType.setId(Integer.parseInt(cursor.getString(0)));
                 boolean isDaulType = (Integer.parseInt(cursor.getString(1)) == 2);
                 int damageFactor = Integer.parseInt(cursor.getString(2));
 
