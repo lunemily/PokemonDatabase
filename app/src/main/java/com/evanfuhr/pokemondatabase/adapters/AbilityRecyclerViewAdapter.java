@@ -1,5 +1,6 @@
 package com.evanfuhr.pokemondatabase.adapters;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +33,13 @@ public class AbilityRecyclerViewAdapter extends RecyclerView.Adapter<AbilityRecy
     @Override
     public void onBindViewHolder(final AbilityRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder._button.setId(mValues.get(position).getId());
-        holder._button.setText(mValues.get(position).getName());
-        //holder._button.setBackground(PokemonUtils.getColorGradientByFlavors(mValues.get(position).getFlavors()));
+        holder.mButton.setId(mValues.get(position).getId());
+        holder.mButton.setText(mValues.get(position).getName());
+        if (holder.mItem.getIsHidden()) {
+            holder.mButton.setTextColor(Color.argb(90, 0, 0, 0));
+        }
 
-        holder._button.setOnClickListener(new View.OnClickListener() {
+        holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
@@ -53,15 +56,15 @@ public class AbilityRecyclerViewAdapter extends RecyclerView.Adapter<AbilityRecy
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final Button _button;
-        public Ability mItem;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        final View mView;
+        final Button mButton;
+        Ability mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
-            _button = (Button) view.findViewById(R.id.singleButton);
+            mButton = view.findViewById(R.id.singleButton);
         }
     }
 }

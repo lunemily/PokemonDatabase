@@ -128,6 +128,7 @@ public class AbilityListFragment extends Fragment {
                 filteredAbilities.add(abilityDAO.getAbilityByID(ability));
             }
             pokemonDAO.close();
+            mTitle.setText(R.string.abilities);
         } else {
             filteredAbilities = unfilteredAbilities;
 

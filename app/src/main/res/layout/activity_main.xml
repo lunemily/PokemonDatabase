@@ -27,28 +27,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/Types" />
+            android:text="@string/types" />
 
         <Button
             android:id="@+id/buttonMoveList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/Moves" />
+            android:text="@string/moves" />
 
         <Button
             android:id="@+id/buttonAbilityList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/Ability" />
+            android:text="@string/abilities" />
 
         <Button
             android:id="@+id/buttonNatureList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/Natures" />
+            android:text="@string/natures" />
 
     </LinearLayout>
 </RelativeLayout>

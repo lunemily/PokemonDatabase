@@ -13,9 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.adapters.MyMoveRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.adapters.MoveRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.models.Move;
 
@@ -34,7 +35,8 @@ public class MoveListFragment extends Fragment
 
     private OnListFragmentInteractionListener mListener;
 
-    RecyclerView _recyclerView;
+    RecyclerView mRecyclerView;
+    TextView mTitle;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,20 +54,22 @@ public class MoveListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
+
+        mTitle = view.findViewById(R.id.card_list_title);
+        mTitle.setText(R.string.moves);
+        mTitle.setVisibility(View.INVISIBLE);
 
         MoveDAO moveDAO = new MoveDAO(getActivity());
         List<Move> moves = moveDAO.getAllMoves();
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            _recyclerView = (RecyclerView) view;
-            _recyclerView.setNestedScrollingEnabled(false);
-            _recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            _recyclerView.setAdapter(new MyMoveRecyclerViewAdapter(moves, mListener));
-        }
-        moveDAO.close();
+        Context context = view.getContext();
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
+
         return view;
     }
 
@@ -94,7 +98,7 @@ public class MoveListFragment extends Fragment
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        MyMoveRecyclerViewAdapter adapter = (MyMoveRecyclerViewAdapter) _recyclerView.getAdapter();
+        MoveRecyclerViewAdapter adapter = (MoveRecyclerViewAdapter) mRecyclerView.getAdapter();
         adapter.filter(newText);
         return true;
     }

@@ -15,12 +15,12 @@ import com.evanfuhr.pokemondatabase.models.Move;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyMoveRecyclerViewAdapter extends RecyclerView.Adapter<MyMoveRecyclerViewAdapter.ViewHolder> {
+public class MoveRecyclerViewAdapter extends RecyclerView.Adapter<MoveRecyclerViewAdapter.ViewHolder> {
 
     private final List<Move> mValues, _filteredList;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyMoveRecyclerViewAdapter(List<Move> items, OnListFragmentInteractionListener listener) {
+    public MoveRecyclerViewAdapter(List<Move> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
 
