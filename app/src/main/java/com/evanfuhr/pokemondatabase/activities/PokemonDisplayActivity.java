@@ -2,7 +2,6 @@ package com.evanfuhr.pokemondatabase.activities;
 
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,10 +15,13 @@ import android.widget.RelativeLayout;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
+import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
+import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
 import com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment;
-import com.evanfuhr.pokemondatabase.fragments.PokemonMovesFragment;
-import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
+import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
 import com.evanfuhr.pokemondatabase.interfaces.OnPokemonSelectedListener;
+import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
@@ -30,7 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonDisplayActivity extends AppCompatActivity
-        implements OnPokemonSelectedListener {
+        implements OnPokemonSelectedListener, AbilityListFragment.OnListFragmentInteractionListener,
+        TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
@@ -54,7 +57,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         //Get pokemon id passed to this activity
         Intent intent = getIntent();
-        _pokemon.setID(intent.getIntExtra(POKEMON_ID, 0));
+        _pokemon.setId(intent.getIntExtra(POKEMON_ID, 0));
         _pokemon = pokemonDAO.getPokemonByID(_pokemon);
         onPokemonSelected(_pokemon);
         setTitle("#" + _pokemon.getID() + " " + _pokemon.getName());
@@ -103,12 +106,6 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         PokemonDetailsFragment pokemonDetailsFragment = (PokemonDetailsFragment) fm.findFragmentById(R.id.pokemonDetailsFragment);
         pokemonDetailsFragment.setPokemonDetails(pokemon);
-
-        TypeMatchUpFragment typeMatchUpFragment = (TypeMatchUpFragment) fm.findFragmentById(R.id.typeMatchUpFragment);
-        typeMatchUpFragment.setTypeMatchUps(pokemon.getTypes(), true);
-
-        PokemonMovesFragment pokemonMovesFragment = (PokemonMovesFragment) fm.findFragmentById(R.id.pokemonMoveFragment);
-        pokemonMovesFragment.setPokemonMoves(pokemon);
     }
 
     private void setPokemonBackgroundColor(Pokemon pokemon) {
@@ -128,6 +125,36 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         pokemonDAO.close();
         typeDAO.close();
+    }
+
+    @Override
+    public void onListFragmentInteraction(Ability ability) {
+        // Build the intent to load the display
+        Intent intent = new Intent(this, AbilityDisplayActivity.class);
+        // Add the id to send to the display activity
+        intent.putExtra(AbilityDisplayActivity.ABILITY_ID, ability.getId());
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Type type) {
+        // Build the intent to load the display
+        Intent intent = new Intent(this, TypeDisplayActivity.class);
+        // Add the id to send to the display activity
+        intent.putExtra(TypeDisplayActivity.TYPE_ID, type.getId());
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Move move) {
+        // Build the intent to load the display
+        Intent intent = new Intent(this, MoveDisplayActivity.class);
+        // Add the id to send to the display activity
+        intent.putExtra(MoveDisplayActivity.MOVE_ID, move.getId());
+
+        startActivity(intent);
     }
 
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {

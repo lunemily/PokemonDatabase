@@ -289,7 +289,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         SharedPreferences settings = myContext.getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
-        int version_id = settings.getInt(String.valueOf(R.string.gameVersionID), 0);
+        int version_id = settings.getInt(String.valueOf(R.string.gameVersionID), R.integer.game_version_id); // Default game is Moon
 
         int version_group_id = 1;
 

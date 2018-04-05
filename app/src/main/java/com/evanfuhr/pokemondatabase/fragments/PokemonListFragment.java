@@ -14,13 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.PokemonRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
@@ -40,16 +44,16 @@ public class PokemonListFragment extends Fragment
 
     private OnListFragmentInteractionListener mListener;
 
-    public static final String TYPE_ID = "type_id";
-
     Ability ability = new Ability();
+    Move move = new Move();
     Type type = new Type();
 
     boolean isListByAbility = false;
     boolean isListByMove = false;
     boolean isListByType = false;
 
-    RecyclerView _recyclerView;
+    RecyclerView mRecyclerView;
+    TextView mTitle;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -67,16 +71,22 @@ public class PokemonListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
+
+        mTitle = view.findViewById(R.id.card_list_title);
+        mTitle.setText(R.string.pokemon);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
-                type.setID(bundle.getInt(TypeDisplayActivity.TYPE_ID));
+                type.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
                 isListByType = true;
             } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
                 ability.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
                 isListByAbility = true;
+            } else if(bundle.containsKey(MoveDisplayActivity.MOVE_ID)) {
+                move.setId(bundle.getInt(MoveDisplayActivity.MOVE_ID));
+                isListByMove = true;
             }
         } else {
             Log.i("PokemonListFragment Log", "No bundle");
@@ -86,13 +96,12 @@ public class PokemonListFragment extends Fragment
         List<Pokemon> pokemons = getFilteredPokemon();
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            _recyclerView = (RecyclerView) view;
-            _recyclerView.setNestedScrollingEnabled(false);
-            _recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            _recyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
-        }
+        Context context = view.getContext();
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
+
         return view;
     }
 
@@ -120,7 +129,7 @@ public class PokemonListFragment extends Fragment
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        PokemonRecyclerViewAdapter adapter = (PokemonRecyclerViewAdapter) _recyclerView.getAdapter();
+        PokemonRecyclerViewAdapter adapter = (PokemonRecyclerViewAdapter) mRecyclerView.getAdapter();
         adapter.filter(newText);
         return true;
     }
@@ -142,15 +151,15 @@ public class PokemonListFragment extends Fragment
 
     List<Pokemon> getFilteredPokemon() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        List<Pokemon> unFilteredPokemons = pokemonDAO.getAllPokemon();
+        List<Pokemon> unfilteredPokemons = pokemonDAO.getAllPokemon();
         List<Pokemon> filteredPokemons = new ArrayList<>();
 
-        for (Pokemon pokemon : unFilteredPokemons) {
+        for (Pokemon pokemon : unfilteredPokemons) {
             // Always want to set pokemon's types for display colors
             pokemon.setTypes(pokemonDAO.getTypesForPokemon(pokemon));
             if (isListByType) {
                 for (Type pokemonType : pokemon.getTypes()) {
-                    if (pokemonType.getID() == type.getID()) {
+                    if (pokemonType.getId() == type.getId()) {
                         filteredPokemons.add(pokemon);
                     }
                 }
@@ -161,8 +170,17 @@ public class PokemonListFragment extends Fragment
                         filteredPokemons.add(pokemon);
                     }
                 }
+            } else if (isListByMove) {
+                List<Pokemon> rawPokemons = pokemonDAO.getPokemonByMove(move);
+                for (Pokemon movePokemon : rawPokemons) {
+                    movePokemon = pokemonDAO.getPokemonByID(movePokemon);
+                    movePokemon.setTypes(pokemonDAO.getTypesForPokemon(movePokemon));
+                    filteredPokemons.add(movePokemon);
+                }
+                break;
             } else {
                 filteredPokemons.add(pokemon);
+                mTitle.setVisibility(View.INVISIBLE);
             }
         }
 

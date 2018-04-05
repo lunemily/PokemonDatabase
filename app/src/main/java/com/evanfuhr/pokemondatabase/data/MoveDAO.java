@@ -8,6 +8,7 @@ import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.interfaces.MoveDataInterface;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.DamageClass;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;
@@ -48,8 +49,6 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 .from(MOVES)
                 .join(MOVE_NAMES)
                 .on(field(MOVES, ID) + "=" + field(MOVE_NAMES, MOVE_ID))
-                .join(TYPES)
-                .on(field(MOVES, TYPE_ID) + "=" + field(TYPES, ID))
                 .where(field(MOVE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .orderBy(field(MOVE_NAMES, NAME))
                 .asc()
@@ -63,10 +62,10 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
             do {
                 Move move = new Move();
                 Type type = new Type();
-                move.setID(Integer.parseInt(cursor.getString(0)));
+                move.setId(Integer.parseInt(cursor.getString(0)));
                 move.setName(cursor.getString(1));
-                type.setID(Integer.parseInt(cursor.getString(2)));
-                type.setColor(Type.getTypeColor(type.getID()));
+                type.setId(Integer.parseInt(cursor.getString(2)));
+                type.setColor(Type.getTypeColor(type.getId()));
                 move.setType(type);
                 //add pokemon to list
                 moves.add(move);
@@ -101,7 +100,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 .on(field(MOVES, ID) + "=" + field(MOVE_NAMES, MOVE_ID))
                 .join(MOVE_EFFECT_PROSE)
                 .on(field(MOVES, EFFECT_ID) + "=" + field(MOVE_EFFECT_PROSE, MOVE_EFFECT_ID))
-                .where(field(MOVES, ID) + "=" + move.getID())
+                .where(field(MOVES, ID) + "=" + move.getId())
                 .and(field(MOVE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .and(field(MOVE_EFFECT_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
@@ -109,11 +108,11 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                move.setID(Integer.parseInt(cursor.getString(0)));
+                move.setId(Integer.parseInt(cursor.getString(0)));
                 move.setName(cursor.getString(1));
                 int type_id = Integer.parseInt(cursor.getString(2));
                 Type type = new Type();
-                type.setID(type_id);
+                type.setId(type_id);
                 move.setType(type);
                 if (!cursor.isNull(3)) {
                     move.setPower(Integer.parseInt(cursor.getString(3)));
@@ -128,5 +127,45 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
             cursor.close();
         }
         return move;
+    }
+
+    // Get filtered moves
+
+    public List<Move> getMovesByType(Type type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Move> moves = new ArrayList<>();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(MOVES, ID)
+                        ,field(MOVE_NAMES, NAME)
+                        ,field(MOVES, TYPE_ID))
+                .from(MOVES)
+                .join(MOVE_NAMES)
+                .on(field(MOVES, ID) + "=" + field(MOVE_NAMES, MOVE_ID))
+                .where(field(MOVE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .and(field(MOVES, TYPE_ID) + "=" + type.getId())
+                .orderBy(field(MOVE_NAMES, NAME))
+                .asc()
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+
+
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                Move move = new Move();
+                move.setId(Integer.parseInt(cursor.getString(0)));
+                move.setName(cursor.getString(1));
+                type.setColor(Type.getTypeColor(type.getId()));
+                move.setType(type);
+                //add pokemon to list
+                moves.add(move);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return moves;
     }
 }

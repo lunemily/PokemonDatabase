@@ -13,12 +13,12 @@ import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.List;
 
-public class MyTypeRecyclerViewAdapter extends RecyclerView.Adapter<MyTypeRecyclerViewAdapter.ViewHolder> {
+public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerViewAdapter.ViewHolder> {
 
     private final List<Type> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyTypeRecyclerViewAdapter(List<Type> items, OnListFragmentInteractionListener listener) {
+    public TypeRecyclerViewAdapter(List<Type> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -33,7 +33,7 @@ public class MyTypeRecyclerViewAdapter extends RecyclerView.Adapter<MyTypeRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder._button.setId(mValues.get(position).getID());
+        holder._button.setId(mValues.get(position).getId());
         holder._button.setText(mValues.get(position).getName());
         holder._button.setBackgroundColor(Color.parseColor(mValues.get(position).getColor()));
 

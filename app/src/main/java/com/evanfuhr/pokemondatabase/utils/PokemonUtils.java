@@ -18,7 +18,7 @@ public class PokemonUtils {
         List<String> colors = new ArrayList<>();
 
         for (Type t : types) {
-            colors.add(Type.getTypeColor(t.getID()));
+            colors.add(Type.getTypeColor(t.getId()));
         }
 
         return getColorGradient(colors);

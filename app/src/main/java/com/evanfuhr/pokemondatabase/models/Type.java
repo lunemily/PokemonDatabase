@@ -16,7 +16,7 @@ public class Type {
     private String color;
     private List<Type> _defendingTypes;
     private float _efficacy;
-    private int _id = 0;
+    private int id = 0;
     private String _name;
     private int _slot;
 
@@ -29,7 +29,7 @@ public class Type {
     }
 
     public String getColor() {
-        return this.color;
+        return getTypeColor(this.id);
     }
 
     public void setColor(String color) {
@@ -52,12 +52,12 @@ public class Type {
         this._efficacy = efficacy;
     }
 
-    public int getID() {
-        return this._id;
+    public int getId() {
+        return this.id;
     }
 
-    public void setID(int id) {
-        this._id = id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -145,20 +145,20 @@ public class Type {
 
         for (Type pokemonType : types) {
             for (Type pokemonTypeWithEfficacy : pokemonType.get_defendingTypes()) {
-                if (!alreadyContainsType(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getID())) {
+                if (!alreadyContainsType(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getId())) {
                     combinedEfficaciesTypes.add(pokemonTypeWithEfficacy);
                 } else {
                     // Store first occurrence
                     Type firstOccurrence = new Type();
-                    firstOccurrence.setID(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getID()).getID());
-                    firstOccurrence.setEfficacy(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getID()).getEfficacy());
+                    firstOccurrence.setId(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getId()).getId());
+                    firstOccurrence.setEfficacy(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getId()).getEfficacy());
 
                     // Remove from dual type list
-                    combinedEfficaciesTypes.remove(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getID()));
+                    combinedEfficaciesTypes.remove(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getId()));
 
                     // Multiply efficacies
                     Type newEfficacyType = new Type();
-                    newEfficacyType.setID(pokemonTypeWithEfficacy.getID());
+                    newEfficacyType.setId(pokemonTypeWithEfficacy.getId());
                     newEfficacyType.setEfficacy(firstOccurrence.getEfficacy() * pokemonTypeWithEfficacy.getEfficacy());
 
                     // TODO: Re-add type to list if percentEfficacy != 100
@@ -174,7 +174,7 @@ public class Type {
 
     static boolean alreadyContainsType(List<Type> list, int id) {
         for (Type object : list) {
-            if (object.getID() == id) {
+            if (object.getId() == id) {
                 return true;
             }
         }
@@ -184,7 +184,7 @@ public class Type {
     @Nullable
     static Type getTypeInListByID(List<Type> list, int id) {
         for (Type object : list) {
-            if (object.getID() == id) {
+            if (object.getId() == id) {
                 return object;
             }
         }

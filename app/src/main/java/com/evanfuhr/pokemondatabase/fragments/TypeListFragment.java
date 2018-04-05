@@ -3,18 +3,23 @@ package com.evanfuhr.pokemondatabase.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.adapters.MyTypeRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
+import com.evanfuhr.pokemondatabase.adapters.TypeRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,11 +30,14 @@ import java.util.List;
  */
 public class TypeListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+
+    Pokemon pokemon = new Pokemon();
+
+    boolean isListByPokemon = false;
+
+    RecyclerView mRecyclerView;
+    TextView mTitle;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -38,45 +46,36 @@ public class TypeListFragment extends Fragment {
     public TypeListFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static TypeListFragment newInstance(int columnCount) {
-        TypeListFragment fragment = new TypeListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
-        TypeDAO typeDAO = new TypeDAO(getActivity());
-        List<Type> types = typeDAO.getAllTypes();
+        View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
+
+        mTitle = view.findViewById(R.id.card_list_title);
+
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
+                pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                isListByPokemon = true;
+            }
+        } else {
+            Log.i("TypeListFragment Log", "No bundle");
+        }
+        List<Type> types = getFilteredTypes();
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setNestedScrollingEnabled(false);
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyTypeRecyclerViewAdapter(types, mListener));
-        }
-        typeDAO.close();
+        Context context = view.getContext();
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerView.setAdapter(new TypeRecyclerViewAdapter(types, mListener));
+
         return view;
     }
 
@@ -111,5 +110,31 @@ public class TypeListFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Type item);
+    }
+
+    private List<Type> getFilteredTypes() {
+        TypeDAO typeDAO = new TypeDAO(getActivity());
+        List<Type> unfilteredTypes = typeDAO.getAllTypes();
+        List<Type> filteredTypes = new ArrayList<>();
+
+        if (isListByPokemon) {
+            // Rather than iterating over ALL types, just get the pokemon's types and load
+            PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+            List<Type> pokemonTypes = pokemonDAO.getTypesForPokemon(pokemon);
+            for (Type type : pokemonTypes) {
+                filteredTypes.add(typeDAO.getTypeByID(type));
+            }
+            pokemonDAO.close();
+            mTitle.setText(R.string.types);
+        } else {
+            filteredTypes = unfilteredTypes;
+
+            // Title is activity title
+            mTitle.setVisibility(View.INVISIBLE);
+        }
+
+        typeDAO.close();
+
+        return filteredTypes;
     }
 }

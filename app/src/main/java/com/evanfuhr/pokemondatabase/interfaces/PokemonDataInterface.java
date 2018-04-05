@@ -14,13 +14,15 @@ public interface PokemonDataInterface {
 
     List<Pokemon> getAllPokemon(String nameSearchParam);
 
+    List<Pokemon> getPokemonByMove(Move move);
+
     Pokemon getPokemonByID(Pokemon pokemon);
 
     List<Ability> getAbilitiesForPokemon(Pokemon pokemon);
 
     List<EggGroup> getEggGroupsForPokemon(Pokemon pokemon);
 
-    List<Move> getMovesForPokemonByGame(Pokemon pokemon);
+    List<Move> getMovesForPokemon(Pokemon pokemon);
 
     List<Type> getTypesForPokemon(Pokemon pokemon);
 }

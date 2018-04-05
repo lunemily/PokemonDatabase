@@ -1,6 +1,7 @@
 package com.evanfuhr.pokemondatabase.interfaces;
 
 import com.evanfuhr.pokemondatabase.models.Move;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 
 import java.util.List;
 

@@ -61,7 +61,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         if (cursor.moveToFirst()) {
             do {
                 Pokemon pokemon = new Pokemon();
-                pokemon.setID(Integer.parseInt(cursor.getString(0)));
+                pokemon.setId(Integer.parseInt(cursor.getString(0)));
                 pokemon.setName(cursor.getString(1));
                 //add pokemon to list
                 pokemonList.add(pokemon);
@@ -104,7 +104,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                //pokemon.setID(pokemon.getID(0));
+                //pokemon.setId(pokemon.getId(0));
                 pokemon.setName(cursor.getString(1));
                 pokemon.setHeight(Double.parseDouble(cursor.getString(2))/10);
                 pokemon.setWeight(Double.parseDouble(cursor.getString(3))/10);
@@ -118,6 +118,44 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         }
 
         return pokemon;
+    }
+
+    // Get filtered pokemon
+
+    /**
+     * Returns a list of all pokemon that can learn the given move. References to the version_group_id maintained elsewhere
+     *
+     * @param   move A pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     * @see             Move
+     */
+    public List<Pokemon> getPokemonByMove(Move move) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Pokemon> pokemons = new ArrayList<>();
+
+        String sql = SQLiteQueryBuilder
+                .select("DISTINCT " + field(POKEMON_MOVES, POKEMON_ID))
+                .from(POKEMON_MOVES)
+                .where(field(POKEMON_MOVES, MOVE_ID) + "=" + move.getId())
+                .and(field(POKEMON_MOVES, VERSION_GROUP_ID) + "=" + getVersionGroupIDByVersionID())
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                //Move move = new Move();
+                Pokemon pokemon = new Pokemon();
+                pokemon.setId(Integer.parseInt(cursor.getString(0)));
+                //add move to list
+                pokemons.add(pokemon);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return pokemons;
     }
 
     /**
@@ -206,7 +244,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
      * @see             Pokemon
      * @see             Move
      */
-    public List<Move> getMovesForPokemonByGame(Pokemon pokemon) {
+    public List<Move> getMovesForPokemon(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Move> movesForPokemon = new ArrayList<>();
@@ -233,7 +271,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         if (cursor.moveToFirst()) {
             do {
                 Move move = new Move();
-                move.setID(Integer.parseInt(cursor.getString(0)));
+                move.setId(Integer.parseInt(cursor.getString(0)));
                 // Set method enum
                 move.setMethodID(MoveMethod.get(Integer.parseInt(cursor.getString(1))));
                 move.setLevel(Integer.parseInt(cursor.getString(2)));
@@ -275,8 +313,8 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
             do {
                 Type type = new Type();
                 type.setSlot(Integer.parseInt(cursor.getString(0)));
-                type.setID(Integer.parseInt(cursor.getString(1)));
-                type.setColor(Type.getTypeColor(type.getID()));
+                type.setId(Integer.parseInt(cursor.getString(1)));
+                type.setColor(Type.getTypeColor(type.getId()));
                 //add type to list
                 typesForPokemon.add(type);
             } while (cursor.moveToNext());

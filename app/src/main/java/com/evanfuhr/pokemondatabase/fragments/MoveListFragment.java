@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,12 +14,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.adapters.MyMoveRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
+import com.evanfuhr.pokemondatabase.adapters.MoveRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.adapters.PokemonMoveRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
+import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Move;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.models.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.SEARCH_SERVICE;
@@ -34,7 +43,14 @@ public class MoveListFragment extends Fragment
 
     private OnListFragmentInteractionListener mListener;
 
-    RecyclerView _recyclerView;
+    Pokemon pokemon = new Pokemon();
+    Type type = new Type();
+
+    boolean isListByPokemon = false;
+    boolean isListByType = false;
+
+    RecyclerView mRecyclerView;
+    TextView mTitle;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,20 +68,50 @@ public class MoveListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
+
+        mTitle = view.findViewById(R.id.card_list_title);
+        mTitle.setText(R.string.moves);
+
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
+                pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                isListByPokemon = true;
+            } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
+                type.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
+                isListByType = true;
+            }
+        } else {
+            Log.i("MoveListFragment Log", "No bundle");
+        }
 
         MoveDAO moveDAO = new MoveDAO(getActivity());
-        List<Move> moves = moveDAO.getAllMoves();
+        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+
+        List<Move> moves;
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            _recyclerView = (RecyclerView) view;
-            _recyclerView.setNestedScrollingEnabled(false);
-            _recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            _recyclerView.setAdapter(new MyMoveRecyclerViewAdapter(moves, mListener));
+        Context context = view.getContext();
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        if (isListByPokemon) {
+            moves = pokemonDAO.getMovesForPokemon(pokemon);
+            List<Move> typedMoves = new ArrayList<>();
+            for (Move move : moves) {
+                typedMoves.add(moveDAO.getMoveByID(move));
+            }
+            mRecyclerView.setAdapter(new PokemonMoveRecyclerViewAdapter(typedMoves, mListener));
+        } else if (isListByType) {
+            moves = moveDAO.getMovesByType(type);
+            mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
+        } else {
+            moves = moveDAO.getAllMoves();
+            mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
+            mTitle.setVisibility(View.INVISIBLE);
         }
-        moveDAO.close();
+
         return view;
     }
 
@@ -94,7 +140,7 @@ public class MoveListFragment extends Fragment
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        MyMoveRecyclerViewAdapter adapter = (MyMoveRecyclerViewAdapter) _recyclerView.getAdapter();
+        MoveRecyclerViewAdapter adapter = (MoveRecyclerViewAdapter) mRecyclerView.getAdapter();
         adapter.filter(newText);
         return true;
     }
@@ -111,7 +157,7 @@ public class MoveListFragment extends Fragment
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Move item);
+        void onListFragmentInteraction(Move move);
     }
 
     @Override

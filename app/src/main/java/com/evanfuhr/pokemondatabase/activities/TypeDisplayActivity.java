@@ -9,16 +9,19 @@ import android.widget.RelativeLayout;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
+import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
 import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
 import com.evanfuhr.pokemondatabase.interfaces.OnTypeSelectedListener;
+import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 import org.jetbrains.annotations.NonNls;
 
 public class TypeDisplayActivity extends AppCompatActivity
-        implements OnTypeSelectedListener, PokemonListFragment.OnListFragmentInteractionListener {
+        implements OnTypeSelectedListener, PokemonListFragment.OnListFragmentInteractionListener,
+        MoveListFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String TYPE_ID = "type_id";
@@ -30,7 +33,7 @@ public class TypeDisplayActivity extends AppCompatActivity
 
         // Get pokemon id passed to this activity
         Intent intent = getIntent();
-        _type.setID(intent.getIntExtra(TYPE_ID, 0));
+        _type.setId(intent.getIntExtra(TYPE_ID, 0));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_display);
@@ -67,6 +70,16 @@ public class TypeDisplayActivity extends AppCompatActivity
         Intent intent = new Intent(this, PokemonDisplayActivity.class);
         //Load the pokemon ID to send to the player sheet
         intent.putExtra(PokemonDisplayActivity.POKEMON_ID, pokemon_id);
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Move move) {
+        // Build the intent to load the display
+        Intent intent = new Intent(this, MoveDisplayActivity.class);
+        // Add the id to send to the display activity
+        intent.putExtra(MoveDisplayActivity.MOVE_ID, move.getId());
 
         startActivity(intent);
     }

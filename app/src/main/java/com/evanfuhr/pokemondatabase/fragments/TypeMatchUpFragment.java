@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;
@@ -27,13 +30,14 @@ public class TypeMatchUpFragment extends Fragment {
 
     public static final String TYPE_ID = "type_id";
 
-    public static boolean _forPokemon = false;
-
-    public static boolean _isDualType = false;
-
+    Pokemon pokemon;
     Type _type;
     Type _secondaryType;
     List<Type> _types = new ArrayList<>();
+
+    boolean isListByPokemon = false;
+    boolean _forPokemon = false;
+    boolean _isDualType = false;
 
     LinearLayout _attackerLayout;
     LinearLayout _defenderLayout;
@@ -59,11 +63,21 @@ public class TypeMatchUpFragment extends Fragment {
         // Inflate the layout for this fragment
         View matchUpFragmentView = inflater.inflate(R.layout.fragment_type_match_up, container, false);
 
-        _attackerLayout = (LinearLayout) matchUpFragmentView.findViewById(R.id.attacker_layout);
-        _defenderLayout = (LinearLayout) matchUpFragmentView.findViewById(R.id.defender_layout);
-        _attackerLabel = (TextView) matchUpFragmentView.findViewById(R.id.attacker_text);
-        _defenderLabel = (TextView) matchUpFragmentView.findViewById(R.id.defender_text);
-        _attackerCard = (CardView) matchUpFragmentView.findViewById(R.id.attacker_card);
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
+                pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                isListByPokemon = true;
+            }
+        } else {
+            Log.i("TypeMatchUpFragment Log", "No bundle");
+        }
+
+        _attackerLayout = matchUpFragmentView.findViewById(R.id.attacker_layout);
+        _defenderLayout = matchUpFragmentView.findViewById(R.id.defender_layout);
+        _attackerLabel = matchUpFragmentView.findViewById(R.id.attacker_text);
+        _defenderLabel = matchUpFragmentView.findViewById(R.id.defender_text);
+        _attackerCard = matchUpFragmentView.findViewById(R.id.attacker_card);
 
         _buttonParams = new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -172,7 +186,7 @@ public class TypeMatchUpFragment extends Fragment {
         final TableRow row = new TableRow(getActivity());
 
         final Button typeButton = new Button(getActivity());typeButton.setText(type.getName());
-        typeButton.setId(type.getID());
+        typeButton.setId(type.getId());
         typeButton.setBackgroundColor(Color.parseColor(type.getColor()));
         typeButton.setLayoutParams(_buttonParams);
         typeButton.setPadding(16, 0, 16, 0);
