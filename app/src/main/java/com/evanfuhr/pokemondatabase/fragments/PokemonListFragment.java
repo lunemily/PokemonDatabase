@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity;
@@ -52,6 +53,7 @@ public class PokemonListFragment extends Fragment
     boolean isListByType = false;
 
     RecyclerView mRecyclerView;
+    TextView mTitle;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -69,7 +71,10 @@ public class PokemonListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
+
+        mTitle = view.findViewById(R.id.card_list_title);
+        mTitle.setText(R.string.pokemon);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
@@ -91,13 +96,12 @@ public class PokemonListFragment extends Fragment
         List<Pokemon> pokemons = getFilteredPokemon();
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            mRecyclerView = (RecyclerView) view;
-            mRecyclerView.setNestedScrollingEnabled(false);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mRecyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
-        }
+        Context context = view.getContext();
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
+
         return view;
     }
 
@@ -147,7 +151,6 @@ public class PokemonListFragment extends Fragment
 
     List<Pokemon> getFilteredPokemon() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        MoveDAO moveDAO = new MoveDAO(getActivity());
         List<Pokemon> unfilteredPokemons = pokemonDAO.getAllPokemon();
         List<Pokemon> filteredPokemons = new ArrayList<>();
 
@@ -168,7 +171,7 @@ public class PokemonListFragment extends Fragment
                     }
                 }
             } else if (isListByMove) {
-                List<Pokemon> rawPokemons = moveDAO.getPokemonByMove(move);
+                List<Pokemon> rawPokemons = pokemonDAO.getPokemonByMove(move);
                 for (Pokemon movePokemon : rawPokemons) {
                     movePokemon = pokemonDAO.getPokemonByID(movePokemon);
                     movePokemon.setTypes(pokemonDAO.getTypesForPokemon(movePokemon));
@@ -177,10 +180,10 @@ public class PokemonListFragment extends Fragment
                 break;
             } else {
                 filteredPokemons.add(pokemon);
+                mTitle.setVisibility(View.INVISIBLE);
             }
         }
 
-        moveDAO.close();
         pokemonDAO.close();
 
         return filteredPokemons;

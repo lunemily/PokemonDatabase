@@ -12,6 +12,4 @@ public interface MoveDataInterface {
     List<Move> getAllMoves(String nameSearchParam);
 
     Move getMoveByID(Move move);
-
-    List<Pokemon> getPokemonByMove(Move move);
 }

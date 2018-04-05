@@ -120,6 +120,44 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         return pokemon;
     }
 
+    // Get filtered pokemon
+
+    /**
+     * Returns a list of all pokemon that can learn the given move. References to the version_group_id maintained elsewhere
+     *
+     * @param   move A pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     * @see             Move
+     */
+    public List<Pokemon> getPokemonByMove(Move move) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Pokemon> pokemons = new ArrayList<>();
+
+        String sql = SQLiteQueryBuilder
+                .select("DISTINCT " + field(POKEMON_MOVES, POKEMON_ID))
+                .from(POKEMON_MOVES)
+                .where(field(POKEMON_MOVES, MOVE_ID) + "=" + move.getId())
+                .and(field(POKEMON_MOVES, VERSION_GROUP_ID) + "=" + getVersionGroupIDByVersionID())
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                //Move move = new Move();
+                Pokemon pokemon = new Pokemon();
+                pokemon.setId(Integer.parseInt(cursor.getString(0)));
+                //add move to list
+                pokemons.add(pokemon);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return pokemons;
+    }
+
     /**
      * Adds abilities to the input pokemon and returns it
      *

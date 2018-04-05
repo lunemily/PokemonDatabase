@@ -18,12 +18,14 @@ import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.MoveRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.adapters.PokemonMoveRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +44,10 @@ public class MoveListFragment extends Fragment
     private OnListFragmentInteractionListener mListener;
 
     Pokemon pokemon = new Pokemon();
+    Type type = new Type();
 
     boolean isListByPokemon = false;
+    boolean isListByType = false;
 
     RecyclerView mRecyclerView;
     TextView mTitle;
@@ -67,12 +71,16 @@ public class MoveListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mTitle = view.findViewById(R.id.card_list_title);
+        mTitle.setText(R.string.moves);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
+            } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
+                type.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
+                isListByType = true;
             }
         } else {
             Log.i("MoveListFragment Log", "No bundle");
@@ -95,10 +103,13 @@ public class MoveListFragment extends Fragment
                 typedMoves.add(moveDAO.getMoveByID(move));
             }
             mRecyclerView.setAdapter(new PokemonMoveRecyclerViewAdapter(typedMoves, mListener));
-            mTitle.setText(R.string.moves);
+        } else if (isListByType) {
+            moves = moveDAO.getMovesByType(type);
+            mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
         } else {
             moves = moveDAO.getAllMoves();
             mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
+            mTitle.setVisibility(View.INVISIBLE);
         }
 
         return view;
@@ -146,7 +157,7 @@ public class MoveListFragment extends Fragment
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Move item);
+        void onListFragmentInteraction(Move move);
     }
 
     @Override

@@ -155,7 +155,6 @@ public class PokemonDisplayActivity extends AppCompatActivity
         intent.putExtra(MoveDisplayActivity.MOVE_ID, move.getId());
 
         startActivity(intent);
-
     }
 
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {

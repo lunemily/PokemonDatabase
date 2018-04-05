@@ -49,8 +49,6 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 .from(MOVES)
                 .join(MOVE_NAMES)
                 .on(field(MOVES, ID) + "=" + field(MOVE_NAMES, MOVE_ID))
-                .join(TYPES)
-                .on(field(MOVES, TYPE_ID) + "=" + field(TYPES, ID))
                 .where(field(MOVE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .orderBy(field(MOVE_NAMES, NAME))
                 .asc()
@@ -131,39 +129,43 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
         return move;
     }
 
-    /**
-     * Returns a list of all pokemon that can learn the given move. References to the version_group_id maintained elsewhere
-     *
-     * @param   move A pokemon object to be modified with additional data
-     * @return          The modified input is returned
-     * @see             Pokemon
-     * @see             Move
-     */
-    public List<Pokemon> getPokemonByMove(Move move) {
+    // Get filtered moves
+
+    public List<Move> getMovesByType(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Pokemon> pokemons = new ArrayList<>();
+        List<Move> moves = new ArrayList<>();
 
         String sql = SQLiteQueryBuilder
-                .select("DISTINCT " + field(POKEMON_MOVES, POKEMON_ID))
-                .from(POKEMON_MOVES)
-                .where(field(POKEMON_MOVES, MOVE_ID) + "=" + move.getId())
-                .and(field(POKEMON_MOVES, VERSION_GROUP_ID) + "=" + getVersionGroupIDByVersionID())
+                .select(field(MOVES, ID)
+                        ,field(MOVE_NAMES, NAME)
+                        ,field(MOVES, TYPE_ID))
+                .from(MOVES)
+                .join(MOVE_NAMES)
+                .on(field(MOVES, ID) + "=" + field(MOVE_NAMES, MOVE_ID))
+                .where(field(MOVE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .and(field(MOVES, TYPE_ID) + "=" + type.getId())
+                .orderBy(field(MOVE_NAMES, NAME))
+                .asc()
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);
+
+
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
             do {
-                //Move move = new Move();
-                Pokemon pokemon = new Pokemon();
-                pokemon.setId(Integer.parseInt(cursor.getString(0)));
-                //add move to list
-                pokemons.add(pokemon);
+                Move move = new Move();
+                move.setId(Integer.parseInt(cursor.getString(0)));
+                move.setName(cursor.getString(1));
+                type.setColor(Type.getTypeColor(type.getId()));
+                move.setType(type);
+                //add pokemon to list
+                moves.add(move);
             } while (cursor.moveToNext());
         }
         cursor.close();
 
-        return pokemons;
+        return moves;
     }
 }
