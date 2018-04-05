@@ -38,7 +38,7 @@ public class MoveRecyclerViewAdapter extends RecyclerView.Adapter<MoveRecyclerVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = _filteredList.get(position);
-        holder._button.setId(_filteredList.get(position).getID());
+        holder._button.setId(_filteredList.get(position).getId());
         holder._button.setText(_filteredList.get(position).getName());
         holder._button.setBackgroundColor(Color.parseColor(_filteredList.get(position).getType().getColor()));
 

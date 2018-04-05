@@ -142,4 +142,8 @@
     <string name="title">Title</string>
     <string name="abilities">Abilities</string>
     <string name="moves">Moves</string>
+    <string name="det">Det</string>
+    <string name="pwr">Pwr</string>
+    <string name="pp">PP</string>
+    <string name="acc">Acc</string>
 </resources>

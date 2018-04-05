@@ -29,7 +29,7 @@ public class Type {
     }
 
     public String getColor() {
-        return this.color;
+        return getTypeColor(this.id);
     }
 
     public void setColor(String color) {

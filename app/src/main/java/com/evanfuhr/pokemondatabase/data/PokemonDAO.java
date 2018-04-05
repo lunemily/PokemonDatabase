@@ -233,7 +233,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         if (cursor.moveToFirst()) {
             do {
                 Move move = new Move();
-                move.setID(Integer.parseInt(cursor.getString(0)));
+                move.setId(Integer.parseInt(cursor.getString(0)));
                 // Set method enum
                 move.setMethodID(MoveMethod.get(Integer.parseInt(cursor.getString(1))));
                 move.setLevel(Integer.parseInt(cursor.getString(2)));

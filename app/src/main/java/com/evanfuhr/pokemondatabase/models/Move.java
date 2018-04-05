@@ -8,7 +8,7 @@ public class Move implements Comparable<Move> {
     private int _accuracy = 0;
     private DamageClass _category = DamageClass.STATUS;
     private String _effect;
-    private int _id = 0;
+    private int id = 0;
     private int _level = 0;
     private MoveMethod _method_id = MoveMethod.LEVEL_UP;
     private String _name;
@@ -43,12 +43,12 @@ public class Move implements Comparable<Move> {
         this._effect = effect;
     }
 
-    public int getID() {
-        return this._id;
+    public int getId() {
+        return this.id;
     }
 
-    public void setID(int id) {
-        this._id = id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getLevel() {

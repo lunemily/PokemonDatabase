@@ -33,7 +33,7 @@ public class MoveDisplayActivity extends AppCompatActivity
 
         //Get pokemon id passed to this activity
         Intent intent = getIntent();
-        _move.setID(intent.getIntExtra(MOVE_ID, 0));
+        _move.setId(intent.getIntExtra(MOVE_ID, 0));
         _move = moveDAO.getMoveByID(_move);
         onMoveSelected(_move);
         setTitle(_move.getName());

@@ -65,8 +65,8 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.PokemonMovesFragment"
-                android:id="@+id/pokemonMoveFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.MoveListFragment"
+                android:id="@+id/moveListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
         </LinearLayout>

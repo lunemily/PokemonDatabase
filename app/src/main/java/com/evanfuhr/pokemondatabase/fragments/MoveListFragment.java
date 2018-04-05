@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,10 +17,15 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.MoveRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.adapters.PokemonMoveRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
+import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Move;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.SEARCH_SERVICE;
@@ -34,6 +40,10 @@ public class MoveListFragment extends Fragment
         implements SearchView.OnQueryTextListener {
 
     private OnListFragmentInteractionListener mListener;
+
+    Pokemon pokemon = new Pokemon();
+
+    boolean isListByPokemon = false;
 
     RecyclerView mRecyclerView;
     TextView mTitle;
@@ -57,18 +67,39 @@ public class MoveListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mTitle = view.findViewById(R.id.card_list_title);
-        mTitle.setText(R.string.moves);
-        mTitle.setVisibility(View.INVISIBLE);
+
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
+                pokemon.setID(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                isListByPokemon = true;
+            }
+        } else {
+            Log.i("MoveListFragment Log", "No bundle");
+        }
 
         MoveDAO moveDAO = new MoveDAO(getActivity());
-        List<Move> moves = moveDAO.getAllMoves();
+        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+
+        List<Move> moves;
 
         // Set the adapter
         Context context = view.getContext();
         mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
+        if (isListByPokemon) {
+            moves = pokemonDAO.getMovesForPokemonByGame(pokemon);
+            List<Move> typedMoves = new ArrayList<>();
+            for (Move move : moves) {
+                typedMoves.add(moveDAO.getMoveByID(move));
+            }
+            mRecyclerView.setAdapter(new PokemonMoveRecyclerViewAdapter(typedMoves, mListener));
+            mTitle.setText(R.string.moves);
+        } else {
+            moves = moveDAO.getAllMoves();
+            mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
+        }
 
         return view;
     }

@@ -63,7 +63,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
             do {
                 Move move = new Move();
                 Type type = new Type();
-                move.setID(Integer.parseInt(cursor.getString(0)));
+                move.setId(Integer.parseInt(cursor.getString(0)));
                 move.setName(cursor.getString(1));
                 type.setId(Integer.parseInt(cursor.getString(2)));
                 type.setColor(Type.getTypeColor(type.getId()));
@@ -101,7 +101,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 .on(field(MOVES, ID) + "=" + field(MOVE_NAMES, MOVE_ID))
                 .join(MOVE_EFFECT_PROSE)
                 .on(field(MOVES, EFFECT_ID) + "=" + field(MOVE_EFFECT_PROSE, MOVE_EFFECT_ID))
-                .where(field(MOVES, ID) + "=" + move.getID())
+                .where(field(MOVES, ID) + "=" + move.getId())
                 .and(field(MOVE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .and(field(MOVE_EFFECT_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
@@ -109,7 +109,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                move.setID(Integer.parseInt(cursor.getString(0)));
+                move.setId(Integer.parseInt(cursor.getString(0)));
                 move.setName(cursor.getString(1));
                 int type_id = Integer.parseInt(cursor.getString(2));
                 Type type = new Type();
