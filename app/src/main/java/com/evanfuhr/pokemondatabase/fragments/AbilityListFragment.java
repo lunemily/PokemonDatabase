@@ -16,7 +16,6 @@ import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.AbilityRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
-import com.evanfuhr.pokemondatabase.interfaces.PokemonDataInterface;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 
@@ -65,7 +64,7 @@ public class AbilityListFragment extends Fragment {
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
-                pokemon.setID(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
             }
         } else {

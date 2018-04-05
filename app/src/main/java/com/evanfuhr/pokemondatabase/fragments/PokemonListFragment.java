@@ -17,10 +17,13 @@ import android.widget.SearchView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.PokemonRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
@@ -41,6 +44,7 @@ public class PokemonListFragment extends Fragment
     private OnListFragmentInteractionListener mListener;
 
     Ability ability = new Ability();
+    Move move = new Move();
     Type type = new Type();
 
     boolean isListByAbility = false;
@@ -75,6 +79,9 @@ public class PokemonListFragment extends Fragment
             } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
                 ability.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
                 isListByAbility = true;
+            } else if(bundle.containsKey(MoveDisplayActivity.MOVE_ID)) {
+                move.setId(bundle.getInt(MoveDisplayActivity.MOVE_ID));
+                isListByMove = true;
             }
         } else {
             Log.i("PokemonListFragment Log", "No bundle");
@@ -140,6 +147,7 @@ public class PokemonListFragment extends Fragment
 
     List<Pokemon> getFilteredPokemon() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+        MoveDAO moveDAO = new MoveDAO(getActivity());
         List<Pokemon> unfilteredPokemons = pokemonDAO.getAllPokemon();
         List<Pokemon> filteredPokemons = new ArrayList<>();
 
@@ -159,11 +167,20 @@ public class PokemonListFragment extends Fragment
                         filteredPokemons.add(pokemon);
                     }
                 }
+            } else if (isListByMove) {
+                List<Pokemon> rawPokemons = moveDAO.getPokemonByMove(move);
+                for (Pokemon movePokemon : rawPokemons) {
+                    movePokemon = pokemonDAO.getPokemonByID(movePokemon);
+                    movePokemon.setTypes(pokemonDAO.getTypesForPokemon(movePokemon));
+                    filteredPokemons.add(movePokemon);
+                }
+                break;
             } else {
                 filteredPokemons.add(pokemon);
             }
         }
 
+        moveDAO.close();
         pokemonDAO.close();
 
         return filteredPokemons;

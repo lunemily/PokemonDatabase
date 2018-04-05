@@ -61,7 +61,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         if (cursor.moveToFirst()) {
             do {
                 Pokemon pokemon = new Pokemon();
-                pokemon.setID(Integer.parseInt(cursor.getString(0)));
+                pokemon.setId(Integer.parseInt(cursor.getString(0)));
                 pokemon.setName(cursor.getString(1));
                 //add pokemon to list
                 pokemonList.add(pokemon);
@@ -206,7 +206,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
      * @see             Pokemon
      * @see             Move
      */
-    public List<Move> getMovesForPokemonByGame(Pokemon pokemon) {
+    public List<Move> getMovesForPokemon(Pokemon pokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Move> movesForPokemon = new ArrayList<>();

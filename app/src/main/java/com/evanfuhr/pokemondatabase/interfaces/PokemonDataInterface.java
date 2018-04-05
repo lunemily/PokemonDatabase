@@ -20,7 +20,7 @@ public interface PokemonDataInterface {
 
     List<EggGroup> getEggGroupsForPokemon(Pokemon pokemon);
 
-    List<Move> getMovesForPokemonByGame(Pokemon pokemon);
+    List<Move> getMovesForPokemon(Pokemon pokemon);
 
     List<Type> getTypesForPokemon(Pokemon pokemon);
 }

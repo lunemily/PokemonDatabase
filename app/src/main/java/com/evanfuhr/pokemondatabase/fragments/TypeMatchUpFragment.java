@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
-import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -67,7 +66,7 @@ public class TypeMatchUpFragment extends Fragment {
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
-                pokemon.setID(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
             }
         } else {

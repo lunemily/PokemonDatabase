@@ -71,7 +71,7 @@ public class MoveListFragment extends Fragment
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
-                pokemon.setID(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
             }
         } else {
@@ -89,7 +89,7 @@ public class MoveListFragment extends Fragment
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         if (isListByPokemon) {
-            moves = pokemonDAO.getMovesForPokemonByGame(pokemon);
+            moves = pokemonDAO.getMovesForPokemon(pokemon);
             List<Move> typedMoves = new ArrayList<>();
             for (Move move : moves) {
                 typedMoves.add(moveDAO.getMoveByID(move));

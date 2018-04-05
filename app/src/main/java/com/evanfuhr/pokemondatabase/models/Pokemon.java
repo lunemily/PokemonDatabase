@@ -72,7 +72,7 @@ public class Pokemon {
         return this._id;
     }
 
-    public void setID(int id) {
+    public void setId(int id) {
         this._id = id;
     }
 

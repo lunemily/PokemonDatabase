@@ -61,7 +61,7 @@ public class TypeListFragment extends Fragment {
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
-                pokemon.setID(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
             }
         } else {
