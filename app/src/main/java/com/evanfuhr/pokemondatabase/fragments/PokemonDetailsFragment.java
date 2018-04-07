@@ -63,7 +63,7 @@ public class PokemonDetailsFragment extends Fragment {
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
-                setPokemonDetails(pokemon);
+                setPokemonDetails();
             }
         } else {
             Log.i("PokemonDetFragment Log", "No bundle");
@@ -82,16 +82,19 @@ public class PokemonDetailsFragment extends Fragment {
         super.onDetach();
     }
 
-    public void setPokemonDetails(Pokemon pokemon) {
-        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        this.pokemon = pokemonDAO.getPokemonByID(pokemon);
-        pokemonDAO.close();
-
+    void setPokemonDetails() {
+        loadPokemon();
         setFragmentGenus();
         setFragmentSprite();
         setFragmentHeightAndWeight();
         setFragmentEggGroups();
         setExternalLinks();
+    }
+
+    void loadPokemon() {
+        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+        pokemon = pokemonDAO.getPokemonByID(pokemon);
+        pokemonDAO.close();
     }
 
     void setFragmentEggGroups() {

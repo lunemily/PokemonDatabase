@@ -1,24 +1,19 @@
 package com.evanfuhr.pokemondatabase.activities;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.AbilityDAO;
-import com.evanfuhr.pokemondatabase.fragments.AbilityDetailsFragment;
-import com.evanfuhr.pokemondatabase.fragments.MoveDetailsFragment;
-import com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment;
 import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
-import com.evanfuhr.pokemondatabase.interfaces.OnAbilitySelectedListener;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 
 import org.jetbrains.annotations.NonNls;
 
 public class AbilityDisplayActivity extends AppCompatActivity
-        implements OnAbilitySelectedListener, PokemonListFragment.OnListFragmentInteractionListener {
+        implements PokemonListFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String ABILITY_ID = "ability_id";
@@ -36,19 +31,9 @@ public class AbilityDisplayActivity extends AppCompatActivity
         Intent intent = getIntent();
         mAbility.setId(intent.getIntExtra(ABILITY_ID, 0));
         mAbility = abilityDAO.getAbilityByID(mAbility);
-        onAbilitySelected(mAbility);
         setTitle(mAbility.getName());
 
         abilityDAO.close();
-    }
-
-    @Override
-    public void onAbilitySelected(Ability ability) {
-
-        FragmentManager fm = getFragmentManager();
-
-        AbilityDetailsFragment moveDetailsFragment = (AbilityDetailsFragment) fm.findFragmentById(R.id.abilityDetailsFragment);
-        moveDetailsFragment.setAbilityDetails(ability);
     }
 
     @Override
