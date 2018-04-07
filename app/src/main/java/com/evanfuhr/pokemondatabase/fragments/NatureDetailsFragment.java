@@ -4,12 +4,15 @@ import android.content.Context;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.NatureDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.FlavorDAO;
 import com.evanfuhr.pokemondatabase.data.NatureDAO;
 import com.evanfuhr.pokemondatabase.data.StatDAO;
@@ -18,7 +21,7 @@ import com.evanfuhr.pokemondatabase.models.Nature;
 
 public class NatureDetailsFragment extends Fragment {
 
-    Nature mNature;
+    Nature mNature = new Nature();
 
     Button increasedStatButton;
     Button decreasedStatButton;
@@ -39,6 +42,16 @@ public class NatureDetailsFragment extends Fragment {
         likesFlavorButton = detailsFragmentView.findViewById(R.id.likesFlavorButton);
         hatesFlavorButton = detailsFragmentView.findViewById(R.id.hatesFlavorButton);
 
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+            if(bundle.containsKey(NatureDisplayActivity.NATURE_ID)) {
+                mNature.setId(bundle.getInt(NatureDisplayActivity.NATURE_ID));
+                setNatureDetails();
+            }
+        } else {
+            Log.i("MoveDetailsFragment Log", "No bundle");
+        }
+
         return detailsFragmentView;
     }
 
@@ -52,23 +65,21 @@ public class NatureDetailsFragment extends Fragment {
         super.onDetach();
     }
 
-    public void setNatureDetails(Nature nature) {
-        loadNature(nature);
+    void setNatureDetails() {
+        loadNature();
         loadNatureStats();
         loadNatureFlavors();
         setStats();
         setFlavors();
     }
 
-    private void loadNature(Nature nature) {
+    void loadNature() {
         NatureDAO natureDAO = new NatureDAO(getActivity());
-
-        mNature = natureDAO.getNatureById(nature);
-
+        mNature = natureDAO.getNatureById(mNature);
         natureDAO.close();
     }
 
-    private void loadNatureStats() {
+    void loadNatureStats() {
         StatDAO statDAO = new StatDAO(getActivity());
 
         mNature.setIncreasedStat(statDAO.getStatById(mNature.getIncreasedStat()));
@@ -77,7 +88,7 @@ public class NatureDetailsFragment extends Fragment {
         statDAO.close();
     }
 
-    private void loadNatureFlavors() {
+    void loadNatureFlavors() {
         FlavorDAO flavorDAO = new FlavorDAO(getActivity());
 
         mNature.setLikesFlavor(flavorDAO.getFlavorById(mNature.getLikesFlavor()));
@@ -86,7 +97,7 @@ public class NatureDetailsFragment extends Fragment {
         flavorDAO.close();
     }
 
-    private void setStats() {
+    void setStats() {
         increasedStatButton.setId(mNature.getIncreasedStat().getId());
         increasedStatButton.setText(mNature.getIncreasedStat().getName());
         increasedStatButton.setBackgroundColor(Color.parseColor(Flavor.getFlavorColor(mNature.getLikesFlavor().getId())));
@@ -96,7 +107,7 @@ public class NatureDetailsFragment extends Fragment {
         decreasedStatButton.setBackgroundColor(Color.parseColor(Flavor.getFlavorColor(mNature.getHatesFlavor().getId())));
     }
 
-    private void setFlavors() {
+    void setFlavors() {
         likesFlavorButton.setId(mNature.getLikesFlavor().getId());
         likesFlavorButton.setText(mNature.getLikesFlavor().getName());
         likesFlavorButton.setBackgroundColor(Color.parseColor(Flavor.getFlavorColor(mNature.getLikesFlavor().getId())));
