@@ -17,6 +17,7 @@ import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
 import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
+import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
@@ -30,7 +31,8 @@ import java.util.List;
 
 public class PokemonDisplayActivity extends AppCompatActivity
         implements AbilityListFragment.OnListFragmentInteractionListener,
-        TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener {
+        TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener,
+        TypeMatchUpFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";

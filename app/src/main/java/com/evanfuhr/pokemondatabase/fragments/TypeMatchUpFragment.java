@@ -110,8 +110,7 @@ public class TypeMatchUpFragment extends Fragment {
         List<Type> filteredTypes = new ArrayList<>();
 
         if (isListByType) {
-            filteredTypes = typeDAO.getSingleTypeEfficacy(mType).get_attackingTypes();
-            filteredTypes.addAll(typeDAO.getSingleTypeEfficacy(mType).get_defendingTypes());
+            filteredTypes = typeDAO.getSingleTypeEfficacy(mType);
         } else if (isListByPokemon) {
             // Rather than iterating over ALL types, just get the mPokemon's types and load
             PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
@@ -119,9 +118,9 @@ public class TypeMatchUpFragment extends Fragment {
 
             // Check for single or dual type mPokemon
             if (pokemonTypes.size() == 1) {
-                filteredTypes = typeDAO.getSingleTypeEfficacy(pokemonTypes.get(0)).get_attackingTypes();
+                filteredTypes = typeDAO.getSingleTypeEfficacy(pokemonTypes.get(0));
             } else {
-                filteredTypes = typeDAO.getDualTypeEfficacy(pokemonTypes.get(0), pokemonTypes.get(1)).get_attackingTypes();
+                filteredTypes = typeDAO.getDualTypeEfficacy(pokemonTypes.get(0), pokemonTypes.get(1));
             }
 
             pokemonDAO.close();

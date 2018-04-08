@@ -1,7 +1,6 @@
 package com.evanfuhr.pokemondatabase.models;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 
@@ -12,22 +11,12 @@ import java.util.List;
 
 public class Type {
 
-    private List<Type> _attackingTypes;
     private String color;
-    private List<Type> _defendingTypes;
     private float _efficacy;
-    private boolean isAttacker = false;
+    private boolean isTarget = false;
     private int id = 0;
     private String _name;
     private int _slot;
-
-    public List<Type> get_attackingTypes() {
-        return this._attackingTypes;
-    }
-
-    public void set_attackingTypes(List<Type> attackingTypes) {
-        this._attackingTypes = attackingTypes;
-    }
 
     public String getColor() {
         return getTypeColor(this.id);
@@ -35,14 +24,6 @@ public class Type {
 
     public void setColor(String color) {
         this.color = color;
-    }
-
-    public List<Type> get_defendingTypes() {
-        return this._defendingTypes;
-    }
-
-    public void set_defendingTypes(List<Type> defendingTypes) {
-        this._defendingTypes = defendingTypes;
     }
 
     public float getEfficacy() {
@@ -77,12 +58,12 @@ public class Type {
         this._slot = slot;
     }
 
-    public boolean isAttacker() {
-        return isAttacker;
+    public boolean isTarget() {
+        return isTarget;
     }
 
-    public void setAttacker(boolean attacker) {
-        isAttacker = attacker;
+    public void setTarget(boolean target) {
+        isTarget = target;
     }
 
     // Static methods

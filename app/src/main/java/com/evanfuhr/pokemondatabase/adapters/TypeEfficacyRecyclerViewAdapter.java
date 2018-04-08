@@ -39,7 +39,8 @@ public class TypeEfficacyRecyclerViewAdapter extends RecyclerView.Adapter<TypeEf
         holder._button.setText(mValues.get(position).getName());
         holder._button.setBackgroundColor(Color.parseColor(mValues.get(position).getColor()));
 
-        if (holder.mItem.isAttacker()) {
+        if (holder.mItem.isTarget()) {
+            // In the context of the TypeMatchUpFragment, the Activity's type is the originating type
             holder.mDealsReceives.setText(R.string.dealsDamage);
         } else {
             holder.mDealsReceives.setText(R.string.takesDamage);

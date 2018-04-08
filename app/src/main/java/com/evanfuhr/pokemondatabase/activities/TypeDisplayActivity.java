@@ -47,7 +47,6 @@ public class TypeDisplayActivity extends AppCompatActivity
 
     @Override
     public void onTypeSelected(Type type) {
-
         setTypeBackgroundColor(type);
     }
 

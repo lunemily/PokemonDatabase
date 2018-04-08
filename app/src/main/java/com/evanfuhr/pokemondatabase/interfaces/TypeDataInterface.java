@@ -12,7 +12,7 @@ public interface TypeDataInterface {
 
     Type getTypeByID(Type type);
 
-    Type getSingleTypeEfficacy(Type type);
+    List<Type> getSingleTypeEfficacy(Type type);
 
-    Type getDualTypeEfficacy(Type type1, Type type2);
+    List<Type> getDualTypeEfficacy(Type type1, Type type2);
 }
