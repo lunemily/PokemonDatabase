@@ -16,6 +16,7 @@ public class Type {
     private String color;
     private List<Type> _defendingTypes;
     private float _efficacy;
+    private boolean isAttacker = false;
     private int id = 0;
     private String _name;
     private int _slot;
@@ -74,6 +75,14 @@ public class Type {
 
     public void setSlot(int slot) {
         this._slot = slot;
+    }
+
+    public boolean isAttacker() {
+        return isAttacker;
+    }
+
+    public void setAttacker(boolean attacker) {
+        isAttacker = attacker;
     }
 
     // Static methods
@@ -135,59 +144,5 @@ public class Type {
             default:
                 return "#000000";
         }
-    }
-
-    /*
-    Takes in both types for a given pokemon
-     */
-    public static List<Type> combineDualTypeEfficacies(List<Type> types) {
-        List<Type> combinedEfficaciesTypes = new ArrayList<>();
-
-        for (Type pokemonType : types) {
-            for (Type pokemonTypeWithEfficacy : pokemonType.get_defendingTypes()) {
-                if (!alreadyContainsType(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getId())) {
-                    combinedEfficaciesTypes.add(pokemonTypeWithEfficacy);
-                } else {
-                    // Store first occurrence
-                    Type firstOccurrence = new Type();
-                    firstOccurrence.setId(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getId()).getId());
-                    firstOccurrence.setEfficacy(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getId()).getEfficacy());
-
-                    // Remove from dual type list
-                    combinedEfficaciesTypes.remove(getTypeInListByID(combinedEfficaciesTypes, pokemonTypeWithEfficacy.getId()));
-
-                    // Multiply efficacies
-                    Type newEfficacyType = new Type();
-                    newEfficacyType.setId(pokemonTypeWithEfficacy.getId());
-                    newEfficacyType.setEfficacy(firstOccurrence.getEfficacy() * pokemonTypeWithEfficacy.getEfficacy());
-
-                    // TODO: Re-add type to list if percentEfficacy != 100
-                    if (Math.round(newEfficacyType.getEfficacy() * 100) != 100) {
-                        combinedEfficaciesTypes.add(newEfficacyType);
-                    }
-                }
-            }
-        }
-
-        return combinedEfficaciesTypes;
-    }
-
-    static boolean alreadyContainsType(List<Type> list, int id) {
-        for (Type object : list) {
-            if (object.getId() == id) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Nullable
-    static Type getTypeInListByID(List<Type> list, int id) {
-        for (Type object : list) {
-            if (object.getId() == id) {
-                return object;
-            }
-        }
-        return new Type();
     }
 }

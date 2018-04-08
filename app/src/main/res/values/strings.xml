@@ -111,15 +111,7 @@
     <string name="type">Type</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pokemon_name">Pokemon Name</string>
-    <string name="levelUpMoves">Level Up Moves</string>
-    <string name="tmMoves">TM Moves</string>
-    <string name="eggMoves">Egg Moves</string>
-    <string name="tutorMoves">Tutor Moves</string>
     <string name="types">Types</string>
-    <string name="ImmuneToTypes">Immune To:</string>
-    <string name="typeIsAttacker">TYPE DEALS DAMAGE AT:</string>
-    <string name="typeIsDefender">TYPE TAKES DAMAGE AT:</string>
-    <string name="typesAreDefenders">TYPES TAKE DAMAGE AT:</string>
     <string name="simple_button">Simple Button</string>
     <string name="pokemonGenus">The ____ Pokémon</string>
     <string name="bulbapediaLink">Bulba</string>
@@ -146,4 +138,8 @@
     <string name="pwr">Pwr</string>
     <string name="pp">PP</string>
     <string name="acc">Acc</string>
+    <string name="takesDamage">Takes Damage from</string>
+    <string name="dealsDamage">Deals Damage to</string>
+    <string name="efficacy">x2</string>
+    <string name="at">at</string>
 </resources>

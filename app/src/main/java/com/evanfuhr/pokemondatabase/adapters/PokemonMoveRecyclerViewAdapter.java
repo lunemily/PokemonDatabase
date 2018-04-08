@@ -32,7 +32,7 @@ public class PokemonMoveRecyclerViewAdapter extends RecyclerView.Adapter<Pokemon
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_pokemon_move_button, parent, false);
+                .inflate(R.layout.fragment_pokemon_move_list_item, parent, false);
         return new ViewHolder(view);
     }
 

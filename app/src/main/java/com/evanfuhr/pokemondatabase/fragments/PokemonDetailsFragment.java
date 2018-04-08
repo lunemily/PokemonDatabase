@@ -141,6 +141,6 @@ public class PokemonDetailsFragment extends Fragment {
 
         _smogon.setClickable(true);
         _smogon.setMovementMethod(LinkMovementMethod.getInstance());
-        _smogon.setText(Html.fromHtml("<a href='http://www.smogon.com/dex/sm/pokemon/" + pokemon.getName() + "'>Smogon</a>"));
+        _smogon.setText(Html.fromHtml("<a href='http://www.smogon.com/dex/sm/mPokemon/" + pokemon.getName() + "'>Smogon</a>"));
     }
 }

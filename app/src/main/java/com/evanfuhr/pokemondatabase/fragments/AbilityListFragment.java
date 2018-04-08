@@ -120,7 +120,7 @@ public class AbilityListFragment extends Fragment {
         List<Ability> filteredAbilities = new ArrayList<>();
 
         if (isListByPokemon) {
-            // Rather than iterating over ALL abilities, just get the pokemon's abilities and load
+            // Rather than iterating over ALL abilities, just get the mPokemon's abilities and load
             PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
             List<Ability> pokemonAbilities = pokemonDAO.getAbilitiesForPokemon(pokemon);
             for (Ability ability : pokemonAbilities) {

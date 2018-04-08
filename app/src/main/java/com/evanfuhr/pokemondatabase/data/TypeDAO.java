@@ -132,6 +132,8 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 Type attackingType = new Type();
                 Type defendingType = new Type();
 
+                defendingType.setAttacker(true);
+
                 attackingType.setId(Integer.parseInt(cursor.getString(0)));
                 defendingType.setId(Integer.parseInt(cursor.getString(1)));
                 int damageFactor = Integer.parseInt(cursor.getString(2));
@@ -195,10 +197,10 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 Type attackingType = new Type();
 
                 attackingType.setId(Integer.parseInt(cursor.getString(0)));
-                boolean isDaulType = (Integer.parseInt(cursor.getString(1)) == 2);
+                boolean isDualType = (Integer.parseInt(cursor.getString(1)) == 2);
                 int damageFactor = Integer.parseInt(cursor.getString(2));
 
-                if (isDaulType) {
+                if (isDualType) {
                     switch (damageFactor) {
                         case 0: // both immune
                             attackingType.setEfficacy(0f);
