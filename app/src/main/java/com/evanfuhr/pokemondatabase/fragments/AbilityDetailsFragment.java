@@ -6,17 +6,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AbilityDetailsFragment extends Fragment {
 
     Ability mAbility;
 
     TextView mAbilityProseText;
+    LinearLayout mReferencesList;
+
+    List<String> proseLinks = new ArrayList<>();
 
     public AbilityDetailsFragment() {
         // Required empty public constructor
@@ -34,6 +42,7 @@ public class AbilityDetailsFragment extends Fragment {
         View detailsFragmentView = inflater.inflate(R.layout.fragment_ability_details, container, false);
 
         mAbilityProseText = detailsFragmentView.findViewById(R.id.abilityProseText);
+        mReferencesList = detailsFragmentView.findViewById(R.id.referencesList);
 
         return detailsFragmentView;
     }
@@ -51,6 +60,9 @@ public class AbilityDetailsFragment extends Fragment {
     public void setAbilityDetails(Ability ability) {
         loadAbility(ability);
         setProse();
+        if (proseLinks.size() >= 1) {
+            mReferencesList.setVisibility(View.VISIBLE);
+        }
     }
 
     private void loadAbility(Ability ability) {
@@ -62,6 +74,10 @@ public class AbilityDetailsFragment extends Fragment {
     }
 
     private void setProse() {
-        mAbilityProseText.setText(mAbility.getProse());
+        String prose = mAbility.getProse();
+        proseLinks = PokemonUtils.getProseLinks(prose);
+        prose = PokemonUtils.replaceProseLinks(getActivity(), prose);
+
+        mAbilityProseText.setText(prose);
     }
 }

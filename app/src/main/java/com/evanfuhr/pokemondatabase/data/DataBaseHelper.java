@@ -72,7 +72,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String EFFECT = "effect";
     static final String EGG_GROUP_ID = "egg_group_id";
     static final String ID = "id";
-    static final String KEY_IDENTIFIER = "identifier";
+    static final String IDENTIFIER = "identifier";
+    static final String IS_MAIN_SERIES = "is_main_series";
     static final String LOCAL_LANGUAGE_ID = "local_language_id";
     static final String MOVE_ID = "move_id";
     static final String NAME = "name";

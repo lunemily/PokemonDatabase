@@ -129,6 +129,61 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
         return move;
     }
 
+    /**
+     * Returns a Move object with most of its non-list data
+     *
+     * @param   identifier  A Move object to be modified with additional data
+     * @return              The modified input is returned
+     * @see                 Move
+     */
+    public Move getMoveByIdentifier(String identifier) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Move move = new Move();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(MOVES, ID)
+                        ,field(MOVE_NAMES, NAME)
+                        ,field(MOVES, TYPE_ID)
+                        ,field(MOVES, POWER)
+                        ,field(MOVES, PP)
+                        ,field(MOVES, ACCURACY)
+                        ,field(MOVES, DAMAGE_CLASS_ID)
+                        ,field(MOVE_EFFECT_PROSE, SHORT_EFFECT)
+                        ,field(MOVES, IDENTIFIER))
+                .from(MOVES)
+                .join(MOVE_NAMES)
+                .on(field(MOVES, ID) + "=" + field(MOVE_NAMES, MOVE_ID))
+                .join(MOVE_EFFECT_PROSE)
+                .on(field(MOVES, EFFECT_ID) + "=" + field(MOVE_EFFECT_PROSE, MOVE_EFFECT_ID))
+                .where(field(MOVES, IDENTIFIER) + "=\"" + identifier + "\"")
+                .and(field(MOVE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .and(field(MOVE_EFFECT_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                move.setId(Integer.parseInt(cursor.getString(0)));
+                move.setName(cursor.getString(1));
+                int type_id = Integer.parseInt(cursor.getString(2));
+                Type type = new Type();
+                type.setId(type_id);
+                move.setType(type);
+                if (!cursor.isNull(3)) {
+                    move.setPower(Integer.parseInt(cursor.getString(3)));
+                }
+                move.setPP(Integer.parseInt(cursor.getString(4)));
+                if (!cursor.isNull(5)) {
+                    move.setAccuracy(Integer.parseInt(cursor.getString(5)));
+                }
+                move.setCategory(DamageClass.get(Integer.parseInt(cursor.getString(6))));
+                move.setEffect(cursor.getString(7));
+            }
+            cursor.close();
+        }
+        return move;
+    }
+
     // Get filtered moves
 
     public List<Move> getMovesByType(Type type) {

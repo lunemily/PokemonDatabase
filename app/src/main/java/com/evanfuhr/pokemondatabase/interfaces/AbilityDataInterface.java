@@ -12,4 +12,6 @@ public interface AbilityDataInterface {
     List<Ability> getAllAbilities(String nameSearchParam);
 
     Ability getAbilityByID(Ability ability);
+
+    Ability getAbilityByIdentifier(String identifier);
 }
