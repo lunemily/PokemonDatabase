@@ -56,4 +56,30 @@ public class PokemonUtils {
         return new GradientDrawable(
                 GradientDrawable.Orientation.LEFT_RIGHT, color);
     }
+
+    public static String convertEfficacyToMultiplier(float efficacy) {
+        String multiplier;
+        switch (Math.round(efficacy * 100)) {
+            case 0:
+                multiplier = "x0";
+                break;
+            case 25:
+                multiplier = "x1/4";
+                break;
+            case 50:
+                multiplier = "x1/2";
+                break;
+            case 200:
+                multiplier = "x2";
+                break;
+            case 400:
+                multiplier = "x4";
+                break;
+            default:
+                multiplier = "xERROR";
+                break;
+        }
+
+        return multiplier;
+    }
 }

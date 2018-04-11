@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NonNls;
 
 public class TypeDisplayActivity extends AppCompatActivity
         implements OnTypeSelectedListener, PokemonListFragment.OnListFragmentInteractionListener,
-        MoveListFragment.OnListFragmentInteractionListener {
+        MoveListFragment.OnListFragmentInteractionListener, TypeMatchUpFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String TYPE_ID = "type_id";
@@ -47,13 +47,7 @@ public class TypeDisplayActivity extends AppCompatActivity
 
     @Override
     public void onTypeSelected(Type type) {
-
         setTypeBackgroundColor(type);
-
-        FragmentManager fm = getFragmentManager();
-
-        TypeMatchUpFragment typeMatchUpFragment = (TypeMatchUpFragment) fm.findFragmentById(R.id.typeMatchUpFragment);
-        typeMatchUpFragment.setTypeMatchUps(type, false);
     }
 
     private void setTypeBackgroundColor(Type type) {
@@ -80,6 +74,16 @@ public class TypeDisplayActivity extends AppCompatActivity
         Intent intent = new Intent(this, MoveDisplayActivity.class);
         // Add the id to send to the display activity
         intent.putExtra(MoveDisplayActivity.MOVE_ID, move.getId());
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Type type) {
+        // Build the intent to load the display
+        Intent intent = new Intent(this, MoveDisplayActivity.class);
+        // Add the id to send to the display activity
+        intent.putExtra(TypeDisplayActivity.TYPE_ID, type.getId());
 
         startActivity(intent);
     }

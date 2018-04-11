@@ -109,11 +109,13 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
      * @return          The modified input is returned
      * @see             Type
      */
-    public Type getSingleTypeEfficacy(Type type) {
+    public List<Type> getSingleTypeEfficacy(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        List<Type> attackingTypes = new ArrayList<>();
-        List<Type> defendingTypes = new ArrayList<>();
+        List<Type> originatingTypes = new ArrayList<>();
+        List<Type> targetTypes = new ArrayList<>();
+
+        List<Type> efficacyTypes = new ArrayList<>();
 
         String selectQuery = "SELECT " + KEY_DAMAGE_TYPE_ID +
                 ", " + KEY_TARGET_TYPE_ID +
@@ -129,37 +131,42 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
             do {
-                Type attackingType = new Type();
-                Type defendingType = new Type();
+                Type originatingType = new Type();
+                Type targetType = new Type();
 
-                attackingType.setId(Integer.parseInt(cursor.getString(0)));
-                defendingType.setId(Integer.parseInt(cursor.getString(1)));
+                targetType.setTarget(true);
+                originatingType.setId(Integer.parseInt(cursor.getString(0)));
+                targetType.setId(Integer.parseInt(cursor.getString(1)));
                 int damageFactor = Integer.parseInt(cursor.getString(2));
 
-                if (type.getId() == attackingType.getId() && type.getId() == defendingType.getId()) {
+                // Load the types
+                originatingType = getTypeByID(originatingType);
+                targetType = getTypeByID(targetType);
+
+                if (type.getId() == originatingType.getId() && type.getId() == targetType.getId()) {
                     // Type is defender. Add attacker
-                    attackingType.setEfficacy(damageFactor/100f);
-                    attackingTypes.add(attackingType);
+                    originatingType.setEfficacy(damageFactor/100f);
+                    originatingTypes.add(originatingType);
                     // Type is attacker. Add defender
-                    defendingType.setEfficacy(damageFactor/100f);
-                    defendingTypes.add(defendingType);
-                } else if (type.getId() == attackingType.getId()) {
+                    targetType.setEfficacy(damageFactor/100f);
+                    targetTypes.add(targetType);
+                } else if (type.getId() == originatingType.getId()) {
                     // Type is attacker. Add defender
-                    defendingType.setEfficacy(damageFactor/100f);
-                    defendingTypes.add(defendingType);
+                    targetType.setEfficacy(damageFactor/100f);
+                    targetTypes.add(targetType);
                 } else {
                     // Type is defender. Add attacker
-                    attackingType.setEfficacy(damageFactor/100f);
-                    attackingTypes.add(attackingType);
+                    originatingType.setEfficacy(damageFactor/100f);
+                    originatingTypes.add(originatingType);
                 }
             } while (cursor.moveToNext());
         }
         cursor.close();
 
-        type.set_attackingTypes(attackingTypes);
-        type.set_defendingTypes(defendingTypes);
+        efficacyTypes.addAll(originatingTypes);
+        efficacyTypes.addAll(targetTypes);
 
-        return type;
+        return efficacyTypes;
     }
 
     /**
@@ -171,9 +178,7 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
      * @return          The consolidated input is returned
      * @see             Type
      */
-    public Type getDualTypeEfficacy(Type type1, Type type2) {
-        // Only need to return single type since this function returns combined effectiveness
-        Type dualType = new Type();
+    public List<Type> getDualTypeEfficacy(Type type1, Type type2) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Type> attackingTypes = new ArrayList<>();
@@ -192,47 +197,47 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
             do {
-                Type attackingType = new Type();
+                Type originatingType = new Type();
 
-                attackingType.setId(Integer.parseInt(cursor.getString(0)));
-                boolean isDaulType = (Integer.parseInt(cursor.getString(1)) == 2);
+                originatingType.setId(Integer.parseInt(cursor.getString(0)));
+                originatingType = getTypeByID(originatingType);
+
+                boolean isDualType = (Integer.parseInt(cursor.getString(1)) == 2);
                 int damageFactor = Integer.parseInt(cursor.getString(2));
 
-                if (isDaulType) {
+                if (isDualType) {
                     switch (damageFactor) {
                         case 0: // both immune
-                            attackingType.setEfficacy(0f);
+                            originatingType.setEfficacy(0f);
                             break;
                         case 50: // one immune, one resist
-                            attackingType.setEfficacy(0f);
+                            originatingType.setEfficacy(0f);
                             break;
                         case 200: // one immune, one weak
-                            attackingType.setEfficacy(0f);
+                            originatingType.setEfficacy(0f);
                             break;
                         case 100: // both resist
-                            attackingType.setEfficacy(0.25f);
+                            originatingType.setEfficacy(0.25f);
                             break;
                         case 250: // one weak, one resist
                             continue;
                         case 400: // both weak
-                            attackingType.setEfficacy(4f);
+                            originatingType.setEfficacy(4f);
                             break;
                         default:
                             Log.e("Error", "Unexpected dual_type sum encountered");
                             break;
                     }
                 } else {
-                    attackingType.setEfficacy(damageFactor/100f);
+                    originatingType.setEfficacy(damageFactor/100f);
                 }
 
-                attackingTypes.add(attackingType);
+                attackingTypes.add(originatingType);
 
             } while (cursor.moveToNext());
         }
         cursor.close();
 
-        dualType.set_attackingTypes(attackingTypes);
-
-        return dualType;
+        return attackingTypes;
     }
 }

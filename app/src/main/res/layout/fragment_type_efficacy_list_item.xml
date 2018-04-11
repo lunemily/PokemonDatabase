@@ -6,17 +6,17 @@
     android:layout_marginTop="4dp">
 
     <TextView
-        android:id="@+id/moveMethodDetail"
-        android:layout_weight="2"
+        android:id="@+id/dealsReceives"
+        android:layout_weight="3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="12sp"
-        android:text="@string/det" />
+        android:text="@string/takesDamage" />
 
     <Button
-        android:id="@+id/moveButton"
-        android:layout_weight="4"
+        android:id="@+id/typeButton"
+        android:layout_weight="3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/activity_horizontal_margin"
@@ -24,30 +24,21 @@
         android:text="@string/simple_button"/>
 
     <TextView
-        android:id="@+id/movePower"
+        android:id="@+id/at"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="12sp"
-        android:text="@string/pwr" />
+        android:text="@string/at" />
 
     <TextView
-        android:id="@+id/moveAccuracy"
+        android:id="@+id/multiplier"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="12sp"
-        android:text="@string/acc" />
-
-    <TextView
-        android:id="@+id/movePP"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="12sp"
-        android:text="@string/pp" />
+        android:text="@string/efficacy" />
 
 </LinearLayout>

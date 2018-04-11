@@ -3,18 +3,20 @@ package com.evanfuhr.pokemondatabase.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
 
 public class AbilityDetailsFragment extends Fragment {
 
-    Ability mAbility;
+    Ability mAbility = new Ability();
 
     TextView mAbilityProseText;
 
@@ -35,6 +37,16 @@ public class AbilityDetailsFragment extends Fragment {
 
         mAbilityProseText = detailsFragmentView.findViewById(R.id.abilityProseText);
 
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+             if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
+                mAbility.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
+                setAbilityDetails();
+            }
+        } else {
+            Log.i("AbilityDetFragment Log", "No bundle");
+        }
+
         return detailsFragmentView;
     }
 
@@ -48,16 +60,14 @@ public class AbilityDetailsFragment extends Fragment {
         super.onDetach();
     }
 
-    public void setAbilityDetails(Ability ability) {
-        loadAbility(ability);
+    public void setAbilityDetails() {
+        loadAbility();
         setProse();
     }
 
-    private void loadAbility(Ability ability) {
+    private void loadAbility() {
         AbilityDAO abilityDAO = new AbilityDAO(getActivity());
-
-        mAbility = abilityDAO.getAbilityByID(ability);
-
+        mAbility = abilityDAO.getAbilityByID(mAbility);
         abilityDAO.close();
     }
 

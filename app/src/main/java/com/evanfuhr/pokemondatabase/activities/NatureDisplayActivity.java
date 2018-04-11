@@ -1,6 +1,5 @@
 package com.evanfuhr.pokemondatabase.activities;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -9,15 +8,12 @@ import android.widget.RelativeLayout;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.NatureDAO;
-import com.evanfuhr.pokemondatabase.fragments.NatureDetailsFragment;
-import com.evanfuhr.pokemondatabase.interfaces.OnNatureSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Nature;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
-public class NatureDisplayActivity extends AppCompatActivity
-        implements OnNatureSelectedListener {
+public class NatureDisplayActivity extends AppCompatActivity {
 
     @NonNls
     public static final String NATURE_ID = "nature_id";
@@ -35,22 +31,10 @@ public class NatureDisplayActivity extends AppCompatActivity
         Intent intent = getIntent();
         mNature.setId(intent.getIntExtra(NATURE_ID, 0));
         mNature = natureDAO.getNatureById(mNature);
-        onNatureSelected(mNature);
+        setNatureBackgroundColor(mNature);
         setTitle(mNature.getName());
 
         natureDAO.close();
-    }
-
-    @Override
-    public void onNatureSelected(Nature nature) {
-
-        setNatureBackgroundColor(nature);
-
-        FragmentManager fm = getFragmentManager();
-
-        NatureDetailsFragment natureDetailsFragment = (NatureDetailsFragment) fm.findFragmentById(R.id.natureDetailsFragment);
-        natureDetailsFragment.setNatureDetails(nature);
-
     }
 
     private void setNatureBackgroundColor(Nature nature) {

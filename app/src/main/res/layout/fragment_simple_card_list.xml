@@ -37,7 +37,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                app:layoutManager="LinearLayoutManager"
                 tools:listitem="@layout/fragment_single_button" />
 
         </LinearLayout>

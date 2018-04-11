@@ -136,8 +136,10 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         List<Pokemon> pokemons = new ArrayList<>();
 
         String sql = SQLiteQueryBuilder
-                .select("DISTINCT " + field(POKEMON_MOVES, POKEMON_ID))
+                .select("DISTINCT " + field(POKEMON, SPECIES_ID))
                 .from(POKEMON_MOVES)
+                .join(POKEMON)
+                .on(field(POKEMON_MOVES, POKEMON_ID) + "=" + field(POKEMON, ID))
                 .where(field(POKEMON_MOVES, MOVE_ID) + "=" + move.getId())
                 .and(field(POKEMON_MOVES, VERSION_GROUP_ID) + "=" + getVersionGroupIDByVersionID())
                 .build();

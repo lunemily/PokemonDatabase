@@ -1,6 +1,5 @@
 package com.evanfuhr.pokemondatabase.activities;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -17,9 +16,8 @@ import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
 import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
-import com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
-import com.evanfuhr.pokemondatabase.interfaces.OnPokemonSelectedListener;
+import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
@@ -32,8 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonDisplayActivity extends AppCompatActivity
-        implements OnPokemonSelectedListener, AbilityListFragment.OnListFragmentInteractionListener,
-        TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener {
+        implements AbilityListFragment.OnListFragmentInteractionListener,
+        TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener,
+        TypeMatchUpFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
@@ -41,7 +40,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     RelativeLayout _RelativeLayout;
 
-    public Pokemon _pokemon = new Pokemon();
+    public Pokemon pokemon = new Pokemon();
 
     private GestureDetector mDetector;
 
@@ -53,16 +52,16 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         PokemonDAO pokemonDAO = new PokemonDAO(this);
 
-        _RelativeLayout = (RelativeLayout) findViewById(R.id.pokemon_display_activity);
+        _RelativeLayout = findViewById(R.id.pokemon_display_activity);
 
         //Get pokemon id passed to this activity
         Intent intent = getIntent();
-        _pokemon.setId(intent.getIntExtra(POKEMON_ID, 0));
-        _pokemon = pokemonDAO.getPokemonByID(_pokemon);
-        onPokemonSelected(_pokemon);
-        setTitle("#" + _pokemon.getID() + " " + _pokemon.getName());
+        pokemon.setId(intent.getIntExtra(POKEMON_ID, 0));
+        pokemon = pokemonDAO.getPokemonByID(pokemon);
+        setPokemonBackgroundColor(pokemon);
+        setTitle("#" + pokemon.getID() + " " + pokemon.getName());
 
-        mDetector = new GestureDetector(this, new MyGestureListener(_pokemon.getID()));
+        mDetector = new GestureDetector(this, new MyGestureListener(pokemon.getID()));
 
         pokemonDAO.close();
 
@@ -97,17 +96,6 @@ public class PokemonDisplayActivity extends AppCompatActivity
         return super.onTouchEvent(event);
     }
 
-    @Override
-    public void onPokemonSelected(Pokemon pokemon) {
-
-        setPokemonBackgroundColor(pokemon);
-
-        FragmentManager fm = getFragmentManager();
-
-        PokemonDetailsFragment pokemonDetailsFragment = (PokemonDetailsFragment) fm.findFragmentById(R.id.pokemonDetailsFragment);
-        pokemonDetailsFragment.setPokemonDetails(pokemon);
-    }
-
     private void setPokemonBackgroundColor(Pokemon pokemon) {
         PokemonDAO pokemonDAO = new PokemonDAO(this);
         TypeDAO typeDAO = new TypeDAO(this);
@@ -120,7 +108,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         }
         GradientDrawable gd = PokemonUtils.getColorGradientByTypes(types);
 
-        RelativeLayout pokemonDetailsActivity = (RelativeLayout) findViewById(R.id.pokemon_display_activity);
+        RelativeLayout pokemonDetailsActivity = findViewById(R.id.pokemon_display_activity);
         pokemonDetailsActivity.setBackground(gd);
 
         pokemonDAO.close();
