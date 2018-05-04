@@ -45,6 +45,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String EGG_GROUP_PROSE = "egg_group_prose";
     static final String MACHINES = "machines";
     static final String MOVE_EFFECT_PROSE = "move_effect_prose";
+    static final String MOVE_META = "move_meta";
     static final String MOVE_NAMES = "move_names";
     static final String MOVES = "moves";
     static final String NATURE_NAMES = "nature_names";
@@ -99,6 +100,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //move_effect_prose
     static final String MOVE_EFFECT_ID = "move_effect_id";
     static final String SHORT_EFFECT = "short_effect";
+
+    //move_meta
+    static final String AILMENT_CHANCE = "ailment_chance";
+    static final String CRIT_RATE = "crit_rate";
+    static final String FLINCH_CHANCE = "flinch_chance";
+    static final String STAT_CHANCE = "stat_chance";
 
     //nature_names
     static final String NATURE_ID = "nature_id";

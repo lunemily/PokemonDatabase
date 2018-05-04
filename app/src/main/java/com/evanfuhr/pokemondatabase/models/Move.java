@@ -5,42 +5,46 @@ import java.util.List;
 
 public class Move implements Comparable<Move> {
 
-    private int _accuracy = 0;
-    private DamageClass _category = DamageClass.STATUS;
-    private String _effect;
+    private int mAccuracy = 0;
+    private DamageClass mCategory = DamageClass.STATUS;
+    private String mEffect;
     private int id = 0;
-    private int _level = 0;
-    private MoveMethod _method_id = MoveMethod.LEVEL_UP;
-    private String _name;
-    private int _power = 0;
-    private int _pp = 0;
-    private int _tm = 0;
-    private Type _type;
+    private int mLevel = 0;
+    private MoveMethod mMethodId = MoveMethod.LEVEL_UP;
+    private String mName;
+    private int mPower = 0;
+    private int mPp = 0;
+    private int mTm = 0;
+    private Type mType;
+    private int mCritRate = 0;
 
-    
+    // This one is hacky since there can "technically" be multiple different effect chances, but
+    // after some data research, all instances of multiple non-zero values are still equal and thus,
+    // can be consolidated.
+    private int mEffectChance = 0;
 
     public int getAccuracy() {
-        return this._accuracy;
+        return this.mAccuracy;
     }
 
     public void setAccuracy(int accuracy) {
-        this._accuracy = accuracy;
+        this.mAccuracy = accuracy;
     }
     
     public DamageClass getCategory() {
-        return this._category;
+        return this.mCategory;
     }
 
     public void setCategory(DamageClass category) {
-        this._category = category;
+        this.mCategory = category;
     }
 
     public String getEffect() {
-        return this._effect;
+        return this.mEffect;
     }
 
     public void setEffect(String effect) {
-        this._effect = effect;
+        this.mEffect = effect;
     }
 
     public int getId() {
@@ -52,116 +56,62 @@ public class Move implements Comparable<Move> {
     }
 
     public int getLevel() {
-        return this._level;
+        return this.mLevel;
     }
 
     public void setLevel(int level) {
-        this._level = level;
+        this.mLevel = level;
     }
 
     public MoveMethod getMethodID() {
-        return this._method_id;
+        return this.mMethodId;
     }
 
     public void setMethodID(MoveMethod method_id) {
-        this._method_id = method_id;
+        this.mMethodId = method_id;
     }
 
     public String getName() {
-        return this._name;
+        return this.mName;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.mName = name;
     }
 
     public int getPower() {
-        return this._power;
+        return this.mPower;
     }
 
     public void setPower(int power) {
-        this._power = power;
+        this.mPower = power;
     }
 
     public int getPP() {
-        return this._pp;
+        return this.mPp;
     }
 
     public void setPP(int pp) {
-        this._pp = pp;
+        this.mPp = pp;
     }
 
     public int getTM() {
-        return _tm;
+        return mTm;
     }
 
     public void setTM(int tm) {
-        this._tm = tm;
+        this.mTm = tm;
     }
 
     public Type getType() {
-        return this._type;
+        return this.mType;
     }
 
     public void setType(Type type) {
-        this._type = type;
+        this.mType = type;
     }
 
     //Static methods
-
-    public static List<Move> getLevelUpMoves(List<Move> moves) {
-        List<Move> levelMoves = new ArrayList<>();
-
-        for ( Move move : moves) {
-            // Level-up methods
-            if (move.getMethodID() == MoveMethod.LEVEL_UP) {
-                levelMoves.add(move);
-            }
-        }
-
-        //Collections.sort(levelMoves);
-
-        return levelMoves;
-    }
-
-    public static List<Move> getEggMoves(List<Move> moves) {
-        List<Move> levelMoves = new ArrayList<>();
-
-        for ( Move move : moves) {
-            // Egg methods
-            if (move.getMethodID() == MoveMethod.EGG || move.getMethodID() == MoveMethod.LIGHT_BALL_EGG) {
-                levelMoves.add(move);
-            }
-        }
-
-        return levelMoves;
-    }
-
-    public static List<Move> getTutorMoves(List<Move> moves) {
-        List<Move> levelMoves = new ArrayList<>();
-
-        for ( Move move : moves) {
-            // Tutor methods
-            if (move.getMethodID() == MoveMethod.TUTOR) {
-                levelMoves.add(move);
-            }
-        }
-
-        return levelMoves;
-    }
-
-    public static List<Move> getMachineMoves(List<Move> moves) {
-        List<Move> machineMoves = new ArrayList<>();
-
-        for ( Move move : moves) {
-            // Machine methods
-            if (move.getMethodID() == MoveMethod.MACHINE) {
-                machineMoves.add(move);
-            }
-        }
-
-        return machineMoves;
-    }
 
     @Override
     public int compareTo(Move move) {
@@ -171,5 +121,21 @@ public class Move implements Comparable<Move> {
             return 1;
         else
             return -1;
+    }
+
+    public int getCritRate() {
+        return mCritRate;
+    }
+
+    public void setCritRate(int critRate) {
+        this.mCritRate = critRate;
+    }
+
+    public int getEffectChance() {
+        return mEffectChance;
+    }
+
+    public void setEffectChance(int effectChance) {
+        this.mEffectChance = effectChance;
     }
 }

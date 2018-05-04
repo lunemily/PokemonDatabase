@@ -72,6 +72,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
 
         return moves;
     }
@@ -126,6 +127,8 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
             }
             cursor.close();
         }
+        db.close();
+
         return move;
     }
 
@@ -181,6 +184,48 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
             }
             cursor.close();
         }
+        db.close();
+
+        return move;
+    }
+
+    /**
+     * Returns a Move object with its metadata, primarily its effect chances
+     *
+     * @param   move  A Move object to be modified with additional data
+     * @return              The modified input is returned
+     * @see                 Move
+     */
+    public Move getMoveMetaById(Move move) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(MOVES, ID)
+                        ,field(MOVE_META, CRIT_RATE)
+                        ,field(MOVE_META, AILMENT_CHANCE)
+                        ,field(MOVE_META, FLINCH_CHANCE)
+                        ,field(MOVE_META, STAT_CHANCE))
+                .from(MOVES)
+                .join(MOVE_META)
+                .on(field(MOVES, ID) + "=" + field(MOVE_META, MOVE_ID))
+                .where(field(MOVES, ID) + "=" + move.getId())
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                move.setCritRate(Integer.parseInt(cursor.getString(1)));
+                // Loop through last columns since we want the non-zero value
+                for (int i = 2; i < 5; i++) {
+                    if (!cursor.getString(i).equals("0")) {
+                        move.setEffectChance(Integer.parseInt(cursor.getString(i)));
+                    }
+                }
+            }
+            cursor.close();
+        }
+        db.close();
+
         return move;
     }
 
@@ -219,6 +264,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 moves.add(move);
             } while (cursor.moveToNext());
         }
+        db.close();
         cursor.close();
 
         return moves;
