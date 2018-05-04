@@ -155,7 +155,7 @@ public class PokemonListFragment extends Fragment
         List<Pokemon> filteredPokemons = new ArrayList<>();
 
         for (Pokemon pokemon : unfilteredPokemons) {
-            // Always want to set pokemon's types for display colors
+            // Always want to set mPokemon's types for display colors
             pokemon.setTypes(pokemonDAO.getTypesForPokemon(pokemon));
             if (isListByType) {
                 for (Type pokemonType : pokemon.getTypes()) {

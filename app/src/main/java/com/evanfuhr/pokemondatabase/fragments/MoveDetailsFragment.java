@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
@@ -23,7 +26,7 @@ public class MoveDetailsFragment extends Fragment {
 
     public static final String TYPE_ID = "type_id";
 
-    Move mMove;
+    Move mMove = new Move();
 
     TextView mAccuracy;
     TextView mCategory;
@@ -54,6 +57,16 @@ public class MoveDetailsFragment extends Fragment {
         mPp = detailsFragmentView.findViewById(R.id.movePPValue);
         mType = detailsFragmentView.findViewById(R.id.buttonMoveType);
 
+        Bundle bundle = getActivity().getIntent().getExtras();
+        if (bundle != null) {
+            if(bundle.containsKey(MoveDisplayActivity.MOVE_ID)) {
+                mMove.setId(bundle.getInt(MoveDisplayActivity.MOVE_ID));
+                setMoveDetails();
+            }
+        } else {
+            Log.i("MoveDetailsFragment Log", "No bundle");
+        }
+
         return detailsFragmentView;
     }
 
@@ -67,19 +80,22 @@ public class MoveDetailsFragment extends Fragment {
         super.onDetach();
     }
 
-    public void setMoveDetails(Move move) {
-        MoveDAO moveDAO = new MoveDAO(getActivity());
-        TypeDAO typeDAO = new TypeDAO(getActivity());
-
-        mMove = moveDAO.getMoveByID(move);
-        mMove.setType(typeDAO.getTypeByID(mMove.getType()));
-
+    void setMoveDetails() {
+        loadMove();
         setFragmentAccuracy();
         setFragmentCategory();
         setFragmentEffect();
         setFragmentPower();
         setFragmentPP();
         setFragmentType();
+    }
+
+    void loadMove() {
+        MoveDAO moveDAO = new MoveDAO(getActivity());
+        TypeDAO typeDAO = new TypeDAO(getActivity());
+
+        mMove = moveDAO.getMoveByID(mMove);
+        mMove.setType(typeDAO.getTypeByID(mMove.getType()));
 
         moveDAO.close();
         typeDAO.close();
