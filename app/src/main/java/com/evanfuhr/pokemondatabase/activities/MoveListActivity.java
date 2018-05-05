@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
 import com.evanfuhr.pokemondatabase.models.Move;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -30,6 +31,7 @@ public class MoveListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Move move) {
+        PokemonUtils.showLoadingToast(this);
         int move_id = move.getId();
 
         //Build the intent to load the player sheet

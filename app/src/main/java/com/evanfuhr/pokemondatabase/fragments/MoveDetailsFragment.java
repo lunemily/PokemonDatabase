@@ -67,6 +67,7 @@ public class MoveDetailsFragment extends Fragment {
             Log.i("MoveDetailsFragment Log", "No bundle");
         }
 
+        PokemonUtils.transitionToast.cancel();
         return detailsFragmentView;
     }
 
@@ -136,6 +137,7 @@ public class MoveDetailsFragment extends Fragment {
     }
 
     private void onClickButtonTypeDetails(View view) {
+        PokemonUtils.showLoadingToast(getActivity());
         int type_id = view.getId();
 
         //Build the intent to load the player sheet

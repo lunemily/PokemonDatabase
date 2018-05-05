@@ -9,6 +9,7 @@ import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -38,6 +39,7 @@ public class AbilityDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Pokemon pokemon) {
+        PokemonUtils.showLoadingToast(this);
 
         //Build the intent to load the pokemon display
         Intent intent = new Intent(this, PokemonDisplayActivity.class);

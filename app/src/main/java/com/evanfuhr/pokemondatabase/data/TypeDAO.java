@@ -102,6 +102,41 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
     }
 
     /**
+     * Returns a Type object with most of its non-list data
+     *
+     * @param   identifier  A String identifier used to find a single Type
+     * @return              The modified input is returned
+     * @see                 Type
+     */
+    public Type getTypeByIdentifier(String identifier) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Type type = new Type();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(TYPES, ID)
+                        ,field(TYPE_NAMES, NAME)
+                        ,field(TYPES, IDENTIFIER))
+                .from(TYPES)
+                .join(TYPE_NAMES)
+                .on(field(TYPES, ID) + "=" + field(TYPE_NAMES, TYPE_ID))
+                .where(field(TYPES, IDENTIFIER)+ "=\"" + identifier + "\"")
+                .and(field(TYPE_NAMES, LOCAL_LANGUAGE_ID)+ "=" + _language_id)
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                type.setId(Integer.parseInt(cursor.getString(0)));
+                type.setName(cursor.getString(1));
+                type.setColor(Type.getTypeColor(type.getId()));
+            }
+            cursor.close();
+        }
+
+        return type;
+    }
+
+    /**
      * Returns the type input with lists of Type objects and their relative
      * effectiveness against or resistance to the input type
      *

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.NatureListFragment;
 import com.evanfuhr.pokemondatabase.models.Nature;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -28,6 +29,7 @@ public class NatureListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Nature nature) {
+        PokemonUtils.showLoadingToast(this);
         int nature_id = nature.getId();
 
         // Build the intent to load the player sheet

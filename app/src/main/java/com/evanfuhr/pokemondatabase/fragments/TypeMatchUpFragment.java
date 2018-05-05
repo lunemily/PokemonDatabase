@@ -19,6 +19,7 @@ import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,7 @@ public class TypeMatchUpFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new TypeEfficacyRecyclerViewAdapter(types, mListener));
 
+        PokemonUtils.transitionToast.cancel();
         return view;
     }
 

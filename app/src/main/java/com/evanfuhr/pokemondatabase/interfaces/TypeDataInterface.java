@@ -12,6 +12,8 @@ public interface TypeDataInterface {
 
     Type getTypeByID(Type type);
 
+    Type getTypeByIdentifier(String identifier);
+
     List<Type> getSingleTypeEfficacy(Type type);
 
     List<Type> getDualTypeEfficacy(Type type1, Type type2);

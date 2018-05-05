@@ -16,6 +16,7 @@ import com.evanfuhr.pokemondatabase.interfaces.OnTypeSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -58,6 +59,7 @@ public class TypeDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Pokemon pokemon) {
+        PokemonUtils.showLoadingToast(this);
         int pokemon_id = pokemon.getID();
 
         //Build the intent to load the pokemon display
@@ -70,6 +72,7 @@ public class TypeDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Move move) {
+        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the display
         Intent intent = new Intent(this, MoveDisplayActivity.class);
         // Add the id to send to the display activity
@@ -80,6 +83,7 @@ public class TypeDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Type type) {
+        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the display
         Intent intent = new Intent(this, MoveDisplayActivity.class);
         // Add the id to send to the display activity

@@ -18,6 +18,7 @@ import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,7 @@ public class AbilityListFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
 
+        PokemonUtils.transitionToast.cancel();
         return view;
     }
 

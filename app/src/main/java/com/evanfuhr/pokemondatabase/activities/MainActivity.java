@@ -20,6 +20,7 @@ import com.evanfuhr.pokemondatabase.adapters.VersionSpinnerAdapter;
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
 import com.evanfuhr.pokemondatabase.data.VersionDAO;
 import com.evanfuhr.pokemondatabase.models.Version;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -138,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, MainActivity.class);
                 break;
         }
+        PokemonUtils.showLoadingToast(this);
         startActivity(intent);
     }
 

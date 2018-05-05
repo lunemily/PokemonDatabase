@@ -18,6 +18,7 @@ import com.evanfuhr.pokemondatabase.data.EggGroupDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 import com.evanfuhr.pokemondatabase.views.GifImageView;
 
 import java.util.List;
@@ -69,6 +70,7 @@ public class PokemonDetailsFragment extends Fragment {
             Log.i("PokemonDetFragment Log", "No bundle");
         }
 
+        PokemonUtils.transitionToast.cancel();
         return detailsFragmentView;
     }
 

@@ -27,6 +27,7 @@ import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +103,7 @@ public class PokemonListFragment extends Fragment
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
 
+        PokemonUtils.transitionToast.cancel();
         return view;
     }
 

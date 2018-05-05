@@ -26,6 +26,7 @@ import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +113,7 @@ public class MoveListFragment extends Fragment
             mTitle.setVisibility(View.INVISIBLE);
         }
 
+        PokemonUtils.transitionToast.cancel();
         return view;
     }
 

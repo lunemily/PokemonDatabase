@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
 import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -28,6 +29,7 @@ public class TypeListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Type type) {
+        PokemonUtils.showLoadingToast(this);
         int type_id = type.getId();
 
         //Build the intent to load the player sheet
