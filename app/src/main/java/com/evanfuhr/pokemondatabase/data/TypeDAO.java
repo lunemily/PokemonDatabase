@@ -110,6 +110,10 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
      * @see             Type
      */
     public List<Type> getSingleTypeEfficacy(Type type) {
+        return getSingleTypeEfficacy(type, false);
+    }
+
+    public List<Type> getSingleTypeEfficacy(Type type, boolean forPokemon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Type> originatingTypes = new ArrayList<>();
@@ -164,7 +168,9 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
         cursor.close();
 
         efficacyTypes.addAll(originatingTypes);
-        efficacyTypes.addAll(targetTypes);
+        if (!forPokemon) {
+            efficacyTypes.addAll(targetTypes);
+        }
 
         return efficacyTypes;
     }

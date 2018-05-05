@@ -20,6 +20,7 @@ import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.DamageClass;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 public class MoveDetailsFragment extends Fragment {
 
@@ -27,12 +28,12 @@ public class MoveDetailsFragment extends Fragment {
 
     Move mMove = new Move();
 
-    TextView _accuracy;
-    TextView _category;
-    TextView _effect;
-    TextView _power;
-    TextView _pp;
-    Button _type;
+    TextView mAccuracy;
+    TextView mCategory;
+    TextView mEffect;
+    TextView mPower;
+    TextView mPp;
+    Button mType;
 
     public MoveDetailsFragment() {
         // Required empty public constructor
@@ -49,12 +50,12 @@ public class MoveDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View detailsFragmentView = inflater.inflate(R.layout.fragment_move_details, container, false);
 
-        _accuracy = detailsFragmentView.findViewById(R.id.moveAccuracyValue);
-        _category = detailsFragmentView.findViewById(R.id.moveCategoryValue);
-        _effect = detailsFragmentView.findViewById(R.id.moveEffectValue);
-        _power = detailsFragmentView.findViewById(R.id.movePowerValue);
-        _pp = detailsFragmentView.findViewById(R.id.movePPValue);
-        _type = detailsFragmentView.findViewById(R.id.buttonMoveType);
+        mAccuracy = detailsFragmentView.findViewById(R.id.moveAccuracyValue);
+        mCategory = detailsFragmentView.findViewById(R.id.moveCategoryValue);
+        mEffect = detailsFragmentView.findViewById(R.id.moveEffectValue);
+        mPower = detailsFragmentView.findViewById(R.id.movePowerValue);
+        mPp = detailsFragmentView.findViewById(R.id.movePPValue);
+        mType = detailsFragmentView.findViewById(R.id.buttonMoveType);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
@@ -101,30 +102,32 @@ public class MoveDetailsFragment extends Fragment {
     }
 
     void setFragmentAccuracy() {
-        _accuracy.setText(Integer.toString(mMove.getAccuracy()) + "%");
+        mAccuracy.setText(Integer.toString(mMove.getAccuracy()) + "%");
     }
 
     void setFragmentCategory() {
-        _category.setText(DamageClass.getName(mMove.getCategory()));
+        mCategory.setText(DamageClass.getName(mMove.getCategory()));
     }
 
     void setFragmentEffect() {
-        _effect.setText(mMove.getEffect());
+        String effect = mMove.getEffect();
+        effect = PokemonUtils.replaceProseLinks(getActivity(), effect, mMove.getId());
+        mEffect.setText(effect);
     }
 
     void setFragmentPower() {
-        _power.setText(Integer.toString(mMove.getPower()));
+        mPower.setText(Integer.toString(mMove.getPower()));
     }
 
     void setFragmentPP() {
-        _pp.setText(Integer.toString(mMove.getPP()));
+        mPp.setText(Integer.toString(mMove.getPP()));
     }
 
     void setFragmentType() {
-        _type.setText(mMove.getType().getName());
-        _type.setId(mMove.getType().getId());
-        _type.setBackgroundColor(Color.parseColor(mMove.getType().getColor()));
-        _type.setOnClickListener(new View.OnClickListener() {
+        mType.setText(mMove.getType().getName());
+        mType.setId(mMove.getType().getId());
+        mType.setBackgroundColor(Color.parseColor(mMove.getType().getColor()));
+        mType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickButtonTypeDetails(view);

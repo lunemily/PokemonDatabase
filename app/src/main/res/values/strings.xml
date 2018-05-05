@@ -138,6 +138,7 @@
     <string name="pwr">Pwr</string>
     <string name="pp">PP</string>
     <string name="acc">Acc</string>
+    <string name="references">References:</string>
     <string name="takesDamage">Takes Damage from</string>
     <string name="dealsDamage">Deals Damage to</string>
     <string name="efficacy">x2</string>

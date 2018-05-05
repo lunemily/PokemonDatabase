@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.evanfuhr.pokemondatabase.interfaces.AbilityDataInterface;
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.models.Ability;
-import com.evanfuhr.pokemondatabase.models.Ability;
-import com.evanfuhr.pokemondatabase.models.Pokemon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +42,14 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
 
         String sql = SQLiteQueryBuilder
                 .select(field(ABILITIES, ID)
-                        , field(ABILITY_NAMES, NAME))
+                        , field(ABILITY_NAMES, NAME)
+                        , field(ABILITIES, IS_MAIN_SERIES))
                 .from(ABILITIES)
                 .join(ABILITY_NAMES)
                 .on(field(ABILITIES, ID) + "=" + field(ABILITY_NAMES, ABILITY_ID))
                 .where(field(ABILITY_NAMES, NAME) + " LIKE LOWER('%" + nameSearchParam + "%')")
                 .and(field(ABILITY_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .and(field(ABILITIES, IS_MAIN_SERIES) + "=" + 1)
                 .orderBy(field(ABILITY_NAMES, NAME))
                 .asc()
                 .build();
@@ -91,6 +91,45 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
                 .join(ABILITY_PROSE)
                 .on(field(ABILITIES, ID) + "=" + field(ABILITY_PROSE, ABILITY_ID))
                 .where(field(ABILITIES, ID) + "=" + ability.getId())
+                .and(field(ABILITY_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .and(field(ABILITY_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                ability.setId(Integer.parseInt(cursor.getString(0)));
+                ability.setName(cursor.getString(1));
+                ability.setProse(cursor.getString(2));
+            }
+            cursor.close();
+        }
+
+        return ability;
+    }
+
+    /**
+     * Returns an Ability object with its name
+     *
+     * @param   identifier  An ability object to be modified with additional data
+     * @return              The modified input is returned
+     * @see                 Ability
+     */
+    public Ability getAbilityByIdentifier(String identifier) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Ability ability = new Ability();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(ABILITIES, ID)
+                        , field(ABILITY_NAMES, NAME)
+                        , field(ABILITY_PROSE, EFFECT))
+                .from(ABILITIES)
+                .join(ABILITY_NAMES)
+                .on(field(ABILITIES, ID) + "=" + field(ABILITY_NAMES, ABILITY_ID))
+                .join(ABILITY_PROSE)
+                .on(field(ABILITIES, ID) + "=" + field(ABILITY_PROSE, ABILITY_ID))
+                .where(field(ABILITIES, IDENTIFIER) + "=\"" + identifier + "\"")
                 .and(field(ABILITY_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .and(field(ABILITY_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();

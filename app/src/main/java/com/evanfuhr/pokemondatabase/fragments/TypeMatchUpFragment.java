@@ -118,7 +118,7 @@ public class TypeMatchUpFragment extends Fragment {
 
             // Check for single or dual type mPokemon
             if (pokemonTypes.size() == 1) {
-                filteredTypes = typeDAO.getSingleTypeEfficacy(pokemonTypes.get(0));
+                filteredTypes = typeDAO.getSingleTypeEfficacy(pokemonTypes.get(0), true);
             } else {
                 filteredTypes = typeDAO.getDualTypeEfficacy(pokemonTypes.get(0), pokemonTypes.get(1));
             }
