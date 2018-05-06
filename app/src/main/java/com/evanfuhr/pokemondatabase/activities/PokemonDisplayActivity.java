@@ -1,5 +1,6 @@
 package com.evanfuhr.pokemondatabase.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -59,9 +60,9 @@ public class PokemonDisplayActivity extends AppCompatActivity
         pokemon.setId(intent.getIntExtra(POKEMON_ID, 0));
         pokemon = pokemonDAO.getPokemonByID(pokemon);
         setPokemonBackgroundColor(pokemon);
-        setTitle("#" + pokemon.getID() + " " + pokemon.getName());
+        setTitle("#" + pokemon.getId() + " " + pokemon.getName());
 
-        mDetector = new GestureDetector(this, new MyGestureListener(pokemon.getID()));
+        mDetector = new GestureDetector(this, new MyGestureListener(pokemon.getId(), this));
 
         pokemonDAO.close();
 
@@ -117,6 +118,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Ability ability) {
+        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the display
         Intent intent = new Intent(this, AbilityDisplayActivity.class);
         // Add the id to send to the display activity
@@ -127,6 +129,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Type type) {
+        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the display
         Intent intent = new Intent(this, TypeDisplayActivity.class);
         // Add the id to send to the display activity
@@ -137,6 +140,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Move move) {
+        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the display
         Intent intent = new Intent(this, MoveDisplayActivity.class);
         // Add the id to send to the display activity
@@ -149,8 +153,10 @@ public class PokemonDisplayActivity extends AppCompatActivity
         private static final String DEBUG_TAG = "Gestures";
         private int mCurrentPokemonID = 0;
         private float deltaX, deltaY;
+        Context context;
 
-        public MyGestureListener(int currentPokemonID) {
+        public MyGestureListener(int currentPokemonID, Context context) {
+            this.context = context;
             this.mCurrentPokemonID = currentPokemonID;
         }
 
@@ -169,9 +175,10 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
             Log.d(DEBUG_TAG, "onFling: " + event1.toString() + event2.toString());
 
-            if (Math.abs(deltaY) > Math.abs(deltaX)) { // If vertical fling, just scroll
+            if (Math.abs(deltaY) > 2 * Math.abs(deltaX)) { // If vertical fling, just scroll
                 return false;
             } else { // Go to adjacent pokemon
+                PokemonUtils.showLoadingToast(this.context);
                 Intent intent = new Intent(getApplicationContext(), PokemonDisplayActivity.class);
                 boolean swipeRight = (deltaX < 0);
                 int newPokemonID;

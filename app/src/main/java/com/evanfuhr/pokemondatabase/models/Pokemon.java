@@ -4,136 +4,136 @@ import java.util.List;
 
 public class Pokemon {
 
-    private List<Ability> _abilities;
-    private int _base_experience;
-    private List<EggGroup> _egg_groups;
-    private int _gender_ratio;
-    private String _genus;
-    private Double _height;
-    private int _id;
-    private boolean _mega;
-    private List<Move> _moves;
-    private String _name;
-    private List<Type> _types;
-    private Double _weight;
+    private List<Ability> mAbilities;
+    private int mBaseExperience;
+    private List<EggGroup> mEggGroups;
+    private int mGenderRatio;
+    private String mGenus;
+    private Double mHeight;
+    private int mId;
+    private boolean mMega;
+    private List<Move> mMoves;
+    private String mName;
+    private List<Type> mTypes;
+    private Double mWeight;
 
     public Pokemon() {
     }
 
     public List<Ability> getAbilities() {
-        return this._abilities;
+        return this.mAbilities;
     }
 
     public void setAbilities(List<Ability> abilities) {
-        this._abilities = abilities;
+        this.mAbilities = abilities;
     }
 
     public int getBaseExperience() {
-        return this._base_experience;
+        return this.mBaseExperience;
     }
 
     public void setBaseExperience(int base_experience) {
-        this._base_experience = base_experience;
+        this.mBaseExperience = base_experience;
     }
 
     public List<EggGroup> getEggGroups() {
-        return this._egg_groups;
+        return this.mEggGroups;
     }
 
     public void setEggGroups(List<EggGroup> egg_groups) {
-        this._egg_groups = egg_groups;
+        this.mEggGroups = egg_groups;
     }
 
     public int getGenderRatio() {
-        return this._gender_ratio;
+        return this.mGenderRatio;
     }
 
     public void setGenderRatio(int gender_ratio) {
-        this._gender_ratio = gender_ratio;
+        this.mGenderRatio = gender_ratio;
     }
 
     public String getGenus() {
-        return this._genus;
+        return this.mGenus;
     }
 
     public void setGenus(String genus) {
-        this._genus = "The " + genus;
+        this.mGenus = "The " + genus;
     }
 
     public Double getHeight() {
-        return this._height;
+        return this.mHeight;
     }
 
     public void setHeight(Double height) {
-        this._height = height;
+        this.mHeight = height;
     }
 
-    public int getID() {
-        return this._id;
+    public int getId() {
+        return this.mId;
     }
 
     public void setId(int id) {
-        this._id = id;
+        this.mId = id;
     }
 
     public boolean getMega() {
-        return this._mega;
+        return this.mMega;
     }
 
     public void setMega(boolean mega) {
-        this._mega = mega;
+        this.mMega = mega;
     }
 
     public List<Move> getMoves() {
-        return _moves;
+        return mMoves;
     }
 
     public void setMoves(List<Move> moves) {
-        this._moves = moves;
+        this.mMoves = moves;
     }
 
     public String getName() {
-        if (_name == null) {
-            _name = "undefined";
+        if (mName == null) {
+            mName = "undefined";
         }
 
-        return this._name;
+        return this.mName;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.mName = name;
     }
     
     public List<Type> getTypes() {
-        return this._types;
+        return this.mTypes;
     }
     
     public void setTypes(List<Type> types) {
-        this._types = types;
+        this.mTypes = types;
     }
 
     public Double getWeight() {
-        return this._weight;
+        return this.mWeight;
     }
 
     public void setWeight(Double weight) {
-        this._weight = weight;
+        this.mWeight = weight;
     }
 
     //Not Getters and Setters
 
     public String getSpriteName() {
         String filename;
-        filename = "" + this._id;
+        filename = "" + this.mId;
 
-        if(this._id < 100) {
-            if (this._id < 10) {
+        if(this.mId < 100) {
+            if (this.mId < 10) {
                 filename = "0" + filename;
             }
             filename = "0" + filename;
         }
 
-        if (_mega) {
+        if (mMega) {
             filename = filename + "mega";
         }
 

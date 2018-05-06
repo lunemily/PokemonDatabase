@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -28,6 +29,7 @@ public class AbilityListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Ability ability) {
+        PokemonUtils.showLoadingToast(this);
 
         // Build the intent to load the player sheet
         Intent intent = new Intent(this, AbilityDisplayActivity.class);

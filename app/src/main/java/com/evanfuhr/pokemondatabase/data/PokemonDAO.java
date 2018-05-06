@@ -97,7 +97,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
                 .join(POKEMON)
                 .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON, SPECIES_ID))
-                .where(field(POKEMON_SPECIES, ID) + "=" + pokemon.getID())
+                .where(field(POKEMON_SPECIES, ID) + "=" + pokemon.getId())
                 .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 
@@ -178,7 +178,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                         , field(POKEMON_ABILITIES, SLOT)
                         , field(POKEMON_ABILITIES, IS_HIDDEN))
                 .from(POKEMON_ABILITIES)
-                .where(field(POKEMON_ABILITIES, POKEMON_ID) + "=" + pokemon.getID())
+                .where(field(POKEMON_ABILITIES, POKEMON_ID) + "=" + pokemon.getId())
                 .orderBy(field(POKEMON_ABILITIES, SLOT))
                 .asc()
                 .build();
@@ -218,7 +218,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         String sql = SQLiteQueryBuilder
                 .select(field(POKEMON_EGG_GROUPS, EGG_GROUP_ID))
                 .from(POKEMON_EGG_GROUPS)
-                .where(field(POKEMON_EGG_GROUPS, SPECIES_ID) + "=" + pokemon.getID())
+                .where(field(POKEMON_EGG_GROUPS, SPECIES_ID) + "=" + pokemon.getId())
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);
@@ -261,7 +261,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 " LEFT OUTER JOIN (SELECT * FROM " + MACHINES + " WHERE " + MACHINES + "." + VERSION_GROUP_ID + " = " + version_group_id + ") AS " + MACHINES +
                 " ON " + POKEMON_MOVES + "." + MOVE_ID + " = " + MACHINES + "." + MOVE_ID +
 
-                " WHERE " + POKEMON_MOVES + "." + POKEMON_ID + " = " + pokemon.getID() +
+                " WHERE " + POKEMON_MOVES + "." + POKEMON_ID + " = " + pokemon.getId() +
                 " AND " + POKEMON_MOVES + "." + VERSION_GROUP_ID + " = " + version_group_id +
                 " ORDER BY " + POKEMON_MOVES + "." + POKEMON_MOVE_METHOD_ID + " ASC" +
                 ", " + POKEMON_MOVES + "." + POKEMON_MOVE_LEVEL + " ASC" +
@@ -306,7 +306,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 .select(field(POKEMON_TYPES, SLOT)
                         , field(POKEMON_TYPES, TYPE_ID))
                 .from(POKEMON_TYPES)
-                .where(field(POKEMON_TYPES, POKEMON_ID) + "=" + pokemon.getID())
+                .where(field(POKEMON_TYPES, POKEMON_ID) + "=" + pokemon.getId())
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);

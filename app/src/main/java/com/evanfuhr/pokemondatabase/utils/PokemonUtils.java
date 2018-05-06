@@ -5,9 +5,14 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Toast;
 
+import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
+import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Flavor;
 import com.evanfuhr.pokemondatabase.models.Move;
@@ -18,6 +23,8 @@ import java.util.List;
 import java.util.regex.*;
 
 public class PokemonUtils {
+
+    public static Toast transitionToast;
 
     @NonNull
     public static GradientDrawable getColorGradientByTypes(List<Type> types) {
@@ -120,6 +127,7 @@ public class PokemonUtils {
         String replacement;
         AbilityDAO abilityDAO = new AbilityDAO(context);
         MoveDAO moveDAO = new MoveDAO(context);
+        TypeDAO typeDAO = new TypeDAO(context);
 
         switch (object) {
             case "ability":
@@ -127,6 +135,9 @@ public class PokemonUtils {
                 break;
             case "move":
                 replacement = moveDAO.getMoveByIdentifier(identifier).getName();
+                break;
+            case "type":
+                replacement = typeDAO.getTypeByIdentifier(identifier).getName();
                 break;
             case "effectChance":
                 Move move = new Move();
@@ -168,5 +179,11 @@ public class PokemonUtils {
         }
 
         return multiplier;
+    }
+
+    public static void showLoadingToast(Context context) {
+        transitionToast = Toast.makeText(context, R.string.loading, Toast.LENGTH_LONG);
+        transitionToast.setGravity(Gravity.CENTER, 0, 0);
+        transitionToast.show();
     }
 }

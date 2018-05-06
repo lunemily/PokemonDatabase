@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -28,11 +29,12 @@ public class PokemonListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Pokemon pokemon) {
+        PokemonUtils.showLoadingToast(this);
 
         // Build the intent to load the pokemon display
         Intent intent = new Intent(this, PokemonDisplayActivity.class);
         // Load the pokemon ID to send to the player sheet
-        intent.putExtra(PokemonDisplayActivity.POKEMON_ID, pokemon.getID());
+        intent.putExtra(PokemonDisplayActivity.POKEMON_ID, pokemon.getId());
 
         startActivity(intent);
     }

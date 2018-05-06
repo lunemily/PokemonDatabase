@@ -12,6 +12,7 @@ import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -50,7 +51,8 @@ public class MoveDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Pokemon pokemon) {
-        int pokemon_id = pokemon.getID();
+        PokemonUtils.showLoadingToast(this);
+        int pokemon_id = pokemon.getId();
 
         //Build the intent to load the pokemon display
         Intent intent = new Intent(this, PokemonDisplayActivity.class);

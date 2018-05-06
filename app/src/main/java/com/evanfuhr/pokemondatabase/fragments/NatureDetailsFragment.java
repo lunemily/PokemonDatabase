@@ -18,6 +18,7 @@ import com.evanfuhr.pokemondatabase.data.NatureDAO;
 import com.evanfuhr.pokemondatabase.data.StatDAO;
 import com.evanfuhr.pokemondatabase.models.Flavor;
 import com.evanfuhr.pokemondatabase.models.Nature;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 public class NatureDetailsFragment extends Fragment {
 
@@ -52,6 +53,7 @@ public class NatureDetailsFragment extends Fragment {
             Log.i("MoveDetailsFragment Log", "No bundle");
         }
 
+        PokemonUtils.transitionToast.cancel();
         return detailsFragmentView;
     }
 

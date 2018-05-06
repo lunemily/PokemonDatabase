@@ -14,6 +14,7 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.adapters.NatureRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.NatureDAO;
 import com.evanfuhr.pokemondatabase.models.Nature;
+import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +77,8 @@ public class NatureListFragment extends Fragment {
             }
             recyclerView.setAdapter(new NatureRecyclerViewAdapter(natures, mListener));
         }
+
+        PokemonUtils.transitionToast.cancel();
         return view;
     }
 

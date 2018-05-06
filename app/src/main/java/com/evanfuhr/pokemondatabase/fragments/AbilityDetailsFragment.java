@@ -56,6 +56,7 @@ public class AbilityDetailsFragment extends Fragment {
             Log.i("AbilityDetFragment Log", "No bundle");
         }
 
+        PokemonUtils.transitionToast.cancel();
         return detailsFragmentView;
     }
 
