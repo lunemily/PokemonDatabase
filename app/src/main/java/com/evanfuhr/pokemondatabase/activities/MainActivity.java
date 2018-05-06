@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void restorePreferences() {
         SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
-        _version_id = settings.getInt(String.valueOf(R.string.gameVersionID), R.integer.game_version_id); // Default game is Moon
+        _version_id = settings.getInt(String.valueOf(R.string.gameVersionID), DataBaseHelper.defaultVersionId);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(String.valueOf(R.string.gameVersionID), _version_id);
 

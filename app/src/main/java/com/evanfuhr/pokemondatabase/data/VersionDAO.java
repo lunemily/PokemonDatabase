@@ -75,7 +75,7 @@ public class VersionDAO extends DataBaseHelper implements VersionDataInterface {
         Version version = new Version();
 
         SharedPreferences settings = getMyContext().getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
-        int version_id = settings.getInt(String.valueOf(R.string.gameVersionID), R.integer.game_version_id); // Default game is Moon
+        int version_id = settings.getInt(String.valueOf(R.string.gameVersionID), DataBaseHelper.defaultVersionId);
 
         String sql = SQLiteQueryBuilder
                 .select(field(VERSIONS, ID)

@@ -28,13 +28,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static String DB_NAME = "pokedex.sqlite";
 
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     private SQLiteDatabase myDataBase;
 
     private final Context myContext;
 
     int _language_id = 9;
+    public static int defaultVersionId = 30; // Default game is Ultra Moon
 
     //tables
     static final String ABILITIES = "abilities";
@@ -254,6 +255,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         myOutput.close();
         myInput.close();
 
+        SharedPreferences settings = getMyContext().getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(String.valueOf(R.string.gameVersionID), defaultVersionId);
+
+        // Commit the edits!
+        editor.commit();
     }
 
     public void openDataBase() throws SQLException {
@@ -302,7 +309,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         SharedPreferences settings = getMyContext().getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
-        int version_id = settings.getInt(String.valueOf(R.string.gameVersionID), R.integer.game_version_id); // Default game is Moon
+        int version_id = settings.getInt(String.valueOf(R.string.gameVersionID), DataBaseHelper.defaultVersionId);
 
         int version_group_id = 1;
 
