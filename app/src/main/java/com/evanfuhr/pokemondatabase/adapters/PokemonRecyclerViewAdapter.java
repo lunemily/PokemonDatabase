@@ -38,7 +38,7 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = _filteredList.get(position);
-        holder._button.setId(_filteredList.get(position).getID());
+        holder._button.setId(_filteredList.get(position).getId());
         holder._button.setText(_filteredList.get(position).getName());
         holder._button.setBackground(PokemonUtils.getColorGradientByTypes(_filteredList.get(position).getTypes()));
 

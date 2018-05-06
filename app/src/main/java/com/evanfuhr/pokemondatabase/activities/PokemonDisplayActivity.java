@@ -60,9 +60,9 @@ public class PokemonDisplayActivity extends AppCompatActivity
         pokemon.setId(intent.getIntExtra(POKEMON_ID, 0));
         pokemon = pokemonDAO.getPokemonByID(pokemon);
         setPokemonBackgroundColor(pokemon);
-        setTitle("#" + pokemon.getID() + " " + pokemon.getName());
+        setTitle("#" + pokemon.getId() + " " + pokemon.getName());
 
-        mDetector = new GestureDetector(this, new MyGestureListener(pokemon.getID(), this));
+        mDetector = new GestureDetector(this, new MyGestureListener(pokemon.getId(), this));
 
         pokemonDAO.close();
 

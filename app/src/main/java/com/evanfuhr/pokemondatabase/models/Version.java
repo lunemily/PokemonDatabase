@@ -2,49 +2,70 @@ package com.evanfuhr.pokemondatabase.models;
 
 public class Version {
 
-    private int _id;
-    private int _generation_id;
-    private int _group_id;
-    private String _name;
+    private int mId;
+    private int mGenerationId;
+    private int mGroupId;
+    private String mName;
 
     public Version() {
 
     }
 
-    public int getID() {
-        return this._id;
+    public int getId() {
+        return this.mId;
     }
 
-    public void setID(int id) {
-        this._id = id;
+    public void setId(int id) {
+        this.mId = id;
     }
 
-    public int getGenerationID() {
-        return this._generation_id;
+    public int getGenerationId() {
+        return this.mGenerationId;
     }
 
-    public void setGenerationID(int generation_id) {
-        this._generation_id = generation_id;
+    public void setGenerationId(int generation_id) {
+        this.mGenerationId = generation_id;
     }
 
-    public int getGroupID() {
-        return this._group_id;
+    public int getGroupId() {
+        return this.mGroupId;
     }
 
-    public void setGroupID(int group_id) {
-        this._group_id = group_id;
+    public void setGroupId(int group_id) {
+        this.mGroupId = group_id;
     }
 
     public String getName() {
-        if (_name == null) {
-            _name = "undefined";
+        if (mName == null) {
+            mName = "undefined";
         }
 
-        return this._name;
+        return this.mName;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.mName = name;
+    }
+
+    public String getSmogonVersion() {
+        switch(mGenerationId) {
+            case 1:
+                return "rb";
+            case 2:
+                return "gs";
+            case 3:
+                return "rs";
+            case 4:
+                return "dp";
+            case 5:
+                return "bw";
+            case 6:
+                return "xy";
+            case 7:
+                return "sm";
+            default:
+                return "undefined";
+        }
     }
 
 }

@@ -1,6 +1,5 @@
 package com.evanfuhr.pokemondatabase.activities;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -60,7 +59,7 @@ public class TypeDisplayActivity extends AppCompatActivity
     @Override
     public void onListFragmentInteraction(Pokemon pokemon) {
         PokemonUtils.showLoadingToast(this);
-        int pokemon_id = pokemon.getID();
+        int pokemon_id = pokemon.getId();
 
         //Build the intent to load the pokemon display
         Intent intent = new Intent(this, PokemonDisplayActivity.class);

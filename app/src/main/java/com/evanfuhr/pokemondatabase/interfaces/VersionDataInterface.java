@@ -8,4 +8,6 @@ public interface VersionDataInterface {
 
     List<Version> getAllVersions();
 
+    Version getVersion();
+
 }

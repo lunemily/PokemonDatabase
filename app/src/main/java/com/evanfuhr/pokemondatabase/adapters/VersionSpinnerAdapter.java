@@ -1,7 +1,6 @@
 package com.evanfuhr.pokemondatabase.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -62,7 +61,7 @@ public class VersionSpinnerAdapter extends ArrayAdapter<Version> {
     public int getPositionByVersion(int version_id) {
         int position = 0;
         for (Version v : _values) {
-            if (v.getID() == version_id) {
+            if (v.getId() == version_id) {
                 position = _values.indexOf(v);
             }
         }

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -182,6 +183,7 @@ public class PokemonUtils {
 
     public static void showLoadingToast(Context context) {
         transitionToast = Toast.makeText(context, R.string.loading, Toast.LENGTH_LONG);
+        transitionToast.setGravity(Gravity.CENTER, 0, 0);
         transitionToast.show();
     }
 }

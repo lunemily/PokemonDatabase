@@ -293,10 +293,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy
 // to you to create adapters for your views.
 
+
+    public Context getMyContext() {
+        return myContext;
+    }
+
     public int getVersionGroupIDByVersionID() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        SharedPreferences settings = myContext.getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
+        SharedPreferences settings = getMyContext().getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
         int version_id = settings.getInt(String.valueOf(R.string.gameVersionID), R.integer.game_version_id); // Default game is Moon
 
         int version_group_id = 1;

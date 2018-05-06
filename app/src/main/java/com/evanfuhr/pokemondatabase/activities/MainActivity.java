@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Version version = versionSpinnerAdapter.getItem(position);
-                _version_id = version.getID();
+                _version_id = version.getId();
 
             }
 
@@ -228,6 +228,11 @@ public class MainActivity extends AppCompatActivity {
     private void restorePreferences() {
         SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
         _version_id = settings.getInt(String.valueOf(R.string.gameVersionID), R.integer.game_version_id); // Default game is Moon
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(String.valueOf(R.string.gameVersionID), _version_id);
+
+        // Commit the edits!
+        editor.commit();
     }
 
     @Override

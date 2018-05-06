@@ -18,6 +18,7 @@ import com.evanfuhr.pokemondatabase.data.EggGroupDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.utils.ExternalLink;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 import com.evanfuhr.pokemondatabase.views.GifImageView;
 
@@ -143,6 +144,6 @@ public class PokemonDetailsFragment extends Fragment {
 
         _smogon.setClickable(true);
         _smogon.setMovementMethod(LinkMovementMethod.getInstance());
-        _smogon.setText(Html.fromHtml("<a href='http://www.smogon.com/dex/sm/mPokemon/" + pokemon.getName() + "'>Smogon</a>"));
+        _smogon.setText(ExternalLink.getSmogonLink(pokemon, getActivity()));
     }
 }
