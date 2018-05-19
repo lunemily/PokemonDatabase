@@ -9,5 +9,7 @@ public interface LocationDataInterface {
 
     List<Location> getAllLocations();
 
-    List<Pokemon> getPokemonByLocation(Location location);
+    List<Location> getLocations(Pokemon pokemon);
+
+    Location getLocation(Location location);
 }

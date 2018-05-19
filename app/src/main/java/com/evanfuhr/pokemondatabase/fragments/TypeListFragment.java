@@ -121,12 +121,10 @@ public class TypeListFragment extends Fragment {
 
         if (isListByPokemon) {
             // Rather than iterating over ALL types, just get the pokemon's types and load
-            PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-            List<Type> pokemonTypes = pokemonDAO.getTypesForPokemon(pokemon);
+            List<Type> pokemonTypes = typeDAO.getTypes(pokemon);
             for (Type type : pokemonTypes) {
-                filteredTypes.add(typeDAO.getTypeByID(type));
+                filteredTypes.add(typeDAO.getType(type));
             }
-            pokemonDAO.close();
             mTitle.setText(R.string.types);
         } else {
             filteredTypes = unfilteredTypes;

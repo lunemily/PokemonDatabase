@@ -95,19 +95,19 @@ public class PokemonDetailsFragment extends Fragment {
 
     void loadPokemon() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        mPokemon = pokemonDAO.getPokemonByID(mPokemon);
+        mPokemon = pokemonDAO.getPokemon(mPokemon);
         pokemonDAO.close();
     }
 
     void setFragmentEggGroups() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
         EggGroupDAO eggGroupDAO = new EggGroupDAO(getActivity());
-        mPokemon.setEggGroups(pokemonDAO.getEggGroupsForPokemon(mPokemon));
+        mPokemon.setEggGroups(eggGroupDAO.getEggGroups(mPokemon));
         List<EggGroup> eggGroups = mPokemon.getEggGroups();
 
         for (EggGroup eg : eggGroups) {
             TextView textViewEggGroup = new TextView(getActivity());
-            textViewEggGroup.setText(eggGroupDAO.getEggGroupByID(eg).getName());
+            textViewEggGroup.setText(eggGroupDAO.getEggGroup(eg).getName());
             mEggGroups.addView(textViewEggGroup);
         }
         pokemonDAO.close();

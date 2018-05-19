@@ -120,8 +120,8 @@ public class NatureListFragment extends Fragment {
         List<Nature> flavoredNatures = new ArrayList<>();
 
         for (Nature nature : unflavoredNatures) {
-            nature.setLikesFlavor(natureDAO.getNatureById(nature).getLikesFlavor());
-            nature.setHatesFlavor(natureDAO.getNatureById(nature).getHatesFlavor());
+            nature.setLikesFlavor(natureDAO.getNature(nature).getLikesFlavor());
+            nature.setHatesFlavor(natureDAO.getNature(nature).getHatesFlavor());
 
             flavoredNatures.add(nature);
         }

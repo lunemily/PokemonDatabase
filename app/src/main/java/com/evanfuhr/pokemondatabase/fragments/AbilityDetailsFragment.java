@@ -80,7 +80,7 @@ public class AbilityDetailsFragment extends Fragment {
 
     private void loadAbility() {
         AbilityDAO abilityDAO = new AbilityDAO(getActivity());
-        mAbility = abilityDAO.getAbilityByID(mAbility);
+        mAbility = abilityDAO.getAbility(mAbility);
         abilityDAO.close();
     }
 

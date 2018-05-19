@@ -129,18 +129,18 @@ public class PokemonUtils {
 
         switch (object) {
             case "ability":
-                replacement = abilityDAO.getAbilityByIdentifier(identifier).getName();
+                replacement = abilityDAO.getAbility(identifier).getName();
                 break;
             case "move":
-                replacement = moveDAO.getMoveByIdentifier(identifier).getName();
+                replacement = moveDAO.getMove(identifier).getName();
                 break;
             case "type":
-                replacement = typeDAO.getTypeByIdentifier(identifier).getName();
+                replacement = typeDAO.getType(identifier).getName();
                 break;
             case "effectChance":
                 Move move = new Move();
                 move.setId(objectId);
-                replacement = Integer.toString(moveDAO.getMoveMetaById(move).getEffectChance());
+                replacement = Integer.toString(moveDAO.getMoveMeta(move).getEffectChance());
                 break;
             default:
                 Log.w("PROSE", "Prose reference object, not recognized: " + object);

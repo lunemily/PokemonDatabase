@@ -1,5 +1,6 @@
 package com.evanfuhr.pokemondatabase.interfaces;
 
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.List;
@@ -10,9 +11,11 @@ public interface TypeDataInterface {
 
     List<Type> getAllTypes(String nameSearchParam);
 
-    Type getTypeByID(Type type);
+    Type getType(Type type);
 
-    Type getTypeByIdentifier(String identifier);
+    Type getType(String identifier);
+
+    List<Type> getTypes(Pokemon pokemon);
 
     List<Type> getSingleTypeEfficacy(Type type);
 

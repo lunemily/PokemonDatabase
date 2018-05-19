@@ -146,13 +146,10 @@ public class LocationListFragment extends Fragment
         List<Location> filteredLocations = new ArrayList<>();
 
         if (isListByPokemon) {
-//            // Rather than iterating over ALL locations, just get the pokemon's abilities and load
-//            PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-//            List<Location> pokemonLocations = pokemonDAO.getLocationsForPokemon(pokemon);
-//            for (Location location : pokemonLocations) {
-//                filteredAbilities.add(locationDAO.getLocationById(location));
-//            }
-//            pokemonDAO.close();
+            List<Location> pokemonLocations = locationDAO.getLocations(pokemon);
+            for (Location location : pokemonLocations) {
+                filteredLocations.add(locationDAO.getLocation(location));
+            }
             mTitle.setText(R.string.locations);
         } else {
             filteredLocations = unfilteredLocations;

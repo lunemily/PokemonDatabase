@@ -21,8 +21,10 @@ import com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.PokemonRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
+import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
@@ -153,12 +155,13 @@ public class PokemonListFragment extends Fragment
 
     List<Pokemon> getFilteredPokemon() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
+        TypeDAO typeDAO = new TypeDAO(getActivity());
         List<Pokemon> unfilteredPokemons = pokemonDAO.getAllPokemon();
         List<Pokemon> filteredPokemons = new ArrayList<>();
 
         for (Pokemon pokemon : unfilteredPokemons) {
             // Always want to set mPokemon's types for display colors
-            pokemon.setTypes(pokemonDAO.getTypesForPokemon(pokemon));
+            pokemon.setTypes(typeDAO.getTypes(pokemon));
             if (isListByType) {
                 for (Type pokemonType : pokemon.getTypes()) {
                     if (pokemonType.getId() == type.getId()) {
@@ -166,17 +169,19 @@ public class PokemonListFragment extends Fragment
                     }
                 }
             } else if (isListByAbility) {
-                pokemon.setAbilities(pokemonDAO.getAbilitiesForPokemon(pokemon));
+                AbilityDAO abilityDAO = new AbilityDAO(getActivity());
+                pokemon.setAbilities(abilityDAO.getAbilities(pokemon));
                 for (Ability pokemonAbility : pokemon.getAbilities()) {
                     if (pokemonAbility.getId() == ability.getId()) {
                         filteredPokemons.add(pokemon);
                     }
                 }
+                abilityDAO.close();
             } else if (isListByMove) {
-                List<Pokemon> rawPokemons = pokemonDAO.getPokemonByMove(move);
+                List<Pokemon> rawPokemons = pokemonDAO.getPokemon(move);
                 for (Pokemon movePokemon : rawPokemons) {
-                    movePokemon = pokemonDAO.getPokemonByID(movePokemon);
-                    movePokemon.setTypes(pokemonDAO.getTypesForPokemon(movePokemon));
+                    movePokemon = pokemonDAO.getPokemon(movePokemon);
+                    movePokemon.setTypes(typeDAO.getTypes(movePokemon));
                     filteredPokemons.add(movePokemon);
                 }
                 break;
@@ -187,6 +192,7 @@ public class PokemonListFragment extends Fragment
         }
 
         pokemonDAO.close();
+        typeDAO.close();
 
         return filteredPokemons;
     }

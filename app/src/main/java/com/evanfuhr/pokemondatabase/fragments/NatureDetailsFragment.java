@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.NatureDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.FlavorDAO;
 import com.evanfuhr.pokemondatabase.data.NatureDAO;
@@ -77,7 +76,7 @@ public class NatureDetailsFragment extends Fragment {
 
     void loadNature() {
         NatureDAO natureDAO = new NatureDAO(getActivity());
-        mNature = natureDAO.getNatureById(mNature);
+        mNature = natureDAO.getNature(mNature);
         natureDAO.close();
     }
 
@@ -93,8 +92,8 @@ public class NatureDetailsFragment extends Fragment {
     void loadNatureFlavors() {
         FlavorDAO flavorDAO = new FlavorDAO(getActivity());
 
-        mNature.setLikesFlavor(flavorDAO.getFlavorById(mNature.getLikesFlavor()));
-        mNature.setHatesFlavor(flavorDAO.getFlavorById(mNature.getHatesFlavor()));
+        mNature.setLikesFlavor(flavorDAO.getFlavor(mNature.getLikesFlavor()));
+        mNature.setHatesFlavor(flavorDAO.getFlavor(mNature.getHatesFlavor()));
 
         flavorDAO.close();
     }

@@ -87,7 +87,6 @@ public class MoveListFragment extends Fragment
         }
 
         MoveDAO moveDAO = new MoveDAO(getActivity());
-        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
 
         List<Move> moves;
 
@@ -97,14 +96,14 @@ public class MoveListFragment extends Fragment
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         if (isListByPokemon) {
-            moves = pokemonDAO.getMovesForPokemon(pokemon);
+            moves = moveDAO.getMoves(pokemon);
             List<Move> typedMoves = new ArrayList<>();
             for (Move move : moves) {
-                typedMoves.add(moveDAO.getMoveByID(move));
+                typedMoves.add(moveDAO.getMove(move));
             }
             mRecyclerView.setAdapter(new PokemonMoveRecyclerViewAdapter(typedMoves, mListener));
         } else if (isListByType) {
-            moves = moveDAO.getMovesByType(type);
+            moves = moveDAO.getMoves(type);
             mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
         } else {
             moves = moveDAO.getAllMoves();
@@ -114,6 +113,7 @@ public class MoveListFragment extends Fragment
         }
 
         PokemonUtils.transitionToast.cancel();
+        moveDAO.close();
         return view;
     }
 

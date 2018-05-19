@@ -12,11 +12,13 @@ public interface MoveDataInterface {
 
     List<Move> getAllMoves(String nameSearchParam);
 
-    Move getMoveByID(Move move);
+    Move getMove(Move move);
 
-    Move getMoveMetaById(Move move);
+    Move getMoveMeta(Move move);
 
-    Move getMoveByIdentifier(String identifier);
+    Move getMove(String identifier);
 
-    List<Move> getMovesByType(Type type);
+    List<Move> getMoves(Pokemon pokemon);
+
+    List<Move> getMoves(Type type);
 }

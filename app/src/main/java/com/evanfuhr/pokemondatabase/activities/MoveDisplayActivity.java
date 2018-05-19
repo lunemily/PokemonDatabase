@@ -34,7 +34,7 @@ public class MoveDisplayActivity extends AppCompatActivity
         //Get pokemon id passed to this activity
         Intent intent = getIntent();
         mMove.setId(intent.getIntExtra(MOVE_ID, 0));
-        mMove = moveDAO.getMoveByID(mMove);
+        mMove = moveDAO.getMove(mMove);
         setMoveBackgroundColor(mMove);
         setTitle(mMove.getName());
 
@@ -46,7 +46,7 @@ public class MoveDisplayActivity extends AppCompatActivity
 
         RelativeLayout moveDisplayActivity = findViewById(R.id.move_display_activity);
 
-        moveDisplayActivity.setBackgroundColor(Color.parseColor(typeDAO.getTypeByID(move.getType()).getColor()));
+        moveDisplayActivity.setBackgroundColor(Color.parseColor(typeDAO.getType(move.getType()).getColor()));
     }
 
     @Override

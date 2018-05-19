@@ -82,7 +82,7 @@ public class NatureDAO extends DataBaseHelper implements NatureDataInterface {
      * @return          The modified input is returned
      * @see             Nature
      */
-    public Nature getNatureById(Nature nature) {
+    public Nature getNature(Nature nature) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String sql = SQLiteQueryBuilder

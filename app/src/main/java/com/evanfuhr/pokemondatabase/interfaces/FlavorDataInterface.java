@@ -10,5 +10,5 @@ public interface FlavorDataInterface {
 
     List<Flavor> getAllFlavors(String nameSearchParam);
 
-    Flavor getFlavorById(Flavor flavor);
+    Flavor getFlavor(Flavor flavor);
 }

@@ -31,7 +31,7 @@ public class AbilityDisplayActivity extends AppCompatActivity
         // Get ability_id passed to this activity
         Intent intent = getIntent();
         mAbility.setId(intent.getIntExtra(ABILITY_ID, 0));
-        mAbility = abilityDAO.getAbilityByID(mAbility);
+        mAbility = abilityDAO.getAbility(mAbility);
         setTitle(mAbility.getName());
 
         abilityDAO.close();

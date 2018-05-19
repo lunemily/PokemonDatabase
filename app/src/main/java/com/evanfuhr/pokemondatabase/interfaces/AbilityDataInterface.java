@@ -11,7 +11,9 @@ public interface AbilityDataInterface {
 
     List<Ability> getAllAbilities(String nameSearchParam);
 
-    Ability getAbilityByID(Ability ability);
+    Ability getAbility(Ability ability);
 
-    Ability getAbilityByIdentifier(String identifier);
+    Ability getAbility(String identifier);
+
+    List<Ability> getAbilities(Pokemon pokemon);
 }

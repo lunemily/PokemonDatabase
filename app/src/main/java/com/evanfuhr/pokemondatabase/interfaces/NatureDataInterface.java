@@ -10,5 +10,5 @@ public interface NatureDataInterface {
 
     List<Nature> getAllNatures(String nameSearchParam);
 
-    Nature getNatureById(Nature nature);
+    Nature getNature(Nature nature);
 }
