@@ -68,7 +68,6 @@ public class MoveListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mTitle = view.findViewById(R.id.card_list_title);
@@ -111,6 +110,7 @@ public class MoveListFragment extends Fragment
             moves = moveDAO.getAllMoves();
             mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
             mTitle.setVisibility(View.INVISIBLE);
+            setHasOptionsMenu(true);
         }
 
         PokemonUtils.transitionToast.cancel();

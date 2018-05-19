@@ -64,7 +64,6 @@ public class AbilityListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mTitle = view.findViewById(R.id.card_list_title);
@@ -86,6 +85,9 @@ public class AbilityListFragment extends Fragment
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
+        if (!isListByPokemon) {
+            setHasOptionsMenu(true);
+        }
 
         PokemonUtils.transitionToast.cancel();
         return view;

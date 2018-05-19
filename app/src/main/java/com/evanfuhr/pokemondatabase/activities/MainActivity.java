@@ -30,8 +30,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     @NonNls
-    public static final String POKEMON = "Pokémon";
-    public static int _version_id = 0;
+    public static final String POKEMON = "Pokémon Database";
+    public int mVersionId = 0;
 
     Button _pokemonButton;
     Button _typeButton;
@@ -66,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
             throw sqle;
 
         }
-
-        // Restore Preferences
-        restorePreferences();
 
         setTitle(POKEMON);
         setListButtons();
@@ -143,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // TODO: Util.java
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -186,13 +184,14 @@ public class MainActivity extends AppCompatActivity {
         final VersionSpinnerAdapter versionSpinnerAdapter = new VersionSpinnerAdapter(this, R.layout.dialog_set_game_version, versionList);
         versionSpinner.setAdapter(versionSpinnerAdapter);
         // TODO: Set position
-        versionSpinner.setSelection(versionSpinnerAdapter.getPositionByVersion(_version_id));
+        restorePreferences();
+        versionSpinner.setSelection(versionSpinnerAdapter.getPositionByVersion(mVersionId));
 
         versionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Version version = versionSpinnerAdapter.getItem(position);
-                _version_id = version.getId();
+                mVersionId = version.getId();
 
             }
 
@@ -211,6 +210,16 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         // Save game version
                         dialog.dismiss();
+
+                        // We need an Editor object to make preference changes.
+                        // All objects are from android.context.Context
+                        SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.clear();
+                        editor.putInt(String.valueOf(R.string.gameVersionID), mVersionId);
+
+                        // Commit the edits!
+                        editor.commit();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -227,25 +236,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void restorePreferences() {
         SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
-        _version_id = settings.getInt(String.valueOf(R.string.gameVersionID), DataBaseHelper.defaultVersionId);
+        mVersionId = settings.getInt(String.valueOf(R.string.gameVersionID), DataBaseHelper.defaultVersionId);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putInt(String.valueOf(R.string.gameVersionID), _version_id);
-
-        // Commit the edits!
+        editor.clear();
+        editor.putInt(String.valueOf(R.string.gameVersionID), mVersionId);
         editor.commit();
     }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-
-        // We need an Editor object to make preference changes.
-        // All objects are from android.context.Context
-        SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt(String.valueOf(R.string.gameVersionID), _version_id);
-
-        // Commit the edits!
-        editor.commit();
-    }
+    // TODO: End Util.java
 }
