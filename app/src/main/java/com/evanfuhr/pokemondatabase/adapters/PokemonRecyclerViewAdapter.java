@@ -17,15 +17,15 @@ import java.util.List;
 
 public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Pokemon> mValues, _filteredList;
+    private final List<Pokemon> mValues, mFilteredList;
     private final OnListFragmentInteractionListener mListener;
 
     public PokemonRecyclerViewAdapter(List<Pokemon> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
 
-        _filteredList = new ArrayList<>();
-        _filteredList.addAll(mValues);
+        mFilteredList = new ArrayList<>();
+        mFilteredList.addAll(mValues);
     }
 
     @Override
@@ -37,12 +37,12 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = _filteredList.get(position);
-        holder._button.setId(_filteredList.get(position).getId());
-        holder._button.setText(_filteredList.get(position).getName());
-        holder._button.setBackground(PokemonUtils.getColorGradientByTypes(_filteredList.get(position).getTypes()));
+        holder.mItem = mFilteredList.get(position);
+        holder.mButton.setId(mFilteredList.get(position).getId());
+        holder.mButton.setText(mFilteredList.get(position).getName());
+        holder.mButton.setBackground(PokemonUtils.getColorGradientByTypes(mFilteredList.get(position).getTypes()));
 
-        holder._button.setOnClickListener(new View.OnClickListener() {
+        holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
@@ -56,35 +56,35 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
 
     @Override
     public int getItemCount() {
-        return _filteredList.size();
+        return mFilteredList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
-        final Button _button;
+        final Button mButton;
         Pokemon mItem;
 
         ViewHolder(View view) {
             super(view);
             mView = view;
-            _button = view.findViewById(R.id.singleButton);
+            mButton = view.findViewById(R.id.singleButton);
         }
     }
 
     public void filter(final String filterText) {
-        _filteredList.clear();
+        mFilteredList.clear();
 
         // If there is no search value, then add all original list items to filter list
         if (TextUtils.isEmpty(filterText)) {
 
-            _filteredList.addAll(mValues);
+            mFilteredList.addAll(mValues);
 
         } else {
             // Iterate in the original List and add it to filter list...
             for (Pokemon pokemon : mValues) {
                 if (pokemon.getName().toLowerCase().contains(filterText.toLowerCase())) {
                     // Adding Matched items
-                    _filteredList.add(pokemon);
+                    mFilteredList.add(pokemon);
                 }
             }
         }

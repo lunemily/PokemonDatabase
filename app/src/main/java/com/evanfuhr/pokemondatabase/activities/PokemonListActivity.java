@@ -33,7 +33,7 @@ public class PokemonListActivity extends AppCompatActivity
 
         // Build the intent to load the pokemon display
         Intent intent = new Intent(this, PokemonDisplayActivity.class);
-        // Load the pokemon ID to send to the player sheet
+        // Load the pokemon id into the intent
         intent.putExtra(PokemonDisplayActivity.POKEMON_ID, pokemon.getId());
 
         startActivity(intent);

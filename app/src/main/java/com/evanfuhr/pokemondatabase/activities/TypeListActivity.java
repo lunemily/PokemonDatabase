@@ -15,7 +15,7 @@ public class TypeListActivity extends AppCompatActivity
         implements TypeListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String TYPE = "Type";
+    public static final String TYPE = "Types";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 

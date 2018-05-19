@@ -15,7 +15,7 @@ public class AbilityListActivity extends AppCompatActivity
         implements AbilityListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String ABILITY = "Ability";
+    public static final String ABILITY = "Abilities";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 
@@ -31,9 +31,9 @@ public class AbilityListActivity extends AppCompatActivity
     public void onListFragmentInteraction(Ability ability) {
         PokemonUtils.showLoadingToast(this);
 
-        // Build the intent to load the player sheet
+        // Build the intent to load the ability display
         Intent intent = new Intent(this, AbilityDisplayActivity.class);
-        // Add the id to send to the display activity
+        // Load the ability id into the intent
         intent.putExtra(AbilityDisplayActivity.ABILITY_ID, ability.getId());
 
         startActivity(intent);

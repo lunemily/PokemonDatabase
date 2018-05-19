@@ -15,7 +15,7 @@ public class NatureListActivity extends AppCompatActivity
         implements NatureListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String NATURE = "Nature";
+    public static final String NATURE = "Natures";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 
