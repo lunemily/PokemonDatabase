@@ -44,6 +44,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String CONTEST_TYPE_NAMES = "contest_type_names";
     static final String CONTEST_TYPES = "contest_types";
     static final String EGG_GROUP_PROSE = "egg_group_prose";
+    static final String LOCATION_NAMES = "location_names";
+    static final String LOCATIONS = "locations";
     static final String MACHINES = "machines";
     static final String MOVE_EFFECT_PROSE = "move_effect_prose";
     static final String MOVE_META = "move_meta";
@@ -59,6 +61,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String TABLE_POKEMON_SPECIES_FLAVOR_TEXT = "pokemon_species_flavor_text";
     static final String POKEMON_SPECIES_NAMES = "pokemon_species_names";
     static final String POKEMON_TYPES = "pokemon_types";
+    static final String REGION_NAMES = "region_names";
+    static final String REGIONS = "regions";
     static final String STAT_NAMES = "stat_names";
     static final String STATS = "stats";
     static final String TYPES = "types";
@@ -88,6 +92,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String CONTEST_TYPE_ID = "contest_type_id";
     static final String FLAVOR = "flavor";
     static final String COLOR = "color";
+
+    //location_names
+    static final String LOCATION_ID = "location_id";
 
     //machines
     static final String MACHINE_NUMBER = "machine_number";
@@ -141,6 +148,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //pokemon_species_names
     static final String POKEMON_SPECIES_ID = "pokemon_species_id";
     static final String GENUS = "genus";
+
+    //region_names
+    static final String REGION_ID = "region_id";
 
     //stat_names
     static final String STAT_ID = "stat_id";

@@ -19,6 +19,7 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.adapters.VersionSpinnerAdapter;
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
 import com.evanfuhr.pokemondatabase.data.VersionDAO;
+import com.evanfuhr.pokemondatabase.fragments.LocationListFragment;
 import com.evanfuhr.pokemondatabase.models.Version;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 import com.evanfuhr.pokemondatabase.utils.VersionManager;
@@ -34,11 +35,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String POKEMON = "Pokémon Database";
     VersionManager mVersionManager;
 
-    Button _pokemonButton;
-    Button _typeButton;
-    Button _moveButton;
-    Button _abilityButton;
-    Button _natureButton;
+    Button mPokemonButton;
+    Button mTypeButton;
+    Button mMoveButton;
+    Button mAbilityButton;
+    Button mLocationButton;
+    Button mNatureButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,40 +77,48 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListButtons() {
-        _pokemonButton = this.findViewById(R.id.buttonPokemonList);
-        _pokemonButton.setOnClickListener(new View.OnClickListener() {
+        mPokemonButton = this.findViewById(R.id.buttonPokemonList);
+        mPokemonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickButton(view);
             }
         });
 
-        _typeButton = this.findViewById(R.id.buttonTypeList);
-        _typeButton.setOnClickListener(new View.OnClickListener() {
+        mTypeButton = this.findViewById(R.id.buttonTypeList);
+        mTypeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickButton(view);
             }
         });
 
-        _moveButton = this.findViewById(R.id.buttonMoveList);
-        _moveButton.setOnClickListener(new View.OnClickListener() {
+        mMoveButton = this.findViewById(R.id.buttonMoveList);
+        mMoveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickButton(view);
             }
         });
 
-        _abilityButton = this.findViewById(R.id.buttonAbilityList);
-        _abilityButton.setOnClickListener(new View.OnClickListener() {
+        mAbilityButton = this.findViewById(R.id.buttonAbilityList);
+        mAbilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickButton(view);
             }
         });
 
-        _natureButton = this.findViewById(R.id.buttonNatureList);
-        _natureButton.setOnClickListener(new View.OnClickListener() {
+        mLocationButton = this.findViewById(R.id.buttonLocationList);
+        mLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickButton(view);
+            }
+        });
+
+        mNatureButton = this.findViewById(R.id.buttonNatureList);
+        mNatureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onClickButton(view);
@@ -131,6 +141,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.buttonAbilityList:
                 intent = new Intent(this, AbilityListActivity.class);
+                break;
+            case R.id.buttonLocationList:
+                intent = new Intent(this, LocationListActivity.class);
                 break;
             case R.id.buttonNatureList:
                 intent = new Intent(this, NatureListActivity.class);
