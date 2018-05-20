@@ -21,6 +21,7 @@ import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
 import com.evanfuhr.pokemondatabase.data.VersionDAO;
 import com.evanfuhr.pokemondatabase.models.Version;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
+import com.evanfuhr.pokemondatabase.utils.VersionManager;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     @NonNls
     public static final String POKEMON = "Pokémon Database";
-    public int mVersionId = 0;
+    VersionManager mVersionManager;
 
     Button _pokemonButton;
     Button _typeButton;
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle(POKEMON);
         setListButtons();
+
+        mVersionManager = new VersionManager(this);
     }
 
     private void setListButtons() {
@@ -158,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch(id) {
             case R.id.action_set_game:
-                onClickMenuSetGame();
+                mVersionManager.onClickMenuSetGame();
                 break;
             case R.id.action_search_list:
                 break;
@@ -168,79 +171,4 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
-    public void onClickMenuSetGame() {
-
-        // Get list of versions
-        VersionDAO versionDAO = new VersionDAO(this);
-        List<Version> versionList = versionDAO.getAllVersions();
-
-        // Get view
-        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-        View setGameVersionView = layoutInflater.inflate(R.layout.dialog_set_game_version, null);
-
-        // Setup spinner
-        Spinner versionSpinner = setGameVersionView.findViewById(R.id.spinner_game_version);
-        final VersionSpinnerAdapter versionSpinnerAdapter = new VersionSpinnerAdapter(this, R.layout.dialog_set_game_version, versionList);
-        versionSpinner.setAdapter(versionSpinnerAdapter);
-        // TODO: Set position
-        restorePreferences();
-        versionSpinner.setSelection(versionSpinnerAdapter.getPositionByVersion(mVersionId));
-
-        versionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Version version = versionSpinnerAdapter.getItem(position);
-                mVersionId = version.getId();
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        // Setup a dialog window
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setTitle(R.string.set_game_version);
-        alertDialogBuilder.setView(setGameVersionView);
-        alertDialogBuilder.setCancelable(true)
-                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Save game version
-                        dialog.dismiss();
-
-                        // We need an Editor object to make preference changes.
-                        // All objects are from android.context.Context
-                        SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.clear();
-                        editor.putInt(String.valueOf(R.string.gameVersionID), mVersionId);
-
-                        // Commit the edits!
-                        editor.commit();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        restorePreferences();
-                        dialog.dismiss();
-                    }
-                });
-
-
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
-
-    private void restorePreferences() {
-        SharedPreferences settings = getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
-        mVersionId = settings.getInt(String.valueOf(R.string.gameVersionID), DataBaseHelper.defaultVersionId);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.clear();
-        editor.putInt(String.valueOf(R.string.gameVersionID), mVersionId);
-        editor.commit();
-    }
-    // TODO: End Util.java
 }
