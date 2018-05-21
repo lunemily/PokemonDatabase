@@ -17,7 +17,7 @@ public class MoveListActivity extends AppCompatActivity
     @NonNls
     public static final String MOVE_ID = "move_id";
     @NonNls
-    public static final String MOVE = "Type";
+    public static final String MOVE = "Moves";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 

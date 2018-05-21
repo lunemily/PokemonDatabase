@@ -2,6 +2,7 @@ package com.evanfuhr.pokemondatabase.adapters;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,20 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AbilityRecyclerViewAdapter extends RecyclerView.Adapter<AbilityRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Ability> mValues;
+    private final List<Ability> mValues, mFilteredList;
     private final AbilityListFragment.OnListFragmentInteractionListener mListener;
 
     public AbilityRecyclerViewAdapter(List<Ability> items, AbilityListFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+
+        mFilteredList = new ArrayList<>();
+        mFilteredList.addAll(mValues);
     }
 
     @Override
@@ -32,9 +37,9 @@ public class AbilityRecyclerViewAdapter extends RecyclerView.Adapter<AbilityRecy
 
     @Override
     public void onBindViewHolder(final AbilityRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mButton.setId(mValues.get(position).getId());
-        holder.mButton.setText(mValues.get(position).getName());
+        holder.mItem = mFilteredList.get(position);
+        holder.mButton.setId(mFilteredList.get(position).getId());
+        holder.mButton.setText(mFilteredList.get(position).getName());
         holder.mButton.setBackgroundColor(Color.GRAY);
 
         if (holder.mItem.getIsHidden()) {
@@ -55,7 +60,7 @@ public class AbilityRecyclerViewAdapter extends RecyclerView.Adapter<AbilityRecy
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mFilteredList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -68,5 +73,25 @@ public class AbilityRecyclerViewAdapter extends RecyclerView.Adapter<AbilityRecy
             mView = view;
             mButton = view.findViewById(R.id.singleButton);
         }
+    }
+
+    public void filter(final String filterText) {
+        mFilteredList.clear();
+
+        // If there is no search value, then add all original list items to filter list
+        if (TextUtils.isEmpty(filterText)) {
+
+            mFilteredList.addAll(mValues);
+
+        } else {
+            // Iterate in the original List and add it to filter list...
+            for (Ability ability : mValues) {
+                if (ability.getName().toLowerCase().contains(filterText.toLowerCase())) {
+                    // Adding Matched items
+                    mFilteredList.add(ability);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

@@ -1,5 +1,6 @@
 package com.evanfuhr.pokemondatabase.fragments;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -7,8 +8,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
@@ -23,15 +28,16 @@ import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.SEARCH_SERVICE;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link AbilityListFragment.OnListFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AbilityListFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
-public class AbilityListFragment extends Fragment {
+public class AbilityListFragment extends Fragment
+        implements SearchView.OnQueryTextListener {
 
     private AbilityListFragment.OnListFragmentInteractionListener mListener;
 
@@ -79,6 +85,9 @@ public class AbilityListFragment extends Fragment {
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
+        if (!isListByPokemon) {
+            setHasOptionsMenu(true);
+        }
 
         PokemonUtils.transitionToast.cancel();
         return view;
@@ -99,6 +108,18 @@ public class AbilityListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        AbilityRecyclerViewAdapter adapter = (AbilityRecyclerViewAdapter) mRecyclerView.getAdapter();
+        adapter.filter(newText);
+        return true;
     }
 
     /**
@@ -140,5 +161,45 @@ public class AbilityListFragment extends Fragment {
         abilityDAO.close();
 
         return filteredAbilities;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menu.clear();
+        inflater.inflate(R.menu.menu_list, menu);
+
+        SearchManager searchManager = (SearchManager)
+                getActivity().getSystemService(SEARCH_SERVICE);
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search_list);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+
+        if (!searchMenuItem.isActionViewExpanded()) {
+            searchMenuItem.expandActionView();
+        }
+        else {
+            searchMenuItem.collapseActionView();
+        }
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch(id) {
+            case R.id.action_search_list:
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 }

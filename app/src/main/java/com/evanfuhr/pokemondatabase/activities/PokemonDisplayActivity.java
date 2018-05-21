@@ -1,20 +1,30 @@
 package com.evanfuhr.pokemondatabase.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.adapters.VersionSpinnerAdapter;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
+import com.evanfuhr.pokemondatabase.data.VersionDAO;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
 import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
@@ -23,7 +33,9 @@ import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.models.Version;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
+import com.evanfuhr.pokemondatabase.utils.VersionManager;
 
 import org.jetbrains.annotations.NonNls;
 
@@ -39,9 +51,10 @@ public class PokemonDisplayActivity extends AppCompatActivity
     public static final String POKEMON_ID = "pokemon_id";
     public static final String ANIMATION = "animation";
 
-    RelativeLayout _RelativeLayout;
+    RelativeLayout mRelativeLayout;
 
     public Pokemon pokemon = new Pokemon();
+    VersionManager mVersionManager;
 
     private GestureDetector mDetector;
 
@@ -53,7 +66,8 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         PokemonDAO pokemonDAO = new PokemonDAO(this);
 
-        _RelativeLayout = findViewById(R.id.pokemon_display_activity);
+        mRelativeLayout = findViewById(R.id.pokemon_display_activity);
+        mVersionManager = new VersionManager(this);
 
         //Get pokemon id passed to this activity
         Intent intent = getIntent();
@@ -114,6 +128,34 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         pokemonDAO.close();
         typeDAO.close();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch(id) {
+            case R.id.action_set_game:
+                mVersionManager.onClickMenuSetGame();
+                break;
+            case R.id.action_search_list:
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 
     @Override
