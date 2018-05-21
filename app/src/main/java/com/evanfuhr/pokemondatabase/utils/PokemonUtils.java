@@ -6,14 +6,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Toast;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
-import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Flavor;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -131,18 +129,18 @@ public class PokemonUtils {
 
         switch (object) {
             case "ability":
-                replacement = abilityDAO.getAbilityByIdentifier(identifier).getName();
+                replacement = abilityDAO.getAbility(identifier).getName();
                 break;
             case "move":
-                replacement = moveDAO.getMoveByIdentifier(identifier).getName();
+                replacement = moveDAO.getMove(identifier).getName();
                 break;
             case "type":
-                replacement = typeDAO.getTypeByIdentifier(identifier).getName();
+                replacement = typeDAO.getType(identifier).getName();
                 break;
             case "effectChance":
                 Move move = new Move();
                 move.setId(objectId);
-                replacement = Integer.toString(moveDAO.getMoveMetaById(move).getEffectChance());
+                replacement = Integer.toString(moveDAO.getMoveMeta(move).getEffectChance());
                 break;
             default:
                 Log.w("PROSE", "Prose reference object, not recognized: " + object);

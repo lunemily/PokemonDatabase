@@ -71,7 +71,7 @@ public class Type {
     public static List<Type> loadTypesForPokemon(List<Type> types, TypeDAO typeDAO) {
         List<Type> newTypes = new ArrayList<>();
         for (Type t: types) {
-            Type type = typeDAO.getTypeByID(t);
+            Type type = typeDAO.getType(t);
             newTypes.add(type);
         }
         return newTypes;

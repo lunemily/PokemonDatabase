@@ -30,7 +30,7 @@ public class NatureDisplayActivity extends AppCompatActivity {
         //Get pokemon id passed to this activity
         Intent intent = getIntent();
         mNature.setId(intent.getIntExtra(NATURE_ID, 0));
-        mNature = natureDAO.getNatureById(mNature);
+        mNature = natureDAO.getNature(mNature);
         setNatureBackgroundColor(mNature);
         setTitle(mNature.getName());
 
@@ -41,8 +41,8 @@ public class NatureDisplayActivity extends AppCompatActivity {
         NatureDAO natureDAO = new NatureDAO(this);
 
         //Create base background
-        nature = natureDAO.getNatureById(nature);
-        GradientDrawable gd = PokemonUtils.getColorGradientByFlavors(natureDAO.getNatureById(nature).getFlavors());
+        nature = natureDAO.getNature(nature);
+        GradientDrawable gd = PokemonUtils.getColorGradientByFlavors(natureDAO.getNature(nature).getFlavors());
 
         RelativeLayout natureDisplayActivity = (RelativeLayout) findViewById(R.id.nature_display_activity);
         natureDisplayActivity.setBackground(gd);

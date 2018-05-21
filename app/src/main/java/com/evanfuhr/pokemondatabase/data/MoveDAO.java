@@ -8,6 +8,7 @@ import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.interfaces.MoveDataInterface;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.DamageClass;
+import com.evanfuhr.pokemondatabase.models.MoveMethod;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
@@ -84,7 +85,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
      * @return          The modified input is returned
      * @see             Move
      */
-    public Move getMoveByID(Move move) {
+    public Move getMove(Move move) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String sql = SQLiteQueryBuilder
@@ -139,7 +140,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
      * @return              The modified input is returned
      * @see                 Move
      */
-    public Move getMoveByIdentifier(String identifier) {
+    public Move getMove(String identifier) {
         SQLiteDatabase db = this.getWritableDatabase();
         Move move = new Move();
 
@@ -196,7 +197,7 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
      * @return              The modified input is returned
      * @see                 Move
      */
-    public Move getMoveMetaById(Move move) {
+    public Move getMoveMeta(Move move) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String sql = SQLiteQueryBuilder
@@ -229,9 +230,59 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
         return move;
     }
 
-    // Get filtered moves
+    /**
+     * Adds moves to the input pokemon and returns it. The moves and relevant data for the given
+     * pokemon are determined by a deeper reference to the version_group_id maintained elsewhere
+     *
+     * @param   pokemon A pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     * @see             Move
+     */
+    public List<Move> getMoves(Pokemon pokemon) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-    public List<Move> getMovesByType(Type type) {
+        List<Move> movesForPokemon = new ArrayList<>();
+        int version_group_id = getVersionGroupIDByVersionID();
+
+        String selectQuery = "SELECT " + POKEMON_MOVES + "." + MOVE_ID +
+                ", " + POKEMON_MOVES + "." + POKEMON_MOVE_METHOD_ID +
+                ", " + POKEMON_MOVES + "." + POKEMON_MOVE_LEVEL +
+                ", " + MACHINES + "." + MACHINE_NUMBER +
+                " FROM " + POKEMON_MOVES +
+                //", " + MACHINES +
+                " LEFT OUTER JOIN (SELECT * FROM " + MACHINES + " WHERE " + MACHINES + "." + VERSION_GROUP_ID + " = " + version_group_id + ") AS " + MACHINES +
+                " ON " + POKEMON_MOVES + "." + MOVE_ID + " = " + MACHINES + "." + MOVE_ID +
+
+                " WHERE " + POKEMON_MOVES + "." + POKEMON_ID + " = " + pokemon.getId() +
+                " AND " + POKEMON_MOVES + "." + VERSION_GROUP_ID + " = " + version_group_id +
+                " ORDER BY " + POKEMON_MOVES + "." + POKEMON_MOVE_METHOD_ID + " ASC" +
+                ", " + POKEMON_MOVES + "." + POKEMON_MOVE_LEVEL + " ASC" +
+                ", " + MACHINES + "." + MACHINE_NUMBER + " ASC"
+                ;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                Move move = new Move();
+                move.setId(Integer.parseInt(cursor.getString(0)));
+                // Set method enum
+                move.setMethodID(MoveMethod.get(Integer.parseInt(cursor.getString(1))));
+                move.setLevel(Integer.parseInt(cursor.getString(2)));
+                if (!cursor.isNull(3)) {
+                    move.setTM(Integer.parseInt(cursor.getString(3)));
+                }
+                //add move to list
+                movesForPokemon.add(move);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return movesForPokemon;
+    }
+
+    public List<Move> getMoves(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Move> moves = new ArrayList<>();

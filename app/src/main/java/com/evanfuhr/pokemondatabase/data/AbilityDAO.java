@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.evanfuhr.pokemondatabase.interfaces.AbilityDataInterface;
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
      * @return          The modified input is returned
      * @see             Ability
      */
-    public Ability getAbilityByID(Ability ability) {
+    public Ability getAbility(Ability ability) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String sql = SQLiteQueryBuilder
@@ -115,7 +116,7 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
      * @return              The modified input is returned
      * @see                 Ability
      */
-    public Ability getAbilityByIdentifier(String identifier) {
+    public Ability getAbility(String identifier) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         Ability ability = new Ability();
@@ -145,5 +146,47 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
         }
 
         return ability;
+    }
+
+    /**
+     * Adds abilities to the input pokemon and returns it
+     *
+     * @param   pokemon A pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     * @see             Ability
+     */
+    public List<Ability> getAbilities(Pokemon pokemon) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Ability> abilitiesForPokemon = new ArrayList<>();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_ABILITIES, ABILITY_ID)
+                        , field(POKEMON_ABILITIES, SLOT)
+                        , field(POKEMON_ABILITIES, IS_HIDDEN))
+                .from(POKEMON_ABILITIES)
+                .where(field(POKEMON_ABILITIES, POKEMON_ID) + "=" + pokemon.getId())
+                .orderBy(field(POKEMON_ABILITIES, SLOT))
+                .asc()
+                .build();
+
+
+        Cursor cursor = db.rawQuery(sql, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                //Move move = new Move();
+                Ability ability = new Ability();
+                ability.setId(Integer.parseInt(cursor.getString(0)));
+                ability.setSlot(Integer.parseInt(cursor.getString(1)));
+                ability.setIsHidden("1".equals(cursor.getString(2)));
+                //add move to list
+                abilitiesForPokemon.add(ability);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return abilitiesForPokemon;
     }
 }

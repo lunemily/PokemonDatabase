@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
@@ -95,8 +94,8 @@ public class MoveDetailsFragment extends Fragment {
         MoveDAO moveDAO = new MoveDAO(getActivity());
         TypeDAO typeDAO = new TypeDAO(getActivity());
 
-        mMove = moveDAO.getMoveByID(mMove);
-        mMove.setType(typeDAO.getTypeByID(mMove.getType()));
+        mMove = moveDAO.getMove(mMove);
+        mMove.setType(typeDAO.getType(mMove.getType()));
 
         moveDAO.close();
         typeDAO.close();

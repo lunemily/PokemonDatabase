@@ -1,9 +1,9 @@
 package com.evanfuhr.pokemondatabase.fragments;
 
-import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,14 +18,14 @@ import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
-import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
-import com.evanfuhr.pokemondatabase.adapters.MoveRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.adapters.PokemonMoveRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.data.MoveDAO;
+import com.evanfuhr.pokemondatabase.adapters.AbilityRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.adapters.LocationRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.data.AbilityDAO;
+import com.evanfuhr.pokemondatabase.data.LocationDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
-import com.evanfuhr.pokemondatabase.models.Move;
+import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.Location;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
-import com.evanfuhr.pokemondatabase.models.Type;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.ArrayList;
@@ -34,21 +34,19 @@ import java.util.List;
 import static android.content.Context.SEARCH_SERVICE;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link AbilityListFragment.OnListFragmentInteractionListener} interface
+ * to handle interaction events.
  */
-public class MoveListFragment extends Fragment
+public class LocationListFragment extends Fragment
         implements SearchView.OnQueryTextListener {
 
-    private OnListFragmentInteractionListener mListener;
+    private LocationListFragment.OnListFragmentInteractionListener mListener;
 
     Pokemon pokemon = new Pokemon();
-    Type type = new Type();
 
     boolean isListByPokemon = false;
-    boolean isListByType = false;
 
     RecyclerView mRecyclerView;
     TextView mTitle;
@@ -57,7 +55,8 @@ public class MoveListFragment extends Fragment
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public MoveListFragment() {
+    public LocationListFragment() {
+        // Required empty public constructor
     }
 
     @Override
@@ -71,61 +70,40 @@ public class MoveListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mTitle = view.findViewById(R.id.card_list_title);
-        mTitle.setText(R.string.moves);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
-            } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
-                type.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
-                isListByType = true;
             }
         } else {
-            Log.i("MoveListFragment Log", "No bundle");
+            Log.i("Fragment Log", "No bundle");
         }
-
-        MoveDAO moveDAO = new MoveDAO(getActivity());
-
-        List<Move> moves;
+        List<Location> locations = getFilteredLocations();
 
         // Set the adapter
         Context context = view.getContext();
         mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        if (isListByPokemon) {
-            moves = moveDAO.getMoves(pokemon);
-            List<Move> typedMoves = new ArrayList<>();
-            for (Move move : moves) {
-                typedMoves.add(moveDAO.getMove(move));
-            }
-            mRecyclerView.setAdapter(new PokemonMoveRecyclerViewAdapter(typedMoves, mListener));
-        } else if (isListByType) {
-            moves = moveDAO.getMoves(type);
-            mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
-        } else {
-            moves = moveDAO.getAllMoves();
-            mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
-            mTitle.setVisibility(View.INVISIBLE);
+        mRecyclerView.setAdapter(new LocationRecyclerViewAdapter(locations, mListener));
+        if (!isListByPokemon) {
             setHasOptionsMenu(true);
         }
 
         PokemonUtils.transitionToast.cancel();
-        moveDAO.close();
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof LocationListFragment.OnListFragmentInteractionListener) {
+            mListener = (LocationListFragment.OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -142,7 +120,7 @@ public class MoveListFragment extends Fragment
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        MoveRecyclerViewAdapter adapter = (MoveRecyclerViewAdapter) mRecyclerView.getAdapter();
+        LocationRecyclerViewAdapter adapter = (LocationRecyclerViewAdapter) mRecyclerView.getAdapter();
         adapter.filter(newText);
         return true;
     }
@@ -152,14 +130,37 @@ public class MoveListFragment extends Fragment
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(Move move);
+
+        void onListFragmentInteraction(Location location);
+    }
+
+    private List<Location> getFilteredLocations() {
+        LocationDAO locationDAO = new LocationDAO(getActivity());
+        List<Location> unfilteredLocations = locationDAO.getAllLocations();
+        List<Location> filteredLocations = new ArrayList<>();
+
+        if (isListByPokemon) {
+            List<Location> pokemonLocations = locationDAO.getLocations(pokemon);
+            for (Location location : pokemonLocations) {
+                filteredLocations.add(locationDAO.getLocation(location));
+            }
+            mTitle.setText(R.string.locations);
+        } else {
+            filteredLocations = unfilteredLocations;
+
+            // Title is activity title
+            mTitle.setVisibility(View.INVISIBLE);
+        }
+
+        locationDAO.close();
+
+        return filteredLocations;
     }
 
     @Override

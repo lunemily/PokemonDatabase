@@ -8,6 +8,7 @@ import com.evanfuhr.pokemondatabase.interfaces.PokemonDataInterface;
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
+import com.evanfuhr.pokemondatabase.models.Location;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.MoveMethod;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
@@ -72,6 +73,46 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         return pokemonList;
     }
 
+    @Override
+    public List<Pokemon> getPokemon(Location location) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Pokemon> pokemons = new ArrayList<>();
+
+//        select distinct encounters.pokemon_id
+//        from encounters
+//        join location_areas
+//        on location_areas.id = encounters.location_area_id
+//        where location_areas.location_id = 99
+//        and encounters.version_id = 1
+//        ;
+        String sql = SQLiteQueryBuilder
+                .select("DISTINCT " + field(ENCOUNTERS, POKEMON_ID))
+                .from(ENCOUNTERS)
+                .join(LOCATION_AREAS)
+                .on(field(LOCATION_AREAS, ID) + "=" + field(ENCOUNTERS, LOCATION_AREA_ID))
+                .where(field(LOCATION_AREAS, LOCATION_ID) + "=" + location.getId())
+                //.and(field(ENCOUNTERS, VERSION_ID) + "=" + mVersion.getId())
+                .orderBy(field(ENCOUNTERS, POKEMON_ID))
+                .asc()
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                //Move move = new Move();
+                Pokemon pokemon = new Pokemon();
+                pokemon.setId(Integer.parseInt(cursor.getString(0)));
+                //add move to list
+                pokemons.add(pokemon);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return pokemons;
+    }
+
     /**
      * Returns a Pokemon object with most of its non-list data
      *
@@ -79,7 +120,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
      * @return          The modified input is returned
      * @see             Pokemon
      */
-    public Pokemon getPokemonByID(Pokemon pokemon) {
+    public Pokemon getPokemon(Pokemon pokemon) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String sql = SQLiteQueryBuilder
@@ -120,8 +161,6 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         return pokemon;
     }
 
-    // Get filtered pokemon
-
     /**
      * Returns a list of all pokemon that can learn the given move. References to the version_group_id maintained elsewhere
      *
@@ -130,7 +169,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
      * @see             Pokemon
      * @see             Move
      */
-    public List<Pokemon> getPokemonByMove(Move move) {
+    public List<Pokemon> getPokemon(Move move) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Pokemon> pokemons = new ArrayList<>();
@@ -158,171 +197,5 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         cursor.close();
 
         return pokemons;
-    }
-
-    /**
-     * Adds abilities to the input pokemon and returns it
-     *
-     * @param   pokemon A pokemon object to be modified with additional data
-     * @return          The modified input is returned
-     * @see             Pokemon
-     * @see             Ability
-     */
-    public List<Ability> getAbilitiesForPokemon(Pokemon pokemon) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        List<Ability> abilitiesForPokemon = new ArrayList<>();
-
-        String sql = SQLiteQueryBuilder
-                .select(field(POKEMON_ABILITIES, ABILITY_ID)
-                        , field(POKEMON_ABILITIES, SLOT)
-                        , field(POKEMON_ABILITIES, IS_HIDDEN))
-                .from(POKEMON_ABILITIES)
-                .where(field(POKEMON_ABILITIES, POKEMON_ID) + "=" + pokemon.getId())
-                .orderBy(field(POKEMON_ABILITIES, SLOT))
-                .asc()
-                .build();
-
-
-        Cursor cursor = db.rawQuery(sql, null);
-        //Loop through rows and add each to list
-        if (cursor.moveToFirst()) {
-            do {
-                //Move move = new Move();
-                Ability ability = new Ability();
-                ability.setId(Integer.parseInt(cursor.getString(0)));
-                ability.setSlot(Integer.parseInt(cursor.getString(1)));
-                ability.setIsHidden("1".equals(cursor.getString(2)));
-                //add move to list
-                abilitiesForPokemon.add(ability);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        return abilitiesForPokemon;
-    }
-
-    /**
-     * Adds egg groups to the input pokemon and returns it
-     *
-     * @param   pokemon A pokemon object to be modified with additional data
-     * @return          The modified input is returned
-     * @see             Pokemon
-     * @see             EggGroup
-     */
-    public List<EggGroup> getEggGroupsForPokemon(Pokemon pokemon) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        List<EggGroup> eggGroups = new ArrayList<>();
-
-        String sql = SQLiteQueryBuilder
-                .select(field(POKEMON_EGG_GROUPS, EGG_GROUP_ID))
-                .from(POKEMON_EGG_GROUPS)
-                .where(field(POKEMON_EGG_GROUPS, SPECIES_ID) + "=" + pokemon.getId())
-                .build();
-
-        Cursor cursor = db.rawQuery(sql, null);
-        //Loop through rows and add each to list
-        if (cursor.moveToFirst()) {
-            do {
-                //Move move = new Move();
-                EggGroup eggGroup = new EggGroup();
-                eggGroup.setID(Integer.parseInt(cursor.getString(0)));
-                //add move to list
-                eggGroups.add(eggGroup);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        return eggGroups;
-    }
-
-    /**
-     * Adds moves to the input pokemon and returns it. The moves and relevant data for the given
-     * pokemon are determined by a deeper reference to the version_group_id maintained elsewhere
-     *
-     * @param   pokemon A pokemon object to be modified with additional data
-     * @return          The modified input is returned
-     * @see             Pokemon
-     * @see             Move
-     */
-    public List<Move> getMovesForPokemon(Pokemon pokemon) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        List<Move> movesForPokemon = new ArrayList<>();
-        int version_group_id = getVersionGroupIDByVersionID();
-
-        String selectQuery = "SELECT " + POKEMON_MOVES + "." + MOVE_ID +
-                ", " + POKEMON_MOVES + "." + POKEMON_MOVE_METHOD_ID +
-                ", " + POKEMON_MOVES + "." + POKEMON_MOVE_LEVEL +
-                ", " + MACHINES + "." + MACHINE_NUMBER +
-                " FROM " + POKEMON_MOVES +
-                //", " + MACHINES +
-                " LEFT OUTER JOIN (SELECT * FROM " + MACHINES + " WHERE " + MACHINES + "." + VERSION_GROUP_ID + " = " + version_group_id + ") AS " + MACHINES +
-                " ON " + POKEMON_MOVES + "." + MOVE_ID + " = " + MACHINES + "." + MOVE_ID +
-
-                " WHERE " + POKEMON_MOVES + "." + POKEMON_ID + " = " + pokemon.getId() +
-                " AND " + POKEMON_MOVES + "." + VERSION_GROUP_ID + " = " + version_group_id +
-                " ORDER BY " + POKEMON_MOVES + "." + POKEMON_MOVE_METHOD_ID + " ASC" +
-                ", " + POKEMON_MOVES + "." + POKEMON_MOVE_LEVEL + " ASC" +
-                ", " + MACHINES + "." + MACHINE_NUMBER + " ASC"
-                ;
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        //Loop through rows and add each to list
-        if (cursor.moveToFirst()) {
-            do {
-                Move move = new Move();
-                move.setId(Integer.parseInt(cursor.getString(0)));
-                // Set method enum
-                move.setMethodID(MoveMethod.get(Integer.parseInt(cursor.getString(1))));
-                move.setLevel(Integer.parseInt(cursor.getString(2)));
-                if (!cursor.isNull(3)) {
-                    move.setTM(Integer.parseInt(cursor.getString(3)));
-                }
-                //add move to list
-                movesForPokemon.add(move);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        return movesForPokemon;
-    }
-
-    /**
-     * Adds types to the input pokemon and returns it
-     *
-     * @param   pokemon A pokemon object to be modified with additional data
-     * @return          The modified input is returned
-     * @see             Pokemon
-     * @see             Type
-     */
-    public List<Type> getTypesForPokemon(Pokemon pokemon) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        List<Type> typesForPokemon = new ArrayList<>();
-
-        String sql = SQLiteQueryBuilder
-                .select(field(POKEMON_TYPES, SLOT)
-                        , field(POKEMON_TYPES, TYPE_ID))
-                .from(POKEMON_TYPES)
-                .where(field(POKEMON_TYPES, POKEMON_ID) + "=" + pokemon.getId())
-                .build();
-
-        Cursor cursor = db.rawQuery(sql, null);
-        //Loop through rows and add each to list
-        if (cursor.moveToFirst()) {
-            do {
-                Type type = new Type();
-                type.setSlot(Integer.parseInt(cursor.getString(0)));
-                type.setId(Integer.parseInt(cursor.getString(1)));
-                type.setColor(Type.getTypeColor(type.getId()));
-                //add type to list
-                typesForPokemon.add(type);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        return typesForPokemon;
     }
 }

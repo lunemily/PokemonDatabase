@@ -39,7 +39,7 @@ public class TypeDisplayActivity extends AppCompatActivity
         setContentView(R.layout.activity_type_display);
 
         TypeDAO typeDAO = new TypeDAO(this);
-        _type = typeDAO.getTypeByID(_type);
+        _type = typeDAO.getType(_type);
 
         onTypeSelected(_type);
         setTitle(_type.getName());
@@ -53,7 +53,7 @@ public class TypeDisplayActivity extends AppCompatActivity
     private void setTypeBackgroundColor(Type type) {
         TypeDAO typeDAO = new TypeDAO(this);
         RelativeLayout typeDisplayActivity = (RelativeLayout) findViewById(R.id.type_display_activity);
-        typeDisplayActivity.setBackgroundColor(Color.parseColor(typeDAO.getTypeByID(type).getColor()));
+        typeDisplayActivity.setBackgroundColor(Color.parseColor(typeDAO.getType(type).getColor()));
     }
 
     @Override

@@ -81,7 +81,7 @@ public class FlavorDAO extends DataBaseHelper
      * @return          The modified input is returned
      * @see             Flavor
      */
-    public Flavor getFlavorById(Flavor flavor) {
+    public Flavor getFlavor(Flavor flavor) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String sql = SQLiteQueryBuilder

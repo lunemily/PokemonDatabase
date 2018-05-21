@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.interfaces.TypeDataInterface;
+import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
      * @return          The modified input is returned
      * @see             Type
      */
-    public Type getTypeByID(Type type) {
+    public Type getType(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String sql = SQLiteQueryBuilder
@@ -108,7 +109,7 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
      * @return              The modified input is returned
      * @see                 Type
      */
-    public Type getTypeByIdentifier(String identifier) {
+    public Type getType(String identifier) {
         SQLiteDatabase db = this.getWritableDatabase();
         Type type = new Type();
 
@@ -134,6 +135,43 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
         }
 
         return type;
+    }
+
+    /**
+     * Adds types to the input pokemon and returns it
+     *
+     * @param   pokemon A pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     * @see             Type
+     */
+    public List<Type> getTypes(Pokemon pokemon) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Type> typesForPokemon = new ArrayList<>();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_TYPES, SLOT)
+                        , field(POKEMON_TYPES, TYPE_ID))
+                .from(POKEMON_TYPES)
+                .where(field(POKEMON_TYPES, POKEMON_ID) + "=" + pokemon.getId())
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                Type type = new Type();
+                type.setSlot(Integer.parseInt(cursor.getString(0)));
+                type.setId(Integer.parseInt(cursor.getString(1)));
+                type.setColor(Type.getTypeColor(type.getId()));
+                //add type to list
+                typesForPokemon.add(type);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return typesForPokemon;
     }
 
     /**
@@ -179,8 +217,8 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 int damageFactor = Integer.parseInt(cursor.getString(2));
 
                 // Load the types
-                originatingType = getTypeByID(originatingType);
-                targetType = getTypeByID(targetType);
+                originatingType = getType(originatingType);
+                targetType = getType(targetType);
 
                 if (type.getId() == originatingType.getId() && type.getId() == targetType.getId()) {
                     // Type is defender. Add attacker
@@ -241,7 +279,7 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 Type originatingType = new Type();
 
                 originatingType.setId(Integer.parseInt(cursor.getString(0)));
-                originatingType = getTypeByID(originatingType);
+                originatingType = getType(originatingType);
 
                 boolean isDualType = (Integer.parseInt(cursor.getString(1)) == 2);
                 int damageFactor = Integer.parseInt(cursor.getString(2));

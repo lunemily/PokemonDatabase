@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.models.Version;
+import com.evanfuhr.pokemondatabase.utils.VersionManager;
 
 import org.jetbrains.annotations.Contract;
 
@@ -36,6 +38,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     int _language_id = 9;
     public static int defaultVersionId = 30; // Default game is Ultra Moon
+    VersionManager mVersionManager;
+    Version mVersion;
 
     //tables
     static final String ABILITIES = "abilities";
@@ -44,6 +48,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String CONTEST_TYPE_NAMES = "contest_type_names";
     static final String CONTEST_TYPES = "contest_types";
     static final String EGG_GROUP_PROSE = "egg_group_prose";
+    static final String ENCOUNTERS = "encounters";
+    static final String LOCATION_AREA_PROSE = "location_area_prose";
+    static final String LOCATION_AREAS = "location_areas";
+    static final String LOCATION_NAMES = "location_names";
+    static final String LOCATIONS = "locations";
     static final String MACHINES = "machines";
     static final String MOVE_EFFECT_PROSE = "move_effect_prose";
     static final String MOVE_META = "move_meta";
@@ -59,6 +68,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String TABLE_POKEMON_SPECIES_FLAVOR_TEXT = "pokemon_species_flavor_text";
     static final String POKEMON_SPECIES_NAMES = "pokemon_species_names";
     static final String POKEMON_TYPES = "pokemon_types";
+    static final String REGION_NAMES = "region_names";
+    static final String REGIONS = "regions";
     static final String STAT_NAMES = "stat_names";
     static final String STATS = "stats";
     static final String TYPES = "types";
@@ -88,6 +99,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String CONTEST_TYPE_ID = "contest_type_id";
     static final String FLAVOR = "flavor";
     static final String COLOR = "color";
+
+    //encounters
+    static final String LOCATION_AREA_ID = "location_area_id";
+
+    //location_names
+    static final String LOCATION_ID = "location_id";
 
     //machines
     static final String MACHINE_NUMBER = "machine_number";
@@ -142,6 +159,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String POKEMON_SPECIES_ID = "pokemon_species_id";
     static final String GENUS = "genus";
 
+    //region_names
+    static final String REGION_ID = "region_id";
+
     //stat_names
     static final String STAT_ID = "stat_id";
 
@@ -170,6 +190,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         super(context, DB_NAME, null, DB_VERSION);
         this.myContext = context;
+        mVersionManager = new VersionManager(this.myContext);
+        mVersion = mVersionManager.loadVersion();
     }
 
     /**
@@ -308,15 +330,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public int getVersionGroupIDByVersionID() {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        SharedPreferences settings = getMyContext().getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
-        int version_id = settings.getInt(String.valueOf(R.string.gameVersionID), DataBaseHelper.defaultVersionId);
-
         int version_group_id = 1;
 
         String sql = SQLiteQueryBuilder
                 .select(field(VERSIONS, VERSION_GROUP_ID))
                 .from(VERSIONS)
-                .where(field(VERSIONS, ID) + "=" + version_id)
+                .where(field(VERSIONS, ID) + "=" + mVersion.getId())
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);

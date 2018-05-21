@@ -26,10 +26,12 @@ import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.data.VersionDAO;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
+import com.evanfuhr.pokemondatabase.fragments.LocationListFragment;
 import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.Location;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
@@ -45,7 +47,7 @@ import java.util.List;
 public class PokemonDisplayActivity extends AppCompatActivity
         implements AbilityListFragment.OnListFragmentInteractionListener,
         TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener,
-        TypeMatchUpFragment.OnListFragmentInteractionListener {
+        TypeMatchUpFragment.OnListFragmentInteractionListener, LocationListFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
@@ -72,7 +74,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         //Get pokemon id passed to this activity
         Intent intent = getIntent();
         pokemon.setId(intent.getIntExtra(POKEMON_ID, 0));
-        pokemon = pokemonDAO.getPokemonByID(pokemon);
+        pokemon = pokemonDAO.getPokemon(pokemon);
         setPokemonBackgroundColor(pokemon);
         setTitle("#" + pokemon.getId() + " " + pokemon.getName());
 
@@ -112,21 +114,19 @@ public class PokemonDisplayActivity extends AppCompatActivity
     }
 
     private void setPokemonBackgroundColor(Pokemon pokemon) {
-        PokemonDAO pokemonDAO = new PokemonDAO(this);
         TypeDAO typeDAO = new TypeDAO(this);
 
         //Create base background
-        List<Type> rawTypes = pokemonDAO.getTypesForPokemon(pokemon);
+        List<Type> rawTypes = typeDAO.getTypes(pokemon);
         List<Type> types = new ArrayList<>();
         for (Type t : rawTypes) {
-            types.add(typeDAO.getTypeByID(t));
+            types.add(typeDAO.getType(t));
         }
         GradientDrawable gd = PokemonUtils.getColorGradientByTypes(types);
 
         RelativeLayout pokemonDetailsActivity = findViewById(R.id.pokemon_display_activity);
         pokemonDetailsActivity.setBackground(gd);
 
-        pokemonDAO.close();
         typeDAO.close();
     }
 
@@ -191,6 +191,11 @@ public class PokemonDisplayActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    @Override
+    public void onListFragmentInteraction(Location location) {
+
+    }
+
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         private static final String DEBUG_TAG = "Gestures";
         private int mCurrentPokemonID = 0;
@@ -217,7 +222,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
             Log.d(DEBUG_TAG, "onFling: " + event1.toString() + event2.toString());
 
-            if (Math.abs(deltaY) > 2 * Math.abs(deltaX)) { // If vertical fling, just scroll
+            if (Math.abs(deltaY) > 4 * Math.abs(deltaX)) { // If vertical fling, just scroll
                 return false;
             } else { // Go to adjacent pokemon
                 PokemonUtils.showLoadingToast(this.context);
