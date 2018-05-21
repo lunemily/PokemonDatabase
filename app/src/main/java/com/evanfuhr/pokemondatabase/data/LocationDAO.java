@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.interfaces.LocationDataInterface;
 import com.evanfuhr.pokemondatabase.models.Location;
-import com.evanfuhr.pokemondatabase.models.LocationArea;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Region;
 
@@ -74,19 +73,11 @@ public class LocationDAO extends DataBaseHelper implements LocationDataInterface
         List<Location> locations = new ArrayList<>();
 
         String sql = SQLiteQueryBuilder
-                .select(" distinct " + field(LOCATIONS, ID))
+                .select("distinct " + field(LOCATION_AREAS, LOCATION_ID))
                 .from(ENCOUNTERS)
                 .join(LOCATION_AREAS)
                 .on(field(LOCATION_AREAS, ID) + "=" + field(ENCOUNTERS, LOCATION_AREA_ID))
-                .join(LOCATIONS)
-                .on(field(LOCATION_AREAS, LOCATION_ID) + "=" + field(LOCATIONS, ID))
-                .join(LOCATION_NAMES)
-                .on(field(LOCATIONS, ID) + "=" + field(LOCATION_NAMES, LOCATION_ID))
-                .join(LOCATION_AREA_PROSE)
-                .on(field(LOCATION_AREAS, ID) + "=" + field(LOCATION_AREA_PROSE, LOCATION_AREA_ID))
-                .where(field(LOCATION_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
-                .and(field(LOCATION_AREA_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
-                .and(field(ENCOUNTERS, POKEMON_ID) + "=" + pokemon.getId())
+                .where(field(ENCOUNTERS, POKEMON_ID) + "=" + pokemon.getId())
                 .build();
         Cursor cursor = db.rawQuery(sql, null);
         //Loop through rows and add each to list

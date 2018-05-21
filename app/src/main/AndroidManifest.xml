@@ -11,6 +11,7 @@
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -21,30 +22,31 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".activities.TypeDisplayActivity" />
-        <activity android:name=".activities.TypeListActivity" >
+        <activity android:name=".activities.TypeListActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".activities.MoveDisplayActivity" />
-        <activity android:name=".activities.MoveListActivity" >
+        <activity android:name=".activities.MoveListActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".activities.NatureListActivity" />
         <activity android:name=".activities.NatureDisplayActivity" />
-        <activity android:name=".activities.AbilityListActivity" >
+        <activity android:name=".activities.AbilityListActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".activities.AbilityDisplayActivity" />
-        <activity android:name=".activities.LocationListActivity" >
+        <activity android:name=".activities.LocationListActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity android:name=".activities.LocationDisplayActivity"></activity>
     </application>
 
 </manifest>

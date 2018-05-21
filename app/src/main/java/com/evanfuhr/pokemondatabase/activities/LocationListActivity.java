@@ -30,11 +30,11 @@ public class LocationListActivity extends AppCompatActivity
     public void onListFragmentInteraction(Location location) {
         PokemonUtils.showLoadingToast(this);
 
-//        // Build the intent to load the ability display
-//        Intent intent = new Intent(this, LocationDisplayActivity.class);
-//        // Load the ability id into the intent
-//        intent.putExtra(LocationDisplayActivity.LOCATION_ID, location.getId());
-//
-//        startActivity(intent);
+        // Build the intent to load the ability display
+        Intent intent = new Intent(this, LocationDisplayActivity.class);
+        // Load the ability id into the intent
+        intent.putExtra(LocationDisplayActivity.LOCATION_ID, location.getId());
+
+        startActivity(intent);
     }
 }

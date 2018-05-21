@@ -39,7 +39,7 @@ public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRe
     public void onBindViewHolder(final LocationRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.mItem = mFilteredList.get(position);
         holder.mButton.setId(mFilteredList.get(position).getId());
-        String text = mFilteredList.get(position).getRegion().getName() + " " + mFilteredList.get(position).getName();
+        String text = mFilteredList.get(position).getRegion().getName() + " - " + mFilteredList.get(position).getName();
         holder.mButton.setText(text);
         holder.mButton.setBackgroundColor(Color.GRAY);
 

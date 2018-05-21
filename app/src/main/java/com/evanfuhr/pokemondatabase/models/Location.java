@@ -5,7 +5,7 @@ import java.util.List;
 public class Location {
     private int mId;
     private String mName;
-    private List<LocationArea> mLocationAreas;
+    private List<Pokemon> mPokemon;
     private Region mRegion;
 
     public int getId() {
@@ -24,12 +24,12 @@ public class Location {
         this.mName = mName;
     }
 
-    public List<LocationArea> getLocationAreas() {
-        return mLocationAreas;
+    public List<Pokemon> getPokemon() {
+        return mPokemon;
     }
 
-    public void setLocationAreas(List<LocationArea> mLocationAreas) {
-        this.mLocationAreas = mLocationAreas;
+    public void setPokemon(List<Pokemon> pokemon) {
+        this.mPokemon = pokemon;
     }
 
     public Region getRegion() {
