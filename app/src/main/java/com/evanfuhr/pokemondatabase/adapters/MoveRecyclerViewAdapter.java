@@ -90,4 +90,10 @@ public class MoveRecyclerViewAdapter extends RecyclerView.Adapter<MoveRecyclerVi
         }
         notifyDataSetChanged();
     }
+
+    public void injectMoves(List<Move> moves) {
+        mValues.clear();
+        mValues.addAll(moves);
+        filter("");
+    }
 }

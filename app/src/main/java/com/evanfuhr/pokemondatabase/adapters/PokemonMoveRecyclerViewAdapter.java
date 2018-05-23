@@ -123,4 +123,10 @@ public class PokemonMoveRecyclerViewAdapter extends RecyclerView.Adapter<Pokemon
         }
         notifyDataSetChanged();
     }
+
+    public void injectMoves(List<Move> moves) {
+        mValues.clear();
+        mValues.addAll(moves);
+        filter("");
+    }
 }

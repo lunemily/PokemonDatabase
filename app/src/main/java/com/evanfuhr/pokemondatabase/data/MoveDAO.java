@@ -119,7 +119,9 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 if (!cursor.isNull(3)) {
                     move.setPower(Integer.parseInt(cursor.getString(3)));
                 }
-                move.setPP(Integer.parseInt(cursor.getString(4)));
+                if (!cursor.isNull(4)) {
+                    move.setPP(Integer.parseInt(cursor.getString(4)));
+                }
                 if (!cursor.isNull(5)) {
                     move.setAccuracy(Integer.parseInt(cursor.getString(5)));
                 }

@@ -105,10 +105,9 @@ public class PokemonListFragment extends Fragment
             Log.i("PokemonListFragment Log", "No bundle");
         }
 
-
         List<Pokemon> pokemons = new ArrayList<>();
 
-                // Set the adapter
+        // Set the adapter
         Context context = view.getContext();
         mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -214,7 +213,7 @@ public class PokemonListFragment extends Fragment
 
         Context mContext;
 
-        public PokemonLoader(Context context) {
+        PokemonLoader(Context context) {
             this.mContext = context;
         }
 
@@ -227,20 +226,15 @@ public class PokemonListFragment extends Fragment
 
             if (isListByAbility) {
                 rawPokemon = pokemonDAO.getPokemon(mAbility);
-                mTitle.setVisibility(View.VISIBLE);
             } else if (isListByMove) {
                 rawPokemon = pokemonDAO.getPokemon(mMove);
-                mTitle.setVisibility(View.VISIBLE);
             } else if (isListByLocation) {
                 rawPokemon = pokemonDAO.getPokemon(mLocation);
-                mTitle.setVisibility(View.VISIBLE);
             } else if (isListByType) {
                 rawPokemon = pokemonDAO.getPokemon(mType);
-                mTitle.setVisibility(View.VISIBLE);
             } else {
                 rawPokemon = pokemonDAO.getAllPokemon();
             }
-            pokemonDAO.close();
 
             TypeDAO typeDAO = new TypeDAO(mContext);
             for (Pokemon pokemon : rawPokemon) {
@@ -248,6 +242,7 @@ public class PokemonListFragment extends Fragment
                 pokemon.setTypes(typeDAO.getTypes(pokemon));
                 typedPokemon.add(pokemon);
             }
+            pokemonDAO.close();
             typeDAO.close();
 
             return rawPokemon;
