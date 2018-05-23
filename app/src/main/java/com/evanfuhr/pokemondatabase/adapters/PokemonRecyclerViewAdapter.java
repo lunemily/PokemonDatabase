@@ -90,4 +90,10 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
         }
         notifyDataSetChanged();
     }
+
+    public void injectPokemon(List<Pokemon> pokemons) {
+        mValues.clear();
+        mValues.addAll(pokemons);
+        filter("");
+    }
 }
