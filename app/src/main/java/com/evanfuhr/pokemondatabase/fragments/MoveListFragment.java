@@ -92,6 +92,7 @@ public class MoveListFragment extends Fragment
             }
         } else {
             Log.i("MoveListFragment Log", "No bundle");
+            setHasOptionsMenu(true);
         }
 
 

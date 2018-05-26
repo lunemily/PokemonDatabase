@@ -79,7 +79,6 @@ public class PokemonListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mTitle = view.findViewById(R.id.card_list_title);
@@ -103,6 +102,7 @@ public class PokemonListFragment extends Fragment
             }
         } else {
             Log.i("PokemonListFragment Log", "No bundle");
+            setHasOptionsMenu(true);
         }
 
         List<Pokemon> pokemons = new ArrayList<>();
@@ -115,7 +115,6 @@ public class PokemonListFragment extends Fragment
         mRecyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
 
         new PokemonLoader(getActivity()).execute("");
-        PokemonUtils.transitionToast.cancel();
         return view;
     }
 
