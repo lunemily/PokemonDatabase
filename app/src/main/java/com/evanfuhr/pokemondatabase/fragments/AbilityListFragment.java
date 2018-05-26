@@ -199,12 +199,17 @@ public class AbilityListFragment extends Fragment
         protected List<Ability> doInBackground(String... strings) {
 
             AbilityDAO abilityDAO = new AbilityDAO(mContext);
-            List<Ability> abilities;
+            List<Ability> rawAbilities;
+            List<Ability> abilities = new ArrayList<>();
 
             if (isListByPokemon) {
-                abilities = abilityDAO.getAbilities(mPokemon);
+                rawAbilities = abilityDAO.getAbilities(mPokemon);
             } else {
-                abilities = abilityDAO.getAllAbilities();
+                rawAbilities = abilityDAO.getAllAbilities();
+            }
+
+            for (Ability ability : rawAbilities) {
+                abilities.add(abilityDAO.getAbility(ability));
             }
 
             abilityDAO.close();

@@ -229,8 +229,7 @@ public class MoveListFragment extends Fragment
             moveDAO.close();
 
             for (Move move : rawMoves) {
-                move = moveDAO.getMove(move);
-                typedMoves.add(move);
+                typedMoves.add(moveDAO.getMove(move));
             }
 
             return typedMoves;

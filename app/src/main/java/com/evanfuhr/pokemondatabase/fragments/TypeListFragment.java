@@ -5,7 +5,9 @@ import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -198,15 +200,21 @@ public class TypeListFragment extends Fragment
         @Override
         protected List<Type> doInBackground(String... strings) {
 
-            TypeDAO typeDAO = new TypeDAO(mContext);
-            List<Type> types;
+            final TypeDAO typeDAO = new TypeDAO(mContext);
+            List<Type> rawTypes;
+            List<Type> types = new ArrayList<>();
 
             if (isListByPokemon) {
-                types = typeDAO.getTypes(mPokemon);
+                rawTypes = typeDAO.getTypes(mPokemon);
+
             } else {
-                types = typeDAO.getAllTypes();
+                rawTypes = typeDAO.getAllTypes();
             }
             typeDAO.close();
+
+            for (Type type : rawTypes) {
+                types.add(typeDAO.getType(type));
+            }
 
             return types;
         }
