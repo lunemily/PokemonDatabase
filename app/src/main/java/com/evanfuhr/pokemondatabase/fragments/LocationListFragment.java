@@ -1,7 +1,9 @@
 package com.evanfuhr.pokemondatabase.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -44,12 +47,13 @@ public class LocationListFragment extends Fragment
 
     private LocationListFragment.OnListFragmentInteractionListener mListener;
 
-    Pokemon pokemon = new Pokemon();
+    Pokemon mPokemon = new Pokemon();
 
     boolean isListByPokemon = false;
 
     RecyclerView mRecyclerView;
     TextView mTitle;
+    private ProgressBar mProgressBar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -70,17 +74,19 @@ public class LocationListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mTitle = view.findViewById(R.id.card_list_title);
+        mProgressBar = view.findViewById(R.id.progressBar);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
-                pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
             }
         } else {
             Log.i("Fragment Log", "No bundle");
+            setHasOptionsMenu(true);
         }
-        List<Location> locations = getFilteredLocations();
+        List<Location> locations = new ArrayList<>();
 
         // Set the adapter
         Context context = view.getContext();
@@ -88,11 +94,8 @@ public class LocationListFragment extends Fragment
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new LocationRecyclerViewAdapter(locations, mListener));
-        if (!isListByPokemon) {
-            setHasOptionsMenu(true);
-        }
 
-        PokemonUtils.transitionToast.cancel();
+        new LocationLoader(getActivity()).execute("");
         return view;
     }
 
@@ -140,29 +143,6 @@ public class LocationListFragment extends Fragment
         void onListFragmentInteraction(Location location);
     }
 
-    private List<Location> getFilteredLocations() {
-        LocationDAO locationDAO = new LocationDAO(getActivity());
-        List<Location> unfilteredLocations = locationDAO.getAllLocations();
-        List<Location> filteredLocations = new ArrayList<>();
-
-        if (isListByPokemon) {
-            List<Location> pokemonLocations = locationDAO.getLocations(pokemon);
-            for (Location location : pokemonLocations) {
-                filteredLocations.add(locationDAO.getLocation(location));
-            }
-            mTitle.setText(R.string.locations);
-        } else {
-            filteredLocations = unfilteredLocations;
-
-            // Title is activity title
-            mTitle.setVisibility(View.INVISIBLE);
-        }
-
-        locationDAO.close();
-
-        return filteredLocations;
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -201,5 +181,45 @@ public class LocationListFragment extends Fragment
         }
 
         return true;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LocationLoader extends AsyncTask<String, Void, List<Location>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        Context mContext;
+
+        LocationLoader(Context context) {
+            this.mContext = context;
+        }
+
+        @Override
+        protected List<Location> doInBackground(String... strings) {
+
+            LocationDAO locationDAO = new LocationDAO(mContext);
+            List<Location> locations;
+
+            if (isListByPokemon) {
+                locations = locationDAO.getLocations(mPokemon);
+            } else {
+                locations = locationDAO.getAllLocations();
+            }
+
+            locationDAO.close();
+
+            return locations;
+        }
+
+        @Override
+        protected void onPostExecute(List<Location> locations) {
+            super.onPostExecute(locations);
+            LocationRecyclerViewAdapter adapter = (LocationRecyclerViewAdapter) mRecyclerView.getAdapter();
+            adapter.injectLocations(locations);
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 }

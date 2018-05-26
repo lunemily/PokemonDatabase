@@ -77,8 +77,6 @@ public class TypeMatchUpFragment extends Fragment {
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new TypeEfficacyRecyclerViewAdapter(types, mListener));
-
-        PokemonUtils.transitionToast.cancel();
         return view;
     }
 

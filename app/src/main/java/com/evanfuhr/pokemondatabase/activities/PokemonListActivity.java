@@ -29,8 +29,6 @@ public class PokemonListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Pokemon pokemon) {
-        PokemonUtils.showLoadingToast(this);
-
         // Build the intent to load the pokemon display
         Intent intent = new Intent(this, PokemonDisplayActivity.class);
         // Load the pokemon id into the intent

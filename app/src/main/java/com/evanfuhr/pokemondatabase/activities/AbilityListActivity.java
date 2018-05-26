@@ -29,7 +29,6 @@ public class AbilityListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Ability ability) {
-        PokemonUtils.showLoadingToast(this);
 
         // Build the intent to load the ability display
         Intent intent = new Intent(this, AbilityDisplayActivity.class);

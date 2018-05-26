@@ -110,7 +110,6 @@ public class MoveListFragment extends Fragment
         }
 
         new MoveLoader(getActivity()).execute("");
-        PokemonUtils.transitionToast.cancel();
         return view;
     }
 

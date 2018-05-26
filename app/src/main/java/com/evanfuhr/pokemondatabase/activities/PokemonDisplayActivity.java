@@ -112,7 +112,6 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Ability ability) {
-        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the display
         Intent intent = new Intent(this, AbilityDisplayActivity.class);
         // Add the id to send to the display activity
@@ -123,7 +122,6 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Type type) {
-        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the display
         Intent intent = new Intent(this, TypeDisplayActivity.class);
         // Add the id to send to the display activity
@@ -134,7 +132,6 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Move move) {
-        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the display
         Intent intent = new Intent(this, MoveDisplayActivity.class);
         // Add the id to send to the display activity
@@ -145,7 +142,6 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Location location) {
-        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the ability display
         Intent intent = new Intent(this, LocationDisplayActivity.class);
         // Load the ability id into the intent

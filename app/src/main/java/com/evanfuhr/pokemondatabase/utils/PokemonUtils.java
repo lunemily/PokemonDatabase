@@ -22,8 +22,6 @@ import java.util.regex.*;
 
 public class PokemonUtils {
 
-    public static Toast transitionToast;
-
     @NonNull
     public static GradientDrawable getColorGradientByTypes(List<Type> types) {
 
@@ -177,11 +175,5 @@ public class PokemonUtils {
         }
 
         return multiplier;
-    }
-
-    public static void showLoadingToast(Context context) {
-        transitionToast = Toast.makeText(context, R.string.loading, Toast.LENGTH_LONG);
-        transitionToast.setGravity(Gravity.CENTER, 0, 0);
-        transitionToast.show();
     }
 }

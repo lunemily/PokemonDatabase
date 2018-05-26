@@ -96,7 +96,6 @@ public class VersionManager {
 
                         if (mContext instanceof PokemonDisplayActivity) {
                             // Restart activity with new version
-                            PokemonUtils.showLoadingToast(mContext);
                             Intent intent = ((PokemonDisplayActivity) mContext).getIntent();
                             mContext.startActivity(intent);
                         }

@@ -29,7 +29,6 @@ public class TypeListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Type type) {
-        PokemonUtils.showLoadingToast(this);
         int type_id = type.getId();
 
         //Build the intent to load the player sheet

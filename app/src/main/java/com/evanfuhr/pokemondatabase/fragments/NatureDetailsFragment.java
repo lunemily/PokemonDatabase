@@ -51,8 +51,6 @@ public class NatureDetailsFragment extends Fragment {
         } else {
             Log.i("MoveDetailsFragment Log", "No bundle");
         }
-
-        PokemonUtils.transitionToast.cancel();
         return detailsFragmentView;
     }
 

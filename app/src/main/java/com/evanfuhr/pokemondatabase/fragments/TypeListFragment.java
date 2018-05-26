@@ -76,8 +76,6 @@ public class TypeListFragment extends Fragment {
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new TypeRecyclerViewAdapter(types, mListener));
-
-        PokemonUtils.transitionToast.cancel();
         return view;
     }
 

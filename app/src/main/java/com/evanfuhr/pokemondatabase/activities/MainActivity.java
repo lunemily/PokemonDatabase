@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, MainActivity.class);
                 break;
         }
-        PokemonUtils.showLoadingToast(this);
         startActivity(intent);
     }
 

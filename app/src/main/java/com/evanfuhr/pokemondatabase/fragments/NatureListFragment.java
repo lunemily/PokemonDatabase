@@ -77,8 +77,6 @@ public class NatureListFragment extends Fragment {
             }
             recyclerView.setAdapter(new NatureRecyclerViewAdapter(natures, mListener));
         }
-
-        PokemonUtils.transitionToast.cancel();
         return view;
     }
 

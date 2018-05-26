@@ -44,7 +44,7 @@ public class NatureDisplayActivity extends AppCompatActivity {
         nature = natureDAO.getNature(nature);
         GradientDrawable gd = PokemonUtils.getColorGradientByFlavors(natureDAO.getNature(nature).getFlavors());
 
-        RelativeLayout natureDisplayActivity = (RelativeLayout) findViewById(R.id.nature_display_activity);
+        RelativeLayout natureDisplayActivity = findViewById(R.id.nature_display_activity);
         natureDisplayActivity.setBackground(gd);
 
         natureDAO.close();
