@@ -9,8 +9,6 @@ public interface TypeDataInterface {
 
     List<Type> getAllTypes();
 
-    List<Type> getAllTypes(String nameSearchParam);
-
     Type getType(Type type);
 
     Type getType(String identifier);

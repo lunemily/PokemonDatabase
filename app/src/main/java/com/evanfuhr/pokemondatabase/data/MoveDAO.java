@@ -28,17 +28,6 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
      * @see         Move
      */
     public List<Move> getAllMoves() {
-        return getAllMoves("%");
-    }
-
-    /**
-     * Returns a list of all moves that contain nameSearchParam
-     *
-     * @param   nameSearchParam A substring to filter Move names with
-     * @return                  A filtered list of Pokemon objects
-     * @see                     Move
-     */
-    public List<Move> getAllMoves(String nameSearchParam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Move> moves = new ArrayList<>();

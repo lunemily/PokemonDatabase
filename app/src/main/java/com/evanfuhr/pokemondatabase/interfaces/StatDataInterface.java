@@ -8,7 +8,5 @@ public interface StatDataInterface {
 
     List<Stat> getAllStats();
 
-    List<Stat> getAllStats(String nameSearchParam);
-
     Stat getStatById(Stat stat);
 }

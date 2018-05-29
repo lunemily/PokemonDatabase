@@ -25,17 +25,6 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
      * @see         Ability
      */
     public List<Ability> getAllAbilities() {
-        return getAllAbilities("%");
-    }
-
-    /**
-     * Returns a list of all abilities that contain nameSearchParam
-     *
-     * @param   nameSearchParam A substring to filter Ability names with
-     * @return                  A filtered list of Ability objects
-     * @see                     Ability
-     */
-    public List<Ability> getAllAbilities(String nameSearchParam) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -48,8 +37,7 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
                 .from(ABILITIES)
                 .join(ABILITY_NAMES)
                 .on(field(ABILITIES, ID) + "=" + field(ABILITY_NAMES, ABILITY_ID))
-                .where(field(ABILITY_NAMES, NAME) + " LIKE LOWER('%" + nameSearchParam + "%')")
-                .and(field(ABILITY_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .where(field(ABILITY_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .and(field(ABILITIES, IS_MAIN_SERIES) + "=" + 1)
                 .orderBy(field(ABILITY_NAMES, NAME))
                 .asc()

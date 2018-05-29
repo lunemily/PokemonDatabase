@@ -30,17 +30,6 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
      * @see         Pokemon
      */
     public List<Pokemon> getAllPokemon() {
-        return getAllPokemon("%");
-    }
-
-    /**
-     * Returns a list of all pokemon that contain nameSearchParam
-     *
-     * @param   nameSearchParam A substring to filter Pokemon names with
-     * @return                  A filtered list of Pokemon objects
-     * @see                     Pokemon
-     */
-    public List<Pokemon> getAllPokemon(String nameSearchParam) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -52,8 +41,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 .from(POKEMON_SPECIES)
                 .join(POKEMON_SPECIES_NAMES)
                 .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
-                .where(field(POKEMON_SPECIES_NAMES, NAME) + " LIKE LOWER('%" + nameSearchParam + "%')")
-                .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .where(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);

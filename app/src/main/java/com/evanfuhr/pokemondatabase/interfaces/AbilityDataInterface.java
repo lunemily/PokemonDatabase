@@ -9,8 +9,6 @@ public interface AbilityDataInterface {
 
     List<Ability> getAllAbilities();
 
-    List<Ability> getAllAbilities(String nameSearchParam);
-
     Ability getAbility(Ability ability);
 
     Ability getAbility(String identifier);

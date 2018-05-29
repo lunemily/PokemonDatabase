@@ -26,17 +26,6 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
      * @see         Type
      */
     public List<Type> getAllTypes() {
-        return getAllTypes("%");
-    }
-
-    /**
-     * Returns a list of all types that contain nameSearchParam
-     *
-     * @param   nameSearchParam A substring to filter Type names with
-     * @return                  A filtered list of Type objects
-     * @see                     Type
-     */
-    public List<Type> getAllTypes(String nameSearchParam) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Type> types = new ArrayList<>();

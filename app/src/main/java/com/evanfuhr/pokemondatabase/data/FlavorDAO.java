@@ -31,17 +31,6 @@ public class FlavorDAO extends DataBaseHelper
      * @see         Flavor
      */
     public List<Flavor> getAllFlavors() {
-        return getAllFlavors("%");
-    }
-
-    /**
-     * Returns a list of all flavors that contain nameSearchParam
-     *
-     * @param   nameSearchParam A substring to filter Flavor names with
-     * @return                  A filtered list of Flavor objects
-     * @see                     Flavor
-     */
-    public List<Flavor> getAllFlavors(String nameSearchParam) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -53,8 +42,7 @@ public class FlavorDAO extends DataBaseHelper
                 .from(CONTEST_TYPES)
                 .join(CONTEST_TYPE_NAMES)
                 .on(field(CONTEST_TYPES, ID) + "=" + field(CONTEST_TYPE_NAMES, CONTEST_TYPE_ID))
-                .where(field(CONTEST_TYPE_NAMES, NAME) + " LIKE LOWER('%" + nameSearchParam + "%')")
-                .and(field(CONTEST_TYPE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .where(field(CONTEST_TYPE_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);
