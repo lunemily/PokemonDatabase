@@ -175,14 +175,13 @@ public class PokemonListFragment extends Fragment
                     }
                 }
             } else if (isListByAbility) {
-                AbilityDAO abilityDAO = new AbilityDAO(getActivity());
-                pokemon.setAbilities(abilityDAO.getAbilities(pokemon));
-                for (Ability pokemonAbility : pokemon.getAbilities()) {
-                    if (pokemonAbility.getId() == mAability.getId()) {
-                        filteredPokemons.add(pokemon);
-                    }
+                List<Pokemon> rawPokemons = pokemonDAO.getPokemon(mAability);
+                for (Pokemon abilityPokemon : rawPokemons) {
+                    abilityPokemon = pokemonDAO.getPokemon(abilityPokemon);
+                    abilityPokemon.setTypes(typeDAO.getTypes(abilityPokemon));
+                    filteredPokemons.add(abilityPokemon);
                 }
-                abilityDAO.close();
+                break;
             } else if (isListByMove) {
                 List<Pokemon> rawPokemons = pokemonDAO.getPokemon(mMove);
                 for (Pokemon movePokemon : rawPokemons) {

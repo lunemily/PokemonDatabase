@@ -15,6 +15,8 @@ public interface PokemonDataInterface {
 
     List<Pokemon> getAllPokemon(String nameSearchParam);
 
+    List<Pokemon> getPokemon(Ability ability);
+
     List<Pokemon> getPokemon(Location location);
 
     List<Pokemon> getPokemon(Move move);
