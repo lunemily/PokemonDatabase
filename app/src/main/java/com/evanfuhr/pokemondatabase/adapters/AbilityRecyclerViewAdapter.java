@@ -94,4 +94,10 @@ public class AbilityRecyclerViewAdapter extends RecyclerView.Adapter<AbilityRecy
         }
         notifyDataSetChanged();
     }
+
+    public void injectAbilities(List<Ability> abilities) {
+        mValues.clear();
+        mValues.addAll(abilities);
+        filter("");
+    }
 }

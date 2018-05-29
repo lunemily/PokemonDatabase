@@ -31,18 +31,6 @@ public class StatDAO extends DataBaseHelper
      * @see         Stat
      */
     public List<Stat> getAllStats() {
-        return getAllStats("%");
-    }
-
-    /**
-     * Returns a list of all stats that contain nameSearchParam
-     *
-     * @param   nameSearchParam A substring to filter Stat names with
-     * @return                  A filtered list of Stat objects
-     * @see                     Stat
-     */
-    public List<Stat> getAllStats(String nameSearchParam) {
-
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Stat> statList = new ArrayList<>();
@@ -53,8 +41,7 @@ public class StatDAO extends DataBaseHelper
                 .from(STATS)
                 .join(STAT_NAMES)
                 .on(field(STATS, ID) + "=" + field(STAT_NAMES, STAT_ID))
-                .where(field(STAT_NAMES, NAME) + " LIKE LOWER('%" + nameSearchParam + "%')")
-                .and(field(STAT_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .where(field(STAT_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);

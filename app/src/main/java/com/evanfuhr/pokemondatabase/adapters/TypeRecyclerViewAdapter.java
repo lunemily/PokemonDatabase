@@ -2,6 +2,7 @@ package com.evanfuhr.pokemondatabase.adapters;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,20 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.TypeListFragment.OnListFragmentInteractionListener;
 import com.evanfuhr.pokemondatabase.models.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Type> mValues;
+    private final List<Type> mValues, mFilteredList;
     private final OnListFragmentInteractionListener mListener;
 
     public TypeRecyclerViewAdapter(List<Type> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+
+        mFilteredList = new ArrayList<>();
+        mFilteredList.addAll(mValues);
     }
 
     @Override
@@ -32,12 +37,12 @@ public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder._button.setId(mValues.get(position).getId());
-        holder._button.setText(mValues.get(position).getName());
-        holder._button.setBackgroundColor(Color.parseColor(mValues.get(position).getColor()));
+        holder.mItem = mFilteredList.get(position);
+        holder.mButton.setId(mFilteredList.get(position).getId());
+        holder.mButton.setText(mFilteredList.get(position).getName());
+        holder.mButton.setBackgroundColor(Color.parseColor(mFilteredList.get(position).getColor()));
 
-        holder._button.setOnClickListener(new View.OnClickListener() {
+        holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
@@ -51,18 +56,44 @@ public class TypeRecyclerViewAdapter extends RecyclerView.Adapter<TypeRecyclerVi
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mFilteredList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
-        final Button _button;
+        final Button mButton;
         Type mItem;
 
         ViewHolder(View view) {
             super(view);
             mView = view;
-            _button = view.findViewById(R.id.singleButton);
+            mButton = view.findViewById(R.id.singleButton);
         }
+    }
+
+    public void filter(final String filterText) {
+        mFilteredList.clear();
+
+        // If there is no search value, then add all original list items to filter list
+        if (TextUtils.isEmpty(filterText)) {
+
+            mFilteredList.addAll(mValues);
+
+        } else {
+            // Iterate in the original List and add it to filter list...
+            for (Type type : mValues) {
+                if (type.getName().toLowerCase().contains(filterText.toLowerCase())) {
+                    // Adding Matched items
+                    mFilteredList.add(type);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public void injectTypes(List<Type> types) {
+        mValues.clear();
+        mValues.addAll(types);
+        filter("");
     }
 }

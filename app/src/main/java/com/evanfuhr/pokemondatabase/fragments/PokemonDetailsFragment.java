@@ -69,8 +69,6 @@ public class PokemonDetailsFragment extends Fragment {
         } else {
             Log.i("PokemonDetFragment Log", "No bundle");
         }
-
-        PokemonUtils.transitionToast.cancel();
         return detailsFragmentView;
     }
 

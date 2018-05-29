@@ -31,7 +31,6 @@ public class MoveListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Move move) {
-        PokemonUtils.showLoadingToast(this);
         int move_id = move.getId();
 
         //Build the intent to load the player sheet

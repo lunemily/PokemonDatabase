@@ -58,7 +58,6 @@ public class TypeDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Pokemon pokemon) {
-        PokemonUtils.showLoadingToast(this);
         int pokemon_id = pokemon.getId();
 
         //Build the intent to load the pokemon display
@@ -71,7 +70,6 @@ public class TypeDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Move move) {
-        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the display
         Intent intent = new Intent(this, MoveDisplayActivity.class);
         // Add the id to send to the display activity
@@ -82,7 +80,6 @@ public class TypeDisplayActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Type type) {
-        PokemonUtils.showLoadingToast(this);
         // Build the intent to load the display
         Intent intent = new Intent(this, MoveDisplayActivity.class);
         // Add the id to send to the display activity

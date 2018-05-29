@@ -43,6 +43,9 @@ public class Type {
     }
 
     public String getName() {
+        if (_name == null) {
+            _name = "undefined";
+        }
         return this._name;
     }
 

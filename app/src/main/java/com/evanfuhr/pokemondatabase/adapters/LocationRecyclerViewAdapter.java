@@ -91,4 +91,10 @@ public class LocationRecyclerViewAdapter extends RecyclerView.Adapter<LocationRe
         }
         notifyDataSetChanged();
     }
+
+    public void injectLocations(List<Location> locations) {
+        mValues.clear();
+        mValues.addAll(locations);
+        filter("");
+    }
 }

@@ -8,7 +8,5 @@ public interface FlavorDataInterface {
 
     List<Flavor> getAllFlavors();
 
-    List<Flavor> getAllFlavors(String nameSearchParam);
-
     Flavor getFlavor(Flavor flavor);
 }

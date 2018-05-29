@@ -29,7 +29,6 @@ public class NatureListActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Nature nature) {
-        PokemonUtils.showLoadingToast(this);
         int nature_id = nature.getId();
 
         // Build the intent to load the player sheet

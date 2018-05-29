@@ -1,7 +1,9 @@
 package com.evanfuhr.pokemondatabase.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -41,12 +44,13 @@ public class AbilityListFragment extends Fragment
 
     private AbilityListFragment.OnListFragmentInteractionListener mListener;
 
-    Pokemon pokemon = new Pokemon();
+    Pokemon mPokemon = new Pokemon();
 
     boolean isListByPokemon = false;
 
     RecyclerView mRecyclerView;
     TextView mTitle;
+    private ProgressBar mProgressBar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -67,17 +71,20 @@ public class AbilityListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mTitle = view.findViewById(R.id.card_list_title);
+        mTitle.setText(R.string.abilities);
+        mProgressBar = view.findViewById(R.id.progressBar);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
-                pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
             }
         } else {
             Log.i("AbilityListFragment Log", "No bundle");
+            setHasOptionsMenu(true);
         }
-        List<Ability> abilities = getFilteredAbilities();
+        List<Ability> abilities = new ArrayList<>();
 
         // Set the adapter
         Context context = view.getContext();
@@ -85,11 +92,8 @@ public class AbilityListFragment extends Fragment
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
-        if (!isListByPokemon) {
-            setHasOptionsMenu(true);
-        }
 
-        PokemonUtils.transitionToast.cancel();
+        new AbilityLoader(getActivity()).execute("");
         return view;
     }
 
@@ -137,30 +141,6 @@ public class AbilityListFragment extends Fragment
         void onListFragmentInteraction(Ability item);
     }
 
-    private List<Ability> getFilteredAbilities() {
-        AbilityDAO abilityDAO = new AbilityDAO(getActivity());
-        List<Ability> unfilteredAbilities = abilityDAO.getAllAbilities();
-        List<Ability> filteredAbilities = new ArrayList<>();
-
-        if (isListByPokemon) {
-            // Rather than iterating over ALL abilities, just get the mPokemon's abilities and load
-            List<Ability> pokemonAbilities = abilityDAO.getAbilities(pokemon);
-            for (Ability ability : pokemonAbilities) {
-                filteredAbilities.add(abilityDAO.getAbility(ability));
-            }
-            mTitle.setText(R.string.abilities);
-        } else {
-            filteredAbilities = unfilteredAbilities;
-
-            // Title is activity title
-            mTitle.setVisibility(View.INVISIBLE);
-        }
-
-        abilityDAO.close();
-
-        return filteredAbilities;
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -199,5 +179,50 @@ public class AbilityListFragment extends Fragment
         }
 
         return true;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class AbilityLoader extends AsyncTask<String, Void, List<Ability>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        Context mContext;
+
+        AbilityLoader(Context context) {
+            this.mContext = context;
+        }
+
+        @Override
+        protected List<Ability> doInBackground(String... strings) {
+
+            AbilityDAO abilityDAO = new AbilityDAO(mContext);
+            List<Ability> rawAbilities;
+            List<Ability> abilities = new ArrayList<>();
+
+            if (isListByPokemon) {
+                rawAbilities = abilityDAO.getAbilities(mPokemon);
+            } else {
+                rawAbilities = abilityDAO.getAllAbilities();
+            }
+
+            for (Ability ability : rawAbilities) {
+                abilities.add(abilityDAO.getAbility(ability));
+            }
+
+            abilityDAO.close();
+
+            return abilities;
+        }
+
+        @Override
+        protected void onPostExecute(List<Ability> abilities) {
+            super.onPostExecute(abilities);
+            AbilityRecyclerViewAdapter adapter = (AbilityRecyclerViewAdapter) mRecyclerView.getAdapter();
+            adapter.injectAbilities(abilities);
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 }

@@ -10,8 +10,6 @@ public interface MoveDataInterface {
 
     List<Move> getAllMoves();
 
-    List<Move> getAllMoves(String nameSearchParam);
-
     Move getMove(Move move);
 
     Move getMoveMeta(Move move);

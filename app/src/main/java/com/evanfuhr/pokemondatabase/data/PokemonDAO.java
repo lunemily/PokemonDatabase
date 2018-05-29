@@ -30,17 +30,6 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
      * @see         Pokemon
      */
     public List<Pokemon> getAllPokemon() {
-        return getAllPokemon("%");
-    }
-
-    /**
-     * Returns a list of all pokemon that contain nameSearchParam
-     *
-     * @param   nameSearchParam A substring to filter Pokemon names with
-     * @return                  A filtered list of Pokemon objects
-     * @see                     Pokemon
-     */
-    public List<Pokemon> getAllPokemon(String nameSearchParam) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -52,8 +41,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 .from(POKEMON_SPECIES)
                 .join(POKEMON_SPECIES_NAMES)
                 .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
-                .where(field(POKEMON_SPECIES_NAMES, NAME) + " LIKE LOWER('%" + nameSearchParam + "%')")
-                .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .where(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);
@@ -84,7 +72,6 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 .join(POKEMON)
                 .on(field(POKEMON_ABILITIES, POKEMON_ID) + "=" + field(POKEMON, ID))
                 .where(field(POKEMON_ABILITIES, ABILITY_ID) + "=" + ability.getId())
-                //.and(field(ENCOUNTERS, VERSION_ID) + "=" + mVersion.getId())
                 .orderBy(field(POKEMON, SPECIES_ID))
                 .asc()
                 .build();
@@ -93,10 +80,8 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {
             do {
-                //Move move = new Move();
                 Pokemon pokemon = new Pokemon();
                 pokemon.setId(Integer.parseInt(cursor.getString(0)));
-                //add move to list
                 pokemons.add(pokemon);
             } while (cursor.moveToNext());
         }
@@ -174,6 +159,37 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
             } while (cursor.moveToNext());
         }
         cursor.close();
+
+        return pokemons;
+    }
+
+    public List<Pokemon>getPokemon(Type type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Pokemon> pokemons = new ArrayList<>();
+
+        String sql = SQLiteQueryBuilder
+                .select("distinct " + field(POKEMON, SPECIES_ID))
+                .from(POKEMON_TYPES)
+                .join(POKEMON)
+                .on(field(POKEMON_TYPES, POKEMON_ID) + "=" + field(POKEMON, ID))
+                .where(field(POKEMON_TYPES, TYPE_ID) + "=" + type.getId())
+                .orderBy(field(POKEMON, SPECIES_ID))
+                .asc()
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                Pokemon pokemon = new Pokemon();
+                pokemon.setId(Integer.parseInt(cursor.getString(0)));
+                pokemons.add(pokemon);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
 
         return pokemons;
     }

@@ -1,14 +1,24 @@
 package com.evanfuhr.pokemondatabase.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.SearchManager;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
@@ -23,22 +33,26 @@ import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.SEARCH_SERVICE;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class TypeListFragment extends Fragment {
+public class TypeListFragment extends Fragment
+        implements SearchView.OnQueryTextListener {
 
     private OnListFragmentInteractionListener mListener;
 
-    Pokemon pokemon = new Pokemon();
+    Pokemon mPokemon = new Pokemon();
 
     boolean isListByPokemon = false;
 
     RecyclerView mRecyclerView;
     TextView mTitle;
+    private ProgressBar mProgressBar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -58,17 +72,20 @@ public class TypeListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mTitle = view.findViewById(R.id.card_list_title);
+        mTitle.setText(R.string.types);
+        mProgressBar = view.findViewById(R.id.progressBar);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
-                pokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
+                mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
             }
         } else {
             Log.i("TypeListFragment Log", "No bundle");
+            setHasOptionsMenu(true);
         }
-        List<Type> types = getFilteredTypes();
+        List<Type> types = new ArrayList<>();
 
         // Set the adapter
         Context context = view.getContext();
@@ -77,7 +94,7 @@ public class TypeListFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new TypeRecyclerViewAdapter(types, mListener));
 
-        PokemonUtils.transitionToast.cancel();
+        new TypeLoader(getActivity()).execute("");
         return view;
     }
 
@@ -99,6 +116,18 @@ public class TypeListFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        TypeRecyclerViewAdapter adapter = (TypeRecyclerViewAdapter) mRecyclerView.getAdapter();
+        adapter.filter(newText);
+        return true;
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -114,27 +143,89 @@ public class TypeListFragment extends Fragment {
         void onListFragmentInteraction(Type item);
     }
 
-    private List<Type> getFilteredTypes() {
-        TypeDAO typeDAO = new TypeDAO(getActivity());
-        List<Type> unfilteredTypes = typeDAO.getAllTypes();
-        List<Type> filteredTypes = new ArrayList<>();
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menu.clear();
+        inflater.inflate(R.menu.menu_list, menu);
 
-        if (isListByPokemon) {
-            // Rather than iterating over ALL types, just get the pokemon's types and load
-            List<Type> pokemonTypes = typeDAO.getTypes(pokemon);
-            for (Type type : pokemonTypes) {
-                filteredTypes.add(typeDAO.getType(type));
-            }
-            mTitle.setText(R.string.types);
-        } else {
-            filteredTypes = unfilteredTypes;
+        SearchManager searchManager = (SearchManager)
+                getActivity().getSystemService(SEARCH_SERVICE);
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search_list);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
 
-            // Title is activity title
-            mTitle.setVisibility(View.INVISIBLE);
+        if (!searchMenuItem.isActionViewExpanded()) {
+            searchMenuItem.expandActionView();
+        }
+        else {
+            searchMenuItem.collapseActionView();
         }
 
-        typeDAO.close();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
+    }
 
-        return filteredTypes;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch(id) {
+            case R.id.action_search_list:
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class TypeLoader extends AsyncTask<String, Void, List<Type>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        Context mContext;
+
+        TypeLoader(Context context) {
+            this.mContext = context;
+        }
+
+        @Override
+        protected List<Type> doInBackground(String... strings) {
+
+            final TypeDAO typeDAO = new TypeDAO(mContext);
+            List<Type> rawTypes;
+            List<Type> types = new ArrayList<>();
+
+            if (isListByPokemon) {
+                rawTypes = typeDAO.getTypes(mPokemon);
+
+            } else {
+                rawTypes = typeDAO.getAllTypes();
+            }
+            typeDAO.close();
+
+            for (Type type : rawTypes) {
+                types.add(typeDAO.getType(type));
+            }
+
+            return types;
+        }
+
+        @Override
+        protected void onPostExecute(List<Type> moves) {
+            super.onPostExecute(moves);
+
+            TypeRecyclerViewAdapter adapter = (TypeRecyclerViewAdapter) mRecyclerView.getAdapter();
+            adapter.injectTypes(moves);
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 }

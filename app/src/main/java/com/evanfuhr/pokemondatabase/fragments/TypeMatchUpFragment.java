@@ -1,7 +1,9 @@
 package com.evanfuhr.pokemondatabase.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
@@ -34,10 +37,10 @@ public class TypeMatchUpFragment extends Fragment {
     Type mType = new Type();
 
     boolean isListByPokemon = false;
-    boolean isListByType = false;
 
     RecyclerView mRecyclerView;
     TextView mTitle;
+    private ProgressBar mProgressBar;
 
     public TypeMatchUpFragment() {
         // Required empty public constructor
@@ -55,21 +58,20 @@ public class TypeMatchUpFragment extends Fragment {
 
         mTitle = view.findViewById(R.id.card_list_title);
         mTitle.setText("Type Match Ups");
+        mProgressBar = view.findViewById(R.id.progressBar);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
-            }
-            if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
+            } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) { // TODO: Turn into try-catch
                 mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
-                isListByType = true;
             }
         } else {
             Log.i("TypeMatchUpFragment Log", "No bundle");
         }
-        List<Type> types = getFilteredTypes();
+        List<Type> types = new ArrayList<>();
 
         // Set the adapter
         Context context = view.getContext();
@@ -78,7 +80,7 @@ public class TypeMatchUpFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new TypeEfficacyRecyclerViewAdapter(types, mListener));
 
-        PokemonUtils.transitionToast.cancel();
+        new TypeMatchUpLoader(getActivity()).execute("");
         return view;
     }
 
@@ -107,26 +109,51 @@ public class TypeMatchUpFragment extends Fragment {
         void onListFragmentInteraction(Type type);
     }
 
-    private List<Type> getFilteredTypes() {
-        TypeDAO typeDAO = new TypeDAO(getActivity());
-        List<Type> filteredTypes = new ArrayList<>();
-
-        if (isListByType) {
-            filteredTypes = typeDAO.getSingleTypeEfficacy(mType);
-        } else if (isListByPokemon) {
-            // Rather than iterating over ALL types, just get the mPokemon's types and load
-            List<Type> pokemonTypes = typeDAO.getTypes(mPokemon);
-
-            // Check for single or dual type mPokemon
-            if (pokemonTypes.size() == 1) {
-                filteredTypes = typeDAO.getSingleTypeEfficacy(pokemonTypes.get(0), true);
-            } else {
-                filteredTypes = typeDAO.getDualTypeEfficacy(pokemonTypes.get(0), pokemonTypes.get(1));
-            }
+    @SuppressLint("StaticFieldLeak")
+    private class TypeMatchUpLoader extends AsyncTask<String, Void, List<Type>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
         }
 
-        typeDAO.close();
+        Context mContext;
 
-        return filteredTypes;
+        TypeMatchUpLoader(Context context) {
+            this.mContext = context;
+        }
+
+        @Override
+        protected List<Type> doInBackground(String... strings) {
+
+            TypeDAO typeDAO = new TypeDAO(mContext);
+            List<Type> types;
+
+            if (isListByPokemon) {
+                // Rather than iterating over ALL types, just get the mPokemon's types and load
+                List<Type> pokemonTypes = typeDAO.getTypes(mPokemon);
+
+                // Check for single or dual type mPokemon
+                if (pokemonTypes.size() == 1) {
+                    types = typeDAO.getSingleTypeEfficacy(pokemonTypes.get(0), true);
+                } else {
+                    types = typeDAO.getDualTypeEfficacy(pokemonTypes.get(0), pokemonTypes.get(1));
+                }
+            } else {
+                types = typeDAO.getSingleTypeEfficacy(mType);
+            }
+            typeDAO.close();
+
+            return types;
+        }
+
+        @Override
+        protected void onPostExecute(List<Type> moves) {
+            super.onPostExecute(moves);
+
+            TypeEfficacyRecyclerViewAdapter adapter = (TypeEfficacyRecyclerViewAdapter) mRecyclerView.getAdapter();
+            adapter.injectTypes(moves);
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 }

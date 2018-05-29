@@ -17,15 +17,15 @@ import java.util.List;
 
 public class MoveRecyclerViewAdapter extends RecyclerView.Adapter<MoveRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Move> mValues, _filteredList;
+    private final List<Move> mValues, mFilteredList;
     private final OnListFragmentInteractionListener mListener;
 
     public MoveRecyclerViewAdapter(List<Move> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
 
-        _filteredList = new ArrayList<>();
-        _filteredList.addAll(mValues);
+        mFilteredList = new ArrayList<>();
+        mFilteredList.addAll(mValues);
     }
 
     @Override
@@ -37,12 +37,12 @@ public class MoveRecyclerViewAdapter extends RecyclerView.Adapter<MoveRecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = _filteredList.get(position);
-        holder._button.setId(_filteredList.get(position).getId());
-        holder._button.setText(_filteredList.get(position).getName());
-        holder._button.setBackgroundColor(Color.parseColor(_filteredList.get(position).getType().getColor()));
+        holder.mItem = mFilteredList.get(position);
+        holder.mButton.setId(mFilteredList.get(position).getId());
+        holder.mButton.setText(mFilteredList.get(position).getName());
+        holder.mButton.setBackgroundColor(Color.parseColor(mFilteredList.get(position).getType().getColor()));
 
-        holder._button.setOnClickListener(new View.OnClickListener() {
+        holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
@@ -56,38 +56,44 @@ public class MoveRecyclerViewAdapter extends RecyclerView.Adapter<MoveRecyclerVi
 
     @Override
     public int getItemCount() {
-        return _filteredList.size();
+        return mFilteredList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
-        final Button _button;
+        final Button mButton;
         Move mItem;
 
         ViewHolder(View view) {
             super(view);
             mView = view;
-            _button = view.findViewById(R.id.singleButton);
+            mButton = view.findViewById(R.id.singleButton);
         }
     }
 
     public void filter(final String filterText) {
-        _filteredList.clear();
+        mFilteredList.clear();
 
         // If there is no search value, then add all original list items to filter list
         if (TextUtils.isEmpty(filterText)) {
 
-            _filteredList.addAll(mValues);
+            mFilteredList.addAll(mValues);
 
         } else {
             // Iterate in the original List and add it to filter list...
             for (Move move : mValues) {
                 if (move.getName().toLowerCase().contains(filterText.toLowerCase())) {
                     // Adding Matched items
-                    _filteredList.add(move);
+                    mFilteredList.add(move);
                 }
             }
         }
         notifyDataSetChanged();
+    }
+
+    public void injectMoves(List<Move> moves) {
+        mValues.clear();
+        mValues.addAll(moves);
+        filter("");
     }
 }

@@ -1,8 +1,10 @@
 package com.evanfuhr.pokemondatabase.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -22,7 +25,6 @@ import com.evanfuhr.pokemondatabase.activities.LocationDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.PokemonRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.data.AbilityDAO;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
@@ -48,7 +50,7 @@ public class PokemonListFragment extends Fragment
 
     private OnListFragmentInteractionListener mListener;
 
-    Ability mAability = new Ability();
+    Ability mAbility = new Ability();
     Location mLocation = new Location();
     Move mMove = new Move();
     Type mType = new Type();
@@ -60,6 +62,7 @@ public class PokemonListFragment extends Fragment
 
     RecyclerView mRecyclerView;
     TextView mTitle;
+    private ProgressBar mProgressBar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -76,11 +79,11 @@ public class PokemonListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mTitle = view.findViewById(R.id.card_list_title);
         mTitle.setText(R.string.pokemon);
+        mProgressBar = view.findViewById(R.id.progressBar);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
@@ -88,7 +91,7 @@ public class PokemonListFragment extends Fragment
                 mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
                 isListByType = true;
             } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
-                mAability.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
+                mAbility.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
                 isListByAbility = true;
             } else if (bundle.containsKey(MoveDisplayActivity.MOVE_ID)) {
                 mMove.setId(bundle.getInt(MoveDisplayActivity.MOVE_ID));
@@ -99,10 +102,10 @@ public class PokemonListFragment extends Fragment
             }
         } else {
             Log.i("PokemonListFragment Log", "No bundle");
+            setHasOptionsMenu(true);
         }
 
-
-        List<Pokemon> pokemons = getFilteredPokemon();
+        List<Pokemon> pokemons = new ArrayList<>();
 
         // Set the adapter
         Context context = view.getContext();
@@ -111,7 +114,7 @@ public class PokemonListFragment extends Fragment
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
 
-        PokemonUtils.transitionToast.cancel();
+        new PokemonLoader(getActivity()).execute("");
         return view;
     }
 
@@ -159,57 +162,6 @@ public class PokemonListFragment extends Fragment
         void onListFragmentInteraction(Pokemon item);
     }
 
-    List<Pokemon> getFilteredPokemon() {
-        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        TypeDAO typeDAO = new TypeDAO(getActivity());
-        List<Pokemon> unfilteredPokemons = pokemonDAO.getAllPokemon();
-        List<Pokemon> filteredPokemons = new ArrayList<>();
-
-        for (Pokemon pokemon : unfilteredPokemons) {
-            // Always want to set mPokemon's types for display colors
-            pokemon.setTypes(typeDAO.getTypes(pokemon));
-            if (isListByType) {
-                for (Type pokemonType : pokemon.getTypes()) {
-                    if (pokemonType.getId() == mType.getId()) {
-                        filteredPokemons.add(pokemon);
-                    }
-                }
-            } else if (isListByAbility) {
-                List<Pokemon> rawPokemons = pokemonDAO.getPokemon(mAability);
-                for (Pokemon abilityPokemon : rawPokemons) {
-                    abilityPokemon = pokemonDAO.getPokemon(abilityPokemon);
-                    abilityPokemon.setTypes(typeDAO.getTypes(abilityPokemon));
-                    filteredPokemons.add(abilityPokemon);
-                }
-                break;
-            } else if (isListByMove) {
-                List<Pokemon> rawPokemons = pokemonDAO.getPokemon(mMove);
-                for (Pokemon movePokemon : rawPokemons) {
-                    movePokemon = pokemonDAO.getPokemon(movePokemon);
-                    movePokemon.setTypes(typeDAO.getTypes(movePokemon));
-                    filteredPokemons.add(movePokemon);
-                }
-                break;
-            } else if (isListByLocation) {
-                List<Pokemon> rawPokemons = pokemonDAO.getPokemon(mLocation);
-                for (Pokemon locationPokemon : rawPokemons) {
-                    locationPokemon = pokemonDAO.getPokemon(locationPokemon);
-                    locationPokemon.setTypes(typeDAO.getTypes(locationPokemon));
-                    filteredPokemons.add(locationPokemon);
-                }
-                break;
-            } else {
-                filteredPokemons.add(pokemon);
-                mTitle.setVisibility(View.INVISIBLE);
-            }
-        }
-
-        pokemonDAO.close();
-        typeDAO.close();
-
-        return filteredPokemons;
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -248,5 +200,59 @@ public class PokemonListFragment extends Fragment
         }
 
         return true;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class PokemonLoader extends AsyncTask<String, Void, List<Pokemon>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        Context mContext;
+
+        PokemonLoader(Context context) {
+            this.mContext = context;
+        }
+
+        @Override
+        protected List<Pokemon> doInBackground(String... strings) {
+
+            PokemonDAO pokemonDAO = new PokemonDAO(mContext);
+            List<Pokemon> rawPokemon;
+            List<Pokemon> typedPokemon = new ArrayList<>();
+
+            if (isListByAbility) {
+                rawPokemon = pokemonDAO.getPokemon(mAbility);
+            } else if (isListByMove) {
+                rawPokemon = pokemonDAO.getPokemon(mMove);
+            } else if (isListByLocation) {
+                rawPokemon = pokemonDAO.getPokemon(mLocation);
+            } else if (isListByType) {
+                rawPokemon = pokemonDAO.getPokemon(mType);
+            } else {
+                rawPokemon = pokemonDAO.getAllPokemon();
+            }
+
+            TypeDAO typeDAO = new TypeDAO(mContext);
+            for (Pokemon pokemon : rawPokemon) {
+                pokemon = pokemonDAO.getPokemon(pokemon);
+                pokemon.setTypes(typeDAO.getTypes(pokemon));
+                typedPokemon.add(pokemon);
+            }
+            pokemonDAO.close();
+            typeDAO.close();
+
+            return rawPokemon;
+        }
+
+        @Override
+        protected void onPostExecute(List<Pokemon> pokemon) {
+            super.onPostExecute(pokemon);
+            PokemonRecyclerViewAdapter adapter = (PokemonRecyclerViewAdapter) mRecyclerView.getAdapter();
+            adapter.injectPokemon(pokemon);
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 }
