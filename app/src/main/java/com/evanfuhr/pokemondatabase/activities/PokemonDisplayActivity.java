@@ -14,6 +14,7 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
+import com.evanfuhr.pokemondatabase.fragments.EvolutionListFragment;
 import com.evanfuhr.pokemondatabase.fragments.LocationListFragment;
 import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
@@ -34,7 +35,8 @@ import java.util.List;
 public class PokemonDisplayActivity extends AppCompatActivity
         implements AbilityListFragment.OnListFragmentInteractionListener,
         TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener,
-        TypeMatchUpFragment.OnListFragmentInteractionListener, LocationListFragment.OnListFragmentInteractionListener {
+        TypeMatchUpFragment.OnListFragmentInteractionListener, LocationListFragment.OnListFragmentInteractionListener,
+        EvolutionListFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
@@ -146,6 +148,17 @@ public class PokemonDisplayActivity extends AppCompatActivity
         Intent intent = new Intent(this, LocationDisplayActivity.class);
         // Load the ability id into the intent
         intent.putExtra(LocationDisplayActivity.LOCATION_ID, location.getId());
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Pokemon pokemon) {
+        // Build the intent to load the display
+        Intent intent = new Intent(this, PokemonDisplayActivity.class);
+        // Load the id into the intent
+        intent.putExtra(PokemonDisplayActivity.POKEMON_ID, pokemon.getId());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         startActivity(intent);
     }

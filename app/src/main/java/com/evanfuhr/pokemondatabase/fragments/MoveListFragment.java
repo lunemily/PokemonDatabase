@@ -86,9 +86,11 @@ public class MoveListFragment extends Fragment
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
+                mTitle.setVisibility(View.VISIBLE);
             } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
                 mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
                 isListByType = true;
+                mTitle.setVisibility(View.VISIBLE);
             }
         } else {
             Log.i("MoveListFragment Log", "No bundle");

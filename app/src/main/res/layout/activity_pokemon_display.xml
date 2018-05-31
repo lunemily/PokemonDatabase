@@ -44,6 +44,13 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:name="com.evanfuhr.pokemondatabase.fragments.EvolutionListFragment"
+                android:id="@+id/evolutionListFragment"
+                android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:name="com.evanfuhr.pokemondatabase.fragments.TypeListFragment"
                 android:id="@+id/typeListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>

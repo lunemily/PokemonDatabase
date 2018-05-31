@@ -150,6 +150,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String POKEMON_MOVE_LEVEL = "level";
 
     //pokemon_species
+    static final String EVOLUTION_CHAIN_ID = "evolution_chain_id";
+    static final String EVOLVES_FROM_SPECIES_ID = "evolves_from_species_id";
     static final String GENDER_RATE = "gender_rate";
 
     //pokemon_species_flavor_text
