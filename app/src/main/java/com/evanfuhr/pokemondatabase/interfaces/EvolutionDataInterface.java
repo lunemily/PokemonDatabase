@@ -13,4 +13,6 @@ public interface EvolutionDataInterface {
     List<Evolution> getAllEvolutions(EvolutionChain evolutionChain);
 
     EvolutionChain getEvolutionChain(Pokemon pokemon);
+
+    Evolution getEvolution(Evolution evolution);
 }

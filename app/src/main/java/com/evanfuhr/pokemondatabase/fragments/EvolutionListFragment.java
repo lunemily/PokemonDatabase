@@ -159,6 +159,7 @@ public class EvolutionListFragment extends Fragment {
             List<Evolution> evolutions = new ArrayList<>();
 
             for (Evolution evolution : rawEvolutions) {
+                evolution = evolutionDAO.getEvolution(evolution);
                 Pokemon beforePokemon = pokemonDAO.getPokemon(evolution.getBeforePokemon());
                 beforePokemon.setTypes(typeDAO.getTypes(beforePokemon));
                 evolution.setBeforePokemon(beforePokemon);
