@@ -114,7 +114,9 @@ public class EvolutionListFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
 
-        void onListFragmentInteraction(Pokemon item);
+        void onPokemonSelected(Pokemon pokemon);
+
+        void onEvolutionSelected(Evolution evolution);
     }
 
     @Override

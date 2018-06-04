@@ -1,17 +1,13 @@
 package com.evanfuhr.pokemondatabase.adapters;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.EvolutionListFragment;
-import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Evolution;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
@@ -41,6 +37,7 @@ public class EvolutionRecyclerViewAdapter extends RecyclerView.Adapter<Evolution
     @Override
     public void onBindViewHolder(final EvolutionRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.mItem = mFilteredList.get(position);
+
         holder.mBeforePokemonButton.setId(mFilteredList.get(position).getBeforePokemon().getId());
         holder.mBeforePokemonButton.setText(mFilteredList.get(position).getBeforePokemon().getName());
         holder.mBeforePokemonButton.setBackground(PokemonUtils.getColorGradientByTypes(mFilteredList.get(position).getBeforePokemon().getTypes()));
@@ -50,7 +47,18 @@ public class EvolutionRecyclerViewAdapter extends RecyclerView.Adapter<Evolution
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem.getBeforePokemon());
+                    mListener.onPokemonSelected(holder.mItem.getBeforePokemon());
+                }
+            }
+        });
+
+        holder.mEvolutionDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mListener) {
+                    // Notify the active callbacks interface (the activity, if the
+                    // fragment is attached to one) that an item has been selected.
+                    mListener.onEvolutionSelected(holder.mItem);
                 }
             }
         });
@@ -64,7 +72,7 @@ public class EvolutionRecyclerViewAdapter extends RecyclerView.Adapter<Evolution
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem.getAfterPokemon());
+                    mListener.onPokemonSelected(holder.mItem.getAfterPokemon());
                 }
             }
         });
@@ -78,7 +86,7 @@ public class EvolutionRecyclerViewAdapter extends RecyclerView.Adapter<Evolution
     class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final Button mBeforePokemonButton;
-        final TextView mEvolutionDetail;
+        final Button mEvolutionDetail;
         final Button mAfterPokemonButton;
         Evolution mItem;
 
@@ -91,26 +99,10 @@ public class EvolutionRecyclerViewAdapter extends RecyclerView.Adapter<Evolution
         }
     }
 
-    public void filter(final String filterText) {
-        mFilteredList.clear();
-
-        // If there is no search value, then add all original list items to filter list
-        if (TextUtils.isEmpty(filterText)) {
-
-            mFilteredList.addAll(mValues);
-
-        } else {
-            // Iterate in the original List and add it to filter list...
-            for (Evolution evolution : mValues) {
-                mFilteredList.add(evolution);
-            }
-        }
-        notifyDataSetChanged();
-    }
-
     public void injectEvolutions(List<Evolution> evolutions) {
         mValues.clear();
         mValues.addAll(evolutions);
-        filter("");
+        mFilteredList.addAll(mValues);
+        notifyDataSetChanged();
     }
 }

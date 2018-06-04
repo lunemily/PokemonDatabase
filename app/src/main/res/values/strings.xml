@@ -147,4 +147,7 @@
     <string name="loading">Loading...</string>
     <string name="locations">Locations</string>
     <string name="rightArrow"><![CDATA[->]]></string>
+    <string name="ok">OK</string>
+    <string name="evolution_details">Evolution Details</string>
+    <string name="evolution_details_here">Evolution Details Here</string>
 </resources>

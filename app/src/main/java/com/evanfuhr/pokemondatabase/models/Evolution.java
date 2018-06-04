@@ -89,15 +89,13 @@ public class Evolution {
         GENDER_ID
         ;
 
-        @Nullable
         public static Integer getTimeOfDay(String timeOfDay) {
-            switch (timeOfDay) {
-                case "day":
-                    return Integer.valueOf(0);
-                case "night":
-                    return Integer.valueOf(1);
-            }
-            return null;
+            return timeOfDay.equals("day") ? Integer.valueOf(0) : Integer.valueOf(1);
+        }
+
+        @Nullable
+        public static String getTimeOfDay(Integer timeOfDay) {
+            return timeOfDay == 0 ? "day" : "night";
         }
     }
 }
