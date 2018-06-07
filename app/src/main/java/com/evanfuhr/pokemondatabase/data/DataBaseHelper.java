@@ -49,6 +49,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String CONTEST_TYPES = "contest_types";
     static final String EGG_GROUP_PROSE = "egg_group_prose";
     static final String ENCOUNTERS = "encounters";
+    static final String ITEMS = "items";
+    static final String ITEM_NAMES = "item_names";
     static final String LOCATION_AREA_PROSE = "location_area_prose";
     static final String LOCATION_AREAS = "location_areas";
     static final String LOCATION_NAMES = "location_names";
@@ -104,6 +106,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //encounters
     static final String LOCATION_AREA_ID = "location_area_id";
+
+    //item_names
+    static final String ITEM_ID = "item_id";
 
     //machines
     static final String MACHINE_NUMBER = "machine_number";

@@ -20,6 +20,10 @@ public class Pokemon {
     public Pokemon() {
     }
 
+    public Pokemon(int id) {
+        this.mId = id;
+    }
+
     public List<Ability> getAbilities() {
         return this.mAbilities;
     }

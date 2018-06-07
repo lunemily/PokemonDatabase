@@ -97,5 +97,10 @@ public class Evolution {
         public static String getTimeOfDay(Integer timeOfDay) {
             return timeOfDay == 0 ? "day" : "night";
         }
+
+        @Nullable
+        public static String getGender(Integer genderId) {
+            return genderId == 1 ? "female" : "male";
+        }
     }
 }
