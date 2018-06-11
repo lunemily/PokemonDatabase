@@ -59,13 +59,22 @@ public class EvolutionDialog {
         alert.show();
     }
 
+    /**
+     * The evolution object identifies the base trigger for how a Pokemon evolves. It also contains a variable set
+     * of flags and data "modifying" how that Pokemon evolves.
+     *
+     * @return      A string of how a single Pokemon evolves into another Pokemon.
+     * @see         Evolution
+     */
     private String getEvolutionProse() {
+        // The underlying data is id based and so we lazy-load the human readable names
         PokemonDAO pokemonDAO = new PokemonDAO(mContext);
         TypeDAO typeDAO = new TypeDAO(mContext);
         ItemDAO itemDAO = new ItemDAO(mContext);
         MoveDAO moveDAO = new MoveDAO(mContext);
         LocationDAO locationDAO = new LocationDAO(mContext);
 
+        // Get the single trigger and "stringify it"
         String prose = "By";
         switch (mEvolution.getTrigger()) {
             case LEVEL_UP:
@@ -86,6 +95,8 @@ public class EvolutionDialog {
                 break;
         }
 
+        // Loop through each entry in the evolution object's trigger details, and append the string form to the 
+        // prose in no particular order
         for (Map.Entry<Evolution.Detail, Integer> entry : mEvolution.getTriggerDetails().entrySet()) {
             switch (entry.getKey()) {
                 case MINIMUM_LEVEL:
@@ -97,7 +108,7 @@ public class EvolutionDialog {
                 case GENDER_ID:
                     prose += ", if a " + Evolution.Detail.getGender(entry.getValue());
                 case MINIMUM_HAPPINESS:
-                    // If this field is present, it's high happiness, e.g. 220
+                    // If this field is present, it means high happiness, e.g. 220
                     prose += ", with high friendship";
                     break;
                 case MINIMUM_AFFECTION:
@@ -118,6 +129,7 @@ public class EvolutionDialog {
                 case TRIGGER_ITEM_ID:
                     // This is handled above. It makes the most sense to preserve readability for the end user
                     break;
+                // Note: the rest of these really are just one-offs but still necessary
                 case PARTY_TYPE_ID:
                     prose += ", if there is a " + typeDAO.getType(new Type(entry.getValue())).getName() +
                             " type Pokémon also in the party";
@@ -139,14 +151,18 @@ public class EvolutionDialog {
                     prose += ", with a maxed out beauty stat";
                     break;
                 case RELATIVE_PHYSICAL_STATS:
+                    // This trigger detail represents the relationship between a Pokemon's Attack and Defense stats
                     switch (entry.getValue()) {
                         case 1:
+                            // Attack > Defense
                             prose += ", if its Attack is higher than its Defense";
                             break;
                         case -1:
+                            // Attack < Defense
                             prose += ", if its Defense is higher than its Attack";
                             break;
                         case 0:
+                            //Attack = Defense
                             prose += ", if its Attack and Defense are equal";
                             break;
                         default:
