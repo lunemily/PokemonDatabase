@@ -8,6 +8,13 @@ public class Location {
     private List<Pokemon> mPokemon;
     private Region mRegion;
 
+    public Location() {
+    }
+
+    public Location(int id) {
+        this.mId = id;
+    }
+
     public int getId() {
         return mId;
     }

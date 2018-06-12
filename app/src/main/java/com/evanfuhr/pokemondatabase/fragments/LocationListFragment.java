@@ -201,12 +201,17 @@ public class LocationListFragment extends Fragment
         protected List<Location> doInBackground(String... strings) {
 
             LocationDAO locationDAO = new LocationDAO(mContext);
-            List<Location> locations;
+            List<Location> rawlocations;
+            List<Location> locations = new ArrayList<>();
 
             if (isListByPokemon) {
-                locations = locationDAO.getLocations(mPokemon);
+                rawlocations = locationDAO.getLocations(mPokemon);
             } else {
-                locations = locationDAO.getAllLocations();
+                rawlocations = locationDAO.getAllLocations();
+            }
+
+            for (Location location : rawlocations) {
+                locations.add(locationDAO.getLocation(location));
             }
 
             locationDAO.close();

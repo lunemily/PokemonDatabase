@@ -49,6 +49,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String CONTEST_TYPES = "contest_types";
     static final String EGG_GROUP_PROSE = "egg_group_prose";
     static final String ENCOUNTERS = "encounters";
+    static final String ITEMS = "items";
+    static final String ITEM_NAMES = "item_names";
     static final String LOCATION_AREA_PROSE = "location_area_prose";
     static final String LOCATION_AREAS = "location_areas";
     static final String LOCATION_NAMES = "location_names";
@@ -63,6 +65,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String POKEMON = "pokemon";
     static final String POKEMON_ABILITIES = "pokemon_abilities";
     static final String POKEMON_EGG_GROUPS = "pokemon_egg_groups";
+    static final String POKEMON_EVOLUTION = "pokemon_evolution";
     static final String POKEMON_MOVES = "pokemon_moves";
     static final String POKEMON_SPECIES = "pokemon_species";
     static final String TABLE_POKEMON_SPECIES_FLAVOR_TEXT = "pokemon_species_flavor_text";
@@ -88,6 +91,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String IDENTIFIER = "identifier";
     static final String IS_MAIN_SERIES = "is_main_series";
     static final String LOCAL_LANGUAGE_ID = "local_language_id";
+    static final String LOCATION_ID = "location_id";
     static final String MOVE_ID = "move_id";
     static final String NAME = "name";
     static final String POKEMON_ID = "pokemon_id";
@@ -103,8 +107,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //encounters
     static final String LOCATION_AREA_ID = "location_area_id";
 
-    //location_names
-    static final String LOCATION_ID = "location_id";
+    //item_names
+    static final String ITEM_ID = "item_id";
 
     //machines
     static final String MACHINE_NUMBER = "machine_number";
@@ -145,11 +149,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //pokemon_abilities
     static final String IS_HIDDEN = "is_hidden";
 
+    //pokemon_evolution
+    static final String EVOLVED_SPECIES_ID = "evolved_species_id";
+    static final String EVOLUTION_TRIGGER_ID = "evolution_trigger_id";
+    static final String TRIGGER_ITEM_ID = "trigger_item_id";
+    static final String MINIMUM_LEVEL = "minimum_level";
+    static final String GENDER_ID = "gender_id";
+    static final String HELD_ITEM_ID = "held_item_id";
+    static final String TIME_OF_DAY = "time_of_day";
+    static final String KNOWN_MOVE_ID = "known_move_id";
+    static final String KNOWN_MOVE_TYPE_ID = "known_move_type_id";
+    static final String MINIMUM_HAPPINESS = "minimum_happiness";
+    static final String MINIMUM_BEAUTY = "minimum_beauty";
+    static final String MINIMUM_AFFECTION = "minimum_affection";
+    static final String RELATIVE_PHYSICAL_STATS = "relative_physical_stats";
+    static final String PARTY_SPECIES_ID = "party_species_id";
+    static final String PARTY_TYPE_ID = "party_type_id";
+    static final String TRADE_SPECIES_ID = "trade_species_id";
+    static final String NEEDS_OVERWORLD_RAIN = "needs_overworld_rain";
+    static final String TURN_UPSIDE_DOWN = "turn_upside_down";
+
     //pokemon_moves
     static final String POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
     static final String POKEMON_MOVE_LEVEL = "level";
 
     //pokemon_species
+    static final String EVOLUTION_CHAIN_ID = "evolution_chain_id";
+    static final String EVOLVES_FROM_SPECIES_ID = "evolves_from_species_id";
     static final String GENDER_RATE = "gender_rate";
 
     //pokemon_species_flavor_text

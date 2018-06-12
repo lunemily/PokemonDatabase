@@ -1,14 +1,11 @@
 package com.evanfuhr.pokemondatabase.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Move implements Comparable<Move> {
 
     private int mAccuracy = 0;
     private DamageClass mCategory = DamageClass.STATUS;
     private String mEffect;
-    private int id = 0;
+    private int mId = 0;
     private int mLevel = 0;
     private MoveMethod mMethodId = MoveMethod.LEVEL_UP;
     private String mName;
@@ -17,6 +14,13 @@ public class Move implements Comparable<Move> {
     private int mTm = 0;
     private Type mType;
     private int mCritRate = 0;
+
+    public Move() {
+    }
+
+    public Move(int id) {
+        this.mId = id;
+    }
 
     // This one is hacky since there can "technically" be multiple different effect chances, but
     // after some data research, all instances of multiple non-zero values are still equal and thus,
@@ -48,11 +52,11 @@ public class Move implements Comparable<Move> {
     }
 
     public int getId() {
-        return this.id;
+        return this.mId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.mId = id;
     }
 
     public int getLevel() {

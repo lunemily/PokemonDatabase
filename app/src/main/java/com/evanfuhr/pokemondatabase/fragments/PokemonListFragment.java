@@ -90,15 +90,19 @@ public class PokemonListFragment extends Fragment
             if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
                 mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
                 isListByType = true;
+                mTitle.setVisibility(View.VISIBLE);
             } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
                 mAbility.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
                 isListByAbility = true;
+                mTitle.setVisibility(View.VISIBLE);
             } else if (bundle.containsKey(MoveDisplayActivity.MOVE_ID)) {
                 mMove.setId(bundle.getInt(MoveDisplayActivity.MOVE_ID));
                 isListByMove = true;
+                mTitle.setVisibility(View.VISIBLE);
             } else if (bundle.containsKey(LocationDisplayActivity.LOCATION_ID)) {
                 mLocation.setId(bundle.getInt(LocationDisplayActivity.LOCATION_ID));
                 isListByLocation = true;
+                mTitle.setVisibility(View.VISIBLE);
             }
         } else {
             Log.i("PokemonListFragment Log", "No bundle");

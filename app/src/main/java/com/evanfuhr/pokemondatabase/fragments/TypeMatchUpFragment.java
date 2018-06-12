@@ -65,8 +65,10 @@ public class TypeMatchUpFragment extends Fragment {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
+                mTitle.setVisibility(View.VISIBLE);
             } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) { // TODO: Turn into try-catch
                 mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
+                mTitle.setVisibility(View.VISIBLE);
             }
         } else {
             Log.i("TypeMatchUpFragment Log", "No bundle");

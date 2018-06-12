@@ -133,6 +133,7 @@
     <string name="abilityProseSample">\"This Pokémon\'s damaging moves have a 10% chance to make the target [flinch]{mechanic:flinch} with each hit if they do not already cause flinching as a secondary effect.  This ability does not stack with a held item.  Overworld: The wild encounter rate is halved while this Pokémon is first in the party.\"</string>
     <string name="title">Title</string>
     <string name="abilities">Abilities</string>
+    <string name="evolutions">Evolutions</string>
     <string name="moves">Moves</string>
     <string name="det">Det</string>
     <string name="pwr">Pwr</string>
@@ -145,4 +146,8 @@
     <string name="at">at</string>
     <string name="loading">Loading...</string>
     <string name="locations">Locations</string>
+    <string name="rightArrow"><![CDATA[->]]></string>
+    <string name="ok">OK</string>
+    <string name="evolution_details">Evolution Details</string>
+    <string name="evolution_details_here">Evolution Details Here</string>
 </resources>

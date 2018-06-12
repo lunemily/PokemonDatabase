@@ -80,6 +80,7 @@ public class TypeListFragment extends Fragment
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
+                mTitle.setVisibility(View.VISIBLE);
             }
         } else {
             Log.i("TypeListFragment Log", "No bundle");

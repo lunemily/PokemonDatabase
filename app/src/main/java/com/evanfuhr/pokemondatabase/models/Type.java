@@ -14,12 +14,19 @@ public class Type {
     private String color;
     private float _efficacy;
     private boolean isTarget = false;
-    private int id = 0;
+    private int mId = 0;
     private String _name;
     private int _slot;
 
+    public Type() {
+    }
+
+    public Type(int id) {
+        this.mId = id;
+    }
+
     public String getColor() {
-        return getTypeColor(this.id);
+        return getTypeColor(this.mId);
     }
 
     public void setColor(String color) {
@@ -35,11 +42,11 @@ public class Type {
     }
 
     public int getId() {
-        return this.id;
+        return this.mId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.mId = id;
     }
 
     public String getName() {

@@ -159,7 +159,6 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
                 .asc()
                 .build();
 
-
         Cursor cursor = db.rawQuery(sql, null);
         //Loop through rows and add each to list
         if (cursor.moveToFirst()) {

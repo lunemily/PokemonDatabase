@@ -14,15 +14,18 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
+import com.evanfuhr.pokemondatabase.fragments.EvolutionListFragment;
 import com.evanfuhr.pokemondatabase.fragments.LocationListFragment;
 import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.Evolution;
 import com.evanfuhr.pokemondatabase.models.Location;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
+import com.evanfuhr.pokemondatabase.utils.EvolutionDialog;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 import com.evanfuhr.pokemondatabase.utils.VersionManager;
 
@@ -34,7 +37,8 @@ import java.util.List;
 public class PokemonDisplayActivity extends AppCompatActivity
         implements AbilityListFragment.OnListFragmentInteractionListener,
         TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener,
-        TypeMatchUpFragment.OnListFragmentInteractionListener, LocationListFragment.OnListFragmentInteractionListener {
+        TypeMatchUpFragment.OnListFragmentInteractionListener, LocationListFragment.OnListFragmentInteractionListener,
+        EvolutionListFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
@@ -148,5 +152,21 @@ public class PokemonDisplayActivity extends AppCompatActivity
         intent.putExtra(LocationDisplayActivity.LOCATION_ID, location.getId());
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onPokemonSelected(Pokemon pokemon) {
+        // Build the intent to load the display
+        Intent intent = new Intent(this, PokemonDisplayActivity.class);
+        // Load the id into the intent
+        intent.putExtra(PokemonDisplayActivity.POKEMON_ID, pokemon.getId());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onEvolutionSelected(Evolution evolution) {
+        new EvolutionDialog(this).show(evolution);
     }
 }
