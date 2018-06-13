@@ -65,4 +65,34 @@ public class ExternalLink {
 
         return Html.fromHtml("<a href='" + link + "'>Bulbapedia</a>");
     }
+
+    /**
+     * Returns a fully-formed <a> element to embed in the page
+     *
+     * It dynamically determines the type of entity and version
+     */
+    public static Spanned getSerebiiLink(Object object, Context context) {
+        String entity = "undefined";
+        String link;
+        String name = "undefined";
+        String version;
+
+        // Determine version string
+        VersionDAO versionDAO = new VersionDAO(context);
+        version = versionDAO.getVersion().getSerebiiVersion(object);
+
+        // Determine entity type and pull name
+        if (object instanceof Pokemon) {
+            name = ((Pokemon) object).getThreeDigitStringId();
+            entity = "pokedex";
+        } else if (object instanceof Type) {
+            name = ((Type) object).getName().toLowerCase();
+            entity = "attackdex";
+        }
+
+        // When version is not empty it is preceded by "-"
+        link = "https://www.serebii.net/" + entity + version + "/" + name + ".shtml";
+
+        return Html.fromHtml("<a href='" + link + "'>Serebii</a>");
+    }
 }

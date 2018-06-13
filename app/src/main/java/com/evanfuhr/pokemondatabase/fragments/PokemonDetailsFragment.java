@@ -33,6 +33,7 @@ public class PokemonDetailsFragment extends Fragment {
     LinearLayout mEggGroups;
     TextView mGenus;
     TextView mHeight;
+    TextView mSerebii;
     TextView mSmogon;
     GifImageView mSpriteGif;
     TextView mWeight;
@@ -142,5 +143,9 @@ public class PokemonDetailsFragment extends Fragment {
         mSmogon.setClickable(true);
         mSmogon.setMovementMethod(LinkMovementMethod.getInstance());
         mSmogon.setText(ExternalLink.getSmogonLink(mPokemon, getActivity()));
+
+        mSerebii.setClickable(true);
+        mSerebii.setMovementMethod(LinkMovementMethod.getInstance());
+        mSerebii.setText(ExternalLink.getSerebiiLink(mPokemon, getActivity()));
     }
 }

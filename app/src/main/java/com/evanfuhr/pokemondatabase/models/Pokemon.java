@@ -124,18 +124,23 @@ public class Pokemon {
         this.mWeight = weight;
     }
 
-    //Not Getters and Setters
+    // Not Getters and Setters
+
+    public String getThreeDigitStringId() {
+        String id;
+        id = "" + this.mId;
+
+        if (this.mId < 100) {
+            if (this.mId < 10) {
+                id = "0" + id;
+            }
+            id = "0" + id;
+        }
+        return id;
+    }
 
     public String getSpriteName() {
-        String filename;
-        filename = "" + this.mId;
-
-        if(this.mId < 100) {
-            if (this.mId < 10) {
-                filename = "0" + filename;
-            }
-            filename = "0" + filename;
-        }
+        String filename = this.getThreeDigitStringId();
 
         if (mMega) {
             filename = filename + "mega";
