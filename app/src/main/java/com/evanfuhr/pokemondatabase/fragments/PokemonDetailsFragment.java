@@ -57,6 +57,7 @@ public class PokemonDetailsFragment extends Fragment {
         mEggGroups = detailsFragmentView.findViewById(R.id.pokemonEggGroupsList);
         mGenus = detailsFragmentView.findViewById(R.id.pokemonGenusText);
         mHeight = detailsFragmentView.findViewById(R.id.pokemonHeightValue);
+        mSerebii = detailsFragmentView.findViewById(R.id.serebiiLink);
         mSmogon = detailsFragmentView.findViewById(R.id.smogonLink);
         mSpriteGif = detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
         mWeight = detailsFragmentView.findViewById(R.id.pokemonWeightValue);
