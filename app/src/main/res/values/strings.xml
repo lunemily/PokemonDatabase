@@ -114,7 +114,7 @@
     <string name="types">Types</string>
     <string name="simple_button">Simple Button</string>
     <string name="pokemonGenus">The ____ Pokémon</string>
-    <string name="bulbapediaLink">Bulba</string>
+    <string name="bulbapediaLink">Bulbapedia</string>
     <string name="smogonLink">Smog</string>
     <string name="gameVersionID">gameVersionID</string>
     <string name="set_game_version">Set Game Version</string>
@@ -150,4 +150,5 @@
     <string name="ok">OK</string>
     <string name="evolution_details">Evolution Details</string>
     <string name="evolution_details_here">Evolution Details Here</string>
+    <string name="serebii">Serebii</string>
 </resources>

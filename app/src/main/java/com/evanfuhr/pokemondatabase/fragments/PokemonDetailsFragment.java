@@ -33,6 +33,7 @@ public class PokemonDetailsFragment extends Fragment {
     LinearLayout mEggGroups;
     TextView mGenus;
     TextView mHeight;
+    TextView mSerebii;
     TextView mSmogon;
     GifImageView mSpriteGif;
     TextView mWeight;
@@ -56,6 +57,7 @@ public class PokemonDetailsFragment extends Fragment {
         mEggGroups = detailsFragmentView.findViewById(R.id.pokemonEggGroupsList);
         mGenus = detailsFragmentView.findViewById(R.id.pokemonGenusText);
         mHeight = detailsFragmentView.findViewById(R.id.pokemonHeightValue);
+        mSerebii = detailsFragmentView.findViewById(R.id.serebiiLink);
         mSmogon = detailsFragmentView.findViewById(R.id.smogonLink);
         mSpriteGif = detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
         mWeight = detailsFragmentView.findViewById(R.id.pokemonWeightValue);
@@ -142,5 +144,9 @@ public class PokemonDetailsFragment extends Fragment {
         mSmogon.setClickable(true);
         mSmogon.setMovementMethod(LinkMovementMethod.getInstance());
         mSmogon.setText(ExternalLink.getSmogonLink(mPokemon, getActivity()));
+
+        mSerebii.setClickable(true);
+        mSerebii.setMovementMethod(LinkMovementMethod.getInstance());
+        mSerebii.setText(ExternalLink.getSerebiiLink(mPokemon, getActivity()));
     }
 }
