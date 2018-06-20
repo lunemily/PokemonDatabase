@@ -18,6 +18,36 @@ public class EggGroupDAO extends DataBaseHelper implements EggGroupDataInterface
         super(context);
     }
 
+    public List<EggGroup> getAllEggGroups() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<EggGroup> eggGroups = new ArrayList<>();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(EGG_GROUP_PROSE, EGG_GROUP_ID)
+                        ,field(EGG_GROUP_PROSE, NAME))
+                .from(POKEMON_EGG_GROUPS)
+                .where(field(EGG_GROUP_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .orderBy(field(EGG_GROUP_PROSE, NAME))
+                .asc()
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                //Move move = new Move();
+                EggGroup eggGroup = new EggGroup();
+                eggGroup.setId(Integer.parseInt(cursor.getString(0)));
+                //add move to list
+                eggGroups.add(eggGroup);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return eggGroups;
+    }
+
     /**
      * Returns an Ability object with its name
      *
@@ -32,14 +62,14 @@ public class EggGroupDAO extends DataBaseHelper implements EggGroupDataInterface
                 .select(field(EGG_GROUP_PROSE, EGG_GROUP_ID)
                         , field(EGG_GROUP_PROSE, NAME))
                 .from(EGG_GROUP_PROSE)
-                .where(field(EGG_GROUP_PROSE, EGG_GROUP_ID) + "=" + eggGroup.getID())
+                .where(field(EGG_GROUP_PROSE, EGG_GROUP_ID) + "=" + eggGroup.getId())
                 .and(field(EGG_GROUP_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                eggGroup.setID(Integer.parseInt(cursor.getString(0)));
+                eggGroup.setId(Integer.parseInt(cursor.getString(0)));
                 eggGroup.setName(cursor.getString(1));
             }
             cursor.close();
@@ -73,7 +103,7 @@ public class EggGroupDAO extends DataBaseHelper implements EggGroupDataInterface
             do {
                 //Move move = new Move();
                 EggGroup eggGroup = new EggGroup();
-                eggGroup.setID(Integer.parseInt(cursor.getString(0)));
+                eggGroup.setId(Integer.parseInt(cursor.getString(0)));
                 //add move to list
                 eggGroups.add(eggGroup);
             } while (cursor.moveToNext());

@@ -11,7 +11,7 @@
     <string name="pokemonWeightValue">0</string>
     <string name="pokemonAbilities">Abilities</string>
     <string name="pokemonAbilitiesList">Ability 1</string>
-    <string name="pokemonEggsGroups">Egg Group(s)</string>
+    <string name="egg_groups">Egg Group(s)</string>
     <string name="pokemonEggGroupsList">Group 1</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">

@@ -48,6 +48,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String CONTEST_TYPE_NAMES = "contest_type_names";
     static final String CONTEST_TYPES = "contest_types";
     static final String EGG_GROUP_PROSE = "egg_group_prose";
+    static final String EGG_GROUPS = "egg_groups";
     static final String ENCOUNTERS = "encounters";
     static final String ITEMS = "items";
     static final String ITEM_NAMES = "item_names";

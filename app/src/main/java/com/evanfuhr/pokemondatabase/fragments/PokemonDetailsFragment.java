@@ -30,7 +30,6 @@ public class PokemonDetailsFragment extends Fragment {
     Pokemon mPokemon = new Pokemon();
 
     TextView mBulbapedia;
-    LinearLayout mEggGroups;
     TextView mGenus;
     TextView mHeight;
     TextView mSerebii;
@@ -54,7 +53,6 @@ public class PokemonDetailsFragment extends Fragment {
         View detailsFragmentView = inflater.inflate(R.layout.fragment_pokemon_details, container, false);
 
         mBulbapedia = detailsFragmentView.findViewById(R.id.bulbapediaLink);
-        mEggGroups = detailsFragmentView.findViewById(R.id.pokemonEggGroupsList);
         mGenus = detailsFragmentView.findViewById(R.id.pokemonGenusText);
         mHeight = detailsFragmentView.findViewById(R.id.pokemonHeightValue);
         mSerebii = detailsFragmentView.findViewById(R.id.serebiiLink);
@@ -89,7 +87,6 @@ public class PokemonDetailsFragment extends Fragment {
         setFragmentGenus();
         setFragmentSprite();
         setFragmentHeightAndWeight();
-        setFragmentEggGroups();
         setExternalLinks();
     }
 
@@ -97,21 +94,6 @@ public class PokemonDetailsFragment extends Fragment {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
         mPokemon = pokemonDAO.getPokemon(mPokemon);
         pokemonDAO.close();
-    }
-
-    void setFragmentEggGroups() {
-        PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        EggGroupDAO eggGroupDAO = new EggGroupDAO(getActivity());
-        mPokemon.setEggGroups(eggGroupDAO.getEggGroups(mPokemon));
-        List<EggGroup> eggGroups = mPokemon.getEggGroups();
-
-        for (EggGroup eg : eggGroups) {
-            TextView textViewEggGroup = new TextView(getActivity());
-            textViewEggGroup.setText(eggGroupDAO.getEggGroup(eg).getName());
-            mEggGroups.addView(textViewEggGroup);
-        }
-        pokemonDAO.close();
-        eggGroupDAO.close();
     }
 
     void setFragmentGenus() {

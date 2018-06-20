@@ -92,6 +92,35 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         return pokemons;
     }
 
+    public List<Pokemon>getPokemon(EggGroup eggGroup) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        List<Pokemon> pokemons = new ArrayList<>();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_EGG_GROUPS, SPECIES_ID))
+                .from(POKEMON_EGG_GROUPS)
+                .where(field(POKEMON_EGG_GROUPS, EGG_GROUP_ID) + "=" + eggGroup.getId())
+                .orderBy(field(POKEMON_EGG_GROUPS, SPECIES_ID))
+                .asc()
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        //Loop through rows and add each to list
+        if (cursor.moveToFirst()) {
+            do {
+                Pokemon pokemon = new Pokemon();
+                pokemon.setId(Integer.parseInt(cursor.getString(0)));
+                pokemons.add(pokemon);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return pokemons;
+    }
+
     public List<Pokemon> getPokemon(Location location) {
         SQLiteDatabase db = this.getWritableDatabase();
 
