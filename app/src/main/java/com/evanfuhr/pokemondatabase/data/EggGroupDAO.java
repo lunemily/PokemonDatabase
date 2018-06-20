@@ -18,6 +18,11 @@ public class EggGroupDAO extends DataBaseHelper implements EggGroupDataInterface
         super(context);
     }
 
+    /**
+     *
+     * @return      An alphabetically sorted list of all egg groups
+     * @see         EggGroup
+     */
     public List<EggGroup> getAllEggGroups() {
         SQLiteDatabase db = this.getWritableDatabase();
 

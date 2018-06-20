@@ -61,6 +61,12 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         return pokemonList;
     }
 
+    /**
+     *
+     * @param ability   A filter criterion for all Pokemon
+     * @return          A list of Pokemon that all have the input ability
+     * @see             Ability
+     */
     public List<Pokemon>getPokemon(Ability ability) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -92,6 +98,12 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         return pokemons;
     }
 
+    /**
+     *
+     * @param eggGroup  A filter criterion for all Pokemon
+     * @return          A list of Pokemon that all have the input egg group
+     * @see             EggGroup
+     */
     public List<Pokemon>getPokemon(EggGroup eggGroup) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -121,6 +133,12 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         return pokemons;
     }
 
+    /**
+     *
+     * @param location  A filter criterion for all Pokemon
+     * @return          A list of Pokemon that can be found at the input location
+     * @see             Location
+     */
     public List<Pokemon> getPokemon(Location location) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -192,6 +210,12 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         return pokemons;
     }
 
+    /**
+     *
+     * @param type      A filter criterion for all Pokemon
+     * @return          A list of Pokemon that all have the input type
+     * @see             Type
+     */
     public List<Pokemon>getPokemon(Type type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
