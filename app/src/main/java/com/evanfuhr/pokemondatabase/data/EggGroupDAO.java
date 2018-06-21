@@ -31,7 +31,7 @@ public class EggGroupDAO extends DataBaseHelper implements EggGroupDataInterface
         String sql = SQLiteQueryBuilder
                 .select(field(EGG_GROUP_PROSE, EGG_GROUP_ID)
                         ,field(EGG_GROUP_PROSE, NAME))
-                .from(POKEMON_EGG_GROUPS)
+                .from(EGG_GROUP_PROSE)
                 .where(field(EGG_GROUP_PROSE, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .orderBy(field(EGG_GROUP_PROSE, NAME))
                 .asc()

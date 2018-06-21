@@ -38,7 +38,7 @@ public class AbilityDisplayActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(Pokemon pokemon) {
+    public void onPokemonListFragmentInteraction(Pokemon pokemon) {
 
         //Build the intent to load the pokemon display
         Intent intent = new Intent(this, PokemonDisplayActivity.class);

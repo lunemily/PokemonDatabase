@@ -51,6 +51,13 @@
             android:text="@string/locations" />
 
         <Button
+            android:id="@+id/buttonEggGroupList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="@string/egg_groups" />
+
+        <Button
             android:id="@+id/buttonNatureList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

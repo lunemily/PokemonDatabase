@@ -46,7 +46,13 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".activities.LocationDisplayActivity"></activity>
+        <activity android:name=".activities.LocationDisplayActivity" />
+        <activity android:name=".activities.EggGroupListActivity">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity android:name=".activities.EggGroupDisplayActivity" />
     </application>
 
 </manifest>

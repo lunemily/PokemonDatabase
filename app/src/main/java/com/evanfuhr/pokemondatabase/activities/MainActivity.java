@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Button mMoveButton;
     Button mAbilityButton;
     Button mLocationButton;
+    Button mEggGroupButton;
     Button mNatureButton;
 
     @Override
@@ -103,6 +104,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mEggGroupButton = this.findViewById(R.id.buttonEggGroupList);
+        mEggGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickButton(view);
+            }
+        });
+
         mNatureButton = this.findViewById(R.id.buttonNatureList);
         mNatureButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +139,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.buttonLocationList:
                 intent = new Intent(this, LocationListActivity.class);
+                break;
+            case R.id.buttonEggGroupList:
+                intent = new Intent(this, EggGroupListActivity.class);
                 break;
             case R.id.buttonNatureList:
                 intent = new Intent(this, NatureListActivity.class);

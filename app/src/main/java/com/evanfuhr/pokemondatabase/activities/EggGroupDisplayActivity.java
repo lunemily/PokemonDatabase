@@ -1,37 +1,48 @@
 package com.evanfuhr.pokemondatabase.activities;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.data.EggGroupDAO;
 import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
+import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
-public class PokemonListActivity extends AppCompatActivity
+public class EggGroupDisplayActivity extends AppCompatActivity
         implements PokemonListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String POKEMON = "Pokémon";
-    @NonNls
-    public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
+    public static final String EGG_GROUP_ID = "egg_group_id";
+
+    EggGroup mEggGroup = new EggGroup();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pokemon_list);
+        setContentView(R.layout.activity_egg_group_display);
 
-        setTitle(POKEMON);
+        EggGroupDAO eggGroupDAO = new EggGroupDAO(this);
+
+        // Get eggGroup_id passed to this activity
+        Intent intent = getIntent();
+        mEggGroup.setId(intent.getIntExtra(EGG_GROUP_ID, 0));
+        mEggGroup = eggGroupDAO.getEggGroup(mEggGroup);
+        setTitle(mEggGroup.getName());
+
+        eggGroupDAO.close();
     }
 
     @Override
     public void onPokemonListFragmentInteraction(Pokemon pokemon) {
-        // Build the intent to load the pokemon display
+
+        //Build the intent to load the pokemon display
         Intent intent = new Intent(this, PokemonDisplayActivity.class);
-        // Load the pokemon id into the intent
+        //Load the pokemon ID to send to the player sheet
         intent.putExtra(PokemonDisplayActivity.POKEMON_ID, pokemon.getId());
 
         startActivity(intent);

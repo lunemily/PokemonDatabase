@@ -173,7 +173,12 @@ public class PokemonDisplayActivity extends AppCompatActivity
     }
 
     @Override
-    public void onEggGroupListFragmentInteraction(EggGroup item) {
+    public void onEggGroupListFragmentInteraction(EggGroup eggGroup) {
+        // Build the intent to load the display
+        Intent intent = new Intent(this, EggGroupDisplayActivity.class);
+        // Load the id into the intent
+        intent.putExtra(EggGroupDisplayActivity.EGG_GROUP_ID, eggGroup.getId());
 
+        startActivity(intent);
     }
 }

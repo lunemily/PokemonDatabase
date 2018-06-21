@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.EggGroupDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.LocationDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
@@ -28,6 +29,7 @@ import com.evanfuhr.pokemondatabase.adapters.PokemonRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Location;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
@@ -51,11 +53,13 @@ public class PokemonListFragment extends Fragment
     private OnListFragmentInteractionListener mListener;
 
     Ability mAbility = new Ability();
+    EggGroup mEggGroup = new EggGroup();
     Location mLocation = new Location();
     Move mMove = new Move();
     Type mType = new Type();
 
     boolean isListByAbility = false;
+    boolean isListByEggGroup = false;
     boolean isListByLocation = false;
     boolean isListByMove = false;
     boolean isListByType = false;
@@ -87,21 +91,25 @@ public class PokemonListFragment extends Fragment
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
-            if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
-                mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
-                isListByType = true;
-                mTitle.setVisibility(View.VISIBLE);
-            } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
+            if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
                 mAbility.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
                 isListByAbility = true;
+                mTitle.setVisibility(View.VISIBLE);
+            } else if (bundle.containsKey(EggGroupDisplayActivity.EGG_GROUP_ID)) {
+                mEggGroup.setId(bundle.getInt(EggGroupDisplayActivity.EGG_GROUP_ID));
+                isListByEggGroup = true;
+                mTitle.setVisibility(View.VISIBLE);
+            } else if (bundle.containsKey(LocationDisplayActivity.LOCATION_ID)) {
+                mLocation.setId(bundle.getInt(LocationDisplayActivity.LOCATION_ID));
+                isListByLocation = true;
                 mTitle.setVisibility(View.VISIBLE);
             } else if (bundle.containsKey(MoveDisplayActivity.MOVE_ID)) {
                 mMove.setId(bundle.getInt(MoveDisplayActivity.MOVE_ID));
                 isListByMove = true;
                 mTitle.setVisibility(View.VISIBLE);
-            } else if (bundle.containsKey(LocationDisplayActivity.LOCATION_ID)) {
-                mLocation.setId(bundle.getInt(LocationDisplayActivity.LOCATION_ID));
-                isListByLocation = true;
+            } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
+                mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
+                isListByType = true;
                 mTitle.setVisibility(View.VISIBLE);
             }
         } else {
@@ -163,7 +171,7 @@ public class PokemonListFragment extends Fragment
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Pokemon item);
+        void onPokemonListFragmentInteraction(Pokemon item);
     }
 
     @Override
@@ -229,10 +237,12 @@ public class PokemonListFragment extends Fragment
 
             if (isListByAbility) {
                 rawPokemon = pokemonDAO.getPokemon(mAbility);
-            } else if (isListByMove) {
-                rawPokemon = pokemonDAO.getPokemon(mMove);
+            } else if (isListByEggGroup) {
+                rawPokemon = pokemonDAO.getPokemon(mEggGroup);
             } else if (isListByLocation) {
                 rawPokemon = pokemonDAO.getPokemon(mLocation);
+            } else if (isListByMove) {
+                rawPokemon = pokemonDAO.getPokemon(mMove);
             } else if (isListByType) {
                 rawPokemon = pokemonDAO.getPokemon(mType);
             } else {
