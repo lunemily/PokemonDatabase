@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -36,7 +38,7 @@ public class EvolutionListFragment extends Fragment {
     boolean isListByPokemon = false;
 
     RecyclerView mRecyclerView;
-    TextView mTitle;
+    Button mToggle;
     private ProgressBar mProgressBar;
 
     /**
@@ -57,16 +59,19 @@ public class EvolutionListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
-        mTitle = view.findViewById(R.id.card_list_title);
-        mTitle.setText(R.string.evolutions);
+        mToggle = view.findViewById(R.id.card_list_button);
+        mToggle.setText(R.string.evolutions);
         mProgressBar = view.findViewById(R.id.progressBar);
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
-                mTitle.setVisibility(View.VISIBLE);
+                mToggle.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
             }
         } else {
             Log.i("EvoListFragment Log", "No bundle");
@@ -76,12 +81,23 @@ public class EvolutionListFragment extends Fragment {
 
         // Set the adapter
         Context context = view.getContext();
-        mRecyclerView = view.findViewById(R.id.list);
-        mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new EvolutionRecyclerViewAdapter(evolutions, mListener));
 
         new EvolutionLoader(getActivity()).execute("");
+
+        mToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mRecyclerView.getVisibility() == View.GONE) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+                else if (mRecyclerView.getVisibility() == View.VISIBLE) {
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+            }
+        });
+
         return view;
     }
 

@@ -15,13 +15,12 @@ import com.evanfuhr.pokemondatabase.interfaces.OnTypeSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
 public class TypeDisplayActivity extends AppCompatActivity
         implements OnTypeSelectedListener, PokemonListFragment.OnListFragmentInteractionListener,
-        MoveListFragment.OnListFragmentInteractionListener, TypeMatchUpFragment.OnListFragmentInteractionListener {
+        MoveListFragment.OnListFragmentInteractionListener, TypeMatchUpFragment.OnTypeMatchUpListFragmentInteractionListener {
 
     @NonNls
     public static final String TYPE_ID = "type_id";

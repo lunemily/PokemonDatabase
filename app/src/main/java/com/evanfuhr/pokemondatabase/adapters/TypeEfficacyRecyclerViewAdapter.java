@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment.OnListFragmentInteractionListener;
+import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment.OnTypeMatchUpListFragmentInteractionListener;
 import com.evanfuhr.pokemondatabase.models.Type;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
@@ -20,9 +20,9 @@ import java.util.List;
 public class TypeEfficacyRecyclerViewAdapter extends RecyclerView.Adapter<TypeEfficacyRecyclerViewAdapter.ViewHolder> {
 
     private final List<Type> mValues, mFilteredList;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnTypeMatchUpListFragmentInteractionListener mListener;
 
-    public TypeEfficacyRecyclerViewAdapter(List<Type> items, OnListFragmentInteractionListener listener) {
+    public TypeEfficacyRecyclerViewAdapter(List<Type> items, OnTypeMatchUpListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
 

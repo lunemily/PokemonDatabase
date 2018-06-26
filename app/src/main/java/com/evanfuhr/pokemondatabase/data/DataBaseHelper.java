@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.R;
@@ -228,22 +230,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         boolean dbExist = checkDataBase();
 
-        if (!dbExist) {
-            //do nothing if database already exists
-
-            //By calling this method and empty database will be created into the default system path
-            //of your application so we are gonna be able to overwrite that database with our database.
+        if(!dbExist)  {
             this.getReadableDatabase();
-
-            try {
-
-                copyDataBase();
-
-            } catch (IOException e) {
-
-                throw new Error("Error copying database");
-
-            }
+            this.close();
+            copyDataBase();
+            Log.e("createDataBase", "createDatabase database created");
         }
 
     }
@@ -264,6 +255,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         } catch (SQLiteException e) {
 
             //database does't exist yet.
+            Toast.makeText(myContext, "DB doesn't exist!", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -283,26 +275,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     private void copyDataBase() throws IOException {
 
-        //Open your local db as the input stream
-        InputStream myInput = myContext.getAssets().open(DB_NAME);
+        Log.v("copyDataBase", "copyDataBase() - start");
+        try {
+            InputStream myInput = myContext.getAssets().open(DB_NAME);
 
-        // Path to the just created empty db
-        String outFileName = DB_PATH + DB_NAME;
+            // I think this line should solve your problem... Maybe, you are not setting the output file properly... Try like below:
+            OutputStream myOutput = new FileOutputStream(myContext.getDatabasePath(DB_NAME));
 
-        //Open the empty db as the output stream
-        OutputStream myOutput = new FileOutputStream(outFileName);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = myInput.read(buffer))>0){
+                myOutput.write(buffer, 0, length);
+            }
 
-        //transfer bytes from the inputfile to the outputfile
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = myInput.read(buffer)) > 0) {
-            myOutput.write(buffer, 0, length);
+            myOutput.flush();
+            myOutput.close();
+            myInput.close();
+
+        } catch (Exception e) {
+            Log.e("copyDataBase", "copyDataBase(): " + e);
+
+            StackTraceElement trace[] = e.getStackTrace();
+            for(StackTraceElement element : trace) {
+                Log.e("copyDataBase", element.toString());
+
+            }
         }
-
-        //Close the streams
-        myOutput.flush();
-        myOutput.close();
-        myInput.close();
+        Log.v("copyDataBase", "copyDataBase() - end");
 
         SharedPreferences settings = getMyContext().getSharedPreferences(String.valueOf(R.string.gameVersionID), MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();

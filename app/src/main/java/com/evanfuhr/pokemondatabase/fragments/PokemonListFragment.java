@@ -15,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -65,7 +67,7 @@ public class PokemonListFragment extends Fragment
     boolean isListByType = false;
 
     RecyclerView mRecyclerView;
-    TextView mTitle;
+    Button mToggle;
     private ProgressBar mProgressBar;
 
     /**
@@ -85,32 +87,34 @@ public class PokemonListFragment extends Fragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
-        mTitle = view.findViewById(R.id.card_list_title);
-        mTitle.setText(R.string.pokemon);
+        mToggle = view.findViewById(R.id.card_list_button);
+        mToggle.setText(R.string.pokemon);
         mProgressBar = view.findViewById(R.id.progressBar);
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
-            if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
+            if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
+                mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
+                isListByType = true;
+                mToggle.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+            } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
                 mAbility.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
                 isListByAbility = true;
-                mTitle.setVisibility(View.VISIBLE);
-            } else if (bundle.containsKey(EggGroupDisplayActivity.EGG_GROUP_ID)) {
-                mEggGroup.setId(bundle.getInt(EggGroupDisplayActivity.EGG_GROUP_ID));
-                isListByEggGroup = true;
-                mTitle.setVisibility(View.VISIBLE);
-            } else if (bundle.containsKey(LocationDisplayActivity.LOCATION_ID)) {
-                mLocation.setId(bundle.getInt(LocationDisplayActivity.LOCATION_ID));
-                isListByLocation = true;
-                mTitle.setVisibility(View.VISIBLE);
+                mToggle.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
             } else if (bundle.containsKey(MoveDisplayActivity.MOVE_ID)) {
                 mMove.setId(bundle.getInt(MoveDisplayActivity.MOVE_ID));
                 isListByMove = true;
-                mTitle.setVisibility(View.VISIBLE);
-            } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
-                mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
-                isListByType = true;
-                mTitle.setVisibility(View.VISIBLE);
+                mToggle.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+            } else if (bundle.containsKey(LocationDisplayActivity.LOCATION_ID)) {
+                mLocation.setId(bundle.getInt(LocationDisplayActivity.LOCATION_ID));
+                isListByLocation = true;
+                mToggle.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
             }
         } else {
             Log.i("PokemonListFragment Log", "No bundle");
@@ -121,12 +125,23 @@ public class PokemonListFragment extends Fragment
 
         // Set the adapter
         Context context = view.getContext();
-        mRecyclerView = view.findViewById(R.id.list);
-        mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
 
         new PokemonLoader(getActivity()).execute("");
+
+        mToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mRecyclerView.getVisibility() == View.GONE) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+                else if (mRecyclerView.getVisibility() == View.VISIBLE) {
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+            }
+        });
+
         return view;
     }
 
@@ -137,7 +152,7 @@ public class PokemonListFragment extends Fragment
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnTypeMatchUpListFragmentInteractionListener");
         }
     }
 

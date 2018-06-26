@@ -10,6 +10,7 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="1000dp"
         android:id="@+id/type_display_scroll_view"
         android:layout_centerHorizontal="true"
         tools:layout_editor_absoluteY="0dp"

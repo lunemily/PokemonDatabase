@@ -39,7 +39,7 @@ import java.util.List;
 public class PokemonDisplayActivity extends AppCompatActivity
         implements AbilityListFragment.OnListFragmentInteractionListener,
         TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener,
-        TypeMatchUpFragment.OnListFragmentInteractionListener, LocationListFragment.OnListFragmentInteractionListener,
+        TypeMatchUpFragment.OnTypeMatchUpListFragmentInteractionListener, LocationListFragment.OnListFragmentInteractionListener,
         EvolutionListFragment.OnListFragmentInteractionListener, EggGroupListFragment.OnListFragmentInteractionListener {
 
     @NonNls
