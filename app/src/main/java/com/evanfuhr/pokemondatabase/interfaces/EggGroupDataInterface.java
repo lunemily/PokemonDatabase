@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface EggGroupDataInterface {
 
+    List<EggGroup> getAllEggGroups();
+
     EggGroup getEggGroup(EggGroup eggGroup);
 
     List<EggGroup> getEggGroups(Pokemon pokemon);

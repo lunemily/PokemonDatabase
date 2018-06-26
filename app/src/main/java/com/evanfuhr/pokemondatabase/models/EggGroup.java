@@ -2,15 +2,15 @@ package com.evanfuhr.pokemondatabase.models;
 
 public class EggGroup {
 
-    private int _id;
+    private int mId;
     private String _name;
 
-    public int getID() {
-        return this._id;
+    public int getId() {
+        return this.mId;
     }
 
-    public void setID(int id) {
-        this._id = id;
+    public void setId(int id) {
+        this.mId = id;
     }
 
     public String getName() {

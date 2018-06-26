@@ -1,5 +1,6 @@
 package com.evanfuhr.pokemondatabase.adapters;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -8,19 +9,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment.OnListFragmentInteractionListener;
-import com.evanfuhr.pokemondatabase.models.Pokemon;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
+import com.evanfuhr.pokemondatabase.fragments.EggGroupListFragment;
+import com.evanfuhr.pokemondatabase.models.EggGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecyclerViewAdapter.ViewHolder> {
+public class EggGroupRecyclerViewAdapter extends RecyclerView.Adapter<EggGroupRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Pokemon> mValues, mFilteredList;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<EggGroup> mValues, mFilteredList;
+    private final EggGroupListFragment.OnListFragmentInteractionListener mListener;
 
-    public PokemonRecyclerViewAdapter(List<Pokemon> items, OnListFragmentInteractionListener listener) {
+    public EggGroupRecyclerViewAdapter(List<EggGroup> items, EggGroupListFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
 
@@ -29,18 +29,18 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EggGroupRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_single_button, parent, false);
-        return new ViewHolder(view);
+        return new EggGroupRecyclerViewAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final EggGroupRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.mItem = mFilteredList.get(position);
         holder.mButton.setId(mFilteredList.get(position).getId());
         holder.mButton.setText(mFilteredList.get(position).getName());
-        holder.mButton.setBackground(PokemonUtils.getColorGradientByTypes(mFilteredList.get(position).getTypes()));
+        holder.mButton.setBackgroundColor(Color.GRAY);
 
         holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +48,7 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onPokemonListFragmentInteraction(holder.mItem);
+                    mListener.onEggGroupListFragmentInteraction(holder.mItem);
                 }
             }
         });
@@ -62,7 +62,7 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
     class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final Button mButton;
-        Pokemon mItem;
+        EggGroup mItem;
 
         ViewHolder(View view) {
             super(view);
@@ -81,19 +81,19 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
 
         } else {
             // Iterate in the original List and add it to filter list...
-            for (Pokemon pokemon : mValues) {
-                if (pokemon.getName().toLowerCase().contains(filterText.toLowerCase())) {
+            for (EggGroup EggGroup : mValues) {
+                if (EggGroup.getName().toLowerCase().contains(filterText.toLowerCase())) {
                     // Adding Matched items
-                    mFilteredList.add(pokemon);
+                    mFilteredList.add(EggGroup);
                 }
             }
         }
         notifyDataSetChanged();
     }
 
-    public void injectPokemon(List<Pokemon> pokemons) {
+    public void injectEggGroups(List<EggGroup> abilities) {
         mValues.clear();
-        mValues.addAll(pokemons);
+        mValues.addAll(abilities);
         filter("");
     }
 }

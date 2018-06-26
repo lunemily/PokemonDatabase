@@ -14,12 +14,14 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
+import com.evanfuhr.pokemondatabase.fragments.EggGroupListFragment;
 import com.evanfuhr.pokemondatabase.fragments.EvolutionListFragment;
 import com.evanfuhr.pokemondatabase.fragments.LocationListFragment;
 import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
 import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Evolution;
 import com.evanfuhr.pokemondatabase.models.Location;
 import com.evanfuhr.pokemondatabase.models.Move;
@@ -38,7 +40,7 @@ public class PokemonDisplayActivity extends AppCompatActivity
         implements AbilityListFragment.OnListFragmentInteractionListener,
         TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener,
         TypeMatchUpFragment.OnListFragmentInteractionListener, LocationListFragment.OnListFragmentInteractionListener,
-        EvolutionListFragment.OnListFragmentInteractionListener {
+        EvolutionListFragment.OnListFragmentInteractionListener, EggGroupListFragment.OnListFragmentInteractionListener {
 
     @NonNls
     public static final String POKEMON_ID = "pokemon_id";
@@ -168,5 +170,15 @@ public class PokemonDisplayActivity extends AppCompatActivity
     @Override
     public void onEvolutionSelected(Evolution evolution) {
         new EvolutionDialog(this).show(evolution);
+    }
+
+    @Override
+    public void onEggGroupListFragmentInteraction(EggGroup eggGroup) {
+        // Build the intent to load the display
+        Intent intent = new Intent(this, EggGroupDisplayActivity.class);
+        // Load the id into the intent
+        intent.putExtra(EggGroupDisplayActivity.EGG_GROUP_ID, eggGroup.getId());
+
+        startActivity(intent);
     }
 }

@@ -43,7 +43,7 @@ public class LocationDisplayActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(Pokemon pokemon) {
+    public void onPokemonListFragmentInteraction(Pokemon pokemon) {
         int pokemon_id = pokemon.getId();
 
         //Build the intent to load the pokemon display

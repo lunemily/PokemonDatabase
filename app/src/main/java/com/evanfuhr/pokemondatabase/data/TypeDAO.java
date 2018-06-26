@@ -37,6 +37,8 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 .join(TYPE_NAMES)
                 .on(field(TYPES, ID) + "=" + field(TYPE_NAMES, TYPE_ID))
                 .where(field(TYPE_NAMES, LOCAL_LANGUAGE_ID)+ "=" + _language_id)
+                .orderBy(field(TYPE_NAMES, NAME))
+                .asc()
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);

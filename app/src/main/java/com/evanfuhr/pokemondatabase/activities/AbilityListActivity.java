@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
