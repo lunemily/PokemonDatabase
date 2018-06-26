@@ -15,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -57,7 +59,7 @@ public class MoveListFragment extends Fragment
     boolean isListByType = false;
 
     RecyclerView mRecyclerView;
-    TextView mTitle;
+    Button mToggle;
     private ProgressBar mProgressBar;
 
     /**
@@ -77,20 +79,24 @@ public class MoveListFragment extends Fragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
-        mTitle = view.findViewById(R.id.card_list_title);
-        mTitle.setText(R.string.moves);
+        mToggle = view.findViewById(R.id.card_list_button);
+        mToggle.setText(R.string.moves);
         mProgressBar = view.findViewById(R.id.progressBar);
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
-                mTitle.setVisibility(View.VISIBLE);
+                mToggle.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
             } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
                 mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
                 isListByType = true;
-                mTitle.setVisibility(View.VISIBLE);
+                mToggle.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
             }
         } else {
             Log.i("MoveListFragment Log", "No bundle");
@@ -102,8 +108,6 @@ public class MoveListFragment extends Fragment
 
         // Set the adapter
         Context context = view.getContext();
-        mRecyclerView = view.findViewById(R.id.list);
-        mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         if (isListByPokemon) {
             mRecyclerView.setAdapter(new PokemonMoveRecyclerViewAdapter(moves, mListener));
@@ -112,6 +116,19 @@ public class MoveListFragment extends Fragment
         }
 
         new MoveLoader(getActivity()).execute("");
+
+        mToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mRecyclerView.getVisibility() == View.GONE) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+                else if (mRecyclerView.getVisibility() == View.VISIBLE) {
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+            }
+        });
+
         return view;
     }
 
@@ -123,7 +140,7 @@ public class MoveListFragment extends Fragment
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnTypeMatchUpListFragmentInteractionListener");
         }
     }
 

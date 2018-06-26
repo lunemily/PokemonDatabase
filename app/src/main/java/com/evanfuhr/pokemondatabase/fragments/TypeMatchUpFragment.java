@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,18 +20,16 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.TypeEfficacyRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.models.Type;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TypeMatchUpFragment extends Fragment {
 
-    private OnListFragmentInteractionListener mListener;
+    private OnTypeMatchUpListFragmentInteractionListener mListener;
 
     public static final String TYPE_ID = "type_id";
 
@@ -39,7 +39,7 @@ public class TypeMatchUpFragment extends Fragment {
     boolean isListByPokemon = false;
 
     RecyclerView mRecyclerView;
-    TextView mTitle;
+    Button mToggle;
     private ProgressBar mProgressBar;
 
     public TypeMatchUpFragment() {
@@ -56,19 +56,23 @@ public class TypeMatchUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
-        mTitle = view.findViewById(R.id.card_list_title);
-        mTitle.setText("Type Match Ups");
+        mToggle = view.findViewById(R.id.card_list_button);
+        mToggle.setText("Type Match Ups");
         mProgressBar = view.findViewById(R.id.progressBar);
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
-                mTitle.setVisibility(View.VISIBLE);
+                mToggle.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
             } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) { // TODO: Turn into try-catch
                 mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
-                mTitle.setVisibility(View.VISIBLE);
+                mToggle.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
             }
         } else {
             Log.i("TypeMatchUpFragment Log", "No bundle");
@@ -77,18 +81,35 @@ public class TypeMatchUpFragment extends Fragment {
 
         // Set the adapter
         Context context = view.getContext();
-        mRecyclerView = view.findViewById(R.id.list);
-        mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new TypeEfficacyRecyclerViewAdapter(types, mListener));
 
         new TypeMatchUpLoader(getActivity()).execute("");
+
+        mToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mRecyclerView.getVisibility() == View.GONE) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+                else if (mRecyclerView.getVisibility() == View.VISIBLE) {
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+            }
+        });
+
         return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof OnTypeMatchUpListFragmentInteractionListener) {
+            mListener = (OnTypeMatchUpListFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnTypeMatchUpListFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -106,7 +127,7 @@ public class TypeMatchUpFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
+    public interface OnTypeMatchUpListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Type type);
     }

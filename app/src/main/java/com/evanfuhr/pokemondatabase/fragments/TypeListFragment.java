@@ -17,6 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -51,7 +53,7 @@ public class TypeListFragment extends Fragment
     boolean isListByPokemon = false;
 
     RecyclerView mRecyclerView;
-    TextView mTitle;
+    Button mToggle;
     private ProgressBar mProgressBar;
 
     /**
@@ -71,16 +73,19 @@ public class TypeListFragment extends Fragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
-        mTitle = view.findViewById(R.id.card_list_title);
-        mTitle.setText(R.string.types);
+        mToggle = view.findViewById(R.id.card_list_button);
+        mToggle.setText(R.string.types);
         mProgressBar = view.findViewById(R.id.progressBar);
+        mRecyclerView = view.findViewById(R.id.list);
+        mRecyclerView.setNestedScrollingEnabled(false);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
                 mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
                 isListByPokemon = true;
-                mTitle.setVisibility(View.VISIBLE);
+                mToggle.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
             }
         } else {
             Log.i("TypeListFragment Log", "No bundle");
@@ -90,12 +95,23 @@ public class TypeListFragment extends Fragment
 
         // Set the adapter
         Context context = view.getContext();
-        mRecyclerView = view.findViewById(R.id.list);
-        mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.setAdapter(new TypeRecyclerViewAdapter(types, mListener));
 
         new TypeLoader(getActivity()).execute("");
+
+        mToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mRecyclerView.getVisibility() == View.GONE) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+                else if (mRecyclerView.getVisibility() == View.VISIBLE) {
+                    mRecyclerView.setVisibility(View.GONE);
+                }
+            }
+        });
+
         return view;
     }
 
@@ -107,7 +123,7 @@ public class TypeListFragment extends Fragment
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnTypeMatchUpListFragmentInteractionListener");
         }
     }
 

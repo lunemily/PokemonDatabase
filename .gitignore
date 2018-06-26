@@ -30,6 +30,10 @@ local.properties
 .idea/vcs.xml
 *.iml
 
+.settings/
+app/.settings/
+
+
 # OS-specific files
 .DS_Store
 .DS_Store?

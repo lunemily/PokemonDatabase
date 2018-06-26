@@ -87,7 +87,7 @@ public class NatureListFragment extends Fragment {
             mListener = (NatureListFragment.OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnTypeMatchUpListFragmentInteractionListener");
         }
     }
 
