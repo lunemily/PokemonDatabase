@@ -1,22 +1,17 @@
 package com.evanfuhr.pokemondatabase.models;
 
-public class Stat {
+public class Stat extends BaseNamedObject {
 
-    private int id;
     private int damageClassId;
-    private String name;
     private boolean isBattleOnly;
     private int gameIndex;
 
-    public Stat() {}
-
-
-    public int getId() {
-        return id;
+    public Stat() {
+        super();
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Stat(int id) {
+        super(id);
     }
 
     public int getDamageClassId() {
@@ -25,14 +20,6 @@ public class Stat {
 
     public void setDamageClassId(int damageClassId) {
         this.damageClassId = damageClassId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public boolean isBattleOnly() {

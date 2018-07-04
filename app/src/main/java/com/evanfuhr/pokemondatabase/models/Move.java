@@ -1,25 +1,23 @@
 package com.evanfuhr.pokemondatabase.models;
 
-public class Move implements Comparable<Move> {
+public class Move extends BaseTypedObject implements Comparable<Move> {
 
     private int mAccuracy = 0;
     private DamageClass mCategory = DamageClass.STATUS;
     private String mEffect;
-    private int mId = 0;
     private int mLevel = 0;
     private MoveMethod mMethodId = MoveMethod.LEVEL_UP;
-    private String mName;
     private int mPower = 0;
     private int mPp = 0;
     private int mTm = 0;
-    private Type mType;
     private int mCritRate = 0;
 
     public Move() {
+        super();
     }
 
     public Move(int id) {
-        this.mId = id;
+        super(id);
     }
 
     // This one is hacky since there can "technically" be multiple different effect chances, but
@@ -51,14 +49,6 @@ public class Move implements Comparable<Move> {
         this.mEffect = effect;
     }
 
-    public int getId() {
-        return this.mId;
-    }
-
-    public void setId(int id) {
-        this.mId = id;
-    }
-
     public int getLevel() {
         return this.mLevel;
     }
@@ -73,14 +63,6 @@ public class Move implements Comparable<Move> {
 
     public void setMethodID(MoveMethod method_id) {
         this.mMethodId = method_id;
-    }
-
-    public String getName() {
-        return this.mName;
-    }
-
-    public void setName(String name) {
-        this.mName = name;
     }
 
     public int getPower() {
@@ -105,14 +87,6 @@ public class Move implements Comparable<Move> {
 
     public void setTM(int tm) {
         this.mTm = tm;
-    }
-
-    public Type getType() {
-        return this.mType;
-    }
-
-    public void setType(Type type) {
-        this.mType = type;
     }
 
     //Static methods

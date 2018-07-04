@@ -9,20 +9,19 @@ import org.jetbrains.annotations.Contract;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Type {
+public class Type extends BaseNamedObject {
 
     private String color;
     private float _efficacy;
     private boolean isTarget = false;
-    private int mId = 0;
-    private String _name;
     private int _slot;
 
     public Type() {
+        super();
     }
 
     public Type(int id) {
-        this.mId = id;
+        super(id);
     }
 
     public String getColor() {
@@ -39,25 +38,6 @@ public class Type {
 
     public void setEfficacy(float efficacy) {
         this._efficacy = efficacy;
-    }
-
-    public int getId() {
-        return this.mId;
-    }
-
-    public void setId(int id) {
-        this.mId = id;
-    }
-
-    public String getName() {
-        if (_name == null) {
-            _name = "undefined";
-        }
-        return this._name;
-    }
-
-    public void setName(String name) {
-        this._name = name;
     }
 
     public int getSlot() {
@@ -77,15 +57,6 @@ public class Type {
     }
 
     // Static methods
-
-    public static List<Type> loadTypesForPokemon(List<Type> types, TypeDAO typeDAO) {
-        List<Type> newTypes = new ArrayList<>();
-        for (Type t: types) {
-            Type type = typeDAO.getType(t);
-            newTypes.add(type);
-        }
-        return newTypes;
-    }
 
     @NonNull
     @Contract(pure = true)

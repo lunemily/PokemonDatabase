@@ -3,10 +3,8 @@ package com.evanfuhr.pokemondatabase.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Nature {
+public class Nature extends BaseNamedObject {
 
-    private int id;
-    private String name;
     private Stat decreasedStat;
     private Stat increasedStat;
     private Flavor likesFlavor;
@@ -15,22 +13,11 @@ public class Nature {
     private int gameIndex;
 
     public Nature() {
+        super();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public Nature(int id) {
+        super(id);
     }
 
     public Stat getDecreasedStat() {
