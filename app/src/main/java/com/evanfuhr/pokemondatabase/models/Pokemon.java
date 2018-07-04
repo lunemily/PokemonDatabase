@@ -2,7 +2,7 @@ package com.evanfuhr.pokemondatabase.models;
 
 import java.util.List;
 
-public class Pokemon {
+public class Pokemon extends BasePokemon {
 
     private List<Ability> mAbilities;
     private int mBaseExperience;
@@ -10,18 +10,15 @@ public class Pokemon {
     private int mGenderRatio;
     private String mGenus;
     private Double mHeight;
-    private int mId;
-    private boolean mMega;
     private List<Move> mMoves;
-    private String mName;
-    private List<Type> mTypes;
     private Double mWeight;
 
     public Pokemon() {
+        super();
     }
 
     public Pokemon(int id) {
-        this.mId = id;
+        super(id);
     }
 
     public List<Ability> getAbilities() {
@@ -72,48 +69,12 @@ public class Pokemon {
         this.mHeight = height;
     }
 
-    public int getId() {
-        return this.mId;
-    }
-
-    public void setId(int id) {
-        this.mId = id;
-    }
-
-    public boolean getMega() {
-        return this.mMega;
-    }
-
-    public void setMega(boolean mega) {
-        this.mMega = mega;
-    }
-
     public List<Move> getMoves() {
         return mMoves;
     }
 
     public void setMoves(List<Move> moves) {
         this.mMoves = moves;
-    }
-
-    public String getName() {
-        if (mName == null) {
-            mName = "undefined";
-        }
-
-        return this.mName;
-    }
-
-    public void setName(String name) {
-        this.mName = name;
-    }
-    
-    public List<Type> getTypes() {
-        return this.mTypes;
-    }
-    
-    public void setTypes(List<Type> types) {
-        this.mTypes = types;
     }
 
     public Double getWeight() {
@@ -142,7 +103,7 @@ public class Pokemon {
     public String getSpriteName() {
         String filename = this.getThreeDigitStringId();
 
-        if (mMega) {
+        if (mForme == Forme.MEGA) {
             filename = filename + "mega";
         }
 

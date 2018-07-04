@@ -2,33 +2,17 @@ package com.evanfuhr.pokemondatabase.models;
 
 import java.util.List;
 
-public class Location {
-    private int mId;
-    private String mName;
+public class Location extends BaseNamedObject {
+
     private List<Pokemon> mPokemon;
     private Region mRegion;
 
     public Location() {
+        super();
     }
 
     public Location(int id) {
-        this.mId = id;
-    }
-
-    public int getId() {
-        return mId;
-    }
-
-    public void setId(int mId) {
-        this.mId = mId;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
-    public void setName(String mName) {
-        this.mName = mName;
+        super(id);
     }
 
     public List<Pokemon> getPokemon() {

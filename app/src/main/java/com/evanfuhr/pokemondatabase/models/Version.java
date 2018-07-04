@@ -1,22 +1,16 @@
 package com.evanfuhr.pokemondatabase.models;
 
-public class Version {
+public class Version extends BaseNamedObject {
 
-    private int mId;
     private int mGenerationId;
     private int mGroupId;
-    private String mName;
 
     public Version() {
-
+        super();
     }
 
-    public int getId() {
-        return this.mId;
-    }
-
-    public void setId(int id) {
-        this.mId = id;
+    public Version(int id) {
+        super(id);
     }
 
     public int getGenerationId() {
@@ -33,18 +27,6 @@ public class Version {
 
     public void setGroupId(int group_id) {
         this.mGroupId = group_id;
-    }
-
-    public String getName() {
-        if (mName == null) {
-            mName = "undefined";
-        }
-
-        return this.mName;
-    }
-
-    public void setName(String name) {
-        this.mName = name;
     }
 
     public String getSmogonVersion() {
