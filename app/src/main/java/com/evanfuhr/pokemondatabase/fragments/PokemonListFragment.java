@@ -103,18 +103,18 @@ public class PokemonListFragment extends Fragment
             } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
                 mAbility.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
                 isListByAbility = true;
-                mToggle.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
+//                mToggle.setVisibility(View.VISIBLE);
+//                mRecyclerView.setVisibility(View.GONE);
             } else if (bundle.containsKey(MoveDisplayActivity.MOVE_ID)) {
                 mMove.setId(bundle.getInt(MoveDisplayActivity.MOVE_ID));
                 isListByMove = true;
-                mToggle.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
+//                mToggle.setVisibility(View.VISIBLE);
+//                mRecyclerView.setVisibility(View.GONE);
             } else if (bundle.containsKey(LocationDisplayActivity.LOCATION_ID)) {
                 mLocation.setId(bundle.getInt(LocationDisplayActivity.LOCATION_ID));
                 isListByLocation = true;
-                mToggle.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
+//                mToggle.setVisibility(View.VISIBLE);
+//                mRecyclerView.setVisibility(View.GONE);
             }
         } else {
             Log.i("PokemonListFragment Log", "No bundle");
