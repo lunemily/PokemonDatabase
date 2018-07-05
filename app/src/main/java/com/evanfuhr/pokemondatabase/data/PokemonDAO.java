@@ -73,7 +73,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         List<Pokemon> pokemons = new ArrayList<>();
 
         String sql = SQLiteQueryBuilder
-                .select(field(POKEMON, SPECIES_ID))
+                .select( "distinct " + field(POKEMON, SPECIES_ID))
                 .from(POKEMON_ABILITIES)
                 .join(POKEMON)
                 .on(field(POKEMON_ABILITIES, POKEMON_ID) + "=" + field(POKEMON, ID))

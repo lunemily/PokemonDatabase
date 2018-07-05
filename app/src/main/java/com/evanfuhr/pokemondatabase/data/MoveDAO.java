@@ -242,10 +242,29 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 ", " + MACHINES + "." + MACHINE_NUMBER +
                 " FROM " + POKEMON_MOVES +
                 //", " + MACHINES +
-                " LEFT OUTER JOIN (SELECT * FROM " + MACHINES + " WHERE " + MACHINES + "." + VERSION_GROUP_ID + " = " + version_group_id + ") AS " + MACHINES +
+                " LEFT OUTER JOIN (" +
+                    "SELECT * " +
+                    "FROM " + MACHINES +
+                    " WHERE " + MACHINES + "." + VERSION_GROUP_ID + " = " + version_group_id + "" +
+                ") AS " + MACHINES +
                 " ON " + POKEMON_MOVES + "." + MOVE_ID + " = " + MACHINES + "." + MOVE_ID +
 
-                " WHERE " + POKEMON_MOVES + "." + POKEMON_ID + " = " + pokemon.getId() +
+                " WHERE (" +
+                    POKEMON_MOVES + "." + POKEMON_ID + " = " + pokemon.getId() +
+                    " or (" +
+                        POKEMON_MOVES + "." + POKEMON_ID + " in (" +
+                            "SELECT " + field(POKEMON_SPECIES, ID) +
+                            " FROM " + POKEMON_SPECIES +
+                            " WHERE " + field(POKEMON_SPECIES, EVOLUTION_CHAIN_ID) + " = (" +
+                                "SELECT " + field(POKEMON_SPECIES, EVOLUTION_CHAIN_ID) +
+                                " FROM " + POKEMON_SPECIES +
+                                " WHERE " + field(POKEMON_SPECIES, ID) + " = " + pokemon.getId() +
+                            ")" +
+                            "AND " + field(POKEMON_SPECIES, EVOLVES_FROM_SPECIES_ID) + " IS NULL" +
+                        ")" +
+                        "and " + field(POKEMON_MOVES, POKEMON_MOVE_METHOD_ID) + " = 2" + // Specifically egg moves
+                    ")" +
+                ")" +
                 " AND " + POKEMON_MOVES + "." + VERSION_GROUP_ID + " = " + version_group_id +
                 " ORDER BY " + POKEMON_MOVES + "." + POKEMON_MOVE_METHOD_ID + " ASC" +
                 ", " + POKEMON_MOVES + "." + POKEMON_MOVE_LEVEL + " ASC" +
