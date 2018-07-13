@@ -1,5 +1,9 @@
 package com.evanfuhr.pokemondatabase.models;
 
+import android.support.annotation.NonNull;
+
+import org.jetbrains.annotations.Contract;
+
 public enum Forme {
     STANDARD,
     MEGA,
@@ -47,5 +51,34 @@ public enum Forme {
     DISGUISED,
     BUSTED,
     ORIGINAL,
-    ZENITH
+    ZENITH,
+    ALOLA
+    ;
+
+    public static Forme parseShowdownForme(String name) {
+        if (name.contains("Mega-X")) {
+            return MEGA_X;
+        } else if (name.contains("Mega-Y")) {
+            return MEGA_Y;
+        } else if (name.contains("Mega")) {
+            return MEGA;
+        } else if (name.contains("Alola")) {
+            return ALOLA;
+        }
+        return STANDARD;
+    }
+
+    public static String getShowndownForme(Forme forme) {
+        switch (forme) {
+            case MEGA:
+                return "Mega";
+            case MEGA_X:
+                return "Mega-X";
+            case MEGA_Y:
+                return "Mega-Y";
+            case ALOLA:
+                return "Alola";
+        }
+        return "";
+    }
 }

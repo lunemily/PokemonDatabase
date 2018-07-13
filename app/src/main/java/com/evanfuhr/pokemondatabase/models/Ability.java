@@ -14,6 +14,10 @@ public class Ability extends BaseNamedObject {
         super(id);
     }
 
+    public Ability(String name) {
+        super(name);
+    }
+
     public boolean getIsHidden() {
         return this._is_hidden;
     }

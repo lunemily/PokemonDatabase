@@ -1,14 +1,22 @@
 package com.evanfuhr.pokemondatabase.models;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class TeamPokemon extends BaseTypedObject {
 
     private Ability mAbility;
+    private Forme mForme;
+    private Gender mGender;
     private String mNickname;
-    private boolean mShiny;
+    private boolean mShiny = false;
     private Item mItem;
+    private List<Move> mMoves;
     private Nature mNature;
-    private int[] mIVs;
-    private int[] mEVs;
+    private Map<IndividualValues, Integer> mIVs;
+    private Map<EffortValue, Integer> mEVs;
+    private String mRawPokemon;
 
     public TeamPokemon() {
         super();
@@ -58,19 +66,51 @@ public class TeamPokemon extends BaseTypedObject {
         this.mNature = nature;
     }
 
-    public int[] getIVs() {
+    public Map<IndividualValues, Integer> getIVs() {
         return mIVs;
     }
 
-    public void setIVs(int[] ivs) {
+    public void setIVs(Map<IndividualValues, Integer> ivs) {
         this.mIVs = ivs;
     }
 
-    public int[] getEVs() {
+    public Map<EffortValue, Integer> getEVs() {
         return mEVs;
     }
 
-    public void setEVs(int[] evs) {
+    public void setEVs(Map<EffortValue, Integer> evs) {
         this.mEVs = evs;
+    }
+
+    public String getRawPokemon() {
+        return mRawPokemon;
+    }
+
+    public void setRawPokemon(String rawPokemon) {
+        this.mRawPokemon = rawPokemon;
+    }
+
+    public List<Move> getMoves() {
+        return mMoves != null ? mMoves : new ArrayList<Move>();
+    }
+
+    public void setMoves(List<Move> moves) {
+        this.mMoves = moves;
+    }
+
+    public Gender getGender() {
+        return mGender;
+    }
+
+    public void setGender(Gender gender) {
+        this.mGender = gender;
+    }
+
+    public Forme getForme() {
+        return mForme;
+    }
+
+    public void setForme(Forme forme) {
+        this.mForme = forme;
     }
 }

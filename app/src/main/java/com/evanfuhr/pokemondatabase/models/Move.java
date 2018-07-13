@@ -20,6 +20,10 @@ public class Move extends BaseTypedObject implements Comparable<Move> {
         super(id);
     }
 
+    public Move(String name) {
+        super(name);
+    }
+
     // This one is hacky since there can "technically" be multiple different effect chances, but
     // after some data research, all instances of multiple non-zero values are still equal and thus,
     // can be consolidated.

@@ -20,6 +20,10 @@ public class Nature extends BaseNamedObject {
         super(id);
     }
 
+    public Nature(String name) {
+        super(name);
+    }
+
     public Stat getDecreasedStat() {
         return decreasedStat;
     }

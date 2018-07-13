@@ -15,6 +15,10 @@ public class BaseTypedObject extends BaseNamedObject {
         super();
     }
 
+    BaseTypedObject(String name) {
+        super(name);
+    }
+
     public Type getType() {
         return this.mType;
     }

@@ -12,6 +12,10 @@ public class BaseNamedObject {
         this.mId = id;
     }
 
+    BaseNamedObject(String name) {
+        this.mName = name;
+    }
+
     public int getId() {
         return this.mId;
     }

@@ -9,4 +9,8 @@ public class Item extends BaseNamedObject {
     public Item(int id) {
         super(id);
     }
+
+    public Item(String name) {
+        super(name);
+    }
 }
