@@ -1,4 +1,4 @@
-package com.evanfuhr.pokemondatabase.fragments;
+package com.evanfuhr.pokemondatabase.fragments.details;
 
 import android.content.Context;
 import android.app.Fragment;
@@ -11,13 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.NatureDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.NatureDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.FlavorDAO;
 import com.evanfuhr.pokemondatabase.data.NatureDAO;
 import com.evanfuhr.pokemondatabase.data.StatDAO;
 import com.evanfuhr.pokemondatabase.models.Flavor;
 import com.evanfuhr.pokemondatabase.models.Nature;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 public class NatureDetailsFragment extends Fragment {
 

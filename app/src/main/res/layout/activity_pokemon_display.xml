@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="0dp"
-    tools:context="com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity"
+    tools:context="com.evanfuhr.pokemondatabase.activities.display.PokemonDisplayActivity"
     android:id="@+id/pokemon_display_activity">
 
     <android.support.v4.widget.NestedScrollView
@@ -37,56 +37,56 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.PokemonDetailsFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.details.PokemonDetailsFragment"
                 android:id="@+id/pokemonDetailsFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.EvolutionListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.EvolutionListFragment"
                 android:id="@+id/evolutionListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.TypeListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.TypeListFragment"
                 android:id="@+id/typeListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.TypeMatchUpListFragment"
                 android:id="@+id/typeMatchUpFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.AbilityListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.AbilityListFragment"
                 android:id="@+id/abilityListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.EggGroupListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.EggGroupListFragment"
                 android:id="@+id/eggGroupListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.MoveListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.MoveListFragment"
                 android:id="@+id/moveListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.LocationListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.LocationListFragment"
                 android:id="@+id/locationListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 

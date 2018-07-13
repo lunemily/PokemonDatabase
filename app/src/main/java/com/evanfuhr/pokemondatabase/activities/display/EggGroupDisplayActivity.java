@@ -1,40 +1,39 @@
-package com.evanfuhr.pokemondatabase.activities;
+package com.evanfuhr.pokemondatabase.activities.display;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.data.AbilityDAO;
-import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
-import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.data.EggGroupDAO;
+import com.evanfuhr.pokemondatabase.fragments.list.PokemonListFragment;
+import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 
-public class AbilityDisplayActivity extends AppCompatActivity
+public class EggGroupDisplayActivity extends AppCompatActivity
         implements PokemonListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String ABILITY_ID = "ability_id";
+    public static final String EGG_GROUP_ID = "egg_group_id";
 
-    Ability mAbility = new Ability();
+    EggGroup mEggGroup = new EggGroup();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ability_display);
+        setContentView(R.layout.activity_egg_group_display);
 
-        AbilityDAO abilityDAO = new AbilityDAO(this);
+        EggGroupDAO eggGroupDAO = new EggGroupDAO(this);
 
-        // Get ability_id passed to this activity
+        // Get eggGroup_id passed to this activity
         Intent intent = getIntent();
-        mAbility.setId(intent.getIntExtra(ABILITY_ID, 0));
-        mAbility = abilityDAO.getAbility(mAbility);
-        setTitle(mAbility.getName());
+        mEggGroup.setId(intent.getIntExtra(EGG_GROUP_ID, 0));
+        mEggGroup = eggGroupDAO.getEggGroup(mEggGroup);
+        setTitle(mEggGroup.getName());
 
-        abilityDAO.close();
+        eggGroupDAO.close();
     }
 
     @Override

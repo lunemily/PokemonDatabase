@@ -1,11 +1,12 @@
-package com.evanfuhr.pokemondatabase.activities;
+package com.evanfuhr.pokemondatabase.activities.list;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.EggGroupListFragment;
+import com.evanfuhr.pokemondatabase.activities.display.EggGroupDisplayActivity;
+import com.evanfuhr.pokemondatabase.fragments.list.EggGroupListFragment;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 
 import org.jetbrains.annotations.NonNls;

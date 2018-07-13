@@ -8,13 +8,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.evanfuhr.pokemondatabase.activities.MoveListActivity"
+    tools:context="com.evanfuhr.pokemondatabase.activities.list.MoveListActivity"
     android:id="@+id/move_list_activity">
 
     <fragment
         android:layout_width="336dp"
         android:layout_height="wrap_content"
-        android:name="com.evanfuhr.pokemondatabase.fragments.MoveListFragment"
+        android:name="com.evanfuhr.pokemondatabase.fragments.list.MoveListFragment"
         android:id="@+id/moveListFragment"
         android:layout_margin="@dimen/activity_horizontal_margin"
         tools:layout_editor_absoluteY="16dp"

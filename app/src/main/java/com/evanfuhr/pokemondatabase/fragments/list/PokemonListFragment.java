@@ -1,11 +1,11 @@
-package com.evanfuhr.pokemondatabase.fragments;
+package com.evanfuhr.pokemondatabase.fragments.list;
 
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,19 +16,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
-import com.evanfuhr.pokemondatabase.adapters.AbilityRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.data.AbilityDAO;
+import com.evanfuhr.pokemondatabase.activities.display.AbilityDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.LocationDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.MoveDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.TypeDisplayActivity;
+import com.evanfuhr.pokemondatabase.adapters.PokemonRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
+import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
+import com.evanfuhr.pokemondatabase.models.EggGroup;
+import com.evanfuhr.pokemondatabase.models.Location;
+import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
+import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,19 +40,27 @@ import java.util.List;
 import static android.content.Context.SEARCH_SERVICE;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AbilityListFragment.OnListFragmentInteractionListener} interface
- * to handle interaction events.
+ * A fragment representing a list of Items.
+ * <p/>
+ * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * interface.
  */
-public class AbilityListFragment extends Fragment
-        implements SearchView.OnQueryTextListener {
+public class PokemonListFragment extends Fragment
+    implements SearchView.OnQueryTextListener {
 
-    private AbilityListFragment.OnListFragmentInteractionListener mListener;
+    private OnListFragmentInteractionListener mListener;
 
-    Pokemon mPokemon = new Pokemon();
+    Ability mAbility = new Ability();
+    EggGroup mEggGroup = new EggGroup();
+    Location mLocation = new Location();
+    Move mMove = new Move();
+    Type mType = new Type();
 
-    boolean isListByPokemon = false;
+    boolean isListByAbility = false;
+    boolean isListByEggGroup = false;
+    boolean isListByLocation = false;
+    boolean isListByMove = false;
+    boolean isListByType = false;
 
     RecyclerView mRecyclerView;
     Button mToggle;
@@ -58,8 +70,7 @@ public class AbilityListFragment extends Fragment
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public AbilityListFragment() {
-        // Required empty public constructor
+    public PokemonListFragment() {
     }
 
     @Override
@@ -73,31 +84,47 @@ public class AbilityListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mToggle = view.findViewById(R.id.card_list_button);
-        mToggle.setText(R.string.abilities);
+        mToggle.setText(R.string.pokemon);
         mProgressBar = view.findViewById(R.id.progressBar);
         mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setNestedScrollingEnabled(false);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
-            if (bundle.containsKey(PokemonDisplayActivity.POKEMON_ID)) {
-                mPokemon.setId(bundle.getInt(PokemonDisplayActivity.POKEMON_ID));
-                isListByPokemon = true;
+            if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
+                mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
+                isListByType = true;
                 mToggle.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
+            } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
+                mAbility.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
+                isListByAbility = true;
+//                mToggle.setVisibility(View.VISIBLE);
+//                mRecyclerView.setVisibility(View.GONE);
+            } else if (bundle.containsKey(MoveDisplayActivity.MOVE_ID)) {
+                mMove.setId(bundle.getInt(MoveDisplayActivity.MOVE_ID));
+                isListByMove = true;
+//                mToggle.setVisibility(View.VISIBLE);
+//                mRecyclerView.setVisibility(View.GONE);
+            } else if (bundle.containsKey(LocationDisplayActivity.LOCATION_ID)) {
+                mLocation.setId(bundle.getInt(LocationDisplayActivity.LOCATION_ID));
+                isListByLocation = true;
+//                mToggle.setVisibility(View.VISIBLE);
+//                mRecyclerView.setVisibility(View.GONE);
             }
         } else {
-            Log.i("AbilityListFragment Log", "No bundle");
+            Log.i("PokemonListFragment Log", "No bundle");
             setHasOptionsMenu(true);
         }
-        List<Ability> abilities = new ArrayList<>();
+
+        List<Pokemon> pokemons = new ArrayList<>();
 
         // Set the adapter
         Context context = view.getContext();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mRecyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
+        mRecyclerView.setAdapter(new PokemonRecyclerViewAdapter(pokemons, mListener));
 
-        new AbilityLoader(getActivity()).execute("");
+        new PokemonLoader(getActivity()).execute("");
 
         mToggle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,11 +144,11 @@ public class AbilityListFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof AbilityListFragment.OnListFragmentInteractionListener) {
-            mListener = (AbilityListFragment.OnListFragmentInteractionListener) context;
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnTypeMatchUpListFragmentInteractionListener");
         }
     }
 
@@ -138,7 +165,7 @@ public class AbilityListFragment extends Fragment
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        AbilityRecyclerViewAdapter adapter = (AbilityRecyclerViewAdapter) mRecyclerView.getAdapter();
+        PokemonRecyclerViewAdapter adapter = (PokemonRecyclerViewAdapter) mRecyclerView.getAdapter();
         adapter.filter(newText);
         return true;
     }
@@ -148,14 +175,14 @@ public class AbilityListFragment extends Fragment
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-
-        void onListFragmentInteraction(Ability item);
+        // TODO: Update argument type and name
+        void onPokemonListFragmentInteraction(Pokemon item);
     }
 
     @Override
@@ -165,7 +192,7 @@ public class AbilityListFragment extends Fragment
         inflater.inflate(R.menu.menu_list, menu);
 
         SearchManager searchManager = (SearchManager)
-                getActivity().getSystemService(SEARCH_SERVICE);
+        getActivity().getSystemService(SEARCH_SERVICE);
         MenuItem searchMenuItem = menu.findItem(R.id.action_search_list);
         SearchView searchView = (SearchView) searchMenuItem.getActionView();
 
@@ -199,7 +226,7 @@ public class AbilityListFragment extends Fragment
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class AbilityLoader extends AsyncTask<String, Void, List<Ability>> {
+    private class PokemonLoader extends AsyncTask<String, Void, List<Pokemon>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -208,37 +235,48 @@ public class AbilityListFragment extends Fragment
 
         Context mContext;
 
-        AbilityLoader(Context context) {
+        PokemonLoader(Context context) {
             this.mContext = context;
         }
 
         @Override
-        protected List<Ability> doInBackground(String... strings) {
+        protected List<Pokemon> doInBackground(String... strings) {
 
-            AbilityDAO abilityDAO = new AbilityDAO(mContext);
-            List<Ability> rawAbilities;
-            List<Ability> abilities = new ArrayList<>();
+            PokemonDAO pokemonDAO = new PokemonDAO(mContext);
+            List<Pokemon> rawPokemon;
+            List<Pokemon> typedPokemon = new ArrayList<>();
 
-            if (isListByPokemon) {
-                rawAbilities = abilityDAO.getAbilities(mPokemon);
+            if (isListByAbility) {
+                rawPokemon = pokemonDAO.getPokemon(mAbility);
+            } else if (isListByEggGroup) {
+                rawPokemon = pokemonDAO.getPokemon(mEggGroup);
+            } else if (isListByLocation) {
+                rawPokemon = pokemonDAO.getPokemon(mLocation);
+            } else if (isListByMove) {
+                rawPokemon = pokemonDAO.getPokemon(mMove);
+            } else if (isListByType) {
+                rawPokemon = pokemonDAO.getPokemon(mType);
             } else {
-                rawAbilities = abilityDAO.getAllAbilities();
+                rawPokemon = pokemonDAO.getAllPokemon();
             }
 
-            for (Ability ability : rawAbilities) {
-                abilities.add(abilityDAO.getAbility(ability));
+            TypeDAO typeDAO = new TypeDAO(mContext);
+            for (Pokemon pokemon : rawPokemon) {
+                pokemon = pokemonDAO.getPokemon(pokemon);
+                pokemon.setTypes(typeDAO.getTypes(pokemon));
+                typedPokemon.add(pokemon);
             }
+            pokemonDAO.close();
+            typeDAO.close();
 
-            abilityDAO.close();
-
-            return abilities;
+            return rawPokemon;
         }
 
         @Override
-        protected void onPostExecute(List<Ability> abilities) {
-            super.onPostExecute(abilities);
-            AbilityRecyclerViewAdapter adapter = (AbilityRecyclerViewAdapter) mRecyclerView.getAdapter();
-            adapter.injectAbilities(abilities);
+        protected void onPostExecute(List<Pokemon> pokemon) {
+            super.onPostExecute(pokemon);
+            PokemonRecyclerViewAdapter adapter = (PokemonRecyclerViewAdapter) mRecyclerView.getAdapter();
+            adapter.injectPokemon(pokemon);
             mProgressBar.setVisibility(View.GONE);
         }
     }

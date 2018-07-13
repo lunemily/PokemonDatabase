@@ -1,11 +1,11 @@
-package com.evanfuhr.pokemondatabase.fragments;
+package com.evanfuhr.pokemondatabase.fragments.list;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,25 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
-import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
-import com.evanfuhr.pokemondatabase.adapters.MoveRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.adapters.PokemonMoveRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.adapters.PokemonRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.data.MoveDAO;
-import com.evanfuhr.pokemondatabase.data.PokemonDAO;
-import com.evanfuhr.pokemondatabase.data.TypeDAO;
-import com.evanfuhr.pokemondatabase.interfaces.MoveDataInterface;
-import com.evanfuhr.pokemondatabase.models.Move;
+import com.evanfuhr.pokemondatabase.activities.display.PokemonDisplayActivity;
+import com.evanfuhr.pokemondatabase.adapters.EggGroupRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.data.EggGroupDAO;
+import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
-import com.evanfuhr.pokemondatabase.models.Type;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,21 +32,19 @@ import java.util.List;
 import static android.content.Context.SEARCH_SERVICE;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link EggGroupListFragment.OnListFragmentInteractionListener} interface
+ * to handle interaction events.
  */
-public class MoveListFragment extends Fragment
+public class EggGroupListFragment extends Fragment
         implements SearchView.OnQueryTextListener {
 
-    private OnListFragmentInteractionListener mListener;
+    private EggGroupListFragment.OnListFragmentInteractionListener mListener;
 
     Pokemon mPokemon = new Pokemon();
-    Type mType = new Type();
 
     boolean isListByPokemon = false;
-    boolean isListByType = false;
 
     RecyclerView mRecyclerView;
     Button mToggle;
@@ -66,7 +54,8 @@ public class MoveListFragment extends Fragment
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public MoveListFragment() {
+    public EggGroupListFragment() {
+        // Required empty public constructor
     }
 
     @Override
@@ -80,7 +69,7 @@ public class MoveListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mToggle = view.findViewById(R.id.card_list_button);
-        mToggle.setText(R.string.moves);
+        mToggle.setText(R.string.egg_groups);
         mProgressBar = view.findViewById(R.id.progressBar);
         mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -92,30 +81,19 @@ public class MoveListFragment extends Fragment
                 isListByPokemon = true;
                 mToggle.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
-            } else if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
-                mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
-                isListByType = true;
-                mToggle.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
             }
         } else {
-            Log.i("MoveListFragment Log", "No bundle");
+            Log.i("EggGroupList Log", "No bundle");
             setHasOptionsMenu(true);
         }
-
-
-        List<Move> moves = new ArrayList<>();
+        List<EggGroup> eggGroups = new ArrayList<>();
 
         // Set the adapter
         Context context = view.getContext();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        if (isListByPokemon) {
-            mRecyclerView.setAdapter(new PokemonMoveRecyclerViewAdapter(moves, mListener));
-        } else {
-            mRecyclerView.setAdapter(new MoveRecyclerViewAdapter(moves, mListener));
-        }
+        mRecyclerView.setAdapter(new EggGroupRecyclerViewAdapter(eggGroups, mListener));
 
-        new MoveLoader(getActivity()).execute("");
+        new EggGroupLoader(getActivity()).execute("");
 
         mToggle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,15 +110,14 @@ public class MoveListFragment extends Fragment
         return view;
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof EggGroupListFragment.OnListFragmentInteractionListener) {
+            mListener = (EggGroupListFragment.OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnTypeMatchUpListFragmentInteractionListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -157,7 +134,7 @@ public class MoveListFragment extends Fragment
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        MoveRecyclerViewAdapter adapter = (MoveRecyclerViewAdapter) mRecyclerView.getAdapter();
+        EggGroupRecyclerViewAdapter adapter = (EggGroupRecyclerViewAdapter) mRecyclerView.getAdapter();
         adapter.filter(newText);
         return true;
     }
@@ -167,14 +144,14 @@ public class MoveListFragment extends Fragment
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(Move move);
+
+        void onEggGroupListFragmentInteraction(EggGroup item);
     }
 
     @Override
@@ -218,7 +195,7 @@ public class MoveListFragment extends Fragment
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class MoveLoader extends AsyncTask<String, Void, List<Move>> {
+    private class EggGroupLoader extends AsyncTask<String, Void, List<EggGroup>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -227,44 +204,37 @@ public class MoveListFragment extends Fragment
 
         Context mContext;
 
-        MoveLoader(Context context) {
+        EggGroupLoader(Context context) {
             this.mContext = context;
         }
 
         @Override
-        protected List<Move> doInBackground(String... strings) {
+        protected List<EggGroup> doInBackground(String... strings) {
 
-            MoveDAO moveDAO = new MoveDAO(mContext);
-            List<Move> rawMoves;
-            List<Move> typedMoves = new ArrayList<>();
+            EggGroupDAO EggGroupDAO = new EggGroupDAO(mContext);
+            List<EggGroup> raweggGroups;
+            List<EggGroup> eggGroups = new ArrayList<>();
 
             if (isListByPokemon) {
-                rawMoves = moveDAO.getMoves(mPokemon);
-            } else if (isListByType) {
-                rawMoves = moveDAO.getMoves(mType);
+                raweggGroups = EggGroupDAO.getEggGroups(mPokemon);
             } else {
-                rawMoves = moveDAO.getAllMoves();
-            }
-            moveDAO.close();
-
-            for (Move move : rawMoves) {
-                typedMoves.add(moveDAO.getMove(move));
+                raweggGroups = EggGroupDAO.getAllEggGroups();
             }
 
-            return typedMoves;
+            for (EggGroup EggGroup : raweggGroups) {
+                eggGroups.add(EggGroupDAO.getEggGroup(EggGroup));
+            }
+
+            EggGroupDAO.close();
+
+            return eggGroups;
         }
 
         @Override
-        protected void onPostExecute(List<Move> moves) {
-            super.onPostExecute(moves);
-
-            if (isListByPokemon) {
-                PokemonMoveRecyclerViewAdapter adapter = (PokemonMoveRecyclerViewAdapter) mRecyclerView.getAdapter();
-                adapter.injectMoves(moves);
-            } else {
-                MoveRecyclerViewAdapter adapter = (MoveRecyclerViewAdapter) mRecyclerView.getAdapter();
-                adapter.injectMoves(moves);
-            }
+        protected void onPostExecute(List<EggGroup> eggGroups) {
+            super.onPostExecute(eggGroups);
+            EggGroupRecyclerViewAdapter adapter = (EggGroupRecyclerViewAdapter) mRecyclerView.getAdapter();
+            adapter.injectEggGroups(eggGroups);
             mProgressBar.setVisibility(View.GONE);
         }
     }

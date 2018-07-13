@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.EvolutionListFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.EvolutionListFragment;
 import com.evanfuhr.pokemondatabase.models.Evolution;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 

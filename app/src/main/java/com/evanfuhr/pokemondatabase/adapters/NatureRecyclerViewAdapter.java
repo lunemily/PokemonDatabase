@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.NatureListFragment.OnListFragmentInteractionListener;
+import com.evanfuhr.pokemondatabase.fragments.list.NatureListFragment.OnListFragmentInteractionListener;
 import com.evanfuhr.pokemondatabase.models.Nature;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 

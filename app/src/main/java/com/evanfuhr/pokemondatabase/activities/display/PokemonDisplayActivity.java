@@ -1,4 +1,4 @@
-package com.evanfuhr.pokemondatabase.activities;
+package com.evanfuhr.pokemondatabase.activities.display;
 
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
@@ -13,13 +13,13 @@ import android.widget.RelativeLayout;
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
-import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
-import com.evanfuhr.pokemondatabase.fragments.EggGroupListFragment;
-import com.evanfuhr.pokemondatabase.fragments.EvolutionListFragment;
-import com.evanfuhr.pokemondatabase.fragments.LocationListFragment;
-import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
-import com.evanfuhr.pokemondatabase.fragments.TypeListFragment;
-import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.AbilityListFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.EggGroupListFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.EvolutionListFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.LocationListFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.MoveListFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.TypeListFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.TypeMatchUpListFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Evolution;
@@ -39,7 +39,7 @@ import java.util.List;
 public class PokemonDisplayActivity extends AppCompatActivity
         implements AbilityListFragment.OnListFragmentInteractionListener,
         TypeListFragment.OnListFragmentInteractionListener, MoveListFragment.OnListFragmentInteractionListener,
-        TypeMatchUpFragment.OnTypeMatchUpListFragmentInteractionListener, LocationListFragment.OnListFragmentInteractionListener,
+        TypeMatchUpListFragment.OnTypeMatchUpListFragmentInteractionListener, LocationListFragment.OnListFragmentInteractionListener,
         EvolutionListFragment.OnListFragmentInteractionListener, EggGroupListFragment.OnListFragmentInteractionListener {
 
     @NonNls

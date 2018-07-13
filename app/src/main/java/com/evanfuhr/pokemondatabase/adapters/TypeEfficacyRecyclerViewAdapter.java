@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment.OnTypeMatchUpListFragmentInteractionListener;
+import com.evanfuhr.pokemondatabase.fragments.list.TypeMatchUpListFragment.OnTypeMatchUpListFragmentInteractionListener;
 import com.evanfuhr.pokemondatabase.models.Type;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
@@ -45,7 +45,7 @@ public class TypeEfficacyRecyclerViewAdapter extends RecyclerView.Adapter<TypeEf
         holder.mButton.setBackgroundColor(Color.parseColor(mFilteredList.get(position).getColor()));
 
         if (holder.mItem.isTarget()) {
-            // In the context of the TypeMatchUpFragment, the Activity's type is the originating type
+            // In the context of the TypeMatchUpListFragment, the Activity's type is the originating type
             holder.mDealsReceives.setText(R.string.dealsDamage);
         } else {
             holder.mDealsReceives.setText(R.string.takesDamage);

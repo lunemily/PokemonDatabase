@@ -1,4 +1,4 @@
-package com.evanfuhr.pokemondatabase.fragments;
+package com.evanfuhr.pokemondatabase.fragments.list;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -12,13 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
-import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.PokemonDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.TypeEfficacyRecyclerViewAdapter;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
@@ -27,7 +25,7 @@ import com.evanfuhr.pokemondatabase.models.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TypeMatchUpFragment extends Fragment {
+public class TypeMatchUpListFragment extends Fragment {
 
     private OnTypeMatchUpListFragmentInteractionListener mListener;
 
@@ -42,7 +40,7 @@ public class TypeMatchUpFragment extends Fragment {
     Button mToggle;
     private ProgressBar mProgressBar;
 
-    public TypeMatchUpFragment() {
+    public TypeMatchUpListFragment() {
         // Required empty public constructor
     }
 
@@ -75,7 +73,7 @@ public class TypeMatchUpFragment extends Fragment {
                 mRecyclerView.setVisibility(View.GONE);
             }
         } else {
-            Log.i("TypeMatchUpFragment Log", "No bundle");
+            Log.i("TypeMatchUpListFragment Log", "No bundle");
         }
         List<Type> types = new ArrayList<>();
 

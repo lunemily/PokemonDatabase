@@ -1,4 +1,4 @@
-package com.evanfuhr.pokemondatabase.fragments;
+package com.evanfuhr.pokemondatabase.fragments.details;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -13,8 +13,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity;
-import com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.MoveDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.TypeDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.MoveDAO;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Move;

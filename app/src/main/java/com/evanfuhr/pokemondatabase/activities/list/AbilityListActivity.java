@@ -1,11 +1,12 @@
-package com.evanfuhr.pokemondatabase.activities;
+package com.evanfuhr.pokemondatabase.activities.list;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.AbilityListFragment;
+import com.evanfuhr.pokemondatabase.activities.display.AbilityDisplayActivity;
+import com.evanfuhr.pokemondatabase.fragments.list.AbilityListFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
 
 import org.jetbrains.annotations.NonNls;

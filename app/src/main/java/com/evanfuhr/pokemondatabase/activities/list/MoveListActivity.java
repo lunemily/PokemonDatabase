@@ -1,13 +1,13 @@
-package com.evanfuhr.pokemondatabase.activities;
+package com.evanfuhr.pokemondatabase.activities.list;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
+import com.evanfuhr.pokemondatabase.activities.display.MoveDisplayActivity;
+import com.evanfuhr.pokemondatabase.fragments.list.MoveListFragment;
 import com.evanfuhr.pokemondatabase.models.Move;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 

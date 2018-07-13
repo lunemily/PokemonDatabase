@@ -1,13 +1,13 @@
-package com.evanfuhr.pokemondatabase.activities;
+package com.evanfuhr.pokemondatabase.activities.list;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.NatureListFragment;
+import com.evanfuhr.pokemondatabase.activities.display.NatureDisplayActivity;
+import com.evanfuhr.pokemondatabase.fragments.list.NatureListFragment;
 import com.evanfuhr.pokemondatabase.models.Nature;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
 import org.jetbrains.annotations.NonNls;
 

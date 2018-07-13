@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.evanfuhr.pokemondatabase.activities.AbilityDisplayActivity"
+    tools:context="com.evanfuhr.pokemondatabase.activities.display.AbilityDisplayActivity"
     android:id="@+id/ability_display_activity">
 
     <android.support.v4.widget.NestedScrollView
@@ -33,14 +33,14 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.AbilityDetailsFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.details.AbilityDetailsFragment"
                 android:id="@+id/abilityDetailsFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.PokemonListFragment"
                 android:id="@+id/abilitiedPokemonListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 app:layout_constraintLeft_toLeftOf="parent" />

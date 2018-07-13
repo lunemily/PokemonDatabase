@@ -1,37 +1,46 @@
-package com.evanfuhr.pokemondatabase.fragments;
+package com.evanfuhr.pokemondatabase.fragments.list;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.SearchView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
-import com.evanfuhr.pokemondatabase.adapters.EvolutionRecyclerViewAdapter;
-import com.evanfuhr.pokemondatabase.data.EvolutionDAO;
-import com.evanfuhr.pokemondatabase.data.PokemonDAO;
-import com.evanfuhr.pokemondatabase.data.TypeDAO;
-import com.evanfuhr.pokemondatabase.models.Evolution;
+import com.evanfuhr.pokemondatabase.activities.display.PokemonDisplayActivity;
+import com.evanfuhr.pokemondatabase.adapters.AbilityRecyclerViewAdapter;
+import com.evanfuhr.pokemondatabase.data.AbilityDAO;
+import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EvolutionListFragment extends Fragment {
+import static android.content.Context.SEARCH_SERVICE;
 
-    private EvolutionListFragment.OnListFragmentInteractionListener mListener;
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link AbilityListFragment.OnListFragmentInteractionListener} interface
+ * to handle interaction events.
+ */
+public class AbilityListFragment extends Fragment
+        implements SearchView.OnQueryTextListener {
+
+    private AbilityListFragment.OnListFragmentInteractionListener mListener;
 
     Pokemon mPokemon = new Pokemon();
 
@@ -45,7 +54,7 @@ public class EvolutionListFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public EvolutionListFragment() {
+    public AbilityListFragment() {
         // Required empty public constructor
     }
 
@@ -60,7 +69,7 @@ public class EvolutionListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_simple_card_list, container, false);
 
         mToggle = view.findViewById(R.id.card_list_button);
-        mToggle.setText(R.string.evolutions);
+        mToggle.setText(R.string.abilities);
         mProgressBar = view.findViewById(R.id.progressBar);
         mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -74,17 +83,17 @@ public class EvolutionListFragment extends Fragment {
                 mRecyclerView.setVisibility(View.GONE);
             }
         } else {
-            Log.i("EvoListFragment Log", "No bundle");
+            Log.i("AbilityListFragment Log", "No bundle");
             setHasOptionsMenu(true);
         }
-        List<Evolution> evolutions = new ArrayList<>();
+        List<Ability> abilities = new ArrayList<>();
 
         // Set the adapter
         Context context = view.getContext();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mRecyclerView.setAdapter(new EvolutionRecyclerViewAdapter(evolutions, mListener));
+        mRecyclerView.setAdapter(new AbilityRecyclerViewAdapter(abilities, mListener));
 
-        new EvolutionLoader(getActivity()).execute("");
+        new AbilityLoader(getActivity()).execute("");
 
         mToggle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +114,7 @@ public class EvolutionListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof AbilityListFragment.OnListFragmentInteractionListener) {
-            mListener = (EvolutionListFragment.OnListFragmentInteractionListener) context;
+            mListener = (AbilityListFragment.OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -116,6 +125,18 @@ public class EvolutionListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        AbilityRecyclerViewAdapter adapter = (AbilityRecyclerViewAdapter) mRecyclerView.getAdapter();
+        adapter.filter(newText);
+        return true;
     }
 
     /**
@@ -130,9 +151,30 @@ public class EvolutionListFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
 
-        void onPokemonSelected(Pokemon pokemon);
+        void onListFragmentInteraction(Ability item);
+    }
 
-        void onEvolutionSelected(Evolution evolution);
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menu.clear();
+        inflater.inflate(R.menu.menu_list, menu);
+
+        SearchManager searchManager = (SearchManager)
+                getActivity().getSystemService(SEARCH_SERVICE);
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search_list);
+        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+
+        if (!searchMenuItem.isActionViewExpanded()) {
+            searchMenuItem.expandActionView();
+        }
+        else {
+            searchMenuItem.collapseActionView();
+        }
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
     }
 
     @Override
@@ -153,7 +195,7 @@ public class EvolutionListFragment extends Fragment {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class EvolutionLoader extends AsyncTask<String, Void, List<Evolution>> {
+    private class AbilityLoader extends AsyncTask<String, Void, List<Ability>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -162,43 +204,37 @@ public class EvolutionListFragment extends Fragment {
 
         Context mContext;
 
-        EvolutionLoader(Context context) {
+        AbilityLoader(Context context) {
             this.mContext = context;
         }
 
         @Override
-        protected List<Evolution> doInBackground(String... strings) {
+        protected List<Ability> doInBackground(String... strings) {
 
-            EvolutionDAO evolutionDAO = new EvolutionDAO(mContext);
-            PokemonDAO pokemonDAO = new PokemonDAO(mContext);
-            TypeDAO typeDAO = new TypeDAO(mContext);
+            AbilityDAO abilityDAO = new AbilityDAO(mContext);
+            List<Ability> rawAbilities;
+            List<Ability> abilities = new ArrayList<>();
 
-            List<Evolution> rawEvolutions = evolutionDAO.getAllEvolutions(mPokemon);
-            List<Evolution> evolutions = new ArrayList<>();
-
-            for (Evolution evolution : rawEvolutions) {
-                evolution = evolutionDAO.getEvolution(evolution);
-                Pokemon beforePokemon = pokemonDAO.getPokemon(evolution.getBeforePokemon());
-                beforePokemon.setTypes(typeDAO.getTypes(beforePokemon));
-                evolution.setBeforePokemon(beforePokemon);
-
-                Pokemon afterPokemon = pokemonDAO.getPokemon(evolution.getAfterPokemon());
-                afterPokemon.setTypes(typeDAO.getTypes(afterPokemon));
-                evolution.setAfterPokemon(afterPokemon);
-                evolutions.add(evolution);
+            if (isListByPokemon) {
+                rawAbilities = abilityDAO.getAbilities(mPokemon);
+            } else {
+                rawAbilities = abilityDAO.getAllAbilities();
             }
-            typeDAO.close();
-            pokemonDAO.close();
-            evolutionDAO.close();
 
-            return evolutions;
+            for (Ability ability : rawAbilities) {
+                abilities.add(abilityDAO.getAbility(ability));
+            }
+
+            abilityDAO.close();
+
+            return abilities;
         }
 
         @Override
-        protected void onPostExecute(List<Evolution> evolutions) {
-            super.onPostExecute(evolutions);
-            EvolutionRecyclerViewAdapter adapter = (EvolutionRecyclerViewAdapter) mRecyclerView.getAdapter();
-            adapter.injectEvolutions(evolutions);
+        protected void onPostExecute(List<Ability> abilities) {
+            super.onPostExecute(abilities);
+            AbilityRecyclerViewAdapter adapter = (AbilityRecyclerViewAdapter) mRecyclerView.getAdapter();
+            adapter.injectAbilities(abilities);
             mProgressBar.setVisibility(View.GONE);
         }
     }

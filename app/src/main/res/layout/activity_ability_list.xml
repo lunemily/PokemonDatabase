@@ -7,13 +7,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 android:paddingBottom="0dp"
 android:paddingLeft="@dimen/activity_horizontal_margin"
 android:paddingRight="@dimen/activity_horizontal_margin"
-tools:context="com.evanfuhr.pokemondatabase.activities.AbilityListActivity"
+tools:context="com.evanfuhr.pokemondatabase.activities.list.AbilityListActivity"
 android:id="@+id/ability_list_activity">
 
 <fragment
     android:layout_width="336dp"
     android:layout_height="wrap_content"
-    android:name="com.evanfuhr.pokemondatabase.fragments.AbilityListFragment"
+    android:name="com.evanfuhr.pokemondatabase.fragments.list.AbilityListFragment"
     android:id="@+id/abilityListFragment"
     android:layout_marginRight="8dp"
     app:layout_constraintRight_toRightOf="parent"

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:paddingBottom="0dp"
     android:paddingTop="0dp"
-    tools:context="com.evanfuhr.pokemondatabase.activities.NatureDisplayActivity"
+    tools:context="com.evanfuhr.pokemondatabase.activities.display.NatureDisplayActivity"
     android:id="@+id/nature_display_activity">
 
     <android.support.v4.widget.NestedScrollView
@@ -35,7 +35,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.NatureDetailsFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.details.NatureDetailsFragment"
                 android:id="@+id/natureDetailsFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 

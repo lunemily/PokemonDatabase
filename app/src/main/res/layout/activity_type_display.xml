@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/type_display_activity"
-    tools:context="com.evanfuhr.pokemondatabase.activities.TypeDisplayActivity">
+    tools:context="com.evanfuhr.pokemondatabase.activities.display.TypeDisplayActivity">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -35,14 +35,14 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.TypeMatchUpListFragment"
                 android:id="@+id/typeMatchUpFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.PokemonListFragment"
                 android:id="@+id/typedPokemonListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 app:layout_constraintLeft_toLeftOf="parent" />
@@ -50,7 +50,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.MoveListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.MoveListFragment"
                 android:id="@+id/typedMoveListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 app:layout_constraintLeft_toLeftOf="parent" />

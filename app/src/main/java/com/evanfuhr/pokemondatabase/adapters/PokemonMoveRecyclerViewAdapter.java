@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.MoveListFragment.OnListFragmentInteractionListener;
+import com.evanfuhr.pokemondatabase.fragments.list.MoveListFragment.OnListFragmentInteractionListener;
 import com.evanfuhr.pokemondatabase.models.Move;
 
 import java.util.ArrayList;

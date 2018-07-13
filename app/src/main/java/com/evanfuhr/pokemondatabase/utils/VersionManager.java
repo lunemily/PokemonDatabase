@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.PokemonDisplayActivity;
 import com.evanfuhr.pokemondatabase.adapters.VersionSpinnerAdapter;
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
 import com.evanfuhr.pokemondatabase.data.VersionDAO;

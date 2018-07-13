@@ -7,13 +7,13 @@
     android:paddingBottom="0dp"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    tools:context="com.evanfuhr.pokemondatabase.activities.LocationListActivity"
+    tools:context="com.evanfuhr.pokemondatabase.activities.list.LocationListActivity"
     android:id="@+id/nature_list_activity">
 
     <fragment
         android:layout_width="336dp"
         android:layout_height="wrap_content"
-        android:name="com.evanfuhr.pokemondatabase.fragments.LocationListFragment"
+        android:name="com.evanfuhr.pokemondatabase.fragments.list.LocationListFragment"
         android:id="@+id/locationListFragment"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"

@@ -3,14 +3,13 @@ package com.evanfuhr.pokemondatabase.adapters;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.LocationListFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.LocationListFragment;
 import com.evanfuhr.pokemondatabase.models.Location;
 
 import java.util.ArrayList;

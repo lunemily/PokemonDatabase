@@ -1,4 +1,4 @@
-package com.evanfuhr.pokemondatabase.fragments;
+package com.evanfuhr.pokemondatabase.fragments.details;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -8,20 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.PokemonDisplayActivity;
-import com.evanfuhr.pokemondatabase.data.EggGroupDAO;
+import com.evanfuhr.pokemondatabase.activities.display.PokemonDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
-import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.utils.ExternalLink;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 import com.evanfuhr.pokemondatabase.views.GifImageView;
-
-import java.util.List;
 
 public class PokemonDetailsFragment extends Fragment {
 

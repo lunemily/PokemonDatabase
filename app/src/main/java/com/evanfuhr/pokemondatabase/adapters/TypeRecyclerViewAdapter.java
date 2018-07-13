@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.TypeListFragment.OnListFragmentInteractionListener;
+import com.evanfuhr.pokemondatabase.fragments.list.TypeListFragment.OnListFragmentInteractionListener;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;

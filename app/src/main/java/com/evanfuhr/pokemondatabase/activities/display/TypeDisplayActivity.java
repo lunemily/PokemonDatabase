@@ -1,4 +1,4 @@
-package com.evanfuhr.pokemondatabase.activities;
+package com.evanfuhr.pokemondatabase.activities.display;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,9 +8,9 @@ import android.widget.RelativeLayout;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.data.TypeDAO;
-import com.evanfuhr.pokemondatabase.fragments.MoveListFragment;
-import com.evanfuhr.pokemondatabase.fragments.PokemonListFragment;
-import com.evanfuhr.pokemondatabase.fragments.TypeMatchUpFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.MoveListFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.PokemonListFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.TypeMatchUpListFragment;
 import com.evanfuhr.pokemondatabase.interfaces.OnTypeSelectedListener;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NonNls;
 
 public class TypeDisplayActivity extends AppCompatActivity
         implements OnTypeSelectedListener, PokemonListFragment.OnListFragmentInteractionListener,
-        MoveListFragment.OnListFragmentInteractionListener, TypeMatchUpFragment.OnTypeMatchUpListFragmentInteractionListener {
+        MoveListFragment.OnListFragmentInteractionListener, TypeMatchUpListFragment.OnTypeMatchUpListFragmentInteractionListener {
 
     @NonNls
     public static final String TYPE_ID = "type_id";

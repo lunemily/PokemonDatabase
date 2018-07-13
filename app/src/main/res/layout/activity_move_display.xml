@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="0dp"
-    tools:context="com.evanfuhr.pokemondatabase.activities.MoveDisplayActivity"
+    tools:context="com.evanfuhr.pokemondatabase.activities.display.MoveDisplayActivity"
     android:id="@+id/move_display_activity">
 
     <android.support.v4.widget.NestedScrollView
@@ -38,14 +38,14 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.MoveDetailsFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.details.MoveDetailsFragment"
                 android:id="@+id/moveDetailsFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.PokemonListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.PokemonListFragment"
                 android:id="@+id/typedPokemonListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 app:layout_constraintLeft_toLeftOf="parent" />

@@ -10,8 +10,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.list.AbilityListActivity;
+import com.evanfuhr.pokemondatabase.activities.list.EggGroupListActivity;
+import com.evanfuhr.pokemondatabase.activities.list.LocationListActivity;
+import com.evanfuhr.pokemondatabase.activities.list.MoveListActivity;
+import com.evanfuhr.pokemondatabase.activities.list.NatureListActivity;
+import com.evanfuhr.pokemondatabase.activities.list.PokemonListActivity;
+import com.evanfuhr.pokemondatabase.activities.list.TypeListActivity;
 import com.evanfuhr.pokemondatabase.data.DataBaseHelper;
-import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 import com.evanfuhr.pokemondatabase.utils.VersionManager;
 
 import org.jetbrains.annotations.NonNls;

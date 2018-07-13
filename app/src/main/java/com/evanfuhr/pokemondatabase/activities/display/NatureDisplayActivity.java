@@ -1,4 +1,4 @@
-package com.evanfuhr.pokemondatabase.activities;
+package com.evanfuhr.pokemondatabase.activities.display;
 
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
