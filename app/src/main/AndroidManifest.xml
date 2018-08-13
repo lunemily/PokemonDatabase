@@ -53,6 +53,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".activities.display.EggGroupDisplayActivity" />
+        <activity android:name=".activities.display.PokemonShowdownActivity" />
     </application>
 
 </manifest>

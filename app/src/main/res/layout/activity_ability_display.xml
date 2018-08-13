@@ -33,7 +33,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.details.AbilityDetailsFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.display.AbilityDetailsFragment"
                 android:id="@+id/abilityDetailsFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 

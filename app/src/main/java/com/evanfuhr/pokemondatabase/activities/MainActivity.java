@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.activities.display.PokemonShowdownActivity;
 import com.evanfuhr.pokemondatabase.activities.list.AbilityListActivity;
 import com.evanfuhr.pokemondatabase.activities.list.EggGroupListActivity;
 import com.evanfuhr.pokemondatabase.activities.list.LocationListActivity;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Button mLocationButton;
     Button mEggGroupButton;
     Button mNatureButton;
+    Button mPokemonShowdownButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +127,14 @@ public class MainActivity extends AppCompatActivity {
                 onClickButton(view);
             }
         });
+
+        mPokemonShowdownButton = this.findViewById(R.id.buttonPokemonShowdownHelper);
+        mPokemonShowdownButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickButton(view);
+            }
+        });
     }
 
     protected void onClickButton(View view) {
@@ -151,6 +161,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.buttonNatureList:
                 intent = new Intent(this, NatureListActivity.class);
+                break;
+            case R.id.buttonPokemonShowdownHelper:
+                intent = new Intent(this, PokemonShowdownActivity.class);
                 break;
             default:
                 intent = new Intent(this, MainActivity.class);

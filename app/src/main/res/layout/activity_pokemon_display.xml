@@ -37,7 +37,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.details.PokemonDetailsFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.display.PokemonDetailsFragment"
                 android:id="@+id/pokemonDetailsFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 

@@ -1,4 +1,4 @@
-package com.evanfuhr.pokemondatabase.fragments.details;
+package com.evanfuhr.pokemondatabase.fragments.display;
 
 import android.app.Fragment;
 import android.content.Context;
