@@ -2,7 +2,6 @@ package com.evanfuhr.pokemondatabase.fragments.display;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -12,23 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.activities.display.AbilityDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.display.PokemonShowdownActivity;
-import com.evanfuhr.pokemondatabase.models.Ability;
-
-import org.jetbrains.annotations.NonNls;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PokemonShowdownRawFragment extends Fragment {
-
-    @NonNls
-    public static final String POKEMON_SHOWDOWN = "Pokémon Showdown";
 
     EditText mRawTeams;
     Button mSavePokemonTeams;

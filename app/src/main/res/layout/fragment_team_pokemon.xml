@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent" android:layout_width="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_view_team_pokemon_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Nickname"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_team_pokemon_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Pokemon"
+            app:layout_constraintStart_toEndOf="@+id/text_view_team_pokemon_nickname"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_team_pokemon_move_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Move 1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_team_pokemon_move_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Move 2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_pokemon_move_1" />
+
+        <TextView
+            android:id="@+id/text_view_team_pokemon_move_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Move 3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_pokemon_move_2" />
+
+        <TextView
+            android:id="@+id/text_view_team_pokemon_move_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Move 4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_pokemon_move_3" />
+
+        <TextView
+            android:id="@+id/text_view_ability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Ability"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_pokemon_nickname" />
+
+        <TextView
+            android:id="@+id/text_view_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Item"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_ability" />
+
+        <TextView
+            android:id="@+id/text_view_nature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Nature"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_item" />
+
+        <TextView
+            android:id="@+id/text_view_type_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Type 1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_nature" />
+
+        <TextView
+            android:id="@+id/text_view_type_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Type 2"
+            app:layout_constraintStart_toEndOf="@+id/text_view_type_1"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_nature" />
+
+        <TextView
+            android:id="@+id/text_view_speed_ev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="0 Spe"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_pokemon_move_4" />
+
+        <TextView
+            android:id="@+id/text_view_special_defense_ev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="0 SpD"
+            app:layout_constraintEnd_toStartOf="@+id/text_view_speed_ev"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_pokemon_move_4" />
+
+        <TextView
+            android:id="@+id/text_view_special_attack_ev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="0 SpA"
+            app:layout_constraintEnd_toStartOf="@+id/text_view_special_defense_ev"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_pokemon_move_4" />
+
+        <TextView
+            android:id="@+id/text_view_defense_ev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="0 Def"
+            app:layout_constraintEnd_toStartOf="@+id/text_view_special_attack_ev"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_pokemon_move_4" />
+
+        <TextView
+            android:id="@+id/text_view_attack_ev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="0 Atk"
+            app:layout_constraintEnd_toStartOf="@+id/text_view_defense_ev"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_pokemon_move_4" />
+
+        <TextView
+            android:id="@+id/text_view_hp_ev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="0 HP"
+            app:layout_constraintEnd_toStartOf="@+id/text_view_attack_ev"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_team_pokemon_move_4" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
