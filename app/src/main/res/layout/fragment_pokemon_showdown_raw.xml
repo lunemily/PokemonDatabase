@@ -8,8 +8,8 @@
 
     <EditText
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/raw_team_save_button"
-        android:id="@+id/textArea_information"
+        app:layout_constraintBottom_toTopOf="@id/save_button_raw_teams"
+        android:id="@+id/text_area_raw_teams"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@null"
@@ -23,7 +23,7 @@
         tools:ignore="LabelFor" />
 
     <Button
-        android:id="@+id/raw_team_save_button"
+        android:id="@+id/save_button_raw_teams"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

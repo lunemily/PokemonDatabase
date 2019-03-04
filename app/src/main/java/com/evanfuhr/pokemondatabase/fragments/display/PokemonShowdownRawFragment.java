@@ -1,8 +1,10 @@
 package com.evanfuhr.pokemondatabase.fragments.display;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.display.AbilityDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.PokemonShowdownActivity;
 import com.evanfuhr.pokemondatabase.models.Ability;
 
 import org.jetbrains.annotations.NonNls;
@@ -45,14 +48,30 @@ public class PokemonShowdownRawFragment extends Fragment {
         // Inflate the layout for this fragment
         View detailsFragmentView = inflater.inflate(R.layout.fragment_pokemon_showdown_raw, container, false);
 
+        mRawTeams = detailsFragmentView.findViewById(R.id.text_area_raw_teams);
+        mSavePokemonTeams = detailsFragmentView.findViewById(R.id.save_button_raw_teams);
+
+        setRawTeams();
+
+        mSavePokemonTeams.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickSaveButton();
+            }
+        });
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
 
         } else {
-            Log.i("AbilityDetFragment Log", "No bundle");
+            Log.i("RawTeamsFragment Log", "No bundle");
         }
         return detailsFragmentView;
+    }
+
+    private void setRawTeams() {
+        String rawTeams = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("RAWTEAMS", PokemonShowdownActivity.placeHolderRawTeams);
+        mRawTeams.setText(rawTeams);
     }
 
     @Override
@@ -63,5 +82,10 @@ public class PokemonShowdownRawFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    protected void onClickSaveButton() {
+        String rawTeams = String.valueOf(mRawTeams.getText());
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().putString("RAWTEAMS", rawTeams).apply();
     }
 }
