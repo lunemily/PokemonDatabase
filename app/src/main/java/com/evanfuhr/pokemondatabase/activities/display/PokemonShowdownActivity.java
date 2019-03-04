@@ -11,6 +11,39 @@ import com.evanfuhr.pokemondatabase.fragments.display.PokemonShowdownRawFragment
 
 public class PokemonShowdownActivity extends AppCompatActivity {
 
+    public static final String placeHolderRawTeams = "=== [gen7] Ditto Team ===\n" +
+            "\n" +
+            "Ditto @ Destiny Knot  \n" +
+            "Ability: Limber  \n" +
+            "Shiny: Yes  \n" +
+            "EVs: 252 SpA / 4 SpD / 252 Spe  \n" +
+            "Timid Nature  \n" +
+            "IVs: 0 Atk  \n" +
+            "- Transform  \n" +
+            "\n" +
+            "Ditto2 @ Destiny Knot  \n" +
+            "Ability: Imposter  \n" +
+            "Shiny: No  \n" +
+            "EVs: 252 Atk / 4 SpD / 252 Spe  \n" +
+            "Adamant Nature  \n" +
+            "IVs: 0 Atk  \n" +
+            "- Transform  \n" +
+            "\n" +
+            "\n" +
+            "=== [gen7] Poygon Team ===\n" +
+            "\n" +
+            "Porygon @ Normalium Z  \n" +
+            "Ability: Download  \n" +
+            "EVs: 248 HP / 8 SpA / 252 SpD  \n" +
+            "Calm Nature  \n" +
+            "IVs: 0 Atk  \n" +
+            "- Conversion  \n" +
+            "- Shadow Ball  \n" +
+            "- Tri Attack  \n" +
+            "- Protect  \n" +
+            "\n" +
+            "\n";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,4 +78,6 @@ public class PokemonShowdownActivity extends AppCompatActivity {
         // Commit the Fragment replace action.
         fragmentTransaction.commit();
     }
+
+
 }

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,10 +17,18 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.display.AbilityDisplayActivity;
 import com.evanfuhr.pokemondatabase.models.Ability;
 
+import org.jetbrains.annotations.NonNls;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonShowdownRawFragment extends Fragment {
+
+    @NonNls
+    public static final String POKEMON_SHOWDOWN = "Pokémon Showdown";
+
+    EditText mRawTeams;
+    Button mSavePokemonTeams;
 
     public PokemonShowdownRawFragment() {
         // Required empty public constructor
