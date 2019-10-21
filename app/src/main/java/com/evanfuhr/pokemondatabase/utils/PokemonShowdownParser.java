@@ -1,5 +1,6 @@
 package com.evanfuhr.pokemondatabase.utils;
 
+import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.EffortValue;
 import com.evanfuhr.pokemondatabase.models.Forme;
@@ -34,6 +35,8 @@ public class PokemonShowdownParser {
         for (Team team : parsedTeams) {
             String[] rawPokemons = splitPokemons(team.getRawTeam());
             List<TeamPokemon> teamPokemons = parsePokemons(rawPokemons);
+            team.setPokemons(teamPokemons);
+            mTeams.add(team);
         }
     }
 
@@ -47,7 +50,9 @@ public class PokemonShowdownParser {
             Team team = new Team();
             String[] namedTeam = rawTeam.split(" ===\n\n");
             team.setName(namedTeam[0]);
-            team.setRawTeam(namedTeam[1]);
+            if (namedTeam.length > 1) { // Team is names
+                team.setRawTeam(namedTeam[1]);
+            }
             teams.add(team);
         }
         return teams;
@@ -73,7 +78,9 @@ public class PokemonShowdownParser {
 
         // Iterate over lines. TODO: Move to its own method
         for (String line : lines) {
-            if (line.contains("Ability:")) {
+            if (line.trim().equals("")) {
+                continue;
+            } else if (line.contains("Ability:")) {
                 pokemon.setAbility(new Ability(line.replace("Ability:", "").trim()));
             } else if (line.contains("Shiny:")) {
                 pokemon.setShiny(true);

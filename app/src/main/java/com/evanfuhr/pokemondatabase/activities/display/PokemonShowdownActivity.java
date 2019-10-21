@@ -1,5 +1,6 @@
 package com.evanfuhr.pokemondatabase.activities.display;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,9 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.evanfuhr.pokemondatabase.R;
+import com.evanfuhr.pokemondatabase.fragments.display.PokemonShowdownParsedFragment;
 import com.evanfuhr.pokemondatabase.fragments.display.PokemonShowdownRawFragment;
 
-public class PokemonShowdownActivity extends AppCompatActivity {
+public class PokemonShowdownActivity extends AppCompatActivity implements PokemonShowdownRawFragment.OnFragmentInteractionListener, PokemonShowdownParsedFragment.OnFragmentInteractionListener {
 
     public static final String placeHolderRawTeams = "=== [gen7] Ditto Team ===\n" +
             "\n" +
@@ -55,8 +57,12 @@ public class PokemonShowdownActivity extends AppCompatActivity {
 
     }
 
-    private void showRawTeams() {
+    void showRawTeams() {
+        replaceFragment(new PokemonShowdownRawFragment());
+    }
 
+    void showParsedTeams() {
+        replaceFragment(new PokemonShowdownParsedFragment());
     }
 
     // This method is used to set the default fragment that will be shown.
@@ -79,5 +85,13 @@ public class PokemonShowdownActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onSaveRawTeams() {
+        showParsedTeams();
+    }
 
+    @Override
+    public void onEditRawTeams() {
+        showRawTeams();
+    }
 }

@@ -15,9 +15,15 @@ public interface PokemonDataInterface {
 
     List<Pokemon> getPokemon(Ability ability);
 
+    List<Pokemon> getPokemon(EggGroup eggGroup);
+
     List<Pokemon> getPokemon(Location location);
 
     List<Pokemon> getPokemon(Move move);
 
+    List<Pokemon> getPokemon(Type type);
+
     Pokemon getPokemon(Pokemon pokemon);
+
+    Pokemon getPokemon(String name);
 }

@@ -294,4 +294,55 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
         return pokemon;
     }
+
+    /**
+     * Returns a Pokemon object with most of its non-list data
+     *
+     * @param   name A Pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     */
+
+    public Pokemon getPokemon(String name) {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName(name);
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_SPECIES, ID)
+                        , field(POKEMON_SPECIES_NAMES, NAME)
+                        , field(POKEMON, HEIGHT)
+                        , field(POKEMON, WEIGHT)
+                        , field(POKEMON, BASE_EXPERIENCE)
+                        , field(POKEMON, "'" + ORDER + "'")
+                        , field(POKEMON, IS_DEFAULT)
+                        , field(POKEMON_SPECIES, GENDER_RATE)
+                        , field(POKEMON_SPECIES_NAMES, GENUS))
+                .from(POKEMON_SPECIES)
+                .join(POKEMON_SPECIES_NAMES)
+                .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
+                .join(POKEMON)
+                .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON, SPECIES_ID))
+                .where(field(POKEMON_SPECIES_NAMES, NAME) + "='" + pokemon.getName() + "'")
+                .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                pokemon.setId(Integer.parseInt(cursor.getString(0)));
+                pokemon.setName(cursor.getString(1));
+                pokemon.setHeight(Double.parseDouble(cursor.getString(2))/10);
+                pokemon.setWeight(Double.parseDouble(cursor.getString(3))/10);
+                pokemon.setBaseExperience(Integer.parseInt(cursor.getString(4)));
+                //pokemon.setOrder(Integer.parseInt(cursor.getString(5)));
+                //pokemon.setIsDefault(Boolean.parseBoolean(cursor.getString(6)));
+                //pokemon.setGenderRatio(Integer.parseInt(cursor.getString(7)));
+                pokemon.setGenus(cursor.getString(8));
+            }
+            cursor.close();
+        }
+
+        return pokemon;
+    }
 }

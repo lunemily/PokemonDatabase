@@ -9,6 +9,7 @@ public class TeamPokemon extends BaseTypedObject {
     private Ability mAbility;
     private Forme mForme;
     private Gender mGender;
+    private String mName;
     private String mNickname;
     private boolean mShiny = false;
     private Item mItem;
@@ -36,6 +37,14 @@ public class TeamPokemon extends BaseTypedObject {
 
     public String getNickname() {
         return mNickname;
+    }
+
+    public void setName(String name) {
+        this.mName = name;
+    }
+
+    public String getName() {
+        return mName;
     }
 
     public void setNickname(String nickname) {
