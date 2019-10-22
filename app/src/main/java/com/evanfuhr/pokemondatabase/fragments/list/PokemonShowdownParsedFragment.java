@@ -1,4 +1,4 @@
-package com.evanfuhr.pokemondatabase.fragments.display;
+package com.evanfuhr.pokemondatabase.fragments.list;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

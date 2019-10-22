@@ -1,6 +1,5 @@
 package com.evanfuhr.pokemondatabase.activities.display;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,8 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.evanfuhr.pokemondatabase.R;
-import com.evanfuhr.pokemondatabase.fragments.display.PokemonShowdownParsedFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.PokemonShowdownParsedFragment;
 import com.evanfuhr.pokemondatabase.fragments.display.PokemonShowdownRawFragment;
+import com.evanfuhr.pokemondatabase.fragments.list.TeamPokemonListFragment;
 
 public class PokemonShowdownActivity extends AppCompatActivity implements PokemonShowdownRawFragment.OnFragmentInteractionListener, PokemonShowdownParsedFragment.OnFragmentInteractionListener {
 
@@ -62,7 +62,7 @@ public class PokemonShowdownActivity extends AppCompatActivity implements Pokemo
     }
 
     void showParsedTeams() {
-        replaceFragment(new PokemonShowdownParsedFragment());
+        replaceFragment(new TeamPokemonListFragment());
     }
 
     // This method is used to set the default fragment that will be shown.
