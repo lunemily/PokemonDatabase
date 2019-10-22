@@ -43,7 +43,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     VersionManager mVersionManager;
     Version mVersion;
 
-    //tables
+    // tables
     static final String ABILITIES = "abilities";
     static final String ABILITY_NAMES = "ability_names";
     static final String ABILITY_PROSE = "ability_prose";
@@ -73,6 +73,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String POKEMON_SPECIES = "pokemon_species";
     static final String TABLE_POKEMON_SPECIES_FLAVOR_TEXT = "pokemon_species_flavor_text";
     static final String POKEMON_SPECIES_NAMES = "pokemon_species_names";
+    static final String POKEMON_STATS = "pokemon_stats";
     static final String POKEMON_TYPES = "pokemon_types";
     static final String REGION_NAMES = "region_names";
     static final String REGIONS = "regions";
@@ -85,7 +86,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String VERSION_GROUPS = "version_groups";
     static final String VERSION_NAMES = "version_names";
 
-    //common
+    // common
     static final String ABILITY_ID = "ability_id";
     static final String DAMAGE_CLASS_ID = "damage_class_id";
     static final String EFFECT = "effect";
@@ -102,46 +103,46 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String TYPE_ID = "type_id";
     static final String VERSION_GROUP_ID = "version_group_id";
 
-    //contest_type_names
+    // contest_type_names
     static final String CONTEST_TYPE_ID = "contest_type_id";
     static final String FLAVOR = "flavor";
     static final String COLOR = "color";
 
-    //encounters
+    // encounters
     static final String LOCATION_AREA_ID = "location_area_id";
 
-    //item_names
+    // item_names
     static final String ITEM_ID = "item_id";
 
-    //machines
+    // machines
     static final String MACHINE_NUMBER = "machine_number";
 
-    //moves
+    // moves
     static final String ACCURACY = "accuracy";
     static final String EFFECT_ID = "effect_id";
     static final String POWER = "power";
     static final String PP = "pp";
 
-    //move_effect_prose
+    // move_effect_prose
     static final String MOVE_EFFECT_ID = "move_effect_id";
     static final String SHORT_EFFECT = "short_effect";
 
-    //move_meta
+    // move_meta
     static final String AILMENT_CHANCE = "ailment_chance";
     static final String CRIT_RATE = "crit_rate";
     static final String FLINCH_CHANCE = "flinch_chance";
     static final String STAT_CHANCE = "stat_chance";
 
-    //nature_names
+    // nature_names
     static final String NATURE_ID = "nature_id";
 
-    //natures
+    // natures
     static final String DECREASED_STAT_ID = "decreased_stat_id";
     static final String INCREASED_STAT_ID = "increased_stat_id";
     static final String HATES_FLAVOR_ID = "hates_flavor_id";
     static final String LIKES_FLAVOR_ID = "likes_flavor_id";
 
-    //pokemon
+    // pokemon
     static final String BASE_EXPERIENCE = "base_experience";
     static final String HEIGHT = "height";
     static final String IS_DEFAULT = "is_default";
@@ -149,10 +150,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String SPECIES_ID = "species_id";
     static final String WEIGHT = "weight";
 
-    //pokemon_abilities
+    // pokemon_abilities
     static final String IS_HIDDEN = "is_hidden";
 
-    //pokemon_evolution
+    // pokemon_evolution
     static final String EVOLVED_SPECIES_ID = "evolved_species_id";
     static final String EVOLUTION_TRIGGER_ID = "evolution_trigger_id";
     static final String TRIGGER_ITEM_ID = "trigger_item_id";
@@ -172,41 +173,44 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String NEEDS_OVERWORLD_RAIN = "needs_overworld_rain";
     static final String TURN_UPSIDE_DOWN = "turn_upside_down";
 
-    //pokemon_moves
+    // pokemon_moves
     static final String POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
     static final String POKEMON_MOVE_LEVEL = "level";
 
-    //pokemon_species
+    // pokemon_species
     static final String EVOLUTION_CHAIN_ID = "evolution_chain_id";
     static final String EVOLVES_FROM_SPECIES_ID = "evolves_from_species_id";
     static final String GENDER_RATE = "gender_rate";
 
-    //pokemon_species_flavor_text
+    // pokemon_species_flavor_text
     static final String KEY_FLAVOR_TEXT = "flavor_text";
 
-    //pokemon_species_names
+    // pokemon_species_names
     static final String POKEMON_SPECIES_ID = "pokemon_species_id";
     static final String GENUS = "genus";
 
-    //region_names
+    // pokemon_stats
+    static final String BASE_STAT = "base_stat";
+
+    // region_names
     static final String REGION_ID = "region_id";
 
-    //stat_names
+    // stat_names
     static final String STAT_ID = "stat_id";
 
-    //stats
+    // stats
     static final String IS_BATTLE_ONLY = "is_battle_only";
     static final String GAME_INDEX = "game_index";
 
-    //type_efficacy
+    // type_efficacy
     static final String KEY_DAMAGE_FACTOR = "damage_factor";
     static final String KEY_DAMAGE_TYPE_ID = "damage_type_id";
     static final String KEY_TARGET_TYPE_ID = "target_type_id";
 
-    //version_groups
+    // version_groups
     static final String GENERATION_ID = "generation_id";
 
-    //version_names
+    // version_names
     static final String VERSION_ID = "version_id";
 
     /**

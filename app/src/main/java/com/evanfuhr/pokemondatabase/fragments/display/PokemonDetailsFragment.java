@@ -14,6 +14,7 @@ import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.display.PokemonDisplayActivity;
 import com.evanfuhr.pokemondatabase.data.PokemonDAO;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.models.Stat;
 import com.evanfuhr.pokemondatabase.utils.ExternalLink;
 import com.evanfuhr.pokemondatabase.views.GifImageView;
 
@@ -30,6 +31,13 @@ public class PokemonDetailsFragment extends Fragment {
     TextView mSmogon;
     GifImageView mSpriteGif;
     TextView mWeight;
+
+    TextView mHP;
+    TextView mAtk;
+    TextView mDef;
+    TextView mSpA;
+    TextView mSpD;
+    TextView mSpe;
 
     public PokemonDetailsFragment() {
         // Required empty public constructor
@@ -53,6 +61,13 @@ public class PokemonDetailsFragment extends Fragment {
         mSmogon = detailsFragmentView.findViewById(R.id.smogonLink);
         mSpriteGif = detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
         mWeight = detailsFragmentView.findViewById(R.id.pokemonWeightValue);
+
+        mHP = detailsFragmentView.findViewById(R.id.pokemon_base_hp_value);
+        mAtk = detailsFragmentView.findViewById(R.id.pokemon_base_atk_value);
+        mDef = detailsFragmentView.findViewById(R.id.pokemon_base_def_value);
+        mSpA = detailsFragmentView.findViewById(R.id.pokemon_base_spa_value);
+        mSpD = detailsFragmentView.findViewById(R.id.pokemon_base_spd_value);
+        mSpe = detailsFragmentView.findViewById(R.id.pokemon_base_spe_value);
 
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
@@ -81,6 +96,7 @@ public class PokemonDetailsFragment extends Fragment {
         setFragmentGenus();
         setFragmentSprite();
         setFragmentHeightAndWeight();
+        setBaseStats();
         setExternalLinks();
     }
 
@@ -101,6 +117,15 @@ public class PokemonDetailsFragment extends Fragment {
 
         mHeight.setText(height);
         mWeight.setText(weight);
+    }
+
+    void setBaseStats() {
+        mHP.setText(mPokemon.getBaseStats().get(Stat.PrimaryStat.HP).toString());
+        mAtk.setText(mPokemon.getBaseStats().get(Stat.PrimaryStat.Atk).toString());
+        mDef.setText(mPokemon.getBaseStats().get(Stat.PrimaryStat.Def).toString());
+        mSpA.setText(mPokemon.getBaseStats().get(Stat.PrimaryStat.SpA).toString());
+        mSpD.setText(mPokemon.getBaseStats().get(Stat.PrimaryStat.SpD).toString());
+        mSpe.setText(mPokemon.getBaseStats().get(Stat.PrimaryStat.Spe).toString());
     }
 
     void setFragmentSprite() {

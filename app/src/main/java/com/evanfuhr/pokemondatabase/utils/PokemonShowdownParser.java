@@ -1,15 +1,12 @@
 package com.evanfuhr.pokemondatabase.utils;
 
-import com.evanfuhr.pokemondatabase.data.TypeDAO;
 import com.evanfuhr.pokemondatabase.models.Ability;
-import com.evanfuhr.pokemondatabase.models.EffortValue;
 import com.evanfuhr.pokemondatabase.models.Forme;
 import com.evanfuhr.pokemondatabase.models.Gender;
-import com.evanfuhr.pokemondatabase.models.IndividualValues;
 import com.evanfuhr.pokemondatabase.models.Item;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Nature;
-import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.models.Stat;
 import com.evanfuhr.pokemondatabase.models.Team;
 import com.evanfuhr.pokemondatabase.models.TeamPokemon;
 
@@ -90,9 +87,9 @@ public class PokemonShowdownParser {
                 moves.add(new Move(line.replace("-", "").trim()));
                 pokemon.setMoves(moves);
             } else if (line.contains("EVs:")) {
-                pokemon.setEVs(EffortValue.parseEVs(line.replace("EVs:", "").trim()));
+                pokemon.setEVs(Stat.PrimaryStat.parseStats(line.replace("EVs:", "").trim()));
             } else if (line.contains("IVs:")) {
-                pokemon.setIVs(IndividualValues.parseIVs(line.replace("IVs:", "").trim()));
+                pokemon.setIVs(Stat.PrimaryStat.parseStats(line.replace("IVs:", "").trim()));
             } else if (line.indexOf("Nature") > 4) {
                 // Avoids Nature Power move
                 pokemon.setNature(new Nature(line.replace("Nature", "").trim()));

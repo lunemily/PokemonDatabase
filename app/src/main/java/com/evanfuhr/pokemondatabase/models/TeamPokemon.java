@@ -15,8 +15,8 @@ public class TeamPokemon extends BaseTypedObject {
     private Item mItem;
     private List<Move> mMoves;
     private Nature mNature;
-    private Map<IndividualValues, Integer> mIVs;
-    private Map<EffortValue, Integer> mEVs;
+    private Map<Stat.PrimaryStat, Integer> mIVs;
+    private Map<Stat.PrimaryStat, Integer> mEVs;
     private String mRawPokemon;
 
     public TeamPokemon() {
@@ -75,19 +75,19 @@ public class TeamPokemon extends BaseTypedObject {
         this.mNature = nature;
     }
 
-    public Map<IndividualValues, Integer> getIVs() {
+    public Map<Stat.PrimaryStat, Integer> getIVs() {
         return mIVs;
     }
 
-    public void setIVs(Map<IndividualValues, Integer> ivs) {
+    public void setIVs(Map<Stat.PrimaryStat, Integer> ivs) {
         this.mIVs = ivs;
     }
 
-    public Map<EffortValue, Integer> getEVs() {
+    public Map<Stat.PrimaryStat, Integer> getEVs() {
         return mEVs;
     }
 
-    public void setEVs(Map<EffortValue, Integer> evs) {
+    public void setEVs(Map<Stat.PrimaryStat, Integer> evs) {
         this.mEVs = evs;
     }
 

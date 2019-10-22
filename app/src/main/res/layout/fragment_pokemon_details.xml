@@ -67,7 +67,7 @@
                         android:gravity="end"
                         android:inputType="none"
                         android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/pokemonHeightValue" />
+                        android:text="@string/zero" />
 
                     <TextView
                         android:id="@+id/pokemonWeight"
@@ -90,7 +90,153 @@
                         android:gravity="end"
                         android:inputType="none"
                         android:paddingRight="@dimen/activity_vertical_margin"
-                        android:text="@string/pokemonWeightValue" />
+                        android:text="@string/zero" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:id="@+id/pokemon_base_hp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/pokemon_base_hp" />
+
+                    <TextView
+                        android:id="@+id/pokemon_base_atk"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/pokemon_base_atk" />
+
+                    <TextView
+                        android:id="@+id/pokemon_base_def"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/pokemon_base_def" />
+
+                    <TextView
+                        android:id="@+id/pokemon_base_spa"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/pokemon_base_spa" />
+
+                    <TextView
+                        android:id="@+id/pokemon_base_spd"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/pokemon_base_spd" />
+
+                    <TextView
+                        android:id="@+id/pokemon_base_spe"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/pokemon_base_spe" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:id="@+id/pokemon_base_hp_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/zero" />
+
+                    <TextView
+                        android:id="@+id/pokemon_base_atk_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/zero" />
+
+                    <TextView
+                        android:id="@+id/pokemon_base_def_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/zero" />
+
+                    <TextView
+                        android:id="@+id/pokemon_base_spa_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/zero" />
+
+                    <TextView
+                        android:id="@+id/pokemon_base_spd_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/zero" />
+
+                    <TextView
+                        android:id="@+id/pokemon_base_spe_value"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_span="1"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:inputType="none"
+                        android:text="@string/zero" />
 
                 </TableRow>
 

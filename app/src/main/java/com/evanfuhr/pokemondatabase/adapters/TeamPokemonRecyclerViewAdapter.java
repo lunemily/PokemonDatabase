@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.list.TeamPokemonListFragment.OnListFragmentInteractionListener;
-import com.evanfuhr.pokemondatabase.models.EffortValue;
+import com.evanfuhr.pokemondatabase.models.Stat;
 import com.evanfuhr.pokemondatabase.models.TeamPokemon;
 
 import java.util.ArrayList;
@@ -62,18 +62,18 @@ public class TeamPokemonRecyclerViewAdapter extends RecyclerView.Adapter<TeamPok
         else holder.mType2.setVisibility(View.INVISIBLE);
 
         String mEVs = "";
-        if (holder.mItem.getEVs().containsKey(EffortValue.HP))
-            mEVs += (holder.mItem.getEVs().get(EffortValue.HP).toString() + " HP ");
-        if (holder.mItem.getEVs().containsKey(EffortValue.Atk))
-            mEVs += (holder.mItem.getEVs().get(EffortValue.Atk).toString() + " Atk ");
-        if (holder.mItem.getEVs().containsKey(EffortValue.Def))
-            mEVs += (holder.mItem.getEVs().get(EffortValue.Def).toString() + " Def ");
-        if (holder.mItem.getEVs().containsKey(EffortValue.SpA))
-            mEVs += (holder.mItem.getEVs().get(EffortValue.SpA).toString() + " SpA ");
-        if (holder.mItem.getEVs().containsKey(EffortValue.SpD))
-            mEVs += (holder.mItem.getEVs().get(EffortValue.SpD).toString() + " SpD ");
-        if (holder.mItem.getEVs().containsKey(EffortValue.Spe))
-            mEVs += (holder.mItem.getEVs().get(EffortValue.Spe).toString() + " Spe");
+        if (holder.mItem.getEVs().containsKey(Stat.PrimaryStat.HP))
+            mEVs += (holder.mItem.getEVs().get(Stat.PrimaryStat.HP).toString() + " HP ");
+        if (holder.mItem.getEVs().containsKey(Stat.PrimaryStat.Atk))
+            mEVs += (holder.mItem.getEVs().get(Stat.PrimaryStat.Atk).toString() + " Atk ");
+        if (holder.mItem.getEVs().containsKey(Stat.PrimaryStat.Def))
+            mEVs += (holder.mItem.getEVs().get(Stat.PrimaryStat.Def).toString() + " Def ");
+        if (holder.mItem.getEVs().containsKey(Stat.PrimaryStat.SpA))
+            mEVs += (holder.mItem.getEVs().get(Stat.PrimaryStat.SpA).toString() + " SpA ");
+        if (holder.mItem.getEVs().containsKey(Stat.PrimaryStat.SpD))
+            mEVs += (holder.mItem.getEVs().get(Stat.PrimaryStat.SpD).toString() + " SpD ");
+        if (holder.mItem.getEVs().containsKey(Stat.PrimaryStat.Spe))
+            mEVs += (holder.mItem.getEVs().get(Stat.PrimaryStat.Spe).toString() + " Spe");
         holder.mEVs.setText(mEVs.trim());
     }
 

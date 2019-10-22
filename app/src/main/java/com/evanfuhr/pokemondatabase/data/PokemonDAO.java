@@ -12,10 +12,13 @@ import com.evanfuhr.pokemondatabase.models.Location;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.MoveMethod;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
+import com.evanfuhr.pokemondatabase.models.Stat;
 import com.evanfuhr.pokemondatabase.models.Type;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
@@ -292,6 +295,25 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
             cursor.close();
         }
 
+        // Get base stats
+        HashMap<Stat.PrimaryStat, Integer> map = new HashMap<>();
+        String baseStatSql = SQLiteQueryBuilder
+                .select(field(POKEMON_STATS, POKEMON_ID)
+                        , field(POKEMON_STATS, STAT_ID)
+                        , field(POKEMON_STATS, BASE_STAT))
+                .from(POKEMON_STATS)
+                .where(field(POKEMON_STATS, POKEMON_ID) + "=" + pokemon.getId())
+                .build();
+        Cursor baseStatCursor = db.rawQuery(baseStatSql, null);
+        if (baseStatCursor.moveToFirst()) {
+            do {
+                map.put(Stat.PrimaryStat.get(Integer.parseInt(baseStatCursor.getString(1))), Integer.valueOf(baseStatCursor.getString(2)));
+            } while (baseStatCursor.moveToNext());
+        }
+        pokemon.setBaseStats(map);
+
+        baseStatCursor.close();
+        db.close();
         return pokemon;
     }
 
@@ -302,7 +324,6 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
      * @return          The modified input is returned
      * @see             Pokemon
      */
-
     public Pokemon getPokemon(String name) {
         Pokemon pokemon = new Pokemon();
         pokemon.setName(name);

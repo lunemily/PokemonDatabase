@@ -6,9 +6,8 @@
     <string name="nationalDexNumber">#1</string>
     <string name="spritedescription">Bulbasaur</string>
     <string name="pokemonHeight">Height</string>
-    <string name="pokemonHeightValue">0</string>
+    <string name="zero">0</string>
     <string name="pokemonWeight">Weight</string>
-    <string name="pokemonWeightValue">0</string>
     <string name="pokemonAbilities">Abilities</string>
     <string name="pokemonAbilitiesList">Ability 1</string>
     <string name="egg_groups">Egg Groups</string>
@@ -64,4 +63,10 @@
     <string name="serebii">Serebii</string>
     <string name="carat"><![CDATA[]]></string>
     <string name="pokemon_showdown">Pokémon Showdown</string>
+    <string name="pokemon_base_hp">HP</string>
+    <string name="pokemon_base_atk">Atk</string>
+    <string name="pokemon_base_def">Def</string>
+    <string name="pokemon_base_spa">SpA</string>
+    <string name="pokemon_base_spd">SpD</string>
+    <string name="pokemon_base_spe">Spe</string>
 </resources>

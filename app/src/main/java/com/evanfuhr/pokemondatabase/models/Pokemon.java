@@ -1,11 +1,13 @@
 package com.evanfuhr.pokemondatabase.models;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Pokemon extends BasePokemon {
 
     private List<Ability> mAbilities;
     private int mBaseExperience;
+    private HashMap<Stat.PrimaryStat, Integer> mBaseStats;
     private List<EggGroup> mEggGroups;
     private int mGenderRatio;
     private String mGenus;
@@ -83,6 +85,14 @@ public class Pokemon extends BasePokemon {
 
     public void setWeight(Double weight) {
         this.mWeight = weight;
+    }
+
+    public HashMap<Stat.PrimaryStat, Integer> getBaseStats() {
+        return mBaseStats;
+    }
+
+    public void setBaseStats(HashMap<Stat.PrimaryStat, Integer> baseStats) {
+        this.mBaseStats = baseStats;
     }
 
     // Not Getters and Setters
