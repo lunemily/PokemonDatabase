@@ -102,7 +102,7 @@ public class PokemonDetailsFragment extends Fragment {
 
     void loadPokemon() {
         PokemonDAO pokemonDAO = new PokemonDAO(getActivity());
-        mPokemon = pokemonDAO.getPokemon(mPokemon);
+        mPokemon = pokemonDAO.loadPokemonDetails(mPokemon);
         pokemonDAO.close();
     }
 

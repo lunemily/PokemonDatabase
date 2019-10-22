@@ -262,6 +262,40 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
         String sql = SQLiteQueryBuilder
                 .select(field(POKEMON_SPECIES, ID)
+                        , field(POKEMON_SPECIES_NAMES, NAME))
+                .from(POKEMON_SPECIES)
+                .join(POKEMON_SPECIES_NAMES)
+                .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
+                .join(POKEMON)
+                .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON, SPECIES_ID))
+                .where(field(POKEMON_SPECIES, ID) + "=" + pokemon.getId())
+                .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
+                .build();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                //pokemon.setId(pokemon.getId(0));
+                pokemon.setName(cursor.getString(1));
+            }
+            cursor.close();
+        }
+        db.close();
+        return pokemon;
+    }
+
+    /**
+     * Returns a Pokemon object with most of its non-list data
+     *
+     * @param   pokemon A Pokemon object to be modified with additional data
+     * @return          The modified input is returned
+     * @see             Pokemon
+     */
+    public Pokemon loadPokemonDetails(Pokemon pokemon) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sql = SQLiteQueryBuilder
+                .select(field(POKEMON_SPECIES, ID)
                         , field(POKEMON_SPECIES_NAMES, NAME)
                         , field(POKEMON, HEIGHT)
                         , field(POKEMON, WEIGHT)

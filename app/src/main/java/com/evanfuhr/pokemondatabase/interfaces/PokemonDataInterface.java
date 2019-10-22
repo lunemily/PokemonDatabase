@@ -26,4 +26,6 @@ public interface PokemonDataInterface {
     Pokemon getPokemon(Pokemon pokemon);
 
     Pokemon getPokemon(String name);
+
+    Pokemon loadPokemonDetails(Pokemon pokemon);
 }
