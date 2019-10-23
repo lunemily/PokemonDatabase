@@ -32,6 +32,7 @@ public enum Forme {
     DRAGON,
     FAIRY,
     BUG,
+    PIROUETTE,
     RADIANT_SUN,
     FULL_MOON,
     DAWN_WINGS,
@@ -64,8 +65,10 @@ public enum Forme {
             return MEGA;
         } else if (name.contains("Alola")) {
             return ALOLA;
+        } else if (name.contains("Pirouette")) {
+            return PIROUETTE;
         }
-        return STANDARD;
+        return null;
     }
 
     public static String getShowndownForme(Forme forme) {
@@ -78,6 +81,8 @@ public enum Forme {
                 return "Mega-Y";
             case ALOLA:
                 return "Alola";
+            case PIROUETTE:
+                return "Pirouette";
         }
         return "";
     }

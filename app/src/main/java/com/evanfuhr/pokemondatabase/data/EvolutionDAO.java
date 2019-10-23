@@ -78,7 +78,10 @@ public class EvolutionDAO extends DataBaseHelper implements EvolutionDataInterfa
         String sql = SQLiteQueryBuilder
                 .select(field(POKEMON_SPECIES, EVOLUTION_CHAIN_ID))
                 .from(POKEMON_SPECIES)
-                .where(field(POKEMON_SPECIES, ID) + "=" + pokemon.getId())
+                .join(POKEMON)
+                .on(field(POKEMON, SPECIES_ID) + "=" + field(POKEMON_SPECIES, ID))
+                .where("(" + field(POKEMON_SPECIES, ID) + "=" + pokemon.getId()
+                        + " OR " + field(POKEMON, ID) + "=" + pokemon.getId() + ")")
                 .build();
 
 

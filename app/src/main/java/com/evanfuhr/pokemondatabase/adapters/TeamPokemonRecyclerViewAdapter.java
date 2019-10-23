@@ -52,9 +52,15 @@ public class TeamPokemonRecyclerViewAdapter extends RecyclerView.Adapter<TeamPok
         holder.mNature.setText(holder.mItem.getNature().getName());
 
         holder.mMove1.setText(holder.mItem.getMoves().get(0).getName());
-        holder.mMove2.setText(holder.mItem.getMoves().get(1).getName());
-        holder.mMove3.setText(holder.mItem.getMoves().get(2).getName());
-        holder.mMove4.setText(holder.mItem.getMoves().get(3).getName());
+        if (holder.mItem.getMoves().size() >= 2) {
+            holder.mMove2.setText(holder.mItem.getMoves().get(1).getName());
+        }
+        if (holder.mItem.getMoves().size() >= 3) {
+            holder.mMove3.setText(holder.mItem.getMoves().get(2).getName());
+        }
+        if (holder.mItem.getMoves().size() == 4) {
+            holder.mMove4.setText(holder.mItem.getMoves().get(3).getName());
+        }
 
         holder.mType1.setText(holder.mItem.getTypes().get(0).getName());
         if (holder.mItem.getTypes().size() == 2)

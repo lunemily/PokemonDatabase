@@ -23,7 +23,7 @@ public class PokemonShowdownActivity extends AppCompatActivity implements Pokemo
             "IVs: 0 Atk  \n" +
             "- Transform  \n" +
             "\n" +
-            "Ditto2 @ Destiny Knot  \n" +
+            "Ditto @ Destiny Knot  \n" +
             "Ability: Imposter  \n" +
             "Shiny: No  \n" +
             "EVs: 252 Atk / 4 SpD / 252 Spe  \n" +

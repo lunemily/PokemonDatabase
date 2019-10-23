@@ -225,7 +225,8 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         List<Pokemon> pokemons = new ArrayList<>();
 
         String sql = SQLiteQueryBuilder
-                .select("distinct " + field(POKEMON, SPECIES_ID))
+                .select("distinct " + field(POKEMON, SPECIES_ID)
+                        , field(POKEMON, ID))
                 .from(POKEMON_TYPES)
                 .join(POKEMON)
                 .on(field(POKEMON_TYPES, POKEMON_ID) + "=" + field(POKEMON, ID))
@@ -239,7 +240,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         if (cursor.moveToFirst()) {
             do {
                 Pokemon pokemon = new Pokemon();
-                pokemon.setId(Integer.parseInt(cursor.getString(0)));
+                pokemon.setId(Integer.parseInt(cursor.getString(1)));
                 pokemons.add(pokemon);
             } while (cursor.moveToNext());
         }
@@ -268,7 +269,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
                 .join(POKEMON)
                 .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON, SPECIES_ID))
-                .where(field(POKEMON_SPECIES, ID) + "=" + pokemon.getId())
+                .where(field(POKEMON, ID) + "=" + pokemon.getId())
                 .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 

@@ -63,6 +63,7 @@ public class Stat extends BaseNamedObject {
             String[] stats = rawStats.split(" / ");
 
             for (String stat : stats) {
+                stat = stat.replace("\u0160", "\u0032");
                 if (stat.contains("HP")) {
                     map.put(HP, Integer.valueOf(stat.replace("HP", "").trim()));
                 }

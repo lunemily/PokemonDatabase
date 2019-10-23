@@ -11,6 +11,7 @@ import com.evanfuhr.pokemondatabase.models.Team;
 import com.evanfuhr.pokemondatabase.models.TeamPokemon;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PokemonShowdownParser {
@@ -62,8 +63,10 @@ public class PokemonShowdownParser {
     static List<TeamPokemon> parsePokemons(String[] rawPokemons) {
         List<TeamPokemon> pokemons = new ArrayList<>();
         for (String rawPokemon : rawPokemons) {
-            TeamPokemon pokemon = parsePokemon(rawPokemon);
-            pokemons.add(pokemon);
+            if (!rawPokemon.trim().equals("")) {
+                TeamPokemon pokemon = parsePokemon(rawPokemon);
+                pokemons.add(pokemon);
+            }
         }
         return pokemons;
     }
@@ -71,7 +74,7 @@ public class PokemonShowdownParser {
     static TeamPokemon parsePokemon(String rawPokemon) {
         TeamPokemon pokemon = new TeamPokemon();
 
-        String[] lines = rawPokemon.split("\n");
+        String[] lines = rawPokemon.replace("\u00A0", " ").trim().split("\n");
 
         // Iterate over lines. TODO: Move to its own method
         for (String line : lines) {
@@ -84,12 +87,12 @@ public class PokemonShowdownParser {
             } else if (line.indexOf("-") == 0) {
                 // All moves start with "-"
                 List<Move> moves = pokemon.getMoves();
-                moves.add(new Move(line.replace("-", "").trim()));
+                moves.add(new Move(line.replaceFirst("-", "").trim()));
                 pokemon.setMoves(moves);
             } else if (line.contains("EVs:")) {
-                pokemon.setEVs(Stat.PrimaryStat.parseStats(line.replace("EVs:", "").trim()));
+                pokemon.setEVs(Stat.PrimaryStat.parseStats(line.trim().replace("EVs:", "").trim()));
             } else if (line.contains("IVs:")) {
-                pokemon.setIVs(Stat.PrimaryStat.parseStats(line.replace("IVs:", "").trim()));
+                pokemon.setIVs(Stat.PrimaryStat.parseStats(line.trim().replace("IVs:", "").trim()));
             } else if (line.indexOf("Nature") > 4) {
                 // Avoids Nature Power move
                 pokemon.setNature(new Nature(line.replace("Nature", "").trim()));
@@ -121,7 +124,11 @@ public class PokemonShowdownParser {
                 if (line.contains("-")) {
                     // Parse forme
                     pokemon.setForme(Forme.parseShowdownForme(line));
-                    pokemon.setName(line.replace("-" + Forme.getShowndownForme(pokemon.getForme()), ""));
+                    if (pokemon.getForme() != null) {
+                        pokemon.setName(line.replace("-" + Forme.getShowndownForme(pokemon.getForme()), ""));
+                    } else {
+                        pokemon.setName(line);
+                    }
                 } else {
                     pokemon.setName(line);
                 }
