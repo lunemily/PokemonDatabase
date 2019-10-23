@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface PokemonDataInterface {
 
-    List<Pokemon> getAllPokemon();
+    List<Pokemon> getAllPokemonWithTypes();
 
     List<Pokemon> getPokemon(Ability ability);
 

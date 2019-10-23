@@ -2,13 +2,14 @@ package com.evanfuhr.pokemondatabase.models;
 
 public class BasePokemon extends BaseTypedObject {
 
-    Forme mForme;
+    private Forme mForme;
+    int mSpeciesId;
 
-    public BasePokemon() {
+    BasePokemon() {
         super();
     }
 
-    public BasePokemon(int id) {
+    BasePokemon(int id) {
         super(id);
     }
 
@@ -18,5 +19,13 @@ public class BasePokemon extends BaseTypedObject {
 
     public void setForme(Forme forme) {
         this.mForme = forme;
+    }
+
+    public int getSpecies() {
+        return mSpeciesId;
+    }
+
+    public void setSpecies(int speciesId) {
+        this.mSpeciesId = speciesId;
     }
 }

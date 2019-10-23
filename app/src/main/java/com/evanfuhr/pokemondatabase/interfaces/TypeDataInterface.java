@@ -17,5 +17,7 @@ public interface TypeDataInterface {
 
     List<Type> getSingleTypeEfficacy(Type type);
 
+    List<Type> getSingleTypeEfficacy(Type type, boolean forPokemon);
+
     List<Type> getDualTypeEfficacy(Type type1, Type type2);
 }

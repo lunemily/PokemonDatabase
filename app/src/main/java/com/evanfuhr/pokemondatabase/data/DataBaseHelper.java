@@ -1,5 +1,6 @@
 package com.evanfuhr.pokemondatabase.data;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -28,6 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     //The Android's default system path of your application database.
+    @SuppressLint("SdCardPath")
     private static String DB_PATH = "/data/data/com.evanfuhr.pokemondatabase/databases/";
 
     private static String DB_NAME = "pokedex.sqlite";
@@ -40,8 +42,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     int _language_id = 9;
     public static int defaultVersionId = 30; // Default game is Ultra Moon
-    VersionManager mVersionManager;
-    Version mVersion;
+    private VersionManager mVersionManager;
+    private Version mVersion;
 
     // tables
     static final String ABILITIES = "abilities";
@@ -69,6 +71,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String POKEMON_ABILITIES = "pokemon_abilities";
     static final String POKEMON_EGG_GROUPS = "pokemon_egg_groups";
     static final String POKEMON_EVOLUTION = "pokemon_evolution";
+    static final String POKEMON_FORMS = "pokemon_forms";
     static final String POKEMON_MOVES = "pokemon_moves";
     static final String POKEMON_SPECIES = "pokemon_species";
     static final String TABLE_POKEMON_SPECIES_FLAVOR_TEXT = "pokemon_species_flavor_text";
@@ -173,6 +176,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     static final String NEEDS_OVERWORLD_RAIN = "needs_overworld_rain";
     static final String TURN_UPSIDE_DOWN = "turn_upside_down";
 
+    // pokemon_forms
+    static final String FORM_IDENTIFIER = "form_identifier";
+
     // pokemon_moves
     static final String POKEMON_MOVE_METHOD_ID = "pokemon_move_method_id";
     static final String POKEMON_MOVE_LEVEL = "level";
@@ -217,7 +223,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * Constructor
      * Takes and keeps a reference of the passed context in order to access to the application assets and resources.
      *
-     * @param context
+     * @param context      A filter criterion for all Pokemon
      */
     public DataBaseHelper(Context context) {
 
@@ -269,7 +275,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         }
 
-        return checkDB != null ? true : false;
+        return checkDB != null;
     }
 
     /**
@@ -299,7 +305,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             Log.e("copyDataBase", "copyDataBase(): " + e);
 
-            StackTraceElement trace[] = e.getStackTrace();
+            StackTraceElement[] trace = e.getStackTrace();
             for(StackTraceElement element : trace) {
                 Log.e("copyDataBase", element.toString());
 
@@ -312,7 +318,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         editor.putInt(String.valueOf(R.string.gameVersionID), defaultVersionId);
 
         // Commit the edits!
-        editor.commit();
+        editor.apply();
     }
 
     public void openDataBase() throws SQLException {
@@ -353,11 +359,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 // to you to create adapters for your views.
 
 
-    public Context getMyContext() {
+    Context getMyContext() {
         return myContext;
     }
 
-    public int getVersionGroupIDByVersionID() {
+    int getVersionGroupIDByVersionID() {
         SQLiteDatabase db = this.getWritableDatabase();
 
         int version_group_id = 1;

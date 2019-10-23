@@ -21,6 +21,7 @@ import android.widget.SearchView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.activities.display.AbilityDisplayActivity;
+import com.evanfuhr.pokemondatabase.activities.display.EggGroupDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.display.LocationDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.display.MoveDisplayActivity;
 import com.evanfuhr.pokemondatabase.activities.display.TypeDisplayActivity;
@@ -50,11 +51,11 @@ public class PokemonListFragment extends Fragment
 
     private OnListFragmentInteractionListener mListener;
 
-    Ability mAbility = new Ability();
-    EggGroup mEggGroup = new EggGroup();
-    Location mLocation = new Location();
-    Move mMove = new Move();
-    Type mType = new Type();
+    Ability mAbility;
+    EggGroup mEggGroup;
+    Location mLocation;
+    Move mMove;
+    Type mType;
 
     boolean isListByAbility = false;
     boolean isListByEggGroup = false;
@@ -92,23 +93,33 @@ public class PokemonListFragment extends Fragment
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey(TypeDisplayActivity.TYPE_ID)) {
+                mType = new Type();
                 mType.setId(bundle.getInt(TypeDisplayActivity.TYPE_ID));
                 isListByType = true;
                 mToggle.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
             } else if (bundle.containsKey(AbilityDisplayActivity.ABILITY_ID)) {
+                mAbility = new Ability();
                 mAbility.setId(bundle.getInt(AbilityDisplayActivity.ABILITY_ID));
                 isListByAbility = true;
 //                mToggle.setVisibility(View.VISIBLE);
 //                mRecyclerView.setVisibility(View.GONE);
             } else if (bundle.containsKey(MoveDisplayActivity.MOVE_ID)) {
+                mMove = new Move();
                 mMove.setId(bundle.getInt(MoveDisplayActivity.MOVE_ID));
                 isListByMove = true;
 //                mToggle.setVisibility(View.VISIBLE);
 //                mRecyclerView.setVisibility(View.GONE);
             } else if (bundle.containsKey(LocationDisplayActivity.LOCATION_ID)) {
+                mLocation = new Location();
                 mLocation.setId(bundle.getInt(LocationDisplayActivity.LOCATION_ID));
                 isListByLocation = true;
+//                mToggle.setVisibility(View.VISIBLE);
+//                mRecyclerView.setVisibility(View.GONE);
+            } else if (bundle.containsKey(EggGroupDisplayActivity.EGG_GROUP_ID)) {
+                mEggGroup = new EggGroup();
+                mEggGroup.setId(bundle.getInt(EggGroupDisplayActivity.EGG_GROUP_ID));
+                isListByEggGroup = true;
 //                mToggle.setVisibility(View.VISIBLE);
 //                mRecyclerView.setVisibility(View.GONE);
             }
@@ -203,7 +214,9 @@ public class PokemonListFragment extends Fragment
             searchMenuItem.collapseActionView();
         }
 
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        if (searchManager != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        }
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(this);
     }
@@ -242,6 +255,7 @@ public class PokemonListFragment extends Fragment
         @Override
         protected List<Pokemon> doInBackground(String... strings) {
 
+            boolean pokemonAreTyped = false;
             PokemonDAO pokemonDAO = new PokemonDAO(mContext);
             List<Pokemon> rawPokemon;
             List<Pokemon> typedPokemon = new ArrayList<>();
@@ -257,17 +271,20 @@ public class PokemonListFragment extends Fragment
             } else if (isListByType) {
                 rawPokemon = pokemonDAO.getPokemon(mType);
             } else {
-                rawPokemon = pokemonDAO.getAllPokemon();
+                rawPokemon = pokemonDAO.getAllPokemonWithTypes();
+                pokemonAreTyped = true;
             }
 
-            TypeDAO typeDAO = new TypeDAO(mContext);
-            for (Pokemon pokemon : rawPokemon) {
-                pokemon = pokemonDAO.getPokemon(pokemon);
-                pokemon.setTypes(typeDAO.getTypes(pokemon));
-                typedPokemon.add(pokemon);
+            if (!pokemonAreTyped) {
+                TypeDAO typeDAO = new TypeDAO(mContext);
+                for (Pokemon pokemon : rawPokemon) {
+                    pokemon = pokemonDAO.getPokemon(pokemon);
+                    pokemon.setTypes(typeDAO.getTypes(pokemon));
+                    typedPokemon.add(pokemon);
+                }
+                pokemonDAO.close();
+                typeDAO.close();
             }
-            pokemonDAO.close();
-            typeDAO.close();
 
             return rawPokemon;
         }

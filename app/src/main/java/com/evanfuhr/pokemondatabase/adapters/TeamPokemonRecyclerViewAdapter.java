@@ -1,5 +1,7 @@
 package com.evanfuhr.pokemondatabase.adapters;
 
+import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.list.TeamPokemonListFragment.OnListFragmentInteractionListener;
+import com.evanfuhr.pokemondatabase.models.Forme;
 import com.evanfuhr.pokemondatabase.models.Stat;
 import com.evanfuhr.pokemondatabase.models.TeamPokemon;
 
@@ -28,6 +31,7 @@ public class TeamPokemonRecyclerViewAdapter extends RecyclerView.Adapter<TeamPok
         mFilteredList.addAll(mValues);
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -35,11 +39,16 @@ public class TeamPokemonRecyclerViewAdapter extends RecyclerView.Adapter<TeamPok
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         holder.mItem = mFilteredList.get(position);
-        holder.mName.setText(holder.mItem.getName());
+        String name = holder.mItem.getName();
+        if (holder.mItem.getForme() != null) {
+            name += "-" + Forme.getShowdownForme(holder.mItem.getForme());
+        }
+        holder.mName.setText(name);
         if (holder.mItem.getName().equals(holder.mItem.getNickname())) {
             holder.mNickname.setVisibility(View.INVISIBLE);
         } else {

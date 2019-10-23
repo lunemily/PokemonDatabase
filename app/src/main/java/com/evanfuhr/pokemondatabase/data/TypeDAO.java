@@ -55,8 +55,9 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 types.add(type);
             } while (cursor.moveToNext());
         }
-        cursor.close();
 
+        cursor.close();
+        db.close();
         return types;
     }
 
@@ -90,6 +91,7 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
             cursor.close();
         }
 
+        db.close();
         return type;
     }
 
@@ -125,6 +127,7 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
             cursor.close();
         }
 
+        db.close();
         return type;
     }
 
@@ -160,8 +163,9 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 typesForPokemon.add(type);
             } while (cursor.moveToNext());
         }
-        cursor.close();
 
+        cursor.close();
+        db.close();
         return typesForPokemon;
     }
 
@@ -182,8 +186,6 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
 
         List<Type> originatingTypes = new ArrayList<>();
         List<Type> targetTypes = new ArrayList<>();
-
-        List<Type> efficacyTypes = new ArrayList<>();
 
         String selectQuery = "SELECT " + KEY_DAMAGE_TYPE_ID +
                 ", " + KEY_TARGET_TYPE_ID +
@@ -231,11 +233,12 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
         }
         cursor.close();
 
-        efficacyTypes.addAll(originatingTypes);
+        List<Type> efficacyTypes = new ArrayList<>(originatingTypes);
         if (!forPokemon) {
             efficacyTypes.addAll(targetTypes);
         }
 
+        db.close();
         return efficacyTypes;
     }
 
@@ -306,8 +309,9 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
 
             } while (cursor.moveToNext());
         }
-        cursor.close();
 
+        cursor.close();
+        db.close();
         return attackingTypes;
     }
 }

@@ -55,8 +55,9 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
                 abilityList.add(ability);
             } while (cursor.moveToNext());
         }
-        cursor.close();
 
+        cursor.close();
+        db.close();
         return abilityList;
     }
 
@@ -94,6 +95,7 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
             cursor.close();
         }
 
+        db.close();
         return ability;
     }
 
@@ -133,6 +135,7 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
             cursor.close();
         }
 
+        db.close();
         return ability;
     }
 
@@ -172,8 +175,9 @@ public class AbilityDAO extends DataBaseHelper implements AbilityDataInterface {
                 abilitiesForPokemon.add(ability);
             } while (cursor.moveToNext());
         }
-        cursor.close();
 
+        cursor.close();
+        db.close();
         return abilitiesForPokemon;
     }
 }

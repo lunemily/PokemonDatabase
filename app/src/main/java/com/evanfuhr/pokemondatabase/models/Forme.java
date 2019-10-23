@@ -57,21 +57,22 @@ public enum Forme {
     ;
 
     public static Forme parseShowdownForme(String name) {
-        if (name.contains("Mega-X")) {
+        name = name.toLowerCase();
+        if (name.contains("mega-x")) {
             return MEGA_X;
-        } else if (name.contains("Mega-Y")) {
+        } else if (name.contains("mega-y")) {
             return MEGA_Y;
-        } else if (name.contains("Mega")) {
+        } else if (name.contains("mega")) {
             return MEGA;
-        } else if (name.contains("Alola")) {
+        } else if (name.contains("alola")) {
             return ALOLA;
-        } else if (name.contains("Pirouette")) {
+        } else if (name.contains("pirouette")) {
             return PIROUETTE;
         }
         return null;
     }
 
-    public static String getShowndownForme(Forme forme) {
+    public static String getShowdownForme(Forme forme) {
         switch (forme) {
             case MEGA:
                 return "Mega";
@@ -83,6 +84,25 @@ public enum Forme {
                 return "Alola";
             case PIROUETTE:
                 return "Pirouette";
+        }
+        return "";
+    }
+
+    public static String getSpriteForme(Forme forme) {
+        if (forme == null) {
+            return "";
+        }
+        switch (forme) {
+            case MEGA:
+                return "mega";
+            case MEGA_X:
+                return "megax";
+            case MEGA_Y:
+                return "megay";
+            case ALOLA:
+                return "alola";
+            case PIROUETTE:
+                return "pirouette";
         }
         return "";
     }

@@ -99,10 +99,10 @@ public class Pokemon extends BasePokemon {
 
     public String getThreeDigitStringId() {
         String id;
-        id = "" + this.mId;
+        id = "" + this.mSpeciesId;
 
-        if (this.mId < 100) {
-            if (this.mId < 10) {
+        if (this.mSpeciesId < 100) {
+            if (this.mSpeciesId < 10) {
                 id = "0" + id;
             }
             id = "0" + id;
@@ -111,14 +111,6 @@ public class Pokemon extends BasePokemon {
     }
 
     public String getSpriteName() {
-        String filename = this.getThreeDigitStringId();
-
-        if (mForme == Forme.MEGA) {
-            filename = filename + "mega";
-        }
-
-        filename = "sprite" + filename;
-
-        return filename;
+        return "sprite" + this.getThreeDigitStringId() + Forme.getSpriteForme(this.getForme());
     }
 }

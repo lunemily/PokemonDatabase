@@ -11,7 +11,6 @@ import com.evanfuhr.pokemondatabase.models.Team;
 import com.evanfuhr.pokemondatabase.models.TeamPokemon;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PokemonShowdownParser {
@@ -71,7 +70,7 @@ public class PokemonShowdownParser {
         return pokemons;
     }
 
-    static TeamPokemon parsePokemon(String rawPokemon) {
+    private static TeamPokemon parsePokemon(String rawPokemon) {
         TeamPokemon pokemon = new TeamPokemon();
 
         String[] lines = rawPokemon.replace("\u00A0", " ").trim().split("\n");
@@ -79,7 +78,6 @@ public class PokemonShowdownParser {
         // Iterate over lines. TODO: Move to its own method
         for (String line : lines) {
             if (line.trim().equals("")) {
-                continue;
             } else if (line.contains("Ability:")) {
                 pokemon.setAbility(new Ability(line.replace("Ability:", "").trim()));
             } else if (line.contains("Shiny:")) {
@@ -125,7 +123,7 @@ public class PokemonShowdownParser {
                     // Parse forme
                     pokemon.setForme(Forme.parseShowdownForme(line));
                     if (pokemon.getForme() != null) {
-                        pokemon.setName(line.replace("-" + Forme.getShowndownForme(pokemon.getForme()), ""));
+                        pokemon.setName(line.replace("-" + Forme.getShowdownForme(pokemon.getForme()), ""));
                     } else {
                         pokemon.setName(line);
                     }

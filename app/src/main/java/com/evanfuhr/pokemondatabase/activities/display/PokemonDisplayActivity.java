@@ -23,6 +23,7 @@ import com.evanfuhr.pokemondatabase.fragments.list.TypeMatchUpListFragment;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
 import com.evanfuhr.pokemondatabase.models.Evolution;
+import com.evanfuhr.pokemondatabase.models.Forme;
 import com.evanfuhr.pokemondatabase.models.Location;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
@@ -59,7 +60,11 @@ public class PokemonDisplayActivity extends AppCompatActivity
 
         loadPokemon();
         setBackgroundColor();
-        setTitle("#" + mPokemon.getId() + " " + mPokemon.getName());
+        String title = "#" + mPokemon.getSpecies() + " " + mPokemon.getName();
+        if (mPokemon.getForme() != null) {
+            title = title + " - " + Forme.getShowdownForme(mPokemon.getForme());
+        }
+        setTitle(title);
     }
 
     private void loadPokemon() {

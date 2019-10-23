@@ -8,6 +8,7 @@ import com.evanfuhr.pokemondatabase.interfaces.PokemonDataInterface;
 import com.alexfu.sqlitequerybuilder.api.SQLiteQueryBuilder;
 import com.evanfuhr.pokemondatabase.models.Ability;
 import com.evanfuhr.pokemondatabase.models.EggGroup;
+import com.evanfuhr.pokemondatabase.models.Forme;
 import com.evanfuhr.pokemondatabase.models.Location;
 import com.evanfuhr.pokemondatabase.models.Move;
 import com.evanfuhr.pokemondatabase.models.MoveMethod;
@@ -32,20 +33,20 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
      * @return      An unfiltered list of Pokemon objects
      * @see         Pokemon
      */
-    public List<Pokemon> getAllPokemon() {
+    public List<Pokemon> getAllPokemonWithTypes() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         List<Pokemon> pokemonList = new ArrayList<>();
 
-        String sql = SQLiteQueryBuilder
-                .select(field(POKEMON_SPECIES, ID)
-                        , field(POKEMON_SPECIES_NAMES, NAME))
-                .from(POKEMON_SPECIES)
-                .join(POKEMON_SPECIES_NAMES)
-                .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
-                .where(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
-                .build();
+        String sql = "SELECT pokemon_types.pokemon_id" +
+                ", pokemon_species_names.name" +
+                ", group_concat(pokemon_types.type_id,'|')" +
+                "FROM pokemon_types " +
+                "JOIN pokemon_species_names " +
+                "ON pokemon_types.pokemon_id=pokemon_species_names.pokemon_species_id " +
+                "WHERE pokemon_species_names.local_language_id=" + _language_id + " " +
+                "GROUP BY pokemon_types.pokemon_id";
 
         Cursor cursor = db.rawQuery(sql, null);
 
@@ -55,12 +56,21 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 Pokemon pokemon = new Pokemon();
                 pokemon.setId(Integer.parseInt(cursor.getString(0)));
                 pokemon.setName(cursor.getString(1));
+                List<Type> types = new ArrayList<>();
+                for (String rawType : cursor.getString(2).split("\\|")) {
+                    Type type = new Type();
+                    type.setId(Integer.parseInt(rawType));
+                    type.setColor(Type.getTypeColor(type.getId()));
+                    types.add(type);
+                }
+                pokemon.setTypes(types);
                 //add pokemon to list
                 pokemonList.add(pokemon);
             } while (cursor.moveToNext());
         }
-        cursor.close();
 
+        cursor.close();
+        db.close();
         return pokemonList;
     }
 
@@ -76,7 +86,8 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         List<Pokemon> pokemons = new ArrayList<>();
 
         String sql = SQLiteQueryBuilder
-                .select( "distinct " + field(POKEMON, SPECIES_ID))
+                .select( "distinct " + field(POKEMON, SPECIES_ID)
+                        , field(POKEMON, ID))
                 .from(POKEMON_ABILITIES)
                 .join(POKEMON)
                 .on(field(POKEMON_ABILITIES, POKEMON_ID) + "=" + field(POKEMON, ID))
@@ -90,14 +101,13 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         if (cursor.moveToFirst()) {
             do {
                 Pokemon pokemon = new Pokemon();
-                pokemon.setId(Integer.parseInt(cursor.getString(0)));
+                pokemon.setId(Integer.parseInt(cursor.getString(1)));
                 pokemons.add(pokemon);
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         db.close();
-
         return pokemons;
     }
 
@@ -132,7 +142,6 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
 
         cursor.close();
         db.close();
-
         return pokemons;
     }
 
@@ -169,9 +178,9 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 pokemons.add(pokemon);
             } while (cursor.moveToNext());
         }
+
         cursor.close();
         db.close();
-
         return pokemons;
     }
 
@@ -189,7 +198,8 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         List<Pokemon> pokemons = new ArrayList<>();
 
         String sql = SQLiteQueryBuilder
-                .select("DISTINCT " + field(POKEMON, SPECIES_ID))
+                .select("distinct " + field(POKEMON, SPECIES_ID)
+                        , field(POKEMON, ID))
                 .from(POKEMON_MOVES)
                 .join(POKEMON)
                 .on(field(POKEMON_MOVES, POKEMON_ID) + "=" + field(POKEMON, ID))
@@ -203,13 +213,14 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
             do {
                 //Move move = new Move();
                 Pokemon pokemon = new Pokemon();
-                pokemon.setId(Integer.parseInt(cursor.getString(0)));
+                pokemon.setId(Integer.parseInt(cursor.getString(1)));
                 //add move to list
                 pokemons.add(pokemon);
             } while (cursor.moveToNext());
         }
-        cursor.close();
 
+        cursor.close();
+        db.close();
         return pokemons;
     }
 
@@ -240,14 +251,33 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
         if (cursor.moveToFirst()) {
             do {
                 Pokemon pokemon = new Pokemon();
+                pokemon.setSpecies(Integer.parseInt(cursor.getString(0)));
                 pokemon.setId(Integer.parseInt(cursor.getString(1)));
+
+                if (pokemon.getId() != pokemon.getSpecies()) {
+                    // This is an alternate form
+                    String formeSQL = SQLiteQueryBuilder
+                            .select(field(POKEMON_FORMS, POKEMON_ID)
+                                    , field(POKEMON_FORMS, FORM_IDENTIFIER))
+                            .from(POKEMON_FORMS)
+                            .where(field(POKEMON_FORMS, POKEMON_ID) + "=" + pokemon.getId())
+                            .build();
+
+                    Cursor formCursor = db.rawQuery(formeSQL, null);
+                    if (formCursor != null) {
+                        if (formCursor.moveToFirst()) {
+                            pokemon.setForme(Forme.parseShowdownForme(formCursor.getString(1)));
+                        }
+                        formCursor.close();
+                    }
+                }
                 pokemons.add(pokemon);
             } while (cursor.moveToNext());
         }
 
+
         cursor.close();
         db.close();
-
         return pokemons;
     }
 
@@ -281,6 +311,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
             }
             cursor.close();
         }
+
         db.close();
         return pokemon;
     }
@@ -304,20 +335,22 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                         , field(POKEMON, "'" + ORDER + "'")
                         , field(POKEMON, IS_DEFAULT)
                         , field(POKEMON_SPECIES, GENDER_RATE)
-                        , field(POKEMON_SPECIES_NAMES, GENUS))
+                        , field(POKEMON_SPECIES_NAMES, GENUS)
+                        , field(POKEMON, ID))
                 .from(POKEMON_SPECIES)
                 .join(POKEMON_SPECIES_NAMES)
                 .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON_SPECIES_NAMES, POKEMON_SPECIES_ID))
                 .join(POKEMON)
                 .on(field(POKEMON_SPECIES, ID) + "=" + field(POKEMON, SPECIES_ID))
-                .where(field(POKEMON_SPECIES, ID) + "=" + pokemon.getId())
+                .where("(" + field(POKEMON_SPECIES, ID) + "=" + pokemon.getId()
+                        + " OR " + field(POKEMON, ID) + "=" + pokemon.getId() + ")")
                 .and(field(POKEMON_SPECIES_NAMES, LOCAL_LANGUAGE_ID) + "=" + _language_id)
                 .build();
 
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                //pokemon.setId(pokemon.getId(0));
+                pokemon.setSpecies(Integer.parseInt(cursor.getString(0)));
                 pokemon.setName(cursor.getString(1));
                 pokemon.setHeight(Double.parseDouble(cursor.getString(2))/10);
                 pokemon.setWeight(Double.parseDouble(cursor.getString(3))/10);
@@ -328,6 +361,24 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 pokemon.setGenus(cursor.getString(8));
             }
             cursor.close();
+        }
+
+        if (pokemon.getId() != pokemon.getSpecies()) {
+            // This is an alternate form
+            String formeSQL = SQLiteQueryBuilder
+                    .select(field(POKEMON_FORMS, POKEMON_ID)
+                            , field(POKEMON_FORMS, FORM_IDENTIFIER))
+                    .from(POKEMON_FORMS)
+                    .where(field(POKEMON_FORMS, POKEMON_ID) + "=" + pokemon.getId())
+                    .build();
+
+            Cursor formCursor = db.rawQuery(formeSQL, null);
+            if (formCursor != null) {
+                if (formCursor.moveToFirst()) {
+                    pokemon.setForme(Forme.parseShowdownForme(formCursor.getString(1)));
+                }
+                formCursor.close();
+            }
         }
 
         // Get base stats
@@ -399,6 +450,7 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
             cursor.close();
         }
 
+        db.close();
         return pokemon;
     }
 }

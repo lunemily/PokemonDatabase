@@ -15,7 +15,7 @@ public class EggGroupListActivity extends AppCompatActivity
         implements EggGroupListFragment.OnListFragmentInteractionListener {
 
     @NonNls
-    public static final String ABILITY = "Abilities";
+    public static final String EGG_GROUP = "Egg Groups";
     @NonNls
     public static final String MENU_ITEM_NOT_IMPLEMENTED_YET = "Menu item not implemented yet";
 
@@ -24,7 +24,7 @@ public class EggGroupListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_egg_group_list);
 
-        setTitle(ABILITY);
+        setTitle(EGG_GROUP);
     }
 
     @Override

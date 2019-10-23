@@ -1,5 +1,6 @@
 package com.evanfuhr.pokemondatabase.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.Button;
 
 import com.evanfuhr.pokemondatabase.R;
 import com.evanfuhr.pokemondatabase.fragments.list.PokemonListFragment.OnListFragmentInteractionListener;
+import com.evanfuhr.pokemondatabase.models.Forme;
 import com.evanfuhr.pokemondatabase.models.Pokemon;
 import com.evanfuhr.pokemondatabase.utils.PokemonUtils;
 
@@ -28,6 +30,7 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
         mFilteredList.addAll(mValues);
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -39,7 +42,11 @@ public class PokemonRecyclerViewAdapter extends RecyclerView.Adapter<PokemonRecy
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mFilteredList.get(position);
         holder.mButton.setId(mFilteredList.get(position).getId());
-        holder.mButton.setText(mFilteredList.get(position).getName());
+        String name = holder.mItem.getName();
+        if (holder.mItem.getForme() != null) {
+            name = name + " - " + Forme.getShowdownForme(holder.mItem.getForme());
+        }
+        holder.mButton.setText(name);
         holder.mButton.setBackground(PokemonUtils.getColorGradientByTypes(mFilteredList.get(position).getTypes()));
 
         holder.mButton.setOnClickListener(new View.OnClickListener() {
