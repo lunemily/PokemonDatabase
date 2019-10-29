@@ -11,7 +11,6 @@ import java.util.List;
 
 public class Type extends BaseNamedObject {
 
-    private String color;
     private float _efficacy;
     private boolean isTarget = false;
     private int _slot;
@@ -26,10 +25,6 @@ public class Type extends BaseNamedObject {
 
     public String getColor() {
         return getTypeColor(this.mId);
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 
     public float getEfficacy() {

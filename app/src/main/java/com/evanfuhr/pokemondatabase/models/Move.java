@@ -97,9 +97,9 @@ public class Move extends BaseTypedObject implements Comparable<Move> {
 
     @Override
     public int compareTo(Move move) {
-        if (this.getLevel() == ((Move) move).getLevel())
+        if (this.getLevel() == move.getLevel())
             return 0;
-        else if ((this.getLevel()) > ((Move) move).getLevel())
+        else if ((this.getLevel()) > move.getLevel())
             return 1;
         else
             return -1;

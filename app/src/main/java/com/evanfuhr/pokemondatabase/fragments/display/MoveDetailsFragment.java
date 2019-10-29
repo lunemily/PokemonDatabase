@@ -100,7 +100,7 @@ public class MoveDetailsFragment extends Fragment {
     }
 
     void setFragmentAccuracy() {
-        mAccuracy.setText(Integer.toString(mMove.getAccuracy()) + "%");
+        mAccuracy.setText(mMove.getAccuracy() + "%");
     }
 
     void setFragmentCategory() {

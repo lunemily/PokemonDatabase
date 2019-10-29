@@ -51,7 +51,7 @@ public class TypeDisplayActivity extends AppCompatActivity
 
     private void setTypeBackgroundColor(Type type) {
         TypeDAO typeDAO = new TypeDAO(this);
-        RelativeLayout typeDisplayActivity = (RelativeLayout) findViewById(R.id.type_display_activity);
+        RelativeLayout typeDisplayActivity = findViewById(R.id.type_display_activity);
         typeDisplayActivity.setBackgroundColor(Color.parseColor(typeDAO.getType(type).getColor()));
     }
 
