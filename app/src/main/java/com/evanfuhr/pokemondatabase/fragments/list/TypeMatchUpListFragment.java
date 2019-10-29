@@ -73,7 +73,7 @@ public class TypeMatchUpListFragment extends Fragment {
                 mRecyclerView.setVisibility(View.GONE);
             }
         } else {
-            Log.i("TypeMatchUpListFragment Log", "No bundle");
+            Log.i("TypeMatchUpList Log", "No bundle");
         }
         List<Type> types = new ArrayList<>();
 

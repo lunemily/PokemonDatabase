@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.evanfuhr.pokemondatabase.R;
@@ -29,7 +30,7 @@ public class PokemonDetailsFragment extends Fragment {
     TextView mHeight;
     TextView mSerebii;
     TextView mSmogon;
-    GifImageView mSpriteGif;
+    ImageView mSprite;
     TextView mWeight;
 
     TextView mHP;
@@ -59,7 +60,7 @@ public class PokemonDetailsFragment extends Fragment {
         mHeight = detailsFragmentView.findViewById(R.id.pokemonHeightValue);
         mSerebii = detailsFragmentView.findViewById(R.id.serebiiLink);
         mSmogon = detailsFragmentView.findViewById(R.id.smogonLink);
-        mSpriteGif = detailsFragmentView.findViewById(R.id.gifImageViewPokemonSprite);
+        mSprite = detailsFragmentView.findViewById(R.id.pngImageViewPokemonSprite);
         mWeight = detailsFragmentView.findViewById(R.id.pokemonWeightValue);
 
         mHP = detailsFragmentView.findViewById(R.id.pokemon_base_hp_value);
@@ -131,7 +132,7 @@ public class PokemonDetailsFragment extends Fragment {
     void setFragmentSprite() {
         int spriteID = getContext().getResources().getIdentifier(mPokemon.getSpriteName(), "drawable", getContext().getPackageName());
         try {
-            mSpriteGif.setGifImageResource(spriteID);
+            mSprite.setImageResource(spriteID);
         } catch (Exception e) {
             Log.w("PokemonDetFragment", "Sprite not found");
         }

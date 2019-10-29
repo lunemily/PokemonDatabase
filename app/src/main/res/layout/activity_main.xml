@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,68 +8,63 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="0dp"
     tools:context="com.evanfuhr.pokemondatabase.activities.MainActivity"
-    android:id="@+id/main_activity">
+    android:id="@+id/main_activity"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <Button
+        android:id="@+id/buttonPokemonList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/pokemon" />
 
-        <Button
-            android:id="@+id/buttonPokemonList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/pokemon" />
+    <Button
+        android:id="@+id/buttonTypeList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/types" />
 
-        <Button
-            android:id="@+id/buttonTypeList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/types" />
+    <Button
+        android:id="@+id/buttonMoveList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/moves" />
 
-        <Button
-            android:id="@+id/buttonMoveList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/moves" />
+    <Button
+        android:id="@+id/buttonAbilityList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/abilities" />
 
-        <Button
-            android:id="@+id/buttonAbilityList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/abilities" />
+    <Button
+        android:id="@+id/buttonLocationList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/locations" />
 
-        <Button
-            android:id="@+id/buttonLocationList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/locations" />
+    <Button
+        android:id="@+id/buttonEggGroupList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/egg_groups" />
 
-        <Button
-            android:id="@+id/buttonEggGroupList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/egg_groups" />
+    <Button
+        android:id="@+id/buttonNatureList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/natures" />
 
-        <Button
-            android:id="@+id/buttonNatureList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/natures" />
+    <Button
+        android:id="@+id/buttonPokemonShowdownHelper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/pokemon_showdown" />
 
-        <Button
-            android:id="@+id/buttonPokemonShowdownHelper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/pokemon_showdown" />
-
-    </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

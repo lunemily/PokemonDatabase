@@ -269,7 +269,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         }
 
-        return checkDB != null ? true : false;
+        return checkDB != null;
     }
 
     /**
@@ -299,7 +299,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             Log.e("copyDataBase", "copyDataBase(): " + e);
 
-            StackTraceElement trace[] = e.getStackTrace();
+            StackTraceElement[] trace = e.getStackTrace();
             for(StackTraceElement element : trace) {
                 Log.e("copyDataBase", element.toString());
 

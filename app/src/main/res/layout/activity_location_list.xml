@@ -11,13 +11,14 @@
     android:id="@+id/nature_list_activity">
 
     <fragment
+        android:id="@+id/locationListFragment"
+        android:name="com.evanfuhr.pokemondatabase.fragments.list.LocationListFragment"
         android:layout_width="336dp"
         android:layout_height="wrap_content"
-        android:name="com.evanfuhr.pokemondatabase.fragments.list.LocationListFragment"
-        android:id="@+id/locationListFragment"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

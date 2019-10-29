@@ -46,11 +46,11 @@ public class PokemonMoveRecyclerViewAdapter extends RecyclerView.Adapter<Pokemon
 
         switch (holder.mItem.getMethodID()) {
             case LEVEL_UP:
-                holder.mDetail.setText("Lv" + Integer.toString(holder.mItem.getLevel()));
+                holder.mDetail.setText("Lv" + holder.mItem.getLevel());
                 break;
             case MACHINE:
                 //move = moveDAO.getTMForMove(move);
-                holder.mDetail.setText("TM" + Integer.toString(holder.mItem.getTM()));
+                holder.mDetail.setText("TM" + holder.mItem.getTM());
                 break;
             case EGG:
                 holder.mDetail.setText("EGG");

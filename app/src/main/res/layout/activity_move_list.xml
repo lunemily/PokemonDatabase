@@ -12,15 +12,16 @@
     android:id="@+id/move_list_activity">
 
     <fragment
+        android:id="@+id/moveListFragment"
+        android:name="com.evanfuhr.pokemondatabase.fragments.list.MoveListFragment"
         android:layout_width="336dp"
         android:layout_height="wrap_content"
-        android:name="com.evanfuhr.pokemondatabase.fragments.list.MoveListFragment"
-        android:id="@+id/moveListFragment"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        tools:layout_editor_absoluteY="16dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -8,40 +8,42 @@
     android:id="@+id/ability_display_activity">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/ability_details_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ability_details_scroll_view"
-        android:layout_centerHorizontal="true" >
+        android:layout_centerHorizontal="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:longClickable="false">
+            android:longClickable="false"
+            android:orientation="vertical">
 
             <View
-                android:layout_width="fill_parent"
                 android:id="@+id/focus_view"
+                android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true">
 
-                <requestFocus/>
+                <requestFocus />
 
             </View>
 
             <fragment
+                android:id="@+id/abilityDetailsFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.display.AbilityDetailsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.display.AbilityDetailsFragment"
-                android:id="@+id/abilityDetailsFragment"
-                android:layout_margin="@dimen/activity_horizontal_margin"/>
+                android:layout_margin="@dimen/activity_horizontal_margin" />
 
             <fragment
+                android:id="@+id/abilitiedPokemonListFragment"
+                android:name="com.evanfuhr.pokemondatabase.fragments.list.PokemonListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.evanfuhr.pokemondatabase.fragments.list.PokemonListFragment"
-                android:id="@+id/abilitiedPokemonListFragment"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
