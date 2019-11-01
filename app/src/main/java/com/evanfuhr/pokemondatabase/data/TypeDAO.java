@@ -49,7 +49,6 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 Type type = new Type();
                 type.setId(Integer.parseInt(cursor.getString(0)));
                 type.setName(cursor.getString(1));
-                type.setColor(Type.getTypeColor(type.getId()));
 
                 //add type to list
                 types.add(type);
@@ -86,7 +85,6 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
             if (cursor.moveToFirst()) {
                 type.setId(Integer.parseInt(cursor.getString(0)));
                 type.setName(cursor.getString(1));
-                type.setColor(Type.getTypeColor(type.getId()));
             }
             cursor.close();
         }
@@ -122,7 +120,6 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
             if (cursor.moveToFirst()) {
                 type.setId(Integer.parseInt(cursor.getString(0)));
                 type.setName(cursor.getString(1));
-                type.setColor(Type.getTypeColor(type.getId()));
             }
             cursor.close();
         }
@@ -158,7 +155,6 @@ public class TypeDAO extends DataBaseHelper implements TypeDataInterface {
                 Type type = new Type();
                 type.setSlot(Integer.parseInt(cursor.getString(0)));
                 type.setId(Integer.parseInt(cursor.getString(1)));
-                type.setColor(Type.getTypeColor(type.getId()));
                 //add type to list
                 typesForPokemon.add(type);
             } while (cursor.moveToNext());

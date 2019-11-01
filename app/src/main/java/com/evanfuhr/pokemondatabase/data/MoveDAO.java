@@ -55,7 +55,6 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 move.setId(Integer.parseInt(cursor.getString(0)));
                 move.setName(cursor.getString(1));
                 type.setId(Integer.parseInt(cursor.getString(2)));
-                type.setColor(Type.getTypeColor(type.getId()));
                 move.setType(type);
                 //add pokemon to list
                 moves.add(move);
@@ -319,7 +318,6 @@ public class MoveDAO extends DataBaseHelper implements MoveDataInterface {
                 Move move = new Move();
                 move.setId(Integer.parseInt(cursor.getString(0)));
                 move.setName(cursor.getString(1));
-                type.setColor(Type.getTypeColor(type.getId()));
                 move.setType(type);
                 //add pokemon to list
                 moves.add(move);

@@ -60,7 +60,6 @@ public class PokemonDAO extends DataBaseHelper implements PokemonDataInterface {
                 for (String rawType : cursor.getString(2).split("\\|")) {
                     Type type = new Type();
                     type.setId(Integer.parseInt(rawType));
-                    type.setColor(Type.getTypeColor(type.getId()));
                     types.add(type);
                 }
                 pokemon.setTypes(types);
