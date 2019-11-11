@@ -77,7 +77,7 @@ public class PokemonUtils {
 
         // Yay Regex!!!
         // This pattern matches "[optional text]{text:text-with-optional-dash}" or explicitly "$effect_chance"
-        Pattern pattern = Pattern.compile("(\\[(|[A-Za-z\\s]+)]\\{([a-z:\\-\\s]+)}|\\$effect_chance)");
+        Pattern pattern = Pattern.compile("(\\[(|[A-Za-z\\s]+)\\]\\{([a-z:\\-\\s]+)\\}|\\$effect_chance)");
         Matcher matcher = pattern.matcher(prose);
 
         while (matcher.find()) {
